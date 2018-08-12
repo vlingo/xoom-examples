@@ -7,7 +7,7 @@ target/
 .DS_Store
 *.log
 build/
-
+.metadata/
 
 # Intellij
 .idea/
