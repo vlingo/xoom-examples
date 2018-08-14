@@ -87,7 +87,7 @@ public class UserTest {
     world = World.startWithDefaults("test-user");
 
     actionPostUser = new Action(0, "POST", "/users", "register(body:io.vlingo.frontservice.resource.UserData userData)", null, true);
-    actionGetUser = new Action(3, "GET", "/users/{userId}", "queryUser(String userId)", null, true);
+    actionGetUser = new Action(1, "GET", "/users/{userId}", "queryUser(String userId)", null, true);
     final List<Action> actions = Arrays.asList(actionPostUser, actionGetUser);
 
     final Class<? extends ResourceHandler> resourceHandlerClass =
