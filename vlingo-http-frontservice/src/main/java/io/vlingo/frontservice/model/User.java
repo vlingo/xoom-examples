@@ -43,21 +43,26 @@ public interface User {
     public final Name name;
     public final Contact contact;
     public final Security security;
+    public final int version;
     
     public boolean doesNotExist() {
       return id == null;
     }
 
+    public boolean isIdentifiedOnly() {
+      return id != null && name == null && contact == null && security == null;
+    }
+
     public State withContact(final Contact contact) {
-      return new State(this.id, this.name, contact, this.security);
+      return new State(this.id, this.name, contact, this.security, version + 1);
     }
 
     public State withName(final Name name) {
-      return new State(this.id, name, this.contact, this.security);
+      return new State(this.id, name, this.contact, this.security, version + 1);
     }
 
     public State withSecurity(final Security security) {
-      return new State(this.id, this.name, this.contact, security);
+      return new State(this.id, this.name, this.contact, security, version + 1);
     }
 
     @Override
@@ -70,6 +75,15 @@ public interface User {
       this.name = name;
       this.contact = contact;
       this.security = security;
+      this.version = 1;
+    }
+
+    private State(final String id, final Name name, final Contact contact, final Security security, final int version) {
+      this.id = id;
+      this.name = name;
+      this.contact = contact;
+      this.security = security;
+      this.version = version;
     }
   }
 }

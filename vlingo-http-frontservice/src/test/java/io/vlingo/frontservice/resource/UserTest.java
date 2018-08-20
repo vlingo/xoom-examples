@@ -9,7 +9,7 @@ package io.vlingo.frontservice.resource;
 
 import static io.vlingo.common.serialization.JsonSerialization.deserialized;
 import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Created;
+import static io.vlingo.http.Response.Status.Created;
 import static io.vlingo.http.ResponseHeader.Location;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -25,9 +25,14 @@ import org.junit.Test;
 
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.frontservice.data.ContactData;
+import io.vlingo.frontservice.data.NameData;
+import io.vlingo.frontservice.data.UserData;
+import io.vlingo.frontservice.infra.Bootstrap;
 import io.vlingo.http.Context;
 import io.vlingo.http.Request;
 import io.vlingo.http.resource.Action;
+import io.vlingo.http.resource.ConfigurationResource;
 import io.vlingo.http.resource.Dispatcher;
 import io.vlingo.http.resource.Resource;
 import io.vlingo.http.resource.ResourceHandler;
@@ -84,22 +89,23 @@ public class UserTest {
   @Before
   @SuppressWarnings("unchecked")
   public void setUp() throws Exception {
-    world = World.startWithDefaults("test-user");
+    world = Bootstrap.instance().world;
 
-    actionPostUser = new Action(0, "POST", "/users", "register(body:io.vlingo.frontservice.resource.UserData userData)", null, true);
+    actionPostUser = new Action(0, "POST", "/users", "register(body:io.vlingo.frontservice.data.UserData userData)", null, true);
     actionGetUser = new Action(1, "GET", "/users/{userId}", "queryUser(String userId)", null, true);
     final List<Action> actions = Arrays.asList(actionPostUser, actionGetUser);
 
     final Class<? extends ResourceHandler> resourceHandlerClass =
             (Class<? extends ResourceHandler>) Class.forName("io.vlingo.frontservice.resource.UserResource");
 
-    final Resource<?> resource = Resource.defining("user", resourceHandlerClass, 5, actions);
+    final Resource<?> resource = ConfigurationResource.defining("user", resourceHandlerClass, 5, actions);
 
     dispatcher = Dispatcher.startWith(world.stage(), Resources.are(resource));
   }
 
   @After
   public void tearDown() {
+    Bootstrap.terminateTestInstance();
     world.terminate();
   }
 

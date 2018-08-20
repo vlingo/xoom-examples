@@ -8,40 +8,40 @@
 package io.vlingo.frontservice.resource;
 
 import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Created;
-import static io.vlingo.http.Response.NotFound;
-import static io.vlingo.http.Response.Ok;
+import static io.vlingo.http.Response.Status.Created;
+import static io.vlingo.http.Response.Status.NotFound;
+import static io.vlingo.http.Response.Status.Ok;
 import static io.vlingo.http.ResponseHeader.Location;
 import static io.vlingo.http.ResponseHeader.headers;
 import static io.vlingo.http.ResponseHeader.of;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.vlingo.actors.Address;
 import io.vlingo.actors.AddressFactory;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
-import io.vlingo.frontservice.infra.persistence.StateStoreUserRepository;
+import io.vlingo.frontservice.data.ContactData;
+import io.vlingo.frontservice.data.NameData;
+import io.vlingo.frontservice.data.UserData;
+import io.vlingo.frontservice.infra.persistence.Queries;
+import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
 import io.vlingo.frontservice.model.Contact;
 import io.vlingo.frontservice.model.Name;
 import io.vlingo.frontservice.model.Security;
 import io.vlingo.frontservice.model.User;
-import io.vlingo.frontservice.model.UserActor;
-import io.vlingo.frontservice.model.UserRepository;
+import io.vlingo.frontservice.model.UserEntity;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.ResourceHandler;
 
 public class UserResource extends ResourceHandler {
   private final AddressFactory addressFactory;
-  private final UserRepository repository;
+  private final Queries queries;
   private final Stage stage;
 
   public UserResource(final World world) {
     this.addressFactory = world.addressFactory();
     this.stage = world.stageNamed("service");
-    this.repository = StateStoreUserRepository.instance();
+    this.queries = QueryModelStoreProvider.instance().queries;
   }
 
   public void register(final UserData userData) {
@@ -54,9 +54,7 @@ public class UserResource extends ResourceHandler {
                     Contact.from(userData.contactData.emailAddress, userData.contactData.telephoneNumber),
                     Security.from(userData.publicSecurityToken));
 
-    stage.actorFor(Definition.has(UserActor.class, Definition.parameters(userState)), User.class, userAddress);
-
-    repository.save(userState);
+    stage.actorFor(Definition.has(UserEntity.class, Definition.parameters(userState)), User.class, userAddress);
 
     completes().with(Response.of(Created, headers(of(Location, userLocation(userState.id))), serialized(UserData.from(userState))));
   }
@@ -69,7 +67,6 @@ public class UserResource extends ResourceHandler {
       }
 
       user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber)).after(userState -> {
-        repository.save(userState);
         completes().with(Response.of(Ok, serialized(UserData.from(userState))));
       });
     });
@@ -82,27 +79,25 @@ public class UserResource extends ResourceHandler {
         return;
       }
       user.withName(new Name(nameData.given, nameData.family)).after(userState -> {
-        repository.save(userState);
         completes().with(Response.of(Ok, serialized(UserData.from(userState))));
       });
     });
   }
 
   public void queryUser(final String userId) {
-    final User.State userState = repository.userOf(userId);
-    if (userState.doesNotExist()) {
-      completes().with(Response.of(NotFound, userLocation(userId)));
-    } else {
-      completes().with(Response.of(Ok, serialized(UserData.from(userState))));
-    }
+    queries.userDataOf(userId).after(data -> {
+      if (data.doesNotExist()) {
+        completes().with(Response.of(NotFound, userLocation(userId)));
+      } else {
+        completes().with(Response.of(Ok, serialized(data)));
+      }
+    });
   }
 
   public void queryUsers() {
-    final List<UserData> users = new ArrayList<>();
-    for (final User.State userState : repository.users()) {
-      users.add(UserData.from(userState));
-    }
-    completes().with(Response.of(Ok, serialized(users)));
+    queries.usersData().after(data -> {
+      completes().with(Response.of(Ok, serialized(data)));
+    });
   }
 
   private String userLocation(final String userId) {
