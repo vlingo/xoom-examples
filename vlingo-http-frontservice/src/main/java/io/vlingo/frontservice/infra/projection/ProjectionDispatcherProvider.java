@@ -34,7 +34,7 @@ public class ProjectionDispatcherProvider {
     final List<ProjectToDescription> descriptions =
             Arrays.asList(
                     new ProjectToDescription(UserProjectionActor.class, "User:new;User:contact;User:name"),
-                    new ProjectToDescription(ProfileProjectionActor.class, "User:new;User:contact;User:name"));
+                    new ProjectToDescription(ProfileProjectionActor.class, "Profile:new;Profile:twitter;Profile:linkedIn;Profile:website"));
 
     final Protocols dispatcherProtocols =
             stage.actorFor(
