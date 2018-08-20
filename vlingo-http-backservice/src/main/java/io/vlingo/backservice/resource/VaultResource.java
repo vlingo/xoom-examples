@@ -7,8 +7,8 @@
 
 package io.vlingo.backservice.resource;
 
-import static io.vlingo.http.Response.BadRequest;
-import static io.vlingo.http.Response.Ok;
+import static io.vlingo.http.Response.Status.BadRequest;
+import static io.vlingo.http.Response.Status.Ok;
 
 import io.vlingo.auth.model.crypto.SCryptHasher;
 import io.vlingo.http.Response;

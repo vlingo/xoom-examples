@@ -7,7 +7,7 @@
 
 package io.vlingo.backservice.resource;
 
-import static io.vlingo.http.Response.Ok;
+import static io.vlingo.http.Response.Status.Ok;
 import static io.vlingo.http.ResponseHeader.ContentLength;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -25,6 +25,7 @@ import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.http.Context;
 import io.vlingo.http.Request;
 import io.vlingo.http.resource.Action;
+import io.vlingo.http.resource.ConfigurationResource;
 import io.vlingo.http.resource.Dispatcher;
 import io.vlingo.http.resource.Resource;
 import io.vlingo.http.resource.ResourceHandler;
@@ -70,7 +71,7 @@ public class VaultResourceTest {
     final Class<? extends ResourceHandler> resourceHandlerClass =
             (Class<? extends ResourceHandler>) Class.forName("io.vlingo.backservice.resource.VaultResource");
 
-    final Resource<?> resource = Resource.defining("vault", resourceHandlerClass, 5, actions);
+    final Resource<?> resource = ConfigurationResource.defining("vault", resourceHandlerClass, 5, actions);
 
     dispatcher = Dispatcher.startWith(world.stage(), Resources.are(resource));
   }
