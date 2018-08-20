@@ -32,6 +32,10 @@ public interface Profile {
       return id == null;
     }
 
+    public boolean isIdentifiedOnly() {
+      return id != null && linkedInAccount == null && twitterAccount == null && website == null;
+    }
+
     State withTwitterAccount(final String twitterAccount) {
       return new State(id, twitterAccount, linkedInAccount, website);
     }
