@@ -18,8 +18,9 @@ import io.vlingo.actors.Mailbox;
 
 public class User__Proxy implements User {
 
-  private static final String withContactRepresentation1 = "withContact(io.vlingo.http.sample.user.model.Contact)";
-  private static final String withNameRepresentation2 = "withName(io.vlingo.http.sample.user.model.Name)";
+  private static final String attachPrivateToken1 = "attachPrivateToken(java.lang.String)";
+  private static final String withContactRepresentation2 = "withContact(io.vlingo.http.sample.user.model.Contact)";
+  private static final String withNameRepresentation3 = "withName(io.vlingo.http.sample.user.model.Name)";
 
   private final Actor actor;
   private final Mailbox mailbox;
@@ -29,26 +30,34 @@ public class User__Proxy implements User {
     this.mailbox = mailbox;
   }
 
+  @Override
+  public void attachPrivateToken(String arg0) {
+    if (!actor.isStopped()) {
+      final Consumer<User> consumer = (actor) -> actor.attachPrivateToken(arg0);
+      mailbox.send(new LocalMessage<User>(actor, User.class, consumer, null, attachPrivateToken1));
+    } else {
+      actor.deadLetters().failedDelivery(new DeadLetter(actor, attachPrivateToken1));
+    }
+  }
   public Completes<State> withContact(Contact arg0) {
     if (!actor.isStopped()) {
       final Consumer<User> consumer = (actor) -> actor.withContact(arg0);
       final Completes<State> completes = new BasicCompletes<>(actor.scheduler());
-      mailbox.send(new LocalMessage<User>(actor, User.class, consumer, completes, withContactRepresentation1));
+      mailbox.send(new LocalMessage<User>(actor, User.class, consumer, completes, withContactRepresentation2));
       return completes;
     } else {
-      actor.deadLetters().failedDelivery(new DeadLetter(actor, withContactRepresentation1));
+      actor.deadLetters().failedDelivery(new DeadLetter(actor, withContactRepresentation2));
     }
     return null;
   }
   public Completes<State> withName(Name arg0) {
     if (!actor.isStopped()) {
-      System.out.println("PROXY ACTOR: " + actor.getClass());
       final Consumer<User> consumer = (actor) -> actor.withName(arg0);
       final Completes<State> completes = new BasicCompletes<>(actor.scheduler());
-      mailbox.send(new LocalMessage<User>(actor, User.class, consumer, completes, withNameRepresentation2));
+      mailbox.send(new LocalMessage<User>(actor, User.class, consumer, completes, withNameRepresentation3));
       return completes;
     } else {
-      actor.deadLetters().failedDelivery(new DeadLetter(actor, withNameRepresentation2));
+      actor.deadLetters().failedDelivery(new DeadLetter(actor, withNameRepresentation3));
     }
     return null;
   }

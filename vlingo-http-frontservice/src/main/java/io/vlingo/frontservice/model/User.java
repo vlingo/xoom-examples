@@ -12,8 +12,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import io.vlingo.actors.Completes;
 
 public interface User {
+  void attachPrivateToken(final String privateToken);
   Completes<User.State> withContact(final Contact contact);
   Completes<User.State> withName(final Name name);
+
 
   static State nonExisting() {
     return new State(null, null, null, null);
