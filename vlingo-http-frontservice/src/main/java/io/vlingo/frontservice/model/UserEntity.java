@@ -7,32 +7,16 @@
 
 package io.vlingo.frontservice.model;
 
-import static io.vlingo.http.Method.GET;
-import static io.vlingo.http.RequestHeader.host;
-import static io.vlingo.http.Response.Status.RequestTimeout;
-
-import java.net.URI;
-
 import io.vlingo.actors.Completes;
 import io.vlingo.actors.CompletesEventually;
-import io.vlingo.http.Request;
-import io.vlingo.http.Response;
-import io.vlingo.http.resource.Client;
-import io.vlingo.http.resource.Client.Configuration;
-import io.vlingo.http.resource.ResponseConsumer;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
-import io.vlingo.wire.node.Address;
-import io.vlingo.wire.node.AddressType;
-import io.vlingo.wire.node.Host;
 
-public class UserEntity extends StatefulEntity<User.State,String> implements User, PrivateTokenConsumer {
+public class UserEntity extends StatefulEntity<User.State,String> implements User {
   private User.State state;
   private int stateVersion;
 
   public UserEntity(final User.State state) {
     this.state = state;
-
-    retrievePrivateToken();
   }
 
   @Override
@@ -48,6 +32,12 @@ public class UserEntity extends StatefulEntity<User.State,String> implements Use
   //=====================================
   // User
   //=====================================
+
+  @Override
+  public void attachPrivateToken(final String privateToken) {
+    final User.State transitioned = state.withSecurity(state.security.withPrivateToken(privateToken));
+    preserve(transitioned);
+  }
 
   public Completes<User.State> withContact(final Contact contact) {
     final CompletesEventually completes = completesEventually();
@@ -67,17 +57,6 @@ public class UserEntity extends StatefulEntity<User.State,String> implements Use
       completes.with(state);
     });
     return completes(); // unanswered until preserved
-  }
-
-
-  //=====================================
-  // PrivateTokenConsumer
-  //=====================================
-
-  @Override
-  public void consumePrivateToken(final String privateToken) {
-    final User.State transitioned = state.withSecurity(state.security.withPrivateToken(privateToken));
-    preserve(transitioned);
   }
 
 
@@ -109,54 +88,5 @@ public class UserEntity extends StatefulEntity<User.State,String> implements Use
   @Override
   public int typeVersion() {
     return 1;
-  }
-
-
-  //=====================================
-  // internal interface
-  //=====================================
-
-  private void retrievePrivateToken() {
-    // NOTE: This is a temporary and not-recommended approach
-
-    client().requestWith(
-            Request
-              .has(GET)
-              .and(URI.create("/tokens/" + state.security.publicToken))
-              .and(host("localhost")))
-          .after(response -> {
-                   switch (response.status) {
-                   case Ok:
-                     logger().log("Private token received: " + response.entity.content);
-                     selfAs(PrivateTokenConsumer.class).consumePrivateToken(response.entity.content);
-                     break;
-                   case RequestTimeout:
-                     logger().log("Timeout; private token not received.");
-                     break;
-                   default:
-                     logger().log("Unexpected: " + response.status);
-                     break;
-                   }
-                 },
-                 5000,
-                 Response.of(RequestTimeout));
-  }
-
-  private Client client() {
-    try {
-      return Client.using(Configuration.defaultedExceptFor(
-              stage(),
-              Address.from(Host.of("localhost"), 8082, AddressType.NONE),
-              new ResponseConsumer() {
-                @Override
-                public void consume(final Response response) {
-                  logger().log("Unknown response received: " + response.status);
-                }
-              }));
-    } catch (Exception e) {
-      final String message = "The client could not be created.";
-      logger().log(message, e);
-      throw new IllegalStateException(message, e);
-    }
   }
 }

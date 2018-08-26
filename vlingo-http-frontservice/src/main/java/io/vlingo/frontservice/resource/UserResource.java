@@ -40,7 +40,7 @@ public class UserResource extends ResourceHandler {
 
   public UserResource(final World world) {
     this.addressFactory = world.addressFactory();
-    this.stage = world.stageNamed("service");
+    this.stage = world.stage();
     this.queries = QueryModelStoreProvider.instance().queries;
   }
 
