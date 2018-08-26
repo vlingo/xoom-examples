@@ -15,11 +15,10 @@ import io.vlingo.http.Response;
 import io.vlingo.http.resource.ResourceHandler;
 
 public class VaultResource extends ResourceHandler {
-
-  public VaultResource() { }
+  public VaultResource() {
+  }
 
   public void generatePrivateToken(final String publicToken) {
-    System.out.println("Request for private token of: " + publicToken);
     final SCryptHasher hasher = new SCryptHasher(16384, 8, 1);
     final String privateToken = hasher.hash(publicToken);
     if (hasher.verify(publicToken, privateToken)) {

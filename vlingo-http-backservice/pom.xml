@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-http-backservice</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <name>vlingo-http-backservice</name>
   <description>Example of vlingo/http non-public service.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -74,17 +74,17 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.5.8</version>
+      <version>0.5.9</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>0.5.3</version>
+      <version>0.5.4</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-auth</artifactId>
-      <version>0.5.3</version>
+      <version>0.5.4</version>
     </dependency>
   </dependencies>
 </project>
