@@ -77,7 +77,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
     try {
       return Client.using(Configuration.defaultedExceptFor(
               stage(),
-              Address.from(Host.of("back"), 8082, AddressType.NONE),
+              Address.from(Host.of("vlingo-examples-backservice.apps.internal"), 8082, AddressType.NONE),
               new ResponseConsumer() {
                 @Override
                 public void consume(final Response response) {

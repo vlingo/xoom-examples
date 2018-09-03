@@ -9,4 +9,6 @@ RUN mvn install
 COPY . .
 RUN mvn package
 
+EXPOSE 8082
+
 CMD ["java", "-jar", "target/vlingo-http-backservice-0.2.0-jar-with-dependencies.jar"]
