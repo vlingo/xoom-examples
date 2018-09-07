@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-docker build -t kaseoga/vlingo-examples-frontservice .
-docker push kaseoga/vlingo-examples-frontservice
+IMAGE=kaseoga/vlingo-examples-frontservice
+
+docker build -t $IMAGE .
+docker push $IMAGE
