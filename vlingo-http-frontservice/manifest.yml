@@ -1,0 +1,12 @@
+applications:
+- name: frontservice
+  docker:
+    image: kaseoga/vlingo-examples-frontservice
+  instances: 1
+  disk_quota: 1G
+  memory: 256M
+  routes:
+  - route: vlingo-examples-frontservice.cfapps.io
+  stack: cflinuxfs2
+  env:
+    BACKSERVICE_HOST: backservice.apps.internal
