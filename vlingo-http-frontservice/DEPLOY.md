@@ -5,6 +5,8 @@
 The first we need to do is to generate a docker image and push it to any registry.
 We will use the [DockerHub](https://hub.docker.com) registry for the example.
 
+> You can use any Docker Registry that you want, either DockerHub, any private Docker Registry or GCR. If you want more information of how to deploy from any of this registries you should check this [link](https://docs.cloudfoundry.org/devguide/deploy-apps/push-docker.html)
+
 #### Docker Image Publish
 There are three steps to publish a Docker Image to DockerHub:
 
