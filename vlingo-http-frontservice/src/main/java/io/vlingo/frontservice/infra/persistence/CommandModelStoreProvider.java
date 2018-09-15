@@ -49,7 +49,7 @@ public class CommandModelStoreProvider {
     this.dispatcherControl = dispatcherControl;
 
     StatefulTypeRegistry.instance
-      .register(new Info<User.State,String>(store, User.State.class, User.State.class.getSimpleName(), new UserStateAdapter()))
-      .register(new Info<Profile.State,String>(store, Profile.State.class, Profile.State.class.getSimpleName(), new ProfileStateAdapter()));
+      .register(new Info<User.UserState,String>(store, User.UserState.class, User.UserState.class.getSimpleName(), new UserStateAdapter()))
+      .register(new Info<Profile.ProfileState,String>(store, Profile.ProfileState.class, Profile.ProfileState.class.getSimpleName(), new ProfileStateAdapter()));
   }
 }

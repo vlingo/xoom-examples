@@ -18,7 +18,7 @@ public class ProfileData {
     return new ProfileData(null, null, null);
   }
 
-  public static ProfileData from(final Profile.State profile) {
+  public static ProfileData from(final Profile.ProfileState profile) {
     return new ProfileData(profile.twitterAccount, profile.linkedInAccount, profile.website);
   }
 

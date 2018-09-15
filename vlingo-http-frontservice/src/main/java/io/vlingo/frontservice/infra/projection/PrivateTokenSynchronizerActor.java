@@ -11,6 +11,7 @@ import static io.vlingo.http.Method.GET;
 import static io.vlingo.http.RequestHeader.host;
 
 import java.net.URI;
+import java.util.List;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.AddressFactory;
@@ -21,6 +22,7 @@ import io.vlingo.http.Response;
 import io.vlingo.http.resource.Client;
 import io.vlingo.http.resource.Client.Configuration;
 import io.vlingo.http.resource.ResponseConsumer;
+import io.vlingo.http.resource.sse.MessageEvent;
 import io.vlingo.symbio.projection.Projectable;
 import io.vlingo.symbio.projection.Projection;
 import io.vlingo.symbio.projection.ProjectionControl;
@@ -29,8 +31,17 @@ import io.vlingo.wire.node.AddressType;
 import io.vlingo.wire.node.Host;
 
 public class PrivateTokenSynchronizerActor extends Actor implements Projection {
+  private static final int Identities = 0;
+  private static final int Token = 1;
+  private static final int UserId = 0;
+  private static final int ProjectionId = 1;
+
+  private static final String DataAttributesSeparator = "\n";
+  private static final String IdentitiesSeparator = ":";
+
   private final AddressFactory addressFactory;
-  private final Client client;
+  private Client client;
+  private ProjectionControl control;
 
   public PrivateTokenSynchronizerActor() {
     this.addressFactory = stage().world().addressFactory();
@@ -39,35 +50,30 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
 
   @Override
   public void projectWith(final Projectable projectable, final ProjectionControl control) {
-    final User.State state = projectable.object();
-    final Client requestingClient = client == null ? client() : client;
+    this.control = control;
+    final User.UserState state = projectable.object();
+    final String correlationId = state.id + IdentitiesSeparator + projectable.projectionId();
 
-    if (requestingClient == null) {
+    if (client == null && client() == null) {
       logger().log("PrivateTokenSynchronizerActor: Currently no connection to backservice.");
       return;
     }
 
-    requestingClient.requestWith(
+    logger().log("REQUESTING TOKEN: " + correlationId);
+
+    client.requestWith(
             Request
               .has(GET)
               .and(URI.create("/tokens/" + state.security.publicToken))
               .and(host("localhost"))
-              .and(RequestHeader.of(RequestHeader.XCorrelationID, state.id)))
+              .and(RequestHeader.of(RequestHeader.XCorrelationID, correlationId)))
           .after(response -> {
              switch (response.status) {
-             case Ok: {
-               final String userId = state.id;
-               final io.vlingo.actors.Address address = addressFactory.findableBy(Integer.parseInt(userId));
-               stage().actorOf(address, User.class).after(user -> {
-                 if (user != null) {
-                   user.attachPrivateToken(response.entity.content);
-                   control.confirmProjected(projectable.projectionId());
-                 }
-               });
+             case Ok:
+               logger().log("RESPONDED FOR TOKEN: " + correlationId);
                break;
-             }
              default:
-               logger().log("Unexpected: " + response.status);
+               logger().log("Failed token request for user: " + state.id + " because: " + response.status);
                break;
              }
            });
@@ -75,7 +81,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
 
   private Client client() {
     try {
-      return Client.using(Configuration.defaultedExceptFor(
+      client = Client.using(Configuration.defaultedKeepAliveExceptFor(
               stage(),
               Address.from(Host.of("localhost"), 8082, AddressType.NONE),
               new ResponseConsumer() {
@@ -84,9 +90,49 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
                   logger().log("Unknown response received: " + response.status);
                 }
               }));
+
+      subscribeToEvents();
+
+      return client;
+
     } catch (Exception e) {
       logger().log("The client could not be created.", e);
-      return null;
+      return client;
     }
+  }
+
+  private void subscribeToEvents() {
+    client.requestWith(
+            Request
+              .has(GET)
+              .and(URI.create("/vaultstreams/tokens"))
+              .and(host("localhost"))
+              .and(RequestHeader.accept("text/event-stream"))
+              .and(RequestHeader.correlationId(getClass().getSimpleName() + "-tokens")))
+            .after(response -> {
+              switch (response.status) {
+              case Ok: {
+                final List<MessageEvent> events = MessageEvent.from(response);
+                for (MessageEvent event : events) {
+                  logger().log("EVENT: " + event);
+                  final String[] attributes = event.data.split(DataAttributesSeparator);
+                  final String identities[] = attributes[Identities].split(IdentitiesSeparator);
+                  final io.vlingo.actors.Address address = addressFactory.findableBy(Integer.parseInt(identities[UserId]));
+                  stage().actorOf(address, User.class).after(user -> {
+                    if (user != null) {
+                      user.attachPrivateToken(attributes[Token]);
+                      control.confirmProjected(identities[ProjectionId]);
+                      logger().log("USER TOKEN SYNCHRONIZED: " + identities[UserId] + " WITH: " + attributes[Token]);
+                    }
+                  });
+                }
+               break;
+              }
+              default:
+                logger().log("Unexpected: " + response.status);
+                break;
+              }
+            })
+            .repeat();
   }
 }

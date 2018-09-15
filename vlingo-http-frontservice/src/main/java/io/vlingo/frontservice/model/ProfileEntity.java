@@ -10,11 +10,11 @@ package io.vlingo.frontservice.model;
 import io.vlingo.actors.Completes;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
-public class ProfileEntity extends StatefulEntity<Profile.State,String> implements Profile {
-  private Profile.State state;
+public class ProfileEntity extends StatefulEntity<Profile.ProfileState,String> implements Profile {
+  private Profile.ProfileState state;
   private int stateVersion;
 
-  public ProfileEntity(final Profile.State state) {
+  public ProfileEntity(final Profile.ProfileState state) {
     this.state = state;
   }
 
@@ -28,22 +28,22 @@ public class ProfileEntity extends StatefulEntity<Profile.State,String> implemen
   }
 
   @Override
-  public Completes<Profile.State> withTwitterAccount(final String twitterAccount) {
-    final Profile.State transitioned = state.withTwitterAccount(twitterAccount);
+  public Completes<Profile.ProfileState> withTwitterAccount(final String twitterAccount) {
+    final Profile.ProfileState transitioned = state.withTwitterAccount(twitterAccount);
     preserve(transitioned, "Profile:twitter", (state, version) -> state(state, version));
     return completes().with(transitioned);
   }
 
   @Override
-  public Completes<Profile.State> withLinkedInAccount(final String linkedInAccount) {
-    final Profile.State transitioned = state.withLinkedInAccount(linkedInAccount);
+  public Completes<Profile.ProfileState> withLinkedInAccount(final String linkedInAccount) {
+    final Profile.ProfileState transitioned = state.withLinkedInAccount(linkedInAccount);
     preserve(transitioned, "Profile:linkedIn", (state, version) -> state(state, version));
     return completes().with(transitioned);
   }
 
   @Override
-  public Completes<Profile.State> withWebSite(final String website) {
-    final Profile.State transitioned = state.withWebSite(website);
+  public Completes<Profile.ProfileState> withWebSite(final String website) {
+    final Profile.ProfileState transitioned = state.withWebSite(website);
     preserve(transitioned, "Profile:website", (state, version) -> state(state, version));
     return completes().with(transitioned);
   }
@@ -59,14 +59,14 @@ public class ProfileEntity extends StatefulEntity<Profile.State,String> implemen
   }
 
   @Override
-  public void state(final State state, final int stateVersion) {
+  public void state(final ProfileState state, final int stateVersion) {
     this.state = state;
     this.stateVersion = stateVersion;
   }
 
   @Override
   public Class<?> stateType() {
-    return Profile.State.class;
+    return Profile.ProfileState.class;
   }
 
   @Override

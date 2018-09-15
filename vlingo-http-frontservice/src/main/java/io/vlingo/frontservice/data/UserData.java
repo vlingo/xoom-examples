@@ -30,7 +30,7 @@ public class UserData {
     return new UserData(id, nameData, contactData, publicSecurityToken);
   }
   
-  public static UserData from(final User.State userState) {
+  public static UserData from(final User.UserState userState) {
     return new UserData(userState.id, NameData.from(userState.name), ContactData.from(userState.contact), userState.security.publicToken);
   }
 

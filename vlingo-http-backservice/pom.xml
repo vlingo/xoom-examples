@@ -74,17 +74,17 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.5.9</version>
+      <version>0.6.2</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>0.5.4</version>
+      <version>0.5.7</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-auth</artifactId>
-      <version>0.5.4</version>
+      <version>0.5.7</version>
     </dependency>
   </dependencies>
 </project>

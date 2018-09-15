@@ -13,32 +13,32 @@ import io.vlingo.actors.Completes;
 
 public interface User {
   void attachPrivateToken(final String privateToken);
-  Completes<User.State> withContact(final Contact contact);
-  Completes<User.State> withName(final Name name);
+  Completes<User.UserState> withContact(final Contact contact);
+  Completes<User.UserState> withName(final Name name);
 
 
-  static State nonExisting() {
-    return new State(null, null, null, null);
+  static UserState nonExisting() {
+    return new UserState(null, null, null, null);
   }
 
-  static State from(final Name name, final Contact contact, final Security security) {
-    return new State(nextId(), name, contact, security);
+  static UserState from(final Name name, final Contact contact, final Security security) {
+    return new UserState(nextId(), name, contact, security);
   }
 
-  static State from(final String id, final Name name, final Contact contact, final Security security) {
-    return new State(id, name, contact, security);
+  static UserState from(final String id, final Name name, final Contact contact, final Security security) {
+    return new UserState(id, name, contact, security);
   }
 
   static void resetId() {
-    State.NextId.set(0);
+    UserState.NextId.set(0);
   }
 
   public static String nextId() {
-    final int id = State.NextId.incrementAndGet();
+    final int id = UserState.NextId.incrementAndGet();
     return String.format("%03d", id);
   }
 
-  public static final class State {
+  public static final class UserState {
     private static final AtomicInteger NextId = new AtomicInteger(0);
 
     public final String id;
@@ -55,16 +55,16 @@ public interface User {
       return id != null && name == null && contact == null && security == null;
     }
 
-    public State withContact(final Contact contact) {
-      return new State(this.id, this.name, contact, this.security, version + 1);
+    public UserState withContact(final Contact contact) {
+      return new UserState(this.id, this.name, contact, this.security, version + 1);
     }
 
-    public State withName(final Name name) {
-      return new State(this.id, name, this.contact, this.security, version + 1);
+    public UserState withName(final Name name) {
+      return new UserState(this.id, name, this.contact, this.security, version + 1);
     }
 
-    public State withSecurity(final Security security) {
-      return new State(this.id, this.name, this.contact, security, version + 1);
+    public UserState withSecurity(final Security security) {
+      return new UserState(this.id, this.name, this.contact, security, version + 1);
     }
 
     @Override
@@ -72,7 +72,7 @@ public interface User {
       return "User.State[id=" + id + ", name=" + name + ", contact=" + contact + "]";
     }
 
-    private State(final String id, final Name name, final Contact contact, final Security security) {
+    private UserState(final String id, final Name name, final Contact contact, final Security security) {
       this.id = id;
       this.name = name;
       this.contact = contact;
@@ -80,7 +80,7 @@ public interface User {
       this.version = 1;
     }
 
-    private State(final String id, final Name name, final Contact contact, final Security security, final int version) {
+    private UserState(final String id, final Name name, final Contact contact, final Security security, final int version) {
       this.id = id;
       this.name = name;
       this.contact = contact;
