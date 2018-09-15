@@ -41,7 +41,7 @@ public class ProfileResource extends ResourceHandler {
   public void define(final String userId, final ProfileData profileData) {
     stage.actorOf(addressFactory.findableBy(Integer.parseInt(userId)), Profile.class).after(profile -> {
       if (profile == null) {
-        final Profile.State profileState =
+        final Profile.ProfileState profileState =
                 Profile.from(
                         userId,
                         profileData.twitterAccount,

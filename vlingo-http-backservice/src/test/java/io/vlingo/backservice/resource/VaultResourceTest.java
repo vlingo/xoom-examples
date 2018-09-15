@@ -44,7 +44,7 @@ public class VaultResourceTest {
   private World world;
 
   @Test
-  public void testThatVaultProducesPrivateToken() {
+  public void testThatVaultProcessesPrivateTokenWithOk() {
     final Request request = Request.from(toByteBuffer(getPrivateTokenMessage));
     final MockCompletesEventuallyResponse completes = new MockCompletesEventuallyResponse();
 
@@ -54,10 +54,6 @@ public class VaultResourceTest {
 
     assertNotNull(completes.response);
     assertEquals(Ok, completes.response.status);
-    assertEquals(1, completes.response.headers.size());
-    assertEquals(ContentLength, completes.response.headerOf(ContentLength).name);
-    assertNotNull(completes.response.entity);
-    assertEquals(completes.response.entity.content.length(), Integer.parseInt(completes.response.headerOf(ContentLength).value));
   }
 
   @Before

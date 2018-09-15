@@ -7,10 +7,12 @@
 
 package io.vlingo.backservice.resource;
 
-import static io.vlingo.http.Response.Status.BadRequest;
 import static io.vlingo.http.Response.Status.Ok;
 
 import io.vlingo.auth.model.crypto.SCryptHasher;
+import io.vlingo.backservice.infra.persistence.EventJournal;
+import io.vlingo.backservice.resource.model.PrivateTokenGernerated;
+import io.vlingo.http.RequestHeader;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.ResourceHandler;
 
@@ -19,12 +21,11 @@ public class VaultResource extends ResourceHandler {
   }
 
   public void generatePrivateToken(final String publicToken) {
+    completes().with(Response.of(Ok));
     final SCryptHasher hasher = new SCryptHasher(16384, 8, 1);
     final String privateToken = hasher.hash(publicToken);
-    if (hasher.verify(publicToken, privateToken)) {
-      completes().with(Response.of(Ok, privateToken));
-    } else {
-      completes().with(Response.of(BadRequest, publicToken));
-    }
+    final String id = context().request().headerValueOr(RequestHeader.XCorrelationID, "");
+System.out.println("GEN TOKEN FOR: " + publicToken + " WITH ID: " + id);
+    EventJournal.provider().instance().append(new PrivateTokenGernerated(id, privateToken));
   }
 }

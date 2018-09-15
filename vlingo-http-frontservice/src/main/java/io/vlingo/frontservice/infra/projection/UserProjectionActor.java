@@ -43,7 +43,7 @@ public class UserProjectionActor extends Actor
 
   @Override
   public void projectWith(final Projectable projectable, final ProjectionControl control) {
-    final User.State state = projectable.object();
+    final User.UserState state = projectable.object();
     final UserData data = UserData.from(state);
     final Confirmer confirmation = () -> control.confirmProjected(projectable.projectionId());
 

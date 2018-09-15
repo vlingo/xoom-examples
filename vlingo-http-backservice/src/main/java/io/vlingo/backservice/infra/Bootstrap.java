@@ -8,6 +8,7 @@
 package io.vlingo.backservice.infra;
 
 import io.vlingo.actors.World;
+import io.vlingo.backservice.infra.persistence.EventJournal;
 import io.vlingo.http.resource.Server;
 
 public class Bootstrap {
@@ -25,6 +26,7 @@ public class Bootstrap {
   private Bootstrap() {
     this.world = World.startWithDefaults("backservice");
     this.server = Server.startWith(world.stage());
+    EventJournal.startWith(this.world.stage());
 
     Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override

@@ -39,10 +39,10 @@ public class User__Proxy implements User {
       actor.deadLetters().failedDelivery(new DeadLetter(actor, attachPrivateToken1));
     }
   }
-  public Completes<State> withContact(Contact arg0) {
+  public Completes<UserState> withContact(Contact arg0) {
     if (!actor.isStopped()) {
       final Consumer<User> consumer = (actor) -> actor.withContact(arg0);
-      final Completes<State> completes = new BasicCompletes<>(actor.scheduler());
+      final Completes<UserState> completes = new BasicCompletes<>(actor.scheduler());
       mailbox.send(new LocalMessage<User>(actor, User.class, consumer, completes, withContactRepresentation2));
       return completes;
     } else {
@@ -50,10 +50,10 @@ public class User__Proxy implements User {
     }
     return null;
   }
-  public Completes<State> withName(Name arg0) {
+  public Completes<UserState> withName(Name arg0) {
     if (!actor.isStopped()) {
       final Consumer<User> consumer = (actor) -> actor.withName(arg0);
-      final Completes<State> completes = new BasicCompletes<>(actor.scheduler());
+      final Completes<UserState> completes = new BasicCompletes<>(actor.scheduler());
       mailbox.send(new LocalMessage<User>(actor, User.class, consumer, completes, withNameRepresentation3));
       return completes;
     } else {

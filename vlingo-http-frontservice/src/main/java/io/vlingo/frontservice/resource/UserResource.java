@@ -47,7 +47,7 @@ public class UserResource extends ResourceHandler {
   public void register(final UserData userData) {
     final Address userAddress = addressFactory.uniquePrefixedWith("u-");
 
-    final User.State userState =
+    final User.UserState userState =
             User.from(
                     userAddress.ids(),
                     Name.from(userData.nameData.given, userData.nameData.family),

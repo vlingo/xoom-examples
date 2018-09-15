@@ -11,11 +11,11 @@ import io.vlingo.actors.Completes;
 import io.vlingo.actors.CompletesEventually;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
-public class UserEntity extends StatefulEntity<User.State,String> implements User {
-  private User.State state;
+public class UserEntity extends StatefulEntity<User.UserState,String> implements User {
+  private User.UserState state;
   private int stateVersion;
 
-  public UserEntity(final User.State state) {
+  public UserEntity(final User.UserState state) {
     this.state = state;
   }
 
@@ -35,13 +35,13 @@ public class UserEntity extends StatefulEntity<User.State,String> implements Use
 
   @Override
   public void attachPrivateToken(final String privateToken) {
-    final User.State transitioned = state.withSecurity(state.security.withPrivateToken(privateToken));
+    final User.UserState transitioned = state.withSecurity(state.security.withPrivateToken(privateToken));
     preserve(transitioned);
   }
 
-  public Completes<User.State> withContact(final Contact contact) {
+  public Completes<User.UserState> withContact(final Contact contact) {
     final CompletesEventually completes = completesEventually();
-    final User.State transitioned = state.withContact(contact);
+    final User.UserState transitioned = state.withContact(contact);
     preserve(transitioned, "User:contact", (state, version) -> {
       state(state, version);
       completes.with(state);
@@ -49,9 +49,9 @@ public class UserEntity extends StatefulEntity<User.State,String> implements Use
     return completes(); // unanswered until preserved
   }
 
-  public Completes<User.State> withName(final Name name) {
+  public Completes<User.UserState> withName(final Name name) {
     final CompletesEventually completes = completesEventually();
-    final User.State transitioned = state.withName(name);
+    final User.UserState transitioned = state.withName(name);
     preserve(transitioned, "User:name", (state, version) -> {
       state(state, version);
       completes.with(state);
@@ -70,14 +70,14 @@ public class UserEntity extends StatefulEntity<User.State,String> implements Use
   }
 
   @Override
-  public void state(final State state, final int stateVersion) {
+  public void state(final UserState state, final int stateVersion) {
     this.state = state;
     this.stateVersion = stateVersion;
   }
 
   @Override
   public Class<?> stateType() {
-    return User.State.class;
+    return User.UserState.class;
   }
 
   @Override
