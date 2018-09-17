@@ -83,7 +83,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
     try {
       client = Client.using(Configuration.defaultedKeepAliveExceptFor(
               stage(),
-              Address.from(Host.of("localhost"), 8082, AddressType.NONE),
+              Address.from(Host.of(System.getProperty("BACKSERVICE_HOST", "back")), 8082, AddressType.NONE),
               new ResponseConsumer() {
                 @Override
                 public void consume(final Response response) {
