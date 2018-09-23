@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-actors-playground</artifactId>
-  <version>0.1.0</version>
+  <version>0.7.0</version>
   <name>vlingo-actors-playground</name>
   <description>Example of vlingo/actors playing ping pong.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -27,7 +27,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.5.9</version>
+      <version>0.7.0</version>
     </dependency>
   </dependencies>
 </project>
