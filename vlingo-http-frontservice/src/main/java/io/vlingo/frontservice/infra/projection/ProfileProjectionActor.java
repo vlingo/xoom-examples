@@ -9,9 +9,9 @@ package io.vlingo.frontservice.infra.projection;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
-import io.vlingo.symbio.projection.Projectable;
-import io.vlingo.symbio.projection.Projection;
-import io.vlingo.symbio.projection.ProjectionControl;
+import io.vlingo.lattice.model.projection.Projectable;
+import io.vlingo.lattice.model.projection.Projection;
+import io.vlingo.lattice.model.projection.ProjectionControl;
 import io.vlingo.symbio.store.state.TextStateStore;
 
 public class ProfileProjectionActor extends Actor implements Projection {
