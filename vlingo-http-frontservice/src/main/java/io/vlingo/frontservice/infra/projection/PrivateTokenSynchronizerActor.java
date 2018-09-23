@@ -23,9 +23,9 @@ import io.vlingo.http.resource.Client;
 import io.vlingo.http.resource.Client.Configuration;
 import io.vlingo.http.resource.ResponseConsumer;
 import io.vlingo.http.resource.sse.MessageEvent;
-import io.vlingo.symbio.projection.Projectable;
-import io.vlingo.symbio.projection.Projection;
-import io.vlingo.symbio.projection.ProjectionControl;
+import io.vlingo.lattice.model.projection.Projectable;
+import io.vlingo.lattice.model.projection.Projection;
+import io.vlingo.lattice.model.projection.ProjectionControl;
 import io.vlingo.wire.node.Address;
 import io.vlingo.wire.node.AddressType;
 import io.vlingo.wire.node.Host;
@@ -83,7 +83,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
     try {
       client = Client.using(Configuration.defaultedKeepAliveExceptFor(
               stage(),
-              Address.from(Host.of(System.getProperty("BACKSERVICE_HOST", "back")), 8082, AddressType.NONE),
+              Address.from(Host.of(System.getProperty("BACKSERVICE_HOST", "localhost")), 8082, AddressType.NONE),
               new ResponseConsumer() {
                 @Override
                 public void consume(final Response response) {
@@ -117,7 +117,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
                   logger().log("EVENT: " + event);
                   final String[] attributes = event.data.split(DataAttributesSeparator);
                   final String identities[] = attributes[Identities].split(IdentitiesSeparator);
-                  final io.vlingo.actors.Address address = addressFactory.findableBy(Integer.parseInt(identities[UserId]));
+                  final io.vlingo.actors.Address address = addressFactory.from(identities[UserId]);
                   stage().actorOf(address, User.class).after(user -> {
                     if (user != null) {
                       user.attachPrivateToken(attributes[Token]);
