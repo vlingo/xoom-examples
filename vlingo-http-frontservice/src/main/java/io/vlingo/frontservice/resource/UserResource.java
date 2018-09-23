@@ -49,7 +49,7 @@ public class UserResource extends ResourceHandler {
 
     final User.UserState userState =
             User.from(
-                    userAddress.ids(),
+                    userAddress.idString(),
                     Name.from(userData.nameData.given, userData.nameData.family),
                     Contact.from(userData.contactData.emailAddress, userData.contactData.telephoneNumber),
                     Security.from(userData.publicSecurityToken));
@@ -60,7 +60,7 @@ public class UserResource extends ResourceHandler {
   }
 
   public void changeContact(final String userId, final ContactData contactData) {
-    stage.actorOf(addressFactory.findableBy(Integer.parseInt(userId)), User.class).after(user -> {
+    stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class).after(user -> {
       if (user == null) {
         completes().with(Response.of(NotFound, userLocation(userId)));
         return;
@@ -73,7 +73,7 @@ public class UserResource extends ResourceHandler {
   }
 
   public void changeName(final String userId, final NameData nameData) {
-    stage.actorOf(addressFactory.findableBy(Integer.parseInt(userId)), User.class).after(user -> {
+    stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class).after(user -> {
       if (user == null) {
         completes().with(Response.of(NotFound, userLocation(userId)));
         return;
