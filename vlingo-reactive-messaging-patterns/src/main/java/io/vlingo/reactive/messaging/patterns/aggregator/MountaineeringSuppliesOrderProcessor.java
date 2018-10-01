@@ -95,7 +95,7 @@ public class MountaineeringSuppliesOrderProcessor extends Actor
   private void dispatchTo(final RequestForQuotation rfq, Iterable<PriceQuoteInterest> recipientList) {
     recipientList.forEach(recipient -> {
       rfq.retailItems.forEach(retailItem -> {
-        System.out.println("OrderProcessor: " + rfq.rfqId + " item: " + retailItem.itemId + " to: " + recipient.id);
+        logger().log("OrderProcessor: " + rfq.rfqId + " item: " + retailItem.itemId + " to: " + recipient.id);
         recipient.priceQuotes.requestPriceQuote(new PriceQuoteRequest(rfq.rfqId, retailItem.itemId, retailItem.retailPrice, rfq.totalRetailPrice), requester);
       });
     });
