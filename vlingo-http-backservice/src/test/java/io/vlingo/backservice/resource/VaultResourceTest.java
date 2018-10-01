@@ -8,7 +8,6 @@
 package io.vlingo.backservice.resource;
 
 import static io.vlingo.http.Response.Status.Ok;
-import static io.vlingo.http.ResponseHeader.ContentLength;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
