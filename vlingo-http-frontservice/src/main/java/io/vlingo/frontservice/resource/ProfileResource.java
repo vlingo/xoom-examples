@@ -39,8 +39,13 @@ public class ProfileResource extends ResourceHandler {
   }
 
   public void define(final String userId, final ProfileData profileData) {
-    stage.actorOf(addressFactory.findableBy(Integer.parseInt(userId)), Profile.class).after(profile -> {
-      if (profile == null) {
+    stage.actorOf(addressFactory.findableBy(Integer.parseInt(userId)), Profile.class)
+      .consumeAfter(profile -> {
+        queries.profileOf(userId).consumeAfter(data -> {
+          completes().with(Response.of(Ok, headers(of(Location, profileLocation(userId))), serialized(data)));
+        });
+      })
+      .otherwise(noProfile -> {
         final Profile.ProfileState profileState =
                 Profile.from(
                         userId,
@@ -49,24 +54,21 @@ public class ProfileResource extends ResourceHandler {
                         profileData.website);
 
         stage().actorFor(Definition.has(ProfileEntity.class, Definition.parameters(profileState)), Profile.class);
-
         completes().with(Response.of(Created, serialized(ProfileData.from(profileState))));
-      } else {
-        queries.profileOf(userId).after(data -> {
-          completes().with(Response.of(Ok, headers(of(Location, profileLocation(userId))), serialized(data)));
-        });
-      }
-    });
+
+        return noProfile;
+      });
   }
 
   public void query(final String userId) {
-    queries.profileOf(userId).after(data -> {
-      if (data.doesNotExist()) {
-        completes().with(Response.of(NotFound, profileLocation(userId)));
-      } else {
+    queries.profileOf(userId)
+      .consumeAfter(data -> {
         completes().with(Response.of(Ok, serialized(data)));
-      }
-    });
+      })
+      .otherwise(noData -> {
+        completes().with(Response.of(NotFound, profileLocation(userId)));
+        return noData;
+      });
   }
 
   private String profileLocation(final String userId) {

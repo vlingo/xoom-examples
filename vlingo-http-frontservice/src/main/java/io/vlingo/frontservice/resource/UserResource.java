@@ -60,44 +60,49 @@ public class UserResource extends ResourceHandler {
   }
 
   public void changeContact(final String userId, final ContactData contactData) {
-    stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class).after(user -> {
-      if (user == null) {
+    stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
+      .consumeAfter(user -> {
+        user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber))
+          .consumeAfter(userState -> {
+            completes().with(Response.of(Ok, serialized(UserData.from(userState))));
+          });
+      })
+      .otherwise(noUser -> {
         completes().with(Response.of(NotFound, userLocation(userId)));
-        return;
-      }
-
-      user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber)).after(userState -> {
-        completes().with(Response.of(Ok, serialized(UserData.from(userState))));
-      });
-    });
+        return noUser;
+        });
   }
 
   public void changeName(final String userId, final NameData nameData) {
-    stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class).after(user -> {
-      if (user == null) {
+    stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
+      .consumeAfter(user -> {
+        user.withName(new Name(nameData.given, nameData.family))
+          .consumeAfter(userState -> {
+            completes().with(Response.of(Ok, serialized(UserData.from(userState))));
+          });
+        })
+      .otherwise(noUser -> {
         completes().with(Response.of(NotFound, userLocation(userId)));
-        return;
-      }
-      user.withName(new Name(nameData.given, nameData.family)).after(userState -> {
-        completes().with(Response.of(Ok, serialized(UserData.from(userState))));
-      });
-    });
+        return noUser;
+        });
   }
 
   public void queryUser(final String userId) {
-    queries.userDataOf(userId).after(data -> {
-      if (data.doesNotExist()) {
-        completes().with(Response.of(NotFound, userLocation(userId)));
-      } else {
+    queries.userDataOf(userId)
+      .consumeAfter(data -> {
         completes().with(Response.of(Ok, serialized(data)));
-      }
-    });
+      })
+    .otherwise(noData -> {
+      completes().with(Response.of(NotFound, userLocation(userId)));
+      return noData;
+      });
   }
 
   public void queryUsers() {
-    queries.usersData().after(data -> {
-      completes().with(Response.of(Ok, serialized(data)));
-    });
+    queries.usersData()
+      .consumeAfter(data -> {
+        completes().with(Response.of(Ok, serialized(data)));
+      });
   }
 
   private String userLocation(final String userId) {
