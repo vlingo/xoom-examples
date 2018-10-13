@@ -11,6 +11,7 @@ import static io.vlingo.http.Method.GET;
 import static io.vlingo.http.RequestHeader.host;
 
 import java.net.URI;
+import java.util.Optional;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.AddressFactory;
@@ -75,9 +76,11 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
 
   private Client client() {
     try {
-      return Client.using(Configuration.defaultedExceptFor(
+        String host = Optional.ofNullable(System.getenv("BACKSERVICE_HOST")).orElse("back");
+        logger().log("Connecting to: " + host);
+        return Client.using(Configuration.defaultedExceptFor(
               stage(),
-              Address.from(Host.of(System.getProperty("BACKSERVICE_HOST", "back")), 8082, AddressType.NONE),
+              Address.from(Host.of(host), 8082, AddressType.NONE),
               new ResponseConsumer() {
                 @Override
                 public void consume(final Response response) {
