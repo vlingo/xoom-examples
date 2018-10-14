@@ -15,6 +15,6 @@ public class ReadinessResource extends ResourceHandler {
     }
 
     void readiness() {
-        completes().with(Response.of(Ok));
+        completes().with(Response.of(Ok, "entity"));
     }
 }
