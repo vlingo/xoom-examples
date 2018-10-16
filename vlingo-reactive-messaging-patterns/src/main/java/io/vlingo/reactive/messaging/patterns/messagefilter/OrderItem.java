@@ -21,6 +21,9 @@ public class OrderItem {
         this.price = price;
     }
 
+    public String orderItemId() {
+        return orderItemId;
+    }
     public Double price() {
         return price;
     }
