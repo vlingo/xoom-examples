@@ -19,8 +19,8 @@ public class NotRestrictedInventorySystemActor extends Actor implements Inventor
     }
 
     @Override
-    public void orderPlaced(final OrderPlaced orderPlaced) {
-        System.out.println("Handling " + orderPlaced.order());
+    public void processOrder(final Order order) {
+        System.out.println("Handling " + order);
         until.happened();
     }
 

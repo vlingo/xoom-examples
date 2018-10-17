@@ -13,8 +13,6 @@ import io.vlingo.actors.testkit.TestUntil;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
@@ -28,7 +26,7 @@ public class MessageFilterTest {
 
         final World world = World.startWithDefaults("message-filter-test");
 
-        final TestUntil until = TestUntil.happenings(1);
+        final TestUntil until = TestUntil.happenings(3);
 
         final InventorySystem restrictedInventorySystemActor =
                 world.actorFor(
@@ -57,9 +55,9 @@ public class MessageFilterTest {
                                 new OrderItem("3", "TypeDEF", "A description", 150d))
                                 .stream().collect(toMap(OrderItem::orderItemId, identity())));
 
-        restrictedInventorySystemActor.orderPlaced(new OrderPlaced(order));
-        notRestrictedInventorySystemActor.orderPlaced(new OrderPlaced(order));
-        inventoryMessageFilter.orderPlaced(new OrderPlaced(order));
+        restrictedInventorySystemActor.processOrder(order);
+        notRestrictedInventorySystemActor.processOrder(order);
+        inventoryMessageFilter.processOrder(order);
 
         until.completes();
 

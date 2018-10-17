@@ -21,11 +21,11 @@ public class InventorySystemMessageFilter extends Actor implements InventorySyst
     }
 
     @Override
-    public void orderPlaced(final OrderPlaced orderPlaced) {
-        if(orderPlaced.isType("TypeABC")) {
-            inventorySystem.orderPlaced(orderPlaced);
+    public void processOrder(final Order order) {
+        if(order.isType("TypeABC")) {
+            inventorySystem.processOrder(order);
         } else {
-            System.out.println("Filtering out " + orderPlaced.order());
+            System.out.println("Filtering out " + order);
             until.happened();
         }
     }

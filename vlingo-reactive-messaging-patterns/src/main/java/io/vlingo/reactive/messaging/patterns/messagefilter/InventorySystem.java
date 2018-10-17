@@ -9,5 +9,5 @@ package io.vlingo.reactive.messaging.patterns.messagefilter;
 
 public interface InventorySystem {
 
-    void orderPlaced(final OrderPlaced orderPlaced);
+    void processOrder(final Order order);
 }
