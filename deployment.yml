@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vlingo-examples
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: vlingo-examples
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: backend
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: kaseoga/vlingo-examples-backservice
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8082
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: backend
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: backservice
+  namespace: vlingo-examples
+spec:
+  selector:
+    app: backend
+  ports:
+  - name: backend-http
+    protocol: TCP
+    port: 8082
+    targetPort: 8082
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: vlingo-examples
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: frontend
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontservice
+        image: kaseoga/vlingo-examples-frontservice
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8081
+        env:
+        - name: BACKSERVICE_HOST
+          value: backservice
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: frontend
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontservice
+  namespace: vlingo-examples
+spec:
+  type: NodePort
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8081
+    name: frontend-http
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontservice-external
+  namespace: vlingo-examples
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+  - port: 80
+    targetPort: 8081
