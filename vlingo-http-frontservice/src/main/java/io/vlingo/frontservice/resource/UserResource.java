@@ -61,9 +61,9 @@ public class UserResource extends ResourceHandler {
 
   public void changeContact(final String userId, final ContactData contactData) {
     stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
-      .consumeAfter(user -> {
+      .andThenConsume(user -> {
         user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber))
-          .consumeAfter(userState -> {
+          .andThenConsume(userState -> {
             completes().with(Response.of(Ok, serialized(UserData.from(userState))));
           });
       })
@@ -75,9 +75,9 @@ public class UserResource extends ResourceHandler {
 
   public void changeName(final String userId, final NameData nameData) {
     stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
-      .consumeAfter(user -> {
+      .andThenConsume(user -> {
         user.withName(new Name(nameData.given, nameData.family))
-          .consumeAfter(userState -> {
+          .andThenConsume(userState -> {
             completes().with(Response.of(Ok, serialized(UserData.from(userState))));
           });
         })
@@ -89,7 +89,7 @@ public class UserResource extends ResourceHandler {
 
   public void queryUser(final String userId) {
     queries.userDataOf(userId)
-      .consumeAfter(data -> {
+      .andThenConsume(data -> {
         completes().with(Response.of(Ok, serialized(data)));
       })
     .otherwise(noData -> {
@@ -100,7 +100,7 @@ public class UserResource extends ResourceHandler {
 
   public void queryUsers() {
     queries.usersData()
-      .consumeAfter(data -> {
+      .andThenConsume(data -> {
         completes().with(Response.of(Ok, serialized(data)));
       });
   }

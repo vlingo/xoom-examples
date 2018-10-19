@@ -67,7 +67,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
               .and(URI.create("/tokens/" + state.security.publicToken))
               .and(host("localhost"))
               .and(RequestHeader.of(RequestHeader.XCorrelationID, correlationId)))
-          .consumeAfter(response -> {
+          .andThenConsume(response -> {
              switch (response.status) {
              case Ok:
                logger().log("RESPONDED FOR TOKEN: " + correlationId);
@@ -109,7 +109,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
               .and(host("localhost"))
               .and(RequestHeader.accept("text/event-stream"))
               .and(RequestHeader.correlationId(getClass().getSimpleName() + "-tokens")))
-            .consumeAfter(response -> {
+            .andThenConsume(response -> {
               switch (response.status) {
               case Ok: {
                 final List<MessageEvent> events = MessageEvent.from(response);
@@ -119,7 +119,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
                   final String identities[] = attributes[Identities].split(IdentitiesSeparator);
                   final io.vlingo.actors.Address address = addressFactory.from(identities[UserId]);
                   stage().actorOf(address, User.class)
-                    .consumeAfter(user -> {
+                    .andThenConsume(user -> {
                       user.attachPrivateToken(attributes[Token]);
                       control.confirmProjected(identities[ProjectionId]);
                       logger().log("USER TOKEN SYNCHRONIZED: " + identities[UserId] + " WITH: " + attributes[Token]);
