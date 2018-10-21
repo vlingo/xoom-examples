@@ -9,7 +9,7 @@ package io.vlingo.frontservice.infra.persistence;
 
 import java.util.Collection;
 
-import io.vlingo.actors.Completes;
+import io.vlingo.common.Completes;
 import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
 

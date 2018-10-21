@@ -29,7 +29,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "OrderItem[orderId=" + orderId + " orderType=" + orderType + " totaling=" + grandTotal +"]";
+        return "OrderItem[orderId=" + orderId + " orderType=" + orderType + " orderItems=" + orderItems + " totaling=" + grandTotal +"]";
     }
 
 }
