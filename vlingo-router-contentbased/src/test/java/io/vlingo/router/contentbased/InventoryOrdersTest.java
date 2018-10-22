@@ -54,7 +54,7 @@ public class InventoryOrdersTest {
         final World world = World.startWithDefaults(WORLD_NAME);
         final TestUntil until = TestUntil.happenings(2);
 
-        final OrderRouter orderRouter = world.actorFor(Definition.has(OrderRouterActor.class, Definition.parameters(world, until)), OrderRouter.class);
+        final OrderRouter orderRouter = world.actorFor(Definition.has(OrderRouterActor.class, Definition.parameters(until)), OrderRouter.class);
         orderRouter.routeOrder(orderPlaced);
         orderRouter.routeOrder(orderPlaced2);
 

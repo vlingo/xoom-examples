@@ -19,7 +19,8 @@ public class OrderRouterActor extends Actor implements OrderRouter {
     private Inventory inventorySystemX;
     private TestUntil testUntil;
 
-    public OrderRouterActor(final World world, final TestUntil testUntil) {
+    public OrderRouterActor(final TestUntil testUntil) {
+        World world = stage ().world ();
         this.testUntil = testUntil;
         inventorySystemA = world.actorFor(Definition.has(InventorySystemA.class, Definition.NoParameters), Inventory.class);
         inventorySystemX = world.actorFor(Definition.has(InventorySystemX.class, Definition.NoParameters), Inventory.class);
