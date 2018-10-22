@@ -5,7 +5,7 @@ package io.vlingo.router.contentbased.order;
  * Stores details for a specific order
  */
 public class OrderItem {
-    private String id;
+    public final String id;
     private String itemType;
     private String description;
     private Double price;
@@ -21,33 +21,18 @@ public class OrderItem {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getItemType() {
         return itemType;
-    }
-
-    public void setItemType(String itemType) {
-        this.itemType = itemType;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
 
     @Override
     public String toString() {
