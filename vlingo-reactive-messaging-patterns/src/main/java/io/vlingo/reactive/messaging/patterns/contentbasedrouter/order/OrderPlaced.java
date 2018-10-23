@@ -1,4 +1,4 @@
-package io.vlingo.router.contentbased.order;
+package io.vlingo.reactive.messaging.patterns.contentbasedrouter.order;
 
 /**
  * @author Chandrabhan Kumhar

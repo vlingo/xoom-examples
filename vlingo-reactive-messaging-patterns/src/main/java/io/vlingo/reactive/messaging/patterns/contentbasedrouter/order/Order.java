@@ -1,4 +1,4 @@
-package io.vlingo.router.contentbased.order;
+package io.vlingo.reactive.messaging.patterns.contentbasedrouter.order;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ public class Order {
         this.id = id;
         this.type = type;
         this.orderItems = orderItemList;
-        this.grandTotal = orderItemList.entrySet().stream().mapToDouble(value -> value.getValue().getPrice()).sum();
+        this.grandTotal = orderItemList.entrySet ().stream ().mapToDouble ( value -> value.getValue ().getPrice () ).sum ();
     }
 
     public String getId() {
@@ -38,6 +38,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return "{" + String.join(", ", this.id, this.type, this.grandTotal.toString(), orderItems.values().toString()) + "}";
+        return "{" + String.join ( ", ", this.id, this.type, this.grandTotal.toString (), orderItems.values ().toString () ) + "}";
     }
 }

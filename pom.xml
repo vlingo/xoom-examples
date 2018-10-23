@@ -28,7 +28,6 @@
     <module>vlingo-http-backservice</module>
     <module>vlingo-http-frontservice</module>
     <module>vlingo-reactive-messaging-patterns</module>
-    <module>vlingo-router-contentbased</module>
   </modules>
 
 </project>

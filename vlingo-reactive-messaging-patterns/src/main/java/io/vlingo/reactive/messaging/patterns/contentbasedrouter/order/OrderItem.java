@@ -1,4 +1,4 @@
-package io.vlingo.router.contentbased.order;
+package io.vlingo.reactive.messaging.patterns.contentbasedrouter.order;
 
 /**
  * @author Chandrabhan Kumhar
@@ -36,7 +36,7 @@ public class OrderItem {
 
     @Override
     public String toString() {
-        return "[" + String.join(", ", this.id, this.itemType, this.description, this.price.toString()) + "]" ;
+        return "[" + String.join ( ", ", this.id, this.itemType, this.description, this.price.toString () ) + "]";
     }
 
 }
