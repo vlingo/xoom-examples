@@ -1,10 +1,10 @@
-package io.vlingo.router.contentbased.actor;
+package io.vlingo.reactive.messaging.patterns.contentbasedrouter.actor;
 
-import io.vlingo.router.contentbased.order.OrderPlaced;
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.reactive.messaging.patterns.contentbasedrouter.order.OrderPlaced;
 
 /**
  * @author Chandrabhan Kumhar
@@ -22,8 +22,8 @@ public class OrderRouterActor extends Actor implements OrderRouter {
     public OrderRouterActor(final TestUntil testUntil) {
         World world = stage ().world ();
         this.testUntil = testUntil;
-        inventorySystemA = world.actorFor(Definition.has(InventorySystemA.class, Definition.NoParameters), Inventory.class);
-        inventorySystemX = world.actorFor(Definition.has(InventorySystemX.class, Definition.NoParameters), Inventory.class);
+        inventorySystemA = world.actorFor ( Definition.has ( InventorySystemA.class, Definition.NoParameters ), Inventory.class );
+        inventorySystemX = world.actorFor ( Definition.has ( InventorySystemX.class, Definition.NoParameters ), Inventory.class );
     }
 
     /**
@@ -34,19 +34,19 @@ public class OrderRouterActor extends Actor implements OrderRouter {
     @Override
     public void routeOrder(final OrderPlaced orderPlaced) {
 
-        if (orderPlaced.getOrder().getType().contains(TYPE_ABC)) {
-            inventorySystemA.handleOrder(orderPlaced.getOrder());
-        } else if (orderPlaced.getOrder().getType().contains(TYPE_XYZ)) {
-            inventorySystemX.handleOrder(orderPlaced.getOrder());
+        if (orderPlaced.getOrder ().getType ().contains ( TYPE_ABC )) {
+            inventorySystemA.handleOrder ( orderPlaced.getOrder () );
+        } else if (orderPlaced.getOrder ().getType ().contains ( TYPE_XYZ )) {
+            inventorySystemX.handleOrder ( orderPlaced.getOrder () );
         } else {
-            logger().log("OrderRouter: received unexpected message");
+            logger ().log ( "OrderRouter: received unexpected message" );
         }
-        this.testUntil.happened();
+        this.testUntil.happened ();
     }
 
     @Override
     protected void afterStop() {
-        this.testUntil.happened();
-        super.afterStop();
+        this.testUntil.happened ();
+        super.afterStop ();
     }
 }

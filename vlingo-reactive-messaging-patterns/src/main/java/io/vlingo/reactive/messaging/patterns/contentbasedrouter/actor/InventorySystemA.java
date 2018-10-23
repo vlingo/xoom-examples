@@ -1,7 +1,7 @@
-package io.vlingo.router.contentbased.actor;
+package io.vlingo.reactive.messaging.patterns.contentbasedrouter.actor;
 
-import io.vlingo.router.contentbased.order.Order;
 import io.vlingo.actors.Actor;
+import io.vlingo.reactive.messaging.patterns.contentbasedrouter.order.Order;
 
 /**
  * @author Chandrabhan Kumhar
@@ -11,7 +11,7 @@ public class InventorySystemA extends Actor implements Inventory {
 
     @Override
     public void handleOrder(Order orderPlaced) {
-        logger().log("Handling : " + orderPlaced);
+        logger ().log ( "Handling : " + orderPlaced );
     }
 
 }
