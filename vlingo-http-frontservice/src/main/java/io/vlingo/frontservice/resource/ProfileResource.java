@@ -40,8 +40,8 @@ public class ProfileResource extends ResourceHandler {
 
   public void define(final String userId, final ProfileData profileData) {
     stage.actorOf(addressFactory.findableBy(Integer.parseInt(userId)), Profile.class)
-      .consumeAfter(profile -> {
-        queries.profileOf(userId).consumeAfter(data -> {
+      .andThenConsume(profile -> {
+        queries.profileOf(userId).andThenConsume(data -> {
           completes().with(Response.of(Ok, headers(of(Location, profileLocation(userId))), serialized(data)));
         });
       })
@@ -62,7 +62,7 @@ public class ProfileResource extends ResourceHandler {
 
   public void query(final String userId) {
     queries.profileOf(userId)
-      .consumeAfter(data -> {
+      .andThenConsume(data -> {
         completes().with(Response.of(Ok, serialized(data)));
       })
       .otherwise(noData -> {

@@ -9,7 +9,7 @@ package io.vlingo.frontservice.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import io.vlingo.actors.Completes;
+import io.vlingo.common.Completes;
 
 public interface User {
   void attachPrivateToken(final String privateToken);
