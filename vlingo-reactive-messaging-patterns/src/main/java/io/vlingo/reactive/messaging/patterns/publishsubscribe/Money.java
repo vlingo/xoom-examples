@@ -16,4 +16,8 @@ public class Money {
     public Money(final String amount) {
         this.amount = new BigDecimal(amount).setScale(4, BigDecimal.ROUND_HALF_UP);
     }
+
+    public String toString() {
+        return amount.toPlainString();
+    }
 }
