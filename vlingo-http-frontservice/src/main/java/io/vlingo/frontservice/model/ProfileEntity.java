@@ -7,7 +7,7 @@
 
 package io.vlingo.frontservice.model;
 
-import io.vlingo.actors.Completes;
+import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
 public class ProfileEntity extends StatefulEntity<Profile.ProfileState,String> implements Profile {

@@ -7,7 +7,7 @@
 
 package io.vlingo.reactive.messaging.patterns.requestreply;
 
-import io.vlingo.actors.Completes;
+import io.vlingo.common.Completes;
 
 public interface Service {
   void requestFor(final String what, final Consumer consumer);

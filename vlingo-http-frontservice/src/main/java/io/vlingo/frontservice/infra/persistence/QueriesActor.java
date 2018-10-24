@@ -11,8 +11,8 @@ import java.util.Collection;
 import java.util.function.BiConsumer;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.Completes;
 import io.vlingo.actors.CompletesEventually;
+import io.vlingo.common.Completes;
 import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.symbio.State;
