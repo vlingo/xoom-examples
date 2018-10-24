@@ -23,11 +23,7 @@ public class PriceQuoted {
         return market;
     }
 
-    public String ticker() {
-        return ticker;
-    }
-
-    public Money money() {
-        return money;
+    public String toString() {
+        return "PriceQuoted[market="+ market +" ticker= " + ticker + " money= " + money +"]";
     }
 }

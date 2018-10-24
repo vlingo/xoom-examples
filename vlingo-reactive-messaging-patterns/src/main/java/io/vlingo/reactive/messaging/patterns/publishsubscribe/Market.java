@@ -33,4 +33,8 @@ public class Market {
 
         return true;
     }
+
+    public String toString() {
+        return name;
+    }
 }
