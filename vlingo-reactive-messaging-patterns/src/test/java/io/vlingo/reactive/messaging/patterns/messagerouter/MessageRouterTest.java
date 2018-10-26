@@ -13,8 +13,8 @@ import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
 /**
- * MessageRouterTest serves as simple driver for @l{@link AlternatingRouter} @ {@link Actor} delegation
- * of workload to a pool of {@link RoutableMessage} processors based on simple alternating strategy.  The
+ * MessageRouterTest serves as simple driver for @l{@link AlternatingRouteProcessor} {@link Actor} delegation
+ * of workload to a pool of {@link Processor} processors based on simple alternating strategy.  The
  * route-able message pattern can take on evermore sophisticated strategies extrapolated from this example.
  *
  * @author brsg.io
@@ -25,32 +25,35 @@ public class MessageRouterTest
     public static final String WORLD_NAME = "alternating-message-router";
 
     @Test
-    public void testAlternatingRouterRuns()
+    public void testAlternatingRouteProcessorRuns()
     throws Exception
     {
-        System.out.println( "AlternatingRouter: is starting"  );
         
         final World world = World.startWithDefaults( WORLD_NAME );
         
+        world.defaultLogger().log( "AlternatingRouteProcessor: is starting"  );
+        
         final TestUntil until = TestUntil.happenings( 20 );
         
-        final RoutableMessage messageProcessor1 = world.actorFor( Definition.has( Processor.class, Definition.parameters( "MP One" ) ), RoutableMessage.class );
-        final RoutableMessage messageProcessor2 = world.actorFor( Definition.has( Processor.class, Definition.parameters( "MP Two" )), RoutableMessage.class );
-        final RoutableMessage alternatingRouter = world.actorFor( Definition.has( AlternatingRouter.class, Definition.parameters( until, messageProcessor1, messageProcessor2 )), RoutableMessage.class );
+        final Processor messageProcessor1 = world.actorFor( Definition.has( WorkerProcessor.class, Definition.parameters( "MP One" ) ), Processor.class );
+        final Processor messageProcessor2 = world.actorFor( Definition.has( WorkerProcessor.class, Definition.parameters( "MP Two" )), Processor.class );
+        final Processor alternatingRouter = world.actorFor( Definition.has( AlternatingRouteProcessor.class, Definition.parameters( until, messageProcessor1, messageProcessor2 )), Processor.class );
         
         int i = 1;
         while ( until.remaining() > 0 )
         {
-            alternatingRouter.route();
-            System.out.println( String.format( "Count: %d", i ));
+            alternatingRouter.process();
+            world.defaultLogger().log( String.format( "Count: %d", i ));
             i++;
-            Thread.sleep( 1 );
+//            Thread.sleep( 1 );
         }
         
         until.completes();
+        
+        world.defaultLogger().log( "AlternatingRouteProcessor: is completed"  );
+        
         world.terminate();
         
-        System.out.println( "AlternatingRouter: is completed"  );
     }
 
 }

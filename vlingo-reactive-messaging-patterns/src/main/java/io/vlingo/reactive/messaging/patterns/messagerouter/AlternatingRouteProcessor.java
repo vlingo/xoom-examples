@@ -10,42 +10,42 @@ import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
 
 /**
- * AlternatingRouter {@link Actor} that delegates workload to {@link RoutableMessage} {@link Actor} based
+ * AlternatingRouteProcessor {@link Actor} that delegates workload to {@link Processor} {@link Actor} based
  * on simple alternating algorithm.  This could be used to extrapolate to round-robin and other
  * more sophisticated delegation strategies.
  *
  * @author brsg.io
  * @since Oct 25, 2018
  */
-public class AlternatingRouter 
+public class AlternatingRouteProcessor 
 extends Actor 
-implements RoutableMessage
+implements Processor
 {
     private TestUntil testUntil;
-    private final RoutableMessage processor1;
-    private final RoutableMessage processor2;
+    private final Processor processor1;
+    private final Processor processor2;
     private int alternate = 1;
     
-    public AlternatingRouter( TestUntil testUntil, RoutableMessage processor1, RoutableMessage processor2 )
+    public AlternatingRouteProcessor( TestUntil testUntil, Processor processor1, Processor processor2 )
     {
         this.testUntil = testUntil;
         this.processor1 = processor1;
         this.processor2 = processor2;
     }
 
-    /* @see io.vlingo.reactive.messaging.patterns.messagerouter.RoutableMessage#route() */
+    /* @see io.vlingo.reactive.messaging.patterns.messagerouter.Processor#route() */
     @Override
-    public void route()
+    public void process()
     {
         if ( alternate == 1 )
         {
             alternate = 2;
-            processor1.route();
+            processor1.process();
         }
         else 
         {
             alternate = 1;
-            processor2.route();
+            processor2.process();
         }
         
         testUntil = testUntil.happened();
