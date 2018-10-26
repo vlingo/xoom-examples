@@ -1,0 +1,21 @@
+// Copyright © 2012-2018 Vaughn Vernon. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+package io.vlingo.reactive.messaging.patterns.messagerouter;
+
+import io.vlingo.actors.Stoppable;
+
+/**
+ * RoutableMessage interface declaring no-parameter method for routing a message.
+ *
+ * @author brsg.io
+ * @since Oct 25, 2018
+ */
+public interface RoutableMessage
+extends Stoppable
+{
+    void route();
+}
