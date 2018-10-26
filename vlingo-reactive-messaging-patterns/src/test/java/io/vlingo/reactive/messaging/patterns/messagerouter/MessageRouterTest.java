@@ -8,6 +8,7 @@ package io.vlingo.reactive.messaging.patterns.messagerouter;
 
 import org.junit.Test;
 
+import io.vlingo.actors.Actor;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
@@ -23,6 +24,7 @@ import io.vlingo.actors.testkit.TestUntil;
 public class MessageRouterTest
 {
     public static final String WORLD_NAME = "alternating-message-router";
+    public static final int ROUTES = 20;
 
     @Test
     public void testAlternatingRouteProcessorRuns()
@@ -33,19 +35,30 @@ public class MessageRouterTest
         
         world.defaultLogger().log( "AlternatingRouteProcessor: is starting"  );
         
-        final TestUntil until = TestUntil.happenings( 20 );
+        final TestUntil until = TestUntil.happenings( ROUTES );
         
         final Processor messageProcessor1 = world.actorFor( Definition.has( WorkerProcessor.class, Definition.parameters( "MP One" ) ), Processor.class );
         final Processor messageProcessor2 = world.actorFor( Definition.has( WorkerProcessor.class, Definition.parameters( "MP Two" )), Processor.class );
         final Processor alternatingRouter = world.actorFor( Definition.has( AlternatingRouteProcessor.class, Definition.parameters( until, messageProcessor1, messageProcessor2 )), Processor.class );
         
-        int i = 1;
-        while ( until.remaining() > 0 )
+        int routeCount = 0;
+        int j = 0;
+        while ( true )
         {
-            alternatingRouter.process();
-            world.defaultLogger().log( String.format( "Count: %d", i ));
-            i++;
-//            Thread.sleep( 1 );
+            int remaining = until.remaining();
+            if ( routeCount < ROUTES )
+            {
+                alternatingRouter.process( routeCount );
+                routeCount++;
+            }
+            
+            if ( j != remaining )
+            {
+                world.defaultLogger().log( String.format( "Count: %d", remaining ));
+                j = remaining;
+            }
+            
+            if ( remaining == 0 ) break;
         }
         
         until.completes();

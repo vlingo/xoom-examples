@@ -21,10 +21,12 @@ public class AlternatingRouteProcessor
 extends Actor 
 implements Processor
 {
+    public static final int EXPECTED_DIFFERENCE = 1;
     private TestUntil testUntil;
     private final Processor processor1;
     private final Processor processor2;
     private int alternate = 1;
+    private int localCount = 0;
     
     public AlternatingRouteProcessor( TestUntil testUntil, Processor processor1, Processor processor2 )
     {
@@ -35,20 +37,51 @@ implements Processor
 
     /* @see io.vlingo.reactive.messaging.patterns.messagerouter.Processor#route() */
     @Override
-    public void process()
+    public void process( Integer count )
     {
+        validateProcess( count );
+        
         if ( alternate == 1 )
         {
             alternate = 2;
-            processor1.process();
+            processor1.process( count );
         }
         else 
         {
             alternate = 1;
-            processor2.process();
+            processor2.process( count );
         }
         
-        testUntil = testUntil.happened();
+        testUntil.happened();
     }
 
+    protected void validateProcess(Integer count)
+    {
+        if ( localCount != 0 ) 
+        {
+            validateCount(count);
+        }
+
+        localCount = count;
+    }
+
+    protected void validateCount(Integer count)
+    {
+        int difference = count - localCount;
+        if ( difference != EXPECTED_DIFFERENCE )
+        {
+            throw new IllegalStateException( 
+                String.format( 
+                    "Expected sequential, alternating count incrementing by %d but was %d for %s", 
+                    EXPECTED_DIFFERENCE, difference, toString() 
+                )
+            );
+        }
+        else
+        {
+            logger().log( 
+                String.format( "As expected %d::%d::%d::%s", localCount, count, difference, toString() ) 
+            );
+        }
+    }
 }

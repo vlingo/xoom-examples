@@ -17,5 +17,5 @@ import io.vlingo.actors.Stoppable;
 public interface Processor
 extends Stoppable
 {
-    void process();
+    void process( Integer count );
 }

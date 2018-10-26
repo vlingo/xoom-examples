@@ -19,7 +19,9 @@ public class WorkerProcessor
 extends Actor
 implements Processor
 {
+    public static final int EXPECTED_DIFFERENCE = 2;
     private final String name;
+    private int localCount = 0;
     
     public WorkerProcessor( String name )
     {
@@ -28,9 +30,39 @@ implements Processor
 
     /* @see io.vlingo.reactive.messaging.patterns.messagerouter.Processor#route() */
     @Override
-    public void process()
+    public void process( Integer count )
     {
-        logger().log( String.format( "%s::route", toString() )); 
+        validateProcess(count);
+    }
+
+    protected void validateProcess(Integer count)
+    {
+        if ( localCount != 0 ) 
+        {
+            validateCount(count);
+        }
+        
+        localCount = count;
+    }
+
+    protected void validateCount(Integer count)
+    {
+        int difference = count - localCount;
+        if ( difference != EXPECTED_DIFFERENCE )
+        {
+            throw new IllegalStateException( 
+                String.format( 
+                    "Expected sequential, alternating count incrementing by %d but was %d for %s", 
+                    EXPECTED_DIFFERENCE, difference, toString() 
+                )
+            );
+        }
+        else
+        {
+            logger().log( 
+                String.format( "As expected %d::%d::%d::%s", localCount, count, difference, toString() ) 
+            );
+        }
     }
 
     /**
