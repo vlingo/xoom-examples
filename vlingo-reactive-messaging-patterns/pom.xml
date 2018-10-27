@@ -27,7 +27,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.7.3</version>
+      <version>0.7.2</version>
     </dependency>
     <dependency>
       <groupId>com.google.collections</groupId>

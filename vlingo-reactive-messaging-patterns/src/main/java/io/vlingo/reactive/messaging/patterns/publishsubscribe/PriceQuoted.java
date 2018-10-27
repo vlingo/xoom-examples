@@ -7,7 +7,10 @@
 
 package io.vlingo.reactive.messaging.patterns.publishsubscribe;
 
-public class PriceQuoted {
+import io.vlingo.actors.pubsub.Publication;
+import io.vlingo.actors.pubsub.Topic;
+
+public class PriceQuoted implements Publication {
 
     private final Market market;
     private final String ticker;
@@ -19,7 +22,8 @@ public class PriceQuoted {
         this.money = money;
     }
 
-    public Market market() {
+    @Override
+    public Topic topic() {
         return market;
     }
 

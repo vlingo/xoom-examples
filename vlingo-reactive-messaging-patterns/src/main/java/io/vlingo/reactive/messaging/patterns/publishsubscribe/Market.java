@@ -7,34 +7,16 @@
 
 package io.vlingo.reactive.messaging.patterns.publishsubscribe;
 
-public class Market {
+import io.vlingo.actors.pubsub.Topic;
 
-    private final String name;
+public class Market extends Topic {
 
     public Market(final String name) {
-        this.name = name;
+        super(name);
     }
 
-    public String name() {
-        return name;
-    }
-
-    public boolean equals(final Object other) {
-
-        if(other == null || !other.getClass().equals(getClass())) {
-            return false;
-        }
-
-        final Market otherMarket = (Market) other;
-
-        if(!otherMarket.name().equals(this.name)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public String toString() {
-        return name;
+    @Override
+    public boolean isSubTopic(final Topic topic) {
+        return topic.name().startsWith(super.name());
     }
 }

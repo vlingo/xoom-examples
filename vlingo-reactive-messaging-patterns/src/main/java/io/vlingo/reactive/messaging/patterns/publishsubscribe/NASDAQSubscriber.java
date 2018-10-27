@@ -8,9 +8,10 @@
 package io.vlingo.reactive.messaging.patterns.publishsubscribe;
 
 import io.vlingo.actors.Actor;
+import io.vlingo.actors.pubsub.Subscriber;
 import io.vlingo.actors.testkit.TestUntil;
 
-public class NASDAQSubscriber extends Actor implements QuotationProcessor {
+public class NASDAQSubscriber extends Actor implements Subscriber<PriceQuoted> {
 
     private final TestUntil until;
 
@@ -19,8 +20,8 @@ public class NASDAQSubscriber extends Actor implements QuotationProcessor {
     }
 
     @Override
-    public void process(final PriceQuoted priceQuoted) {
-        System.out.println("NASDAQSubscriber received " + priceQuoted);
+    public void receive(final PriceQuoted priceQuoted) {
+        logger().log("NASDAQSubscriber received " + priceQuoted);
         until.happened();
     }
 }
