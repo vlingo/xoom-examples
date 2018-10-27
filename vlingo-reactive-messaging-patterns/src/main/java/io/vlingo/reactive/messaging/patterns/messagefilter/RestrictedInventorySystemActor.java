@@ -21,10 +21,10 @@ public class RestrictedInventorySystemActor extends Actor implements InventorySy
     @Override
     public void processOrder(final Order order) {
         if(order.isType("TypeABC")) {
-            System.out.println("Handling " + order);
+            logger().log("Handling " + order);
             until.happened();
         } else {
-            System.out.println("Filtering out " + order);
+            logger().log("Filtering out " + order);
             until.happened();
         }
     }
