@@ -20,7 +20,7 @@ public class NotRestrictedInventorySystemActor extends Actor implements Inventor
 
     @Override
     public void processOrder(final Order order) {
-        System.out.println("Handling " + order);
+        logger().log("Handling " + order);
         until.happened();
     }
 
