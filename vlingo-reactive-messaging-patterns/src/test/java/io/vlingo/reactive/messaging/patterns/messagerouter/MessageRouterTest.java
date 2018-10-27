@@ -14,7 +14,7 @@ import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
 /**
- * MessageRouterTest serves as simple driver for @l{@link AlternatingRouteProcessor} {@link Actor} delegation
+ * MessageRouterTest serves as simple driver for {@link AlternatingRouteProcessor} {@link Actor} delegation
  * of workload to a pool of {@link Processor} processors based on simple alternating strategy.  The
  * route-able message pattern can take on evermore sophisticated strategies extrapolated from this example.
  *
