@@ -51,10 +51,10 @@ public class PublishSubscribeTest {
         publisher.subscribe(new Market("quotes/NASDAQ"), nasdaqSubscriber);
         publisher.subscribe(new Market("quotes/NYSE"), nyseSubscriber);
 
-        publisher.publish(new PriceQuoted(new Market("quotes/NYSE"), "ORCL", new Money("121.13")));
-        publisher.publish(new PriceQuoted(new Market("quotes/NASDAQ"), "ORCL", new Money("1099.76")));
-        publisher.publish(new PriceQuoted(new Market("quotes/DAX"), "ORCL", new Money("885.00")));
-        publisher.publish(new PriceQuoted(new Market("quotes/NKY"), "ORCL", new Money("131.12")));
+        publisher.publish(new Market("quotes/NYSE"), new PriceQuoted("ORCL", new Money("121.13")));
+        publisher.publish(new Market("quotes/NASDAQ"), new PriceQuoted( "MSFT", new Money("1099.76")));
+        publisher.publish(new Market("quotes/DAX"), new PriceQuoted("SAP:GR", new Money("885.00")));
+        publisher.publish(new Market("quotes/NKY"), new PriceQuoted("6701:JP", new Money("131.12")));
 
         until.happened();
     }
