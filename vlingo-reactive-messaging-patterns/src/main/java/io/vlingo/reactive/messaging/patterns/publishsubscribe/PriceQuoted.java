@@ -28,6 +28,6 @@ public class PriceQuoted implements Publication {
     }
 
     public String toString() {
-        return "PriceQuoted[market="+ market +" ticker= " + ticker + " money= " + money +"]";
+        return "PriceQuoted[market="+ market +" ticker=" + ticker + " money=" + money +"]";
     }
 }
