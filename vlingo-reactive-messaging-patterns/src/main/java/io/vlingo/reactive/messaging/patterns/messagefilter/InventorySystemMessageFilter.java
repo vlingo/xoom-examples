@@ -25,7 +25,7 @@ public class InventorySystemMessageFilter extends Actor implements InventorySyst
         if(order.isType("TypeABC")) {
             inventorySystem.processOrder(order);
         } else {
-            System.out.println("Filtering out " + order);
+            logger().log("Filtering out " + order);
             until.happened();
         }
     }

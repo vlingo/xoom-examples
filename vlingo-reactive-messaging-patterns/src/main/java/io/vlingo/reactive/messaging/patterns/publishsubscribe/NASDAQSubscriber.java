@@ -5,23 +5,23 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.reactive.messaging.patterns.messagefilter;
+package io.vlingo.reactive.messaging.patterns.publishsubscribe;
 
 import io.vlingo.actors.Actor;
+import io.vlingo.actors.pubsub.Subscriber;
 import io.vlingo.actors.testkit.TestUntil;
 
-public class NotRestrictedInventorySystemActor extends Actor implements InventorySystem {
+public class NASDAQSubscriber extends Actor implements Subscriber<PriceQuoted> {
 
     private final TestUntil until;
 
-    public NotRestrictedInventorySystemActor(final TestUntil until) {
+    public NASDAQSubscriber(final TestUntil until) {
         this.until = until;
     }
 
     @Override
-    public void processOrder(final Order order) {
-        logger().log("Handling " + order);
+    public void receive(final PriceQuoted priceQuoted) {
+        logger().log("NASDAQSubscriber received " + priceQuoted);
         until.happened();
     }
-
 }
