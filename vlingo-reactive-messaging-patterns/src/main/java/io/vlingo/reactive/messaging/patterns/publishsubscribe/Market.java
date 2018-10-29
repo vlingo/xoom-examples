@@ -19,4 +19,9 @@ public class Market extends Topic {
     public boolean isSubTopic(final Topic topic) {
         return topic.name().startsWith(super.name());
     }
+
+    @Override
+    public String toString() {
+        return super.name();
+    }
 }
