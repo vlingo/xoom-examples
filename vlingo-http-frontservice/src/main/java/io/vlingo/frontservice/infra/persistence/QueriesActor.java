@@ -16,8 +16,8 @@ import io.vlingo.common.Completes;
 import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.symbio.State;
+import io.vlingo.symbio.store.Result;
 import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
-import io.vlingo.symbio.store.state.StateStore.Result;
 import io.vlingo.symbio.store.state.TextStateStore;
 
 public class QueriesActor extends Actor implements Queries, ReadResultInterest<String> {
