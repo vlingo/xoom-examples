@@ -40,9 +40,9 @@ public class PointToPointChannelTest
     @Test
     public void testPointToPointChannelRuns()
     {
-        System.out.println( "PointToPointChannel: is starting" );
-        
         final World world = World.startWithDefaults( WORLD_NAME );
+        
+        world.defaultLogger().log( "PointToPointChannel: is starting" );
         
         final TestUntil until = TestUntil.happenings( NUMBER_MESSAGES );
         
@@ -54,9 +54,11 @@ public class PointToPointChannelTest
         peerNodeActor.process( MSG_ID_4 );
         
         until.completes();
+        
+        world.defaultLogger().log( "PointToPointChannel: is completed" );
+        
         world.terminate();
         
-        System.out.println( "PointToPointChannel: is completed" );
     }
 
 }
