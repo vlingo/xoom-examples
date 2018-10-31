@@ -7,22 +7,6 @@
 
 package io.vlingo.frontservice.resource;
 
-import static io.vlingo.common.serialization.JsonSerialization.deserialized;
-import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Status.Created;
-import static io.vlingo.http.ResponseHeader.Location;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.frontservice.data.ContactData;
@@ -32,13 +16,23 @@ import io.vlingo.frontservice.infra.Bootstrap;
 import io.vlingo.http.Context;
 import io.vlingo.http.Request;
 import io.vlingo.http.resource.Action;
-import io.vlingo.http.resource.ConfigurationResource;
 import io.vlingo.http.resource.Dispatcher;
-import io.vlingo.http.resource.Resource;
-import io.vlingo.http.resource.ResourceHandler;
 import io.vlingo.http.resource.Resources;
 import io.vlingo.wire.message.ByteBufferAllocator;
 import io.vlingo.wire.message.Converters;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.List;
+
+import static io.vlingo.common.serialization.JsonSerialization.deserialized;
+import static io.vlingo.common.serialization.JsonSerialization.serialized;
+import static io.vlingo.http.Response.Status.Created;
+import static io.vlingo.http.ResponseHeader.Location;
+import static org.junit.Assert.*;
 
 public class UserTest {
   private static final UserData janeDoeUserData =
@@ -95,12 +89,8 @@ public class UserTest {
     actionGetUser = new Action(1, "GET", "/users/{userId}", "queryUser(String userId)", null, true);
     final List<Action> actions = Arrays.asList(actionPostUser, actionGetUser);
 
-    final Class<? extends ResourceHandler> resourceHandlerClass =
-            (Class<? extends ResourceHandler>) Class.forName("io.vlingo.frontservice.resource.UserResource");
-
-    final Resource<?> resource = ConfigurationResource.defining("user", resourceHandlerClass, 5, actions);
-
-    dispatcher = Dispatcher.startWith(world.stage(), Resources.are(resource));
+    final UserResource userResource = new UserResource(world);
+    dispatcher = Dispatcher.startWith(world.stage(), Resources.are(userResource.routes()));
   }
 
   @After
