@@ -50,14 +50,14 @@ public class UserResource {
   }
 
   public Completes<Response> changeContact(final String userId, final ContactData contactData) {
-    return stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
+    return stage.actorOf(addressFactory.from(userId), User.class)
       .andThenInto(user -> user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber)))
       .andThenInto(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
       .otherwise(noUser -> Response.of(NotFound, userLocation(userId)));
   }
 
   public Completes<Response> changeName(final String userId, final NameData nameData) {
-    return stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
+    return stage.actorOf(addressFactory.from(userId), User.class)
       .andThenInto(user -> user.withName(new Name(nameData.given, nameData.family)))
       .andThenInto(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
       .otherwise(noUser -> Response.of(NotFound, userLocation(userId)));
