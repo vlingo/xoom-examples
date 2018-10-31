@@ -39,7 +39,7 @@ implements PointToPointProcessor
     @Override
     public void process( Integer messageId )
     {
-        System.out.println( String.format( "peerMessage %d received", messageId ));
+        logger().log( String.format( "peerMessage %d received", messageId ));
         if ( messageId < lastOrderedMessageId ) throw new IllegalStateException( "Message id out of order" );
         lastOrderedMessageId = messageId;
         testUntil.happened();
