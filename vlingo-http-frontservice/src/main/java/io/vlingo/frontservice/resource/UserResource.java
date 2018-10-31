@@ -7,33 +7,23 @@
 
 package io.vlingo.frontservice.resource;
 
-import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Status.Created;
-import static io.vlingo.http.Response.Status.NotFound;
-import static io.vlingo.http.Response.Status.Ok;
-import static io.vlingo.http.ResponseHeader.Location;
-import static io.vlingo.http.ResponseHeader.headers;
-import static io.vlingo.http.ResponseHeader.of;
-
-import io.vlingo.actors.Address;
-import io.vlingo.actors.AddressFactory;
-import io.vlingo.actors.Definition;
-import io.vlingo.actors.Stage;
-import io.vlingo.actors.World;
+import io.vlingo.actors.*;
+import io.vlingo.common.Completes;
 import io.vlingo.frontservice.data.ContactData;
 import io.vlingo.frontservice.data.NameData;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.frontservice.infra.persistence.Queries;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
-import io.vlingo.frontservice.model.Contact;
-import io.vlingo.frontservice.model.Name;
-import io.vlingo.frontservice.model.Security;
-import io.vlingo.frontservice.model.User;
-import io.vlingo.frontservice.model.UserEntity;
+import io.vlingo.frontservice.model.*;
 import io.vlingo.http.Response;
-import io.vlingo.http.resource.ResourceHandler;
+import io.vlingo.http.resource.Resource;
 
-public class UserResource extends ResourceHandler {
+import static io.vlingo.common.serialization.JsonSerialization.serialized;
+import static io.vlingo.http.Response.Status.*;
+import static io.vlingo.http.ResponseHeader.*;
+import static io.vlingo.http.resource.ResourceBuilder.*;
+
+public class UserResource {
   private final AddressFactory addressFactory;
   private final Queries queries;
   private final Stage stage;
@@ -44,68 +34,67 @@ public class UserResource extends ResourceHandler {
     this.queries = QueryModelStoreProvider.instance().queries;
   }
 
-  public void register(final UserData userData) {
+  public Completes<Response> register(final UserData userData) {
     final Address userAddress = addressFactory.uniquePrefixedWith("u-");
 
     final User.UserState userState =
-            User.from(
-                    userAddress.idString(),
-                    Name.from(userData.nameData.given, userData.nameData.family),
-                    Contact.from(userData.contactData.emailAddress, userData.contactData.telephoneNumber),
-                    Security.from(userData.publicSecurityToken));
+      User.from(
+        userAddress.idString(),
+        Name.from(userData.nameData.given, userData.nameData.family),
+        Contact.from(userData.contactData.emailAddress, userData.contactData.telephoneNumber),
+        Security.from(userData.publicSecurityToken));
 
     stage.actorFor(Definition.has(UserEntity.class, Definition.parameters(userState)), User.class, userAddress);
 
-    completes().with(Response.of(Created, headers(of(Location, userLocation(userState.id))), serialized(UserData.from(userState))));
+    return Completes.withSuccess(Response.of(Created, headers(of(Location, userLocation(userState.id))), serialized(UserData.from(userState))));
   }
 
-  public void changeContact(final String userId, final ContactData contactData) {
-    stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
-      .andThenConsume(user -> {
-        user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber))
-          .andThenConsume(userState -> {
-            completes().with(Response.of(Ok, serialized(UserData.from(userState))));
-          });
-      })
-      .otherwise(noUser -> {
-        completes().with(Response.of(NotFound, userLocation(userId)));
-        return noUser;
-        });
+  public Completes<Response> changeContact(final String userId, final ContactData contactData) {
+    return stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
+      .andThenInto(user -> user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber)))
+      .andThenInto(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
+      .otherwise(noUser -> Response.of(NotFound, userLocation(userId)));
   }
 
-  public void changeName(final String userId, final NameData nameData) {
-    stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
-      .andThenConsume(user -> {
-        user.withName(new Name(nameData.given, nameData.family))
-          .andThenConsume(userState -> {
-            completes().with(Response.of(Ok, serialized(UserData.from(userState))));
-          });
-        })
-      .otherwise(noUser -> {
-        completes().with(Response.of(NotFound, userLocation(userId)));
-        return noUser;
-        });
+  public Completes<Response> changeName(final String userId, final NameData nameData) {
+    return stage.actorOf(addressFactory.findableBy(addressFactory.from(userId)), User.class)
+      .andThenInto(user -> user.withName(new Name(nameData.given, nameData.family)))
+      .andThenInto(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
+      .otherwise(noUser -> Response.of(NotFound, userLocation(userId)));
   }
 
-  public void queryUser(final String userId) {
-    queries.userDataOf(userId)
-      .andThenConsume(data -> {
-        completes().with(Response.of(Ok, serialized(data)));
-      })
-    .otherwise(noData -> {
-      completes().with(Response.of(NotFound, userLocation(userId)));
-      return noData;
-      });
+  public Completes<Response> queryUser(final String userId) {
+    return queries.userDataOf(userId)
+      .andThenInto(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+      .otherwise(noData -> Response.of(NotFound, userLocation(userId)));
   }
 
-  public void queryUsers() {
-    queries.usersData()
-      .andThenConsume(data -> {
-        completes().with(Response.of(Ok, serialized(data)));
-      });
+  public Completes<Response> queryUsers() {
+    return queries.usersData()
+      .andThenInto(data -> Completes.withSuccess(Response.of(Ok, serialized(data))));
   }
 
   private String userLocation(final String userId) {
     return "/users/" + userId;
+  }
+
+  public Resource routes() {
+    return resource("user resource fluent api",
+      post("/users")
+        .body(UserData.class)
+        .handle(this::register),
+      patch("/users/{userId}/contact")
+        .param(String.class)
+        .body(ContactData.class)
+        .handle(this::changeContact),
+      patch("/users/{userId}/name")
+        .param(String.class)
+        .body(NameData.class)
+        .handle(this::changeName),
+      get("/users/{userId}")
+        .param(String.class)
+        .handle(this::queryUser),
+      get("/users")
+        .handle(this::queryUsers));
   }
 }
