@@ -1,4 +1,4 @@
-package io.vlingo.eventjournal.query;
+package io.vlingo.eventjournal.counter;
 
 import io.vlingo.common.Completes;
 

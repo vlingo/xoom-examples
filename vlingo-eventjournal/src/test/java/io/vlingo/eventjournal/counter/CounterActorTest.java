@@ -2,7 +2,6 @@ package io.vlingo.eventjournal.counter;
 
 import io.vlingo.actors.Definition;
 import io.vlingo.eventjournal.ActorTest;
-import io.vlingo.eventjournal.counter.events.CounterIncreasedEvent;
 import io.vlingo.symbio.Event;
 import io.vlingo.symbio.store.eventjournal.EventJournal;
 import org.junit.Before;
@@ -17,8 +16,6 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 public class CounterActorTest extends ActorTest {
-    private static final int TIMEOUT = 1000;
-
     private EventJournal journal;
     private String streamName;
     private Counter counter;

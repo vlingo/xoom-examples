@@ -1,4 +1,4 @@
-package io.vlingo.eventjournal;
+package io.vlingo.eventjournal.interest;
 
 import io.vlingo.symbio.Event;
 import io.vlingo.symbio.State;
