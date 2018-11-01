@@ -3,11 +3,7 @@ package io.vlingo.eventjournal.counter;
 import io.vlingo.actors.Actor;
 import io.vlingo.eventjournal.counter.events.CounterDecreasedEvent;
 import io.vlingo.eventjournal.counter.events.CounterIncreasedEvent;
-import io.vlingo.symbio.Event;
-import io.vlingo.symbio.State;
 import io.vlingo.symbio.store.eventjournal.EventJournal;
-
-import java.util.UUID;
 
 public class CounterActor extends Actor implements Counter {
     private final String counterName;

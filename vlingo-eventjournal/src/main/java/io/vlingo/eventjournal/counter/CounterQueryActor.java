@@ -1,4 +1,4 @@
-package io.vlingo.eventjournal.query;
+package io.vlingo.eventjournal.counter;
 
 import com.google.gson.Gson;
 import io.vlingo.actors.Actor;
@@ -21,7 +21,7 @@ public class CounterQueryActor extends Actor implements CounterQuery {
         this.streamReader = streamReader;
         this.gson = new Gson();
         this.currentCount = Optional.empty();
-        this.cancellable = scheduler().schedule(this::updateCounter, null, 0, 25);
+        this.cancellable = scheduler().schedule(this::updateCounter, null, 0, 10);
     }
 
     @Override
@@ -38,5 +38,10 @@ public class CounterQueryActor extends Actor implements CounterQuery {
                         currentCount = Optional.of(gson.fromJson(event.eventData, CounterDecreasedEvent.class).currentCounter);
                     }
                 });
+    }
+
+    @Override
+    public void stop() {
+        cancellable.cancel();
     }
 }

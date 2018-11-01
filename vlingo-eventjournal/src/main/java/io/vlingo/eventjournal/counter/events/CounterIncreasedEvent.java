@@ -3,7 +3,6 @@ package io.vlingo.eventjournal.counter.events;
 import com.google.gson.Gson;
 import io.vlingo.symbio.Event;
 import io.vlingo.symbio.Metadata;
-import io.vlingo.symbio.State;
 
 import java.util.UUID;
 

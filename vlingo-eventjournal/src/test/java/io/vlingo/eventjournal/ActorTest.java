@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 
 public abstract class ActorTest {
+    protected static final int TIMEOUT = 1000;
     private World world;
 
     @Before
