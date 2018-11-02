@@ -41,12 +41,12 @@ public class MessageBusTest
         
         final TradingProcessor tradingBus = world.actorFor( Definition.has( TradingBus.class, Definition.parameters( until )), TradingProcessor.class );
         
+        @SuppressWarnings("unused")
         final TradingProcessor stockTrader = world.actorFor( Definition.has( StockTrader.class, Definition.parameters( until, tradingBus )), TradingProcessor.class );
-        assertNotNull( stockTrader );
+        @SuppressWarnings("unused")
         final TradingProcessor portfolioManager = world.actorFor( Definition.has( PortfolioManager.class, Definition.parameters( until, tradingBus )), TradingProcessor.class );
-        assertNotNull( portfolioManager );
+        @SuppressWarnings("unused")
         final TradingProcessor marketAnalysisTool = world.actorFor( Definition.has(  MarketAnalysisTools.class, Definition.parameters( until, tradingBus )), TradingProcessor.class );
-        assertNotNull( marketAnalysisTool );
         
         tradingBus.executeBuyOrder( "p123", "MSFT", 100, 31.85 );
         tradingBus.executeSellOrder( "p456", "MSFT", 200, 31.80 );
