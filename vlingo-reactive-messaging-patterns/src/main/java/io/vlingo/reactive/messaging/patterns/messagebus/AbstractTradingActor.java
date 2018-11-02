@@ -27,24 +27,20 @@ implements TradingProcessor
     public AbstractTradingActor( TestUntil until )
     {
         this.until = until;
-        initialize();
     }
     
     public AbstractTradingActor( TestUntil until, TradingProcessor tradingBus )
     {
         this.until = until;
         this.tradingBus = tradingBus;
-        initialize();
     }
     
-    abstract void initialize();
-
     /**
      * Returns the value of {@link #until}
      *
      * @return the value of {@link #until}
      */
-    public TestUntil getUntil()
+    public TestUntil until()
     {
         return until;
     }
@@ -54,7 +50,7 @@ implements TradingProcessor
      *
      * @return the value of {@link #tradingBus}
      */
-    public TradingProcessor getTradingBus()
+    public TradingProcessor tradingBus()
     {
         return tradingBus;
     }
@@ -64,7 +60,7 @@ implements TradingProcessor
      *
      * @return the value of {@link #applicationId}
      */
-    public String getApplicationId()
+    public String applicationId()
     {
         return applicationId;
     }

@@ -25,7 +25,6 @@ import io.vlingo.reactive.messaging.patterns.messagebus.exception.InvalidNotific
  */
 public class TradingBus 
 extends AbstractTradingActor
-//implements TradingBusProcessor
 {
     private final Map<String, Vector<CommandHandler>> commandHandlers = new HashMap<>();
     private final Map<String, Vector<NotificationInterest>> notificationInterests = new HashMap<>();
@@ -33,13 +32,6 @@ extends AbstractTradingActor
     public TradingBus( TestUntil until )
     {
         super( until );
-    }
-    
-    /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#initialize() */
-    @Override
-    void initialize()
-    {
-        logger().log( "TradingBus initialize nothing to do" );
     }
     
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#executeBuyOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
@@ -50,11 +42,10 @@ extends AbstractTradingActor
         Vector<CommandHandler> commandHandlerVector = commandHandlers.get( TradingProcessor.EXECUTE_BUY_ORDER );
         for ( CommandHandler commandHandler : commandHandlerVector )
         {
-            TradingProcessor tp = commandHandler.getTradingProcessor();
-            tp.executeBuyOrder( portfolioId, symbol, quantity, price );
+            commandHandler.tradingProcessor.executeBuyOrder( portfolioId, symbol, quantity, price );
         }
         
-        getUntil().happened();
+        until().happened();
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#buyOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
@@ -65,11 +56,10 @@ extends AbstractTradingActor
         Vector<NotificationInterest> notificationInterestVector = notificationInterests.get( TradingProcessor.BUY_ORDER_EXECUTED );
         for ( NotificationInterest notificationInterest : notificationInterestVector )
         {
-            TradingProcessor tp = notificationInterest.getTradingProcessor();
-            tp.buyOrderExecuted( portfolioId, symbol, quantity, price );
+            notificationInterest.tradingProcessor.buyOrderExecuted( portfolioId, symbol, quantity, price );
         }
         
-        getUntil().happened();
+        until().happened();
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#executeSellOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
@@ -80,11 +70,10 @@ extends AbstractTradingActor
         Vector<CommandHandler> commandHandlerVector = commandHandlers.get( TradingProcessor.EXECUTE_SELL_ORDER );
         for ( CommandHandler commandHandler : commandHandlerVector )
         {
-            TradingProcessor tp = commandHandler.getTradingProcessor();
-            tp.executeSellOrder( portfolioId, symbol, quantity, price );
+            commandHandler.tradingProcessor.executeSellOrder( portfolioId, symbol, quantity, price );
         }
         
-        getUntil().happened();
+        until().happened();
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#sellOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
@@ -95,11 +84,10 @@ extends AbstractTradingActor
         Vector<NotificationInterest> notificationInterestVector = notificationInterests.get( TradingProcessor.SELL_ORDER_EXECUTED );
         for ( NotificationInterest notificationInterest : notificationInterestVector )
         {
-            TradingProcessor tp = notificationInterest.getTradingProcessor();
-            tp.sellOrderExecuted( portfolioId, symbol, quantity, price );
+            notificationInterest.tradingProcessor.sellOrderExecuted( portfolioId, symbol, quantity, price );
         }
         
-        getUntil().happened();
+        until().happened();
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#registerCommandHandler(java.lang.String, java.lang.String, io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor) */
@@ -117,12 +105,9 @@ extends AbstractTradingActor
             commandHandlers.put( commandId, commandHandlerVector );
         }
         
-        if ( ! commandHandlerVector.contains( commandHandler ))
-        {
-            commandHandlerVector.add( commandHandler );
-        }
+        commandHandlerVector.add( commandHandler );
         
-        getUntil().happened();
+        until().happened();
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#registerNotificationInterest(java.lang.String, java.lang.String, io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor) */
@@ -140,12 +125,9 @@ extends AbstractTradingActor
             notificationInterests.put( notificationId, notificationInterestVector );
         }
         
-        if ( ! notificationInterestVector.contains( notificationInterest ))
-        {
-            notificationInterestVector.add( notificationInterest );
-        }
+        notificationInterestVector.add( notificationInterest );
         
-        getUntil().happened();
+        until().happened();
     }
 
     // TESTING

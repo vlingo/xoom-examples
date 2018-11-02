@@ -22,12 +22,13 @@ extends AbstractTradingActor
         super( until, tradingBus );
     }
 
-    /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#initialize() */
+    /* @see io.vlingo.actors.Actor#beforeStart() */
     @Override
-    void initialize()
+    protected void beforeStart()
     {
-        getTradingBus().registerCommandHandler( getApplicationId(), TradingProcessor.EXECUTE_BUY_ORDER, this );
-        getTradingBus().registerCommandHandler( getApplicationId(), TradingProcessor.EXECUTE_SELL_ORDER, this );
+        super.beforeStart();
+        tradingBus().registerCommandHandler( applicationId(), TradingProcessor.EXECUTE_BUY_ORDER, this );
+        tradingBus().registerCommandHandler( applicationId(), TradingProcessor.EXECUTE_SELL_ORDER, this );
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#executeBuyOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
@@ -35,9 +36,9 @@ extends AbstractTradingActor
     public void executeBuyOrder(String portfolioId, String symbol, Integer quantity, Double price)
     {
         logger().log( String.format( "%s::executeBuyOrder( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
-        getTradingBus().buyOrderExecuted( portfolioId, symbol, quantity, price );
+        tradingBus().buyOrderExecuted( portfolioId, symbol, quantity, price );
         
-        getUntil().happened();
+        until().happened();
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#executeSellOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
@@ -45,9 +46,9 @@ extends AbstractTradingActor
     public void executeSellOrder(String portfolioId, String symbol, Integer quantity, Double price)
     {
         logger().log( String.format( "%s::executeSellOrder( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
-        getTradingBus().sellOrderExecuted( portfolioId, symbol, quantity, price );
+        tradingBus().sellOrderExecuted( portfolioId, symbol, quantity, price );
         
-        getUntil().happened();
+        until().happened();
     }
 
 }
