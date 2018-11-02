@@ -26,28 +26,45 @@ implements TradingProcessor
         this.tradingProcessor = tradingProcessor;
     }
 
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#executeBuyOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
     @Override
     public void executeBuyOrder( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        // not a notification, consider warning log message this method is unexpectedly called.
+        // unimplemented
     }
 
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#executeSellOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
     @Override
     public void executeSellOrder( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        // not a notification, consider warning log message this method is unexpectedly called.
+        // unimplemented
     }
 
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#buyOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
     @Override
     public void buyOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        tradingProcessor.buyOrderExecuted( portfolioId, symbol, quantity, price );
+        if ( isInterestedInBuyOrderExecuted() )
+            tradingProcessor.buyOrderExecuted( portfolioId, symbol, quantity, price );
     }
 
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#sellOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
     @Override
     public void sellOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        tradingProcessor.sellOrderExecuted( portfolioId, symbol, quantity, price );
+        if ( isInterestedInSellOrderExecuted() )
+            tradingProcessor.sellOrderExecuted( portfolioId, symbol, quantity, price );
+    }
+
+    // TESTING
+    public boolean isInterestedInBuyOrderExecuted()
+    {
+        return TradingProcessor.BUY_ORDER_EXECUTED.equals( notificationId );
+    }
+
+    public boolean isInterestedInSellOrderExecuted()
+    {
+        return TradingProcessor.SELL_ORDER_EXECUTED.equals( notificationId );
     }
     
 }

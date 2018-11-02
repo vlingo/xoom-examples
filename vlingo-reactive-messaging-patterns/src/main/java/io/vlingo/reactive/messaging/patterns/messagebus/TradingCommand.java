@@ -7,7 +7,7 @@
 package io.vlingo.reactive.messaging.patterns.messagebus;
 
 /**
- * TradingCommand
+ * TradingCommand message that carries parameters related to a particular trade.
  *
  * @author brsg.io
  * @since Nov 2, 2018

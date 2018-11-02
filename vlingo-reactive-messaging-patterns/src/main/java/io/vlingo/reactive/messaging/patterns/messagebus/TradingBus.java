@@ -63,13 +63,11 @@ implements TradingBusProcessor
 
     protected void unwrapCommandAndForward( TradingCommand command, CommandHandler handler )
     {
-        if ( command.commandId.equals( TradingProcessor.EXECUTE_BUY_ORDER ) 
-            && handler.commandId.equals( TradingProcessor.EXECUTE_BUY_ORDER ))
+        if ( command.commandId.equals( TradingProcessor.EXECUTE_BUY_ORDER ))
         {
             handler.executeBuyOrder( command.portfolioId, command.symbol, command.quantity, command.price );
         }
-        else if ( command.commandId.equals( TradingProcessor.EXECUTE_SELL_ORDER )
-            && handler.commandId.equals( TradingProcessor.EXECUTE_SELL_ORDER ))
+        else if ( command.commandId.equals( TradingProcessor.EXECUTE_SELL_ORDER ))
         {
             handler.executeSellOrder( command.portfolioId, command.symbol, command.quantity, command.price );
         }
@@ -92,13 +90,11 @@ implements TradingBusProcessor
 
     protected void unwrapNotificationAndForward( TradingNotification notification, NotificationInterest notifier )
     {
-        if ( notification.notificationId.equals( TradingProcessor.BUY_ORDER_EXECUTED )
-            && notifier.notificationId.equals( TradingProcessor.BUY_ORDER_EXECUTED ))
+        if ( notification.notificationId.equals( TradingProcessor.BUY_ORDER_EXECUTED ))
         {
             notifier.buyOrderExecuted( notification.portfolioId, notification.symbol, notification.quantity, notification.price );
         }
-        else if ( notification.notificationId.equals( TradingProcessor.SELL_ORDER_EXECUTED )
-            && notifier.notificationId.equals( TradingProcessor.SELL_ORDER_EXECUTED ))
+        else if ( notification.notificationId.equals( TradingProcessor.SELL_ORDER_EXECUTED ))
         {
             notifier.sellOrderExecuted( notification.portfolioId, notification.symbol, notification.quantity, notification.price );
         }
@@ -108,6 +104,7 @@ implements TradingBusProcessor
         }
     }
 
+    // REGISTERING
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingBusProcessor#registerCommandHandler(java.lang.String, java.lang.String, io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor) */
     @Override
     public void registerHandler( RegisterCommandHandler register )

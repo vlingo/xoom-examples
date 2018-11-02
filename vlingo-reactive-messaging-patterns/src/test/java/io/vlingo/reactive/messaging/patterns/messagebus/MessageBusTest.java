@@ -6,19 +6,18 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.messagebus;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
+import io.vlingo.actors.Actor;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
 /**
- * MessageBusTest demonstrates the {@link TradingBus} actor providing a listener service that allows three
+ * MessageBusTest demonstrates the {@link TradingBus} actor providing a registration service that allows three
  * {@link Actor} classes, {@link StockTrader}, {@link PortfolioManager}, and {@link MarketAnalysisTools}, 
  * to represent disparate systems that have an interest in a subset of the messages received by the 
- * TradingBus, which happily forwards the relevant messages asynchronously to these actors for their own 
+ * TradingBus, that in turn forwards the relevant messages asynchronously to these actors for their own 
  * individual processing.
  *
  * @author brsg.io

@@ -10,7 +10,8 @@ import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
 
 /**
- * PortfolioManager
+ * PortfolioManager {@link Actor} registers interest in specific notifications and waits to receive 
+ * notifications of this type to perform work related to the notification.
  *
  * @author brsg.io
  * @since Oct 31, 2018

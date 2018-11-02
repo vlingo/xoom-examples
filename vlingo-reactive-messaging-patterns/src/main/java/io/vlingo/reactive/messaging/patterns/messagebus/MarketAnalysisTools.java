@@ -10,7 +10,8 @@ import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
 
 /**
- * MarketAnalysisTools
+ * MarketAnalysisTools {@link Actor} registers interest in specific notifications related to analysis
+ * and provides the behavior to be executed when these notifications arrive.
  *
  * @author brsg.io
  * @since Oct 31, 2018
@@ -46,6 +47,7 @@ implements TradingProcessor
         /*
          * perform buy order executed analysis work here
          */
+        
         until.happened();
     }
 
@@ -58,6 +60,7 @@ implements TradingProcessor
         /*
          * perform sell order executed analysis work here
          */
+        
         until.happened();
     }
 
@@ -65,13 +68,13 @@ implements TradingProcessor
     @Override
     public void executeBuyOrder( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        logger().log( "Unsupported method" );
+        logger().log( "Unsupported method executeBuyOrder" );
     }
 
     @Override
     public void executeSellOrder( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        logger().log( "Unsupported method" );
+        logger().log( "Unsupported method executeSellOrder" );
     }
 
 }
