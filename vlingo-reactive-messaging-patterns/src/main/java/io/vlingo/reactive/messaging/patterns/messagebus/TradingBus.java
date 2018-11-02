@@ -27,8 +27,8 @@ extends Actor
 implements TradingBusProcessor
 {
     public final TestUntil until;
-    private final Map<String, Vector<TradingProcessor>> commandHandlers = new HashMap<>();
-    private final Map<String, Vector<TradingProcessor>> notificationInterests = new HashMap<>();
+    private final Map<String, Vector<CommandHandler>> commandHandlers = new HashMap<>();
+    private final Map<String, Vector<NotificationInterest>> notificationInterests = new HashMap<>();
     
     public TradingBus( TestUntil until )
     {
@@ -52,8 +52,8 @@ implements TradingBusProcessor
 
     protected void dispatchCommand( TradingCommand command )
     {
-        Vector<TradingProcessor> commandHandlerVector = commandHandlers.get( command.commandId );
-        for ( TradingProcessor handler : commandHandlerVector )
+        Vector<CommandHandler> commandHandlerVector = commandHandlers.get( command.commandId );
+        for ( CommandHandler handler : commandHandlerVector )
         {
             unwrapCommandAndForward( command, handler );
             
@@ -61,13 +61,15 @@ implements TradingBusProcessor
         }
     }
 
-    protected void unwrapCommandAndForward( TradingCommand command, TradingProcessor handler )
+    protected void unwrapCommandAndForward( TradingCommand command, CommandHandler handler )
     {
-        if ( command.commandId.equals( TradingProcessor.EXECUTE_BUY_ORDER ))
+        if ( command.commandId.equals( TradingProcessor.EXECUTE_BUY_ORDER ) 
+            && handler.commandId.equals( TradingProcessor.EXECUTE_BUY_ORDER ))
         {
             handler.executeBuyOrder( command.portfolioId, command.symbol, command.quantity, command.price );
         }
-        else if ( command.commandId.equals( TradingProcessor.EXECUTE_SELL_ORDER ))
+        else if ( command.commandId.equals( TradingProcessor.EXECUTE_SELL_ORDER )
+            && handler.commandId.equals( TradingProcessor.EXECUTE_SELL_ORDER ))
         {
             handler.executeSellOrder( command.portfolioId, command.symbol, command.quantity, command.price );
         }
@@ -79,22 +81,24 @@ implements TradingBusProcessor
 
     protected void dispatchNotification( TradingNotification notification )
     {
-        Vector<TradingProcessor> notificationInterestsVector = notificationInterests.get( notification.notificationId );
-        for ( TradingProcessor notifier : notificationInterestsVector )
+        Vector<NotificationInterest> notificationInterestsVector = notificationInterests.get( notification.notificationId );
+        for ( NotificationInterest notifier : notificationInterestsVector )
         {
-            unwrapNotificationAndForward(notification, notifier);
+            unwrapNotificationAndForward( notification, notifier );
             
             until.happened();
         }
     }
 
-    protected void unwrapNotificationAndForward( TradingNotification notification, TradingProcessor notifier )
+    protected void unwrapNotificationAndForward( TradingNotification notification, NotificationInterest notifier )
     {
-        if ( notification.notificationId.equals( TradingProcessor.BUY_ORDER_EXECUTED ))
+        if ( notification.notificationId.equals( TradingProcessor.BUY_ORDER_EXECUTED )
+            && notifier.notificationId.equals( TradingProcessor.BUY_ORDER_EXECUTED ))
         {
             notifier.buyOrderExecuted( notification.portfolioId, notification.symbol, notification.quantity, notification.price );
         }
-        else if ( notification.notificationId.equals( TradingProcessor.SELL_ORDER_EXECUTED ))
+        else if ( notification.notificationId.equals( TradingProcessor.SELL_ORDER_EXECUTED )
+            && notifier.notificationId.equals( TradingProcessor.SELL_ORDER_EXECUTED ))
         {
             notifier.sellOrderExecuted( notification.portfolioId, notification.symbol, notification.quantity, notification.price );
         }
@@ -111,7 +115,7 @@ implements TradingBusProcessor
         
         logger().log( String.format( "%s::registerCommandHandler( %s, %s, %s )", getClass().getSimpleName(), register.applicationId, register.commandId, register.handler.getClass().getSimpleName() ));
         CommandHandler commandHandler = new CommandHandler( register.commandId, register.applicationId, register.handler );
-        Vector<TradingProcessor> commandHandlerVector = commandHandlers.get( register.commandId );
+        Vector<CommandHandler> commandHandlerVector = commandHandlers.get( register.commandId );
         if ( Objects.isNull( commandHandlerVector ))
         {
             commandHandlerVector = new Vector<>();
@@ -130,7 +134,7 @@ implements TradingBusProcessor
         
         logger().log( String.format( "%s::registerNotificationInterest( %s, %s, %s )", getClass().getSimpleName(), register.applicationId, register.notificationId, register.getClass().getSimpleName() ));
         NotificationInterest notificationInterest = new NotificationInterest( register.notificationId, register.applicationId, register.interested );
-        Vector<TradingProcessor> notificationInterestVector = notificationInterests.get( register.notificationId );
+        Vector<NotificationInterest> notificationInterestVector = notificationInterests.get( register.notificationId );
         if ( Objects.isNull( notificationInterestVector ))
         {
             notificationInterestVector = new Vector<>();
