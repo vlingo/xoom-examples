@@ -7,7 +7,7 @@
 package io.vlingo.reactive.messaging.patterns.messagebus;
 
 /**
- * TradingNotification
+ * TradingNotification message that carries parameters related to a specific notification.
  *
  * @author brsg.io
  * @since Nov 2, 2018

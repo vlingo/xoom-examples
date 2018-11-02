@@ -10,7 +10,9 @@ import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
 
 /**
- * StockTrader
+ * StockTrader {@link ACtor} registers interest in buy and sell commands; performs the work the work related to
+ * a buy or sell execution method invocation; and then publishes a notification that the specific 
+ * buy or sell order was executed.
  *
  * @author brsg.io
  * @since Oct 31, 2018
@@ -42,8 +44,12 @@ implements TradingProcessor
     public void executeBuyOrder( String portfolioId, String symbol, Integer quantity, Double price )
     {
         logger().log( String.format( "%s::executeBuyOrder( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
-        TradingNotification notification = new TradingNotification( TradingProcessor.BUY_ORDER_EXECUTED, portfolioId, symbol, quantity, price );
-        tradingBus.notify( notification );
+
+        /*
+         * execute buy order work to be performed here
+         */
+        
+        tradingBus.notify( new TradingNotification( TradingProcessor.BUY_ORDER_EXECUTED, portfolioId, symbol, quantity, price ));
         
         until.happened();
     }
@@ -53,8 +59,12 @@ implements TradingProcessor
     public void executeSellOrder( String portfolioId, String symbol, Integer quantity, Double price )
     {
         logger().log( String.format( "%s::executeSellOrder( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
-        TradingNotification notification = new TradingNotification( TradingProcessor.SELL_ORDER_EXECUTED, portfolioId, symbol, quantity, price );
-        tradingBus.notify( notification );
+        
+        /*
+         * execute sell order work to be performed here
+         */
+        
+        tradingBus.notify( new TradingNotification( TradingProcessor.SELL_ORDER_EXECUTED, portfolioId, symbol, quantity, price ));
         
         until.happened();
     }
@@ -63,14 +73,14 @@ implements TradingProcessor
     @Override
     public void buyOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        logger().log( "Unsupported method" );
+        logger().log( "Unsupported method buyOrderExecuted" );
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#sellOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
     @Override
     public void sellOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        logger().log( "Unsupported method" );
+        logger().log( "Unsupported method sellOrderExecuted" );
     }
 
 }

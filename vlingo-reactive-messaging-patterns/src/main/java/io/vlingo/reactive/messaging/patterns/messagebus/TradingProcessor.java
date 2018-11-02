@@ -7,9 +7,8 @@
 package io.vlingo.reactive.messaging.patterns.messagebus;
 
 /**
- * TradingProcessor is a representation of a Canonical Message Model that brings together disparate systems
- * by representing methods that span all three systems, in this case covering trades as commands,
- * management and analysis as notifications, and the bus' configuration through registration.
+ * TradingProcessor defines methods that brings together disparate systems
+ * in this case covering trades as commands, management and analysis as notifications
  *
  * @author brsg.io
  * @since Oct 31, 2018
