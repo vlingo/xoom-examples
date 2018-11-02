@@ -58,9 +58,11 @@ public class Bootstrap {
                 counter.increase();
             }
 
-            counterQuery.counter().andThenConsume(System.out::println);
             pause();
+            counterQuery.counter().andThenConsume(System.out::println);
         }
+
+        world.terminate();
     }
 
     static void pause() {

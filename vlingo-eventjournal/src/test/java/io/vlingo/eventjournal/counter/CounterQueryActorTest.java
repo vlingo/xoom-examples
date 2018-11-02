@@ -2,8 +2,10 @@ package io.vlingo.eventjournal.counter;
 
 import io.vlingo.actors.Definition;
 import io.vlingo.eventjournal.ActorTest;
-import io.vlingo.eventjournal.counter.events.CounterDecreasedEvent;
-import io.vlingo.eventjournal.counter.events.CounterIncreasedEvent;
+import io.vlingo.eventjournal.counter.events.CounterDecreased;
+import io.vlingo.eventjournal.counter.events.CounterDecreasedAdapter;
+import io.vlingo.eventjournal.counter.events.CounterIncreased;
+import io.vlingo.eventjournal.counter.events.CounterIncreasedAdapter;
 import io.vlingo.symbio.Event;
 import io.vlingo.symbio.store.eventjournal.EventJournalReader;
 import org.junit.Before;
@@ -17,15 +19,20 @@ public class CounterQueryActorTest extends ActorTest {
     private static final int CURRENT_COUNTER = 5;
     private CounterQuery query;
     private EventJournalReader journalReader;
+    private CounterIncreasedAdapter counterIncreasedAdapter;
+    private CounterDecreasedAdapter counterDecreasedAdapter;
 
     @Before
     public void setUp() throws Exception {
+        counterIncreasedAdapter = new CounterIncreasedAdapter();
+        counterDecreasedAdapter = new CounterDecreasedAdapter();
+
         journalReader = mock(EventJournalReader.class);
     }
 
     @Test
     public void testThatUpdatesTheCounterFromIncreaseEventFromStream() {
-        buildWithEvent(new CounterIncreasedEvent(CURRENT_COUNTER).toTextEvent());
+        buildWithEvent(counterIncreasedAdapter.serialize(new CounterIncreased(CURRENT_COUNTER)));
         verify(journalReader, timeout(TIMEOUT).atLeastOnce()).readNext();
 
         int counter = query.counter().await();
@@ -34,7 +41,7 @@ public class CounterQueryActorTest extends ActorTest {
 
     @Test
     public void testThatUpdatesTheCounterFromDecreaseEventFromStream() {
-        buildWithEvent(new CounterDecreasedEvent(CURRENT_COUNTER).toTextEvent());
+        buildWithEvent(counterDecreasedAdapter.serialize(new CounterDecreased(CURRENT_COUNTER)));
         verify(journalReader, timeout(TIMEOUT).atLeastOnce()).readNext();
 
         int counter = query.counter().await();
