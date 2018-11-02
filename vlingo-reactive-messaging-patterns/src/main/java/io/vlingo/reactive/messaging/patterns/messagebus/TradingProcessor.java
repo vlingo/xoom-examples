@@ -31,7 +31,4 @@ public interface TradingProcessor
     void buyOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price );
     void sellOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price );
     
-    // REGISTRATION
-    void registerCommandHandler( String applicationId, String commandId, TradingProcessor handler );
-    void registerNotificationInterest( String applicationId, String notificationId, TradingProcessor interested );
 }

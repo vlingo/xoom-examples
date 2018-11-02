@@ -11,9 +11,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Vector;
 
+import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
-import io.vlingo.reactive.messaging.patterns.messagebus.exception.InvalidCommandIdException;
-import io.vlingo.reactive.messaging.patterns.messagebus.exception.InvalidNotificationIdException;
 
 /**
  * TradingBus is the nexus between the {@link StockTrader}, {@link PortfolioManager}, and 
@@ -24,135 +23,123 @@ import io.vlingo.reactive.messaging.patterns.messagebus.exception.InvalidNotific
  * @since Oct 31, 2018
  */
 public class TradingBus 
-extends AbstractTradingActor
+extends Actor
+implements TradingBusProcessor
 {
-    private final Map<String, Vector<CommandHandler>> commandHandlers = new HashMap<>();
-    private final Map<String, Vector<NotificationInterest>> notificationInterests = new HashMap<>();
+    public final TestUntil until;
+    private final Map<String, Vector<TradingProcessor>> commandHandlers = new HashMap<>();
+    private final Map<String, Vector<TradingProcessor>> notificationInterests = new HashMap<>();
     
     public TradingBus( TestUntil until )
     {
-        super( until );
+        this.until = until;
     }
     
-    /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#executeBuyOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
+    // ACTTION
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingBusProcessor#trade(io.vlingo.reactive.messaging.patterns.messagebus.TradingCommand) */
     @Override
-    public void executeBuyOrder( String portfolioId, String symbol, Integer quantity, Double price )
+    public void trade( TradingCommand command )
     {
-        logger().log( String.format( "%s::executeBuyOrder( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
-        Vector<CommandHandler> commandHandlerVector = commandHandlers.get( TradingProcessor.EXECUTE_BUY_ORDER );
-        for ( CommandHandler commandHandler : commandHandlerVector )
-        {
-            commandHandler.tradingProcessor.executeBuyOrder( portfolioId, symbol, quantity, price );
-        }
-        
-        until().happened();
+        dispatchCommand( command );
     }
 
-    /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#buyOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingBusProcessor#notify(io.vlingo.reactive.messaging.patterns.messagebus.TradingNotification) */
     @Override
-    public void buyOrderExecuted(String portfolioId, String symbol, Integer quantity, Double price)
+    public void notify( TradingNotification notification )
     {
-        logger().log( String.format( "%s::buyOrderExecuted( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
-        Vector<NotificationInterest> notificationInterestVector = notificationInterests.get( TradingProcessor.BUY_ORDER_EXECUTED );
-        for ( NotificationInterest notificationInterest : notificationInterestVector )
-        {
-            notificationInterest.tradingProcessor.buyOrderExecuted( portfolioId, symbol, quantity, price );
-        }
-        
-        until().happened();
+        dispatchNotification( notification );
     }
 
-    /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#executeSellOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
-    @Override
-    public void executeSellOrder(String portfolioId, String symbol, Integer quantity, Double price)
+    protected void dispatchCommand( TradingCommand command )
     {
-        logger().log( String.format( "%s::executeSellOrder( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
-        Vector<CommandHandler> commandHandlerVector = commandHandlers.get( TradingProcessor.EXECUTE_SELL_ORDER );
-        for ( CommandHandler commandHandler : commandHandlerVector )
+        Vector<TradingProcessor> commandHandlerVector = commandHandlers.get( command.commandId );
+        for ( TradingProcessor handler : commandHandlerVector )
         {
-            commandHandler.tradingProcessor.executeSellOrder( portfolioId, symbol, quantity, price );
+            unwrapCommandAndForward( command, handler );
+            
+            until.happened();
         }
-        
-        until().happened();
     }
 
-    /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#sellOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
-    @Override
-    public void sellOrderExecuted(String portfolioId, String symbol, Integer quantity, Double price)
+    protected void unwrapCommandAndForward( TradingCommand command, TradingProcessor handler )
     {
-        logger().log( String.format( "%s::sellOrderExecuted( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
-        Vector<NotificationInterest> notificationInterestVector = notificationInterests.get( TradingProcessor.SELL_ORDER_EXECUTED );
-        for ( NotificationInterest notificationInterest : notificationInterestVector )
+        if ( command.commandId.equals( TradingProcessor.EXECUTE_BUY_ORDER ))
         {
-            notificationInterest.tradingProcessor.sellOrderExecuted( portfolioId, symbol, quantity, price );
+            handler.executeBuyOrder( command.portfolioId, command.symbol, command.quantity, command.price );
         }
-        
-        until().happened();
+        else if ( command.commandId.equals( TradingProcessor.EXECUTE_SELL_ORDER ))
+        {
+            handler.executeSellOrder( command.portfolioId, command.symbol, command.quantity, command.price );
+        }
+        else
+        {
+            logger().log( String.format( "Unexpected command id '%d'", command.commandId ));
+        }
     }
 
-    /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#registerCommandHandler(java.lang.String, java.lang.String, io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor) */
-    @Override
-    public void registerCommandHandler( String applicationId, String commandId, TradingProcessor handler )
+    protected void dispatchNotification( TradingNotification notification )
     {
-        validateCommandId( commandId );
+        Vector<TradingProcessor> notificationInterestsVector = notificationInterests.get( notification.notificationId );
+        for ( TradingProcessor notifier : notificationInterestsVector )
+        {
+            unwrapNotificationAndForward(notification, notifier);
+            
+            until.happened();
+        }
+    }
+
+    protected void unwrapNotificationAndForward( TradingNotification notification, TradingProcessor notifier )
+    {
+        if ( notification.notificationId.equals( TradingProcessor.BUY_ORDER_EXECUTED ))
+        {
+            notifier.buyOrderExecuted( notification.portfolioId, notification.symbol, notification.quantity, notification.price );
+        }
+        else if ( notification.notificationId.equals( TradingProcessor.SELL_ORDER_EXECUTED ))
+        {
+            notifier.sellOrderExecuted( notification.portfolioId, notification.symbol, notification.quantity, notification.price );
+        }
+        else
+        {
+            logger().log( String.format( "Unexpected notification id '%s'", notification.notificationId ));
+        }
+    }
+
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingBusProcessor#registerCommandHandler(java.lang.String, java.lang.String, io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor) */
+    @Override
+    public void registerHandler( RegisterCommandHandler register )
+    {
         
-        logger().log( String.format( "%s::registerCommandHandler( %s, %s, %s )", getClass().getSimpleName(), applicationId, commandId, handler.getClass().getSimpleName() ));
-        CommandHandler commandHandler = new CommandHandler( commandId, applicationId, handler );
-        Vector<CommandHandler> commandHandlerVector = commandHandlers.get( commandId );
+        logger().log( String.format( "%s::registerCommandHandler( %s, %s, %s )", getClass().getSimpleName(), register.applicationId, register.commandId, register.handler.getClass().getSimpleName() ));
+        CommandHandler commandHandler = new CommandHandler( register.commandId, register.applicationId, register.handler );
+        Vector<TradingProcessor> commandHandlerVector = commandHandlers.get( register.commandId );
         if ( Objects.isNull( commandHandlerVector ))
         {
             commandHandlerVector = new Vector<>();
-            commandHandlers.put( commandId, commandHandlerVector );
+            commandHandlers.put( register.commandId, commandHandlerVector );
         }
         
         commandHandlerVector.add( commandHandler );
         
-        until().happened();
+        until.happened();
     }
 
-    /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#registerNotificationInterest(java.lang.String, java.lang.String, io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor) */
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingBusProcessor#registerNotificationInterest(java.lang.String, java.lang.String, io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor) */
     @Override
-    public void registerNotificationInterest( String applicationId, String notificationId, TradingProcessor interested )
+    public void registerInterest( RegisterNotificationInterest register )
     {
-        validateNotificationId( notificationId );
         
-        logger().log( String.format( "%s::registerNotificationInterest( %s, %s, %s )", getClass().getSimpleName(), applicationId, notificationId, interested.getClass().getSimpleName() ));
-        NotificationInterest notificationInterest = new NotificationInterest( notificationId, applicationId, interested );
-        Vector<NotificationInterest> notificationInterestVector = notificationInterests.get( notificationId );
+        logger().log( String.format( "%s::registerNotificationInterest( %s, %s, %s )", getClass().getSimpleName(), register.applicationId, register.notificationId, register.getClass().getSimpleName() ));
+        NotificationInterest notificationInterest = new NotificationInterest( register.notificationId, register.applicationId, register.interested );
+        Vector<TradingProcessor> notificationInterestVector = notificationInterests.get( register.notificationId );
         if ( Objects.isNull( notificationInterestVector ))
         {
             notificationInterestVector = new Vector<>();
-            notificationInterests.put( notificationId, notificationInterestVector );
+            notificationInterests.put( register.notificationId, notificationInterestVector );
         }
         
         notificationInterestVector.add( notificationInterest );
         
-        until().happened();
-    }
-
-    // TESTING
-    /**
-     * @param commandId
-     */
-    protected void validateCommandId( String commandId )
-    {
-        if ( ! TradingProcessor.EXECUTE_BUY_ORDER.equals( commandId ) 
-          && ! TradingProcessor.EXECUTE_SELL_ORDER.equals( commandId ))
-        {
-            throw new InvalidCommandIdException( String.format( "Unknown commandId %s", commandId ));
-        }
-    }
-
-    /**
-     * @param notificationId
-     */
-    protected void validateNotificationId( String notificationId )
-    {
-        if (    ! TradingProcessor.BUY_ORDER_EXECUTED.equals( notificationId )
-           &&   ! TradingProcessor.SELL_ORDER_EXECUTED.equals( notificationId ))
-        {
-            throw new InvalidNotificationIdException( String.format( "Unknown notificaitonId %s", notificationId ));
-        }
+        until.happened();
     }
 
 }

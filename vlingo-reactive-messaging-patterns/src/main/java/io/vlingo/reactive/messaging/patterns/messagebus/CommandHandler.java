@@ -13,6 +13,7 @@ package io.vlingo.reactive.messaging.patterns.messagebus;
  * @since Oct 31, 2018
  */
 public class CommandHandler
+implements TradingProcessor
 {
     public final String commandId;
     public final String applicationId;
@@ -23,6 +24,34 @@ public class CommandHandler
         this.commandId = commandId;
         this.applicationId = applicationId;
         this.tradingProcessor = tradingProcessor;
+    }
+
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#executeBuyOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
+    @Override
+    public void executeBuyOrder( String portfolioId, String symbol, Integer quantity, Double price )
+    {
+        tradingProcessor.executeBuyOrder( portfolioId, symbol, quantity, price );
+    }
+
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#executeSellOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
+    @Override
+    public void executeSellOrder( String portfolioId, String symbol, Integer quantity, Double price )
+    {
+        tradingProcessor.executeSellOrder( portfolioId, symbol, quantity, price );
+    }
+
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#buyOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
+    @Override
+    public void buyOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
+    {
+        // not a command, consider warning log message this method is unexpectedly called.
+    }
+
+    /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#sellOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
+    @Override
+    public void sellOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
+    {
+        // not a command, consider warning log message this method is unexpectedly called.
     }
 
 }

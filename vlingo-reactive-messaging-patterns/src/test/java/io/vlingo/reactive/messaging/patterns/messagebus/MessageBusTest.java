@@ -27,7 +27,7 @@ import io.vlingo.actors.testkit.TestUntil;
 public class MessageBusTest
 {
 
-    public static final int EVENTS = 21;
+    public static final int EVENTS = 24;
     public static final String WORLD_NAME = "message-bus-example";
 
     @Test
@@ -39,7 +39,7 @@ public class MessageBusTest
         
         TestUntil until = TestUntil.happenings( EVENTS );
         
-        final TradingProcessor tradingBus = world.actorFor( Definition.has( TradingBus.class, Definition.parameters( until )), TradingProcessor.class );
+        final TradingBusProcessor tradingBus = world.actorFor( Definition.has( TradingBus.class, Definition.parameters( until )), TradingBusProcessor.class );
         
         @SuppressWarnings("unused")
         final TradingProcessor stockTrader = world.actorFor( Definition.has( StockTrader.class, Definition.parameters( until, tradingBus )), TradingProcessor.class );
@@ -48,9 +48,9 @@ public class MessageBusTest
         @SuppressWarnings("unused")
         final TradingProcessor marketAnalysisTool = world.actorFor( Definition.has(  MarketAnalysisTools.class, Definition.parameters( until, tradingBus )), TradingProcessor.class );
         
-        tradingBus.executeBuyOrder( "p123", "MSFT", 100, 31.85 );
-        tradingBus.executeSellOrder( "p456", "MSFT", 200, 31.80 );
-        tradingBus.executeBuyOrder( "p789", "MSFT", 100, 31.83 );
+        tradingBus.trade( new TradingCommand( TradingProcessor.EXECUTE_BUY_ORDER, "p123", "MSFT", 100, 31.85 ));
+        tradingBus.trade( new TradingCommand( TradingProcessor.EXECUTE_SELL_ORDER, "p456", "MSFT", 200, 31.80 ));
+        tradingBus.trade( new TradingCommand( TradingProcessor.EXECUTE_BUY_ORDER, "p789", "MSFT", 100, 31.83 ));
         
         until.completes();
         
