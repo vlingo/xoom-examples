@@ -22,13 +22,15 @@ extends AbstractTradingActor
         super( until, tradingBus );
     }
 
+    /* @see io.vlingo.actors.Actor#beforeStart() */
     @Override
-    void initialize()
+    protected void beforeStart()
     {
-        getTradingBus().registerNotificationInterest( getApplicationId(), TradingProcessor.BUY_ORDER_EXECUTED, this );
-        getTradingBus().registerNotificationInterest( getApplicationId(), TradingProcessor.SELL_ORDER_EXECUTED, this );
+        super.beforeStart();
+        tradingBus().registerNotificationInterest( applicationId(), TradingProcessor.BUY_ORDER_EXECUTED, this );
+        tradingBus().registerNotificationInterest( applicationId(), TradingProcessor.SELL_ORDER_EXECUTED, this );
     }
-    
+
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#buyOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
     @Override
     public void buyOrderExecuted(String portfolioId, String symbol, Integer quantity, Double price)
@@ -38,7 +40,7 @@ extends AbstractTradingActor
         /*
          * perform buy order executed analysis work here
          */
-        getUntil().happened();
+        until().happened();
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#sellOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
@@ -50,7 +52,7 @@ extends AbstractTradingActor
         /*
          * perform sell order executed analysis work here
          */
-        getUntil().happened();
+        until().happened();
     }
 
 }
