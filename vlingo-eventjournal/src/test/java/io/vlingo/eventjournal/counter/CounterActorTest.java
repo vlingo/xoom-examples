@@ -33,12 +33,12 @@ public class CounterActorTest extends ActorTest {
     @Test
     public void testThatOnIncreasePublishesAnEvent() {
         counter.increase();
-        verify(journal, timeout(TIMEOUT)).append(eq(streamName), eq(1), any(Event.TextEvent.class));
+        verify(journal, timeout(TIMEOUT)).append(eq(streamName), eq(1), any(Event.TextEvent.class), any(), counter);
     }
 
     @Test
     public void testThatOnDecreasePublishesAnEvent() {
         counter.increase();
-        verify(journal, timeout(TIMEOUT)).append(eq(streamName), eq(1), any(Event.TextEvent.class));
+        verify(journal, timeout(TIMEOUT)).append(eq(streamName), eq(1), any(Event.TextEvent.class), any(), counter);
     }
 }

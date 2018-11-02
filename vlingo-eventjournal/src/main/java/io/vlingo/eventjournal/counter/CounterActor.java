@@ -6,6 +6,7 @@ import io.vlingo.eventjournal.counter.events.CounterDecreasedAdapter;
 import io.vlingo.eventjournal.counter.events.CounterIncreased;
 import io.vlingo.eventjournal.counter.events.CounterIncreasedAdapter;
 import io.vlingo.symbio.store.eventjournal.EventJournal;
+import io.vlingo.symbio.store.state.jdbc.postgres.eventjournal.MockAppendResultInterest;
 
 public class CounterActor extends Actor implements Counter {
     private final String counterName;
@@ -27,12 +28,12 @@ public class CounterActor extends Actor implements Counter {
     @Override
     public void increase() {
         currentCount++;
-        journal.append(counterName, version++, counterIncreasedAdapter.serialize(new CounterIncreased(currentCount)));
+        journal.append(counterName, version++, counterIncreasedAdapter.serialize(new CounterIncreased(currentCount)), new MockAppendResultInterest(), this);
     }
 
     @Override
     public void decrease() {
         currentCount--;
-        journal.append(counterName, version++, counterDecreasedAdapter.serialize(new CounterDecreased(currentCount)));
+        journal.append(counterName, version++, counterDecreasedAdapter.serialize(new CounterDecreased(currentCount)), new MockAppendResultInterest(), this);
     }
 }

@@ -65,6 +65,8 @@ public class Bootstrap {
         world.terminate();
     }
 
+    // This shouldn't be done in production code. It's to simulate some load on the
+    // reader
     static void pause() {
         try {
             Thread.sleep(500);

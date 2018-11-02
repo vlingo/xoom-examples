@@ -5,16 +5,16 @@ CREATE TABLE vlingo_event_journal (
   event_metadata     JSONB        NOT NULL,
   event_type         VARCHAR(256) NOT NULL,
   event_type_version INTEGER      NOT NULL,
-  event_stream       VARCHAR(128) NOT NULL,
-  event_offset       INTEGER      NOT NULL
+  stream_name        VARCHAR(128) NOT NULL,
+  stream_version     INTEGER      NOT NULL
 );
 
-CREATE INDEX ON vlingo_event_journal (event_stream, event_offset);
+CREATE INDEX ON vlingo_event_journal (stream_name, stream_version);
 
 CREATE INDEX ON vlingo_event_journal (event_timestamp);
 
 CREATE TABLE vlingo_event_journal_snapshots (
-  event_stream          VARCHAR(128) PRIMARY KEY,
+  stream_name           VARCHAR(128) PRIMARY KEY,
   snapshot_type         VARCHAR(256) NOT NULL,
   snapshot_type_version INTEGER      NOT NULL,
   snapshot_data         JSONB        NOT NULL,
