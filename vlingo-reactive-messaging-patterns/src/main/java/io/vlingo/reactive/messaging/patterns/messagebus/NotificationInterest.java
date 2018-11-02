@@ -13,6 +13,7 @@ package io.vlingo.reactive.messaging.patterns.messagebus;
  * @since Oct 31, 2018
  */
 public class NotificationInterest
+implements TradingProcessor
 {
     public final String notificationId;
     public final String applicationId;
@@ -23,6 +24,30 @@ public class NotificationInterest
         this.notificationId = notificationId;
         this.applicationId = applicationId;
         this.tradingProcessor = tradingProcessor;
+    }
+
+    @Override
+    public void executeBuyOrder( String portfolioId, String symbol, Integer quantity, Double price )
+    {
+        // not a notification, consider warning log message this method is unexpectedly called.
+    }
+
+    @Override
+    public void executeSellOrder( String portfolioId, String symbol, Integer quantity, Double price )
+    {
+        // not a notification, consider warning log message this method is unexpectedly called.
+    }
+
+    @Override
+    public void buyOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
+    {
+        tradingProcessor.buyOrderExecuted( portfolioId, symbol, quantity, price );
+    }
+
+    @Override
+    public void sellOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
+    {
+        tradingProcessor.sellOrderExecuted( portfolioId, symbol, quantity, price );
     }
     
 }
