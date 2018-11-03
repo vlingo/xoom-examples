@@ -27,7 +27,8 @@ public class CounterQueryActor extends Actor implements CounterQuery {
         this.counterIncreasedAdapter = new CounterIncreasedAdapter();
         this.counterDecreasedAdapter = new CounterDecreasedAdapter();
         this.currentCount = Optional.empty();
-        this.cancellable = scheduler().schedule(this::updateCounter, null, 0, 10);
+        this.cancellable = scheduler().schedule(this::updateCounter, null, 0, 5);
+        this.updateCounter(null, null);
     }
 
     @Override
