@@ -8,6 +8,7 @@ package io.vlingo.reactive.messaging.patterns.messagebus;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.RegisterNotificationInterest;
 
 /**
  * MarketAnalysisTools {@link Actor} registers interest in specific notifications related to analysis
