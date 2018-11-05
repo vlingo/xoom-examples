@@ -12,6 +12,7 @@ import io.vlingo.actors.Actor;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.TradingCommand;
 
 /**
  * MessageBusTest demonstrates the {@link TradingBus} actor providing a registration service that allows three

@@ -6,6 +6,11 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.messagebus;
 
+import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.RegisterCommandHandler;
+import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.RegisterNotificationInterest;
+import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.TradingCommand;
+import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.TradingNotification;
+
 /**
  * TradingBusProcessor defines the public interface for this {@link TradingBus} for handling
  * registration, trade, and notify messages.

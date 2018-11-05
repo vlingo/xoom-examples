@@ -8,6 +8,8 @@ package io.vlingo.reactive.messaging.patterns.messagebus;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.RegisterCommandHandler;
+import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.TradingNotification;
 
 /**
  * StockTrader {@link ACtor} registers interest in buy and sell commands; performs the work the work related to
