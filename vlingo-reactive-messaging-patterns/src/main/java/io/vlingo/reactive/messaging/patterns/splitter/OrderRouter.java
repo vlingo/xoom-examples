@@ -49,17 +49,24 @@ implements OrderProcessor
         for ( OrderItem item : order.orderItems.values() )
         {
             logger().log( String.format( "OrderRouter: routing %s", item ));
-            if ( OrderProcessor.ITEM_TYPE_A.equals( item.itemType ))
+            
+            switch ( item.itemType )
             {
-                orderItemTypeAProcessor.orderTypeAItem( item );
-            }
-            else if ( OrderProcessor.ITEM_TYPE_B.equals( item.itemType ))
-            {
-                orderItemTypeBProcessor.orderTypeBItem( item );
-            }
-            else if ( OrderProcessor.ITEM_TYPE_C.equals( item.itemType ))
-            {
-                orderItemTypeCProcessor.orderTypeCItem( item );
+                case OrderProcessor.ITEM_TYPE_A:
+                    orderItemTypeAProcessor.orderTypeAItem( item );
+                    break;
+                    
+                case OrderProcessor.ITEM_TYPE_B:
+                    orderItemTypeBProcessor.orderTypeBItem( item );
+                    break;
+                    
+                case OrderProcessor.ITEM_TYPE_C:
+                    orderItemTypeCProcessor.orderTypeCItem( item );
+                    break;
+
+                default:
+                    logger().log( String.format( "Unknown item type '%s'", item.itemType ));
+                    break;
             }
         }
         
