@@ -15,7 +15,6 @@ import java.util.List;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.AddressFactory;
-import io.vlingo.common.Tuple3;
 import io.vlingo.common.Tuple4;
 import io.vlingo.frontservice.model.User;
 import io.vlingo.http.Request;
