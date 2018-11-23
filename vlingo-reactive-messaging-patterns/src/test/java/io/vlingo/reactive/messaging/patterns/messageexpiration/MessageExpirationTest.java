@@ -14,9 +14,6 @@ import io.vlingo.actors.testkit.TestUntil;
 
 /**
  * MessageExpirationTest
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class MessageExpirationTest
 {

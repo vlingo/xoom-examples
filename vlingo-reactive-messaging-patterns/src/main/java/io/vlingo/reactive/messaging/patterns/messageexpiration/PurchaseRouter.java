@@ -14,9 +14,6 @@ import io.vlingo.common.Scheduled;
 /**
  * PurchaseRouter {@link Actor} responsible for randomly delaying the delivery of an order message such
  * that message expiration can be demonstrated. 
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class PurchaseRouter 
 extends Actor 
