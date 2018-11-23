@@ -40,7 +40,7 @@ implements OrderProcessor
 
     /* @see io.vlingo.reactive.messaging.patterns.recipientlist.OrderProcessor#registerPriceQuoteInterest(io.vlingo.reactive.messaging.patterns.recipientlist.PriceQuoteInterest) */
     @Override
-    public void registerPriceQuoteInterest( PriceQuoteInterest interest )
+    public void register( PriceQuoteInterest interest )
     {
         logger().log( String.format( "%s interested", interest.path ));
         interestRegistry.put( interest.path, interest );
@@ -95,16 +95,16 @@ implements OrderProcessor
     {
         public final OrderProcessor orderProcessor;
         
-        public BudgetHikersPriceQuotes( final OrderProcessor aProcessor )
+        public BudgetHikersPriceQuotes( final OrderProcessor orderProcessor )
         {
-            this.orderProcessor = aProcessor;
+            this.orderProcessor = orderProcessor;
         }
 
         /* @see io.vlingo.actors.Actor#beforeStart() */
         @Override
         protected void beforeStart()
         {
-            orderProcessor.registerPriceQuoteInterest( new PriceQuoteInterest( this.getClass().getName(), this, 1d, 1000d ));
+            orderProcessor.register( new PriceQuoteInterest( this.getClass().getName(), this, 1d, 1000d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -134,16 +134,16 @@ implements OrderProcessor
     {
         public final OrderProcessor orderProcessor;
         
-        public HighSierraPriceQuotes( final OrderProcessor aProcessor )
+        public HighSierraPriceQuotes( final OrderProcessor orderProcessor )
         {
-            this.orderProcessor = aProcessor;
+            this.orderProcessor = orderProcessor;
         }
 
         /* @see io.vlingo.actors.Actor#beforeStart() */
         @Override
         protected void beforeStart()
         {
-            orderProcessor.registerPriceQuoteInterest( new PriceQuoteInterest( this.getClass().getName(), this, 100d, 10000d ));
+            orderProcessor.register( new PriceQuoteInterest( this.getClass().getName(), this, 100d, 10000d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -173,16 +173,16 @@ implements OrderProcessor
     {
         public final OrderProcessor orderProcessor;
         
-        public MountainAscentPriceQuotes( final OrderProcessor aProcessor )
+        public MountainAscentPriceQuotes( final OrderProcessor orderProcessor )
         {
-            this.orderProcessor = aProcessor;
+            this.orderProcessor = orderProcessor;
         }
 
         /* @see io.vlingo.actors.Actor#beforeStart() */
         @Override
         protected void beforeStart()
         {
-            orderProcessor.registerPriceQuoteInterest( new PriceQuoteInterest( getClass().getName(), this, 70d, 500d ));
+            orderProcessor.register( new PriceQuoteInterest( getClass().getName(), this, 70d, 500d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -214,16 +214,16 @@ implements OrderProcessor
     {
         public final OrderProcessor orderProcessor;
         
-        public PinnacleGearPriceQuotes( final OrderProcessor aProcessor )
+        public PinnacleGearPriceQuotes( final OrderProcessor orderProcessor )
         {
-            this.orderProcessor = aProcessor;
+            this.orderProcessor = orderProcessor;
         }
 
         /* @see io.vlingo.actors.Actor#beforeStart() */
         @Override
         protected void beforeStart()
         {
-            orderProcessor.registerPriceQuoteInterest( new PriceQuoteInterest( getClass().getName(), this, 250d, 500000d ));
+            orderProcessor.register( new PriceQuoteInterest( getClass().getName(), this, 250d, 500000d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -256,16 +256,16 @@ implements OrderProcessor
     {
         public final OrderProcessor orderProcessor;
         
-        public RockBottomOuterwearPriceQuotes( final OrderProcessor aProcessor )
+        public RockBottomOuterwearPriceQuotes( final OrderProcessor orderProcessor )
         {
-            this.orderProcessor = aProcessor;
+            this.orderProcessor = orderProcessor;
         }
         
         /* @see io.vlingo.actors.Actor#beforeStart() */
         @Override
         protected void beforeStart()
         {
-            orderProcessor.registerPriceQuoteInterest( new PriceQuoteInterest( getClass().getName(), this, .50, 7500d ));
+            orderProcessor.register( new PriceQuoteInterest( getClass().getName(), this, .50, 7500d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */

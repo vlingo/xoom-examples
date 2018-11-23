@@ -20,9 +20,9 @@ public class RetailBasket
     public final Vector<RetailItem> retailItems;
     public final Double totalRetailPrice;
     
-    public RetailBasket( final String anRfqId, final RetailItem...items )
+    public RetailBasket( final String rfqId, final RetailItem...items )
     {
-        this.rfqId = anRfqId;
+        this.rfqId = rfqId;
         this.retailItems = new Vector<>();
         double d = 0;
         for ( RetailItem item : items ) 
@@ -38,10 +38,10 @@ public class RetailBasket
         public final String itemId;
         public final Double retailPrice;
         
-        public RetailItem( final String anItemId, final Double aRetailPrice )
+        public RetailItem( final String itemId, final Double retailPrice )
         {
-            this.itemId = anItemId;
-            this.retailPrice = aRetailPrice;
+            this.itemId = itemId;
+            this.retailPrice = retailPrice;
         }
     }
 }
