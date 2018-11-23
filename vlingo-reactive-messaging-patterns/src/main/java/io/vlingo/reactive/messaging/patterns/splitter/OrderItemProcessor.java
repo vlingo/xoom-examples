@@ -10,9 +10,6 @@ import io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem;
 
 /**
  * OrderItemProcessor defines the API for processing an individual {@link OrderItem}.
- *
- * @author brsg.io
- * @since Nov 5, 2018
  */
 public interface OrderItemProcessor
 {

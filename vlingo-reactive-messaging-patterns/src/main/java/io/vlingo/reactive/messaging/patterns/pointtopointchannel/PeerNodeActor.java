@@ -12,9 +12,6 @@ import io.vlingo.actors.testkit.TestUntil;
 /**
  * PeerNodeActor represents point-to-point messaging that underlies all {@link Actor} communication where
  * messages between two peers will be received in the order that they are sent.
- *
- * @author brsg.io
- * @since Oct 26, 2018
  */
 public class PeerNodeActor 
 extends Actor
