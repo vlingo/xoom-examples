@@ -11,9 +11,6 @@ import java.util.Map;
 
 /**
  * Order is composed of {@link OrderItem} instances.
- *
- * @author brsg.io
- * @since Nov 5, 2018
  */
 public class Order 
 {
@@ -32,9 +29,6 @@ public class Order
     
     /**
      * OrderItem atomic elements to be processed individually.
-     *
-     * @author brsg.io
-     * @since Nov 5, 2018
      */
     public static final class OrderItem 
     {

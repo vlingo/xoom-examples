@@ -8,9 +8,6 @@ package io.vlingo.reactive.messaging.patterns.splitter;
 
 /**
  * OrderProcessor defines the API for placing an {@link Order}.
- *
- * @author brsg.io
- * @since Nov 5, 2018
  */
 public interface OrderProcessor
 {

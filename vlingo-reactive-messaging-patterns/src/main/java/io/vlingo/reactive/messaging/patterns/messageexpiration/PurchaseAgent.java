@@ -12,9 +12,6 @@ import io.vlingo.actors.testkit.TestUntil;
 
 /**
  * PurchaseAgent {@link Actor} responsible for placing an order for messages that have not yet expired.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class PurchaseAgent 
 extends Actor 

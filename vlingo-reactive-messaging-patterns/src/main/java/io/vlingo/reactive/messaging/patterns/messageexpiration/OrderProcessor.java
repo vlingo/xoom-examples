@@ -8,9 +8,6 @@ package io.vlingo.reactive.messaging.patterns.messageexpiration;
 
 /**
  * OrderProcessor defines the behavior required of an order processor.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public interface OrderProcessor
 {

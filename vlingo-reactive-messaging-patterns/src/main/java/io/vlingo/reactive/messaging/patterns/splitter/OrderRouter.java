@@ -14,9 +14,6 @@ import io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem;
 /**
  * OrderRouter receives an {@link Order} and routes each {@link OrderItem} instance according to its
  * {@link OrderItem#itemType}.
- *
- * @author brsg.io
- * @since Nov 5, 2018
  */
 public class OrderRouter 
 extends Actor
