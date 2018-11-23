@@ -10,9 +10,6 @@ import java.util.Vector;
 
 /**
  * RetailBasket basket of {@link RetailItem} to be quoted for discount where appropriate.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class RetailBasket
 {
