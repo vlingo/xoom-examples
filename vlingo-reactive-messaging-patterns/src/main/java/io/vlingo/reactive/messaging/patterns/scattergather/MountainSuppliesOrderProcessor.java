@@ -21,9 +21,6 @@ import io.vlingo.reactive.messaging.patterns.scattergather.RetailBasket.RetailIt
 /**
  * MountainSuppliesOrderProcessor maintains registry of @{@link QuoteProcessor} {@link Actor} instances
  * interested in providing quotes according to constraints on total retail price of a basket of items. 
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class MountainSuppliesOrderProcessor 
 extends Actor 

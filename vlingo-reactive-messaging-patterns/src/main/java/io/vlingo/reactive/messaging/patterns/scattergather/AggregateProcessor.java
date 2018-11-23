@@ -10,10 +10,7 @@ import io.vlingo.reactive.messaging.patterns.scattergather.BestPriceQuotation.Pr
 import io.vlingo.reactive.messaging.patterns.scattergather.BestPriceQuotation.PriceQuoteTimedOut;
 
 /**
- * AggregateProcessor
- *
- * @author brsg.io
- * @since Nov 21, 2018
+ * AggregateProcessor establishes quotes to be fulfilled, what it means to be fulfilled, as well as timeout semantics.
  */
 public interface AggregateProcessor
 {
