@@ -16,9 +16,6 @@ import io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem;;
 /**
  * SplitterTest demonstrates a composite message being split into its individual parts and sent as 
  * smaller messages.
- *
- * @author brsg.io
- * @since Nov 5, 2018
  */
 public class SplitterTest
 {

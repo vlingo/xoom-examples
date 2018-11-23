@@ -20,9 +20,6 @@ import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.Tradi
  * to represent disparate systems that have an interest in a subset of the messages received by the 
  * TradingBus, that in turn forwards the relevant messages asynchronously to these actors for their own 
  * individual processing.
- *
- * @author brsg.io
- * @since Oct 26, 2018
  */
 public class MessageBusTest
 {

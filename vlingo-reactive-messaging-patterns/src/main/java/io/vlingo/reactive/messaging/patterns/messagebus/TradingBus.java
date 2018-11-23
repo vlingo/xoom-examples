@@ -22,9 +22,6 @@ import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.Tradi
  * TradingBus is the nexus between the {@link StockTrader}, {@link PortfolioManager}, and 
  * {@link MarketAnalysisTools} systems providing an ability to register interest in specific types
  * of messages and then delivering these messages asynchronously to each registrant.
- *
- * @author brsg.io
- * @since Oct 31, 2018
  */
 public class TradingBus 
 extends Actor

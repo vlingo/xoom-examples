@@ -14,9 +14,6 @@ import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.Tradi
 /**
  * TradingBusProcessor defines the public interface for this {@link TradingBus} for handling
  * registration, trade, and notify messages.
- *
- * @author brsg.io
- * @since Nov 2, 2018
  */
 public interface TradingBusProcessor
 {

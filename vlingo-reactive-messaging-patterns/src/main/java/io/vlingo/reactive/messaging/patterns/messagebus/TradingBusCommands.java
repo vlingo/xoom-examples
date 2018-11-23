@@ -8,9 +8,6 @@ package io.vlingo.reactive.messaging.patterns.messagebus;
 
 /**
  * TradingBusCommands
- *
- * @author brsg.io
- * @since Nov 5, 2018
  */
 public class TradingBusCommands
 {

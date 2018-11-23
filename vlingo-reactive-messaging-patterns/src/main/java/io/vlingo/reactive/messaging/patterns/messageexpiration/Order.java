@@ -8,9 +8,6 @@ package io.vlingo.reactive.messaging.patterns.messageexpiration;
 
 /**
  * Order message that carries the criteria for an order as well as its expiration.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class Order
 implements ExpiringMessage

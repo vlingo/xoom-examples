@@ -13,9 +13,6 @@ import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.Regis
 /**
  * PortfolioManager {@link Actor} registers interest in specific notifications and waits to receive 
  * notifications of this type to perform work related to the notification.
- *
- * @author brsg.io
- * @since Oct 31, 2018
  */
 public class PortfolioManager 
 extends Actor
