@@ -14,14 +14,14 @@ package io.vlingo.reactive.messaging.patterns.recipientlist;
  */
 public class PriceQuoteInterest
 {
-    public final String path;
+    public final String type;
     public final QuoteProcessor quoteProcessor;
     public final Double lowTotalRetail;
     public final Double highTotalRetail;
     
-    public PriceQuoteInterest( final String path, final QuoteProcessor quoteProcessor, final Double lowTotal, final Double highTotal )
+    public PriceQuoteInterest( final String type, final QuoteProcessor quoteProcessor, final Double lowTotal, final Double highTotal )
     {
-        this.path = path;
+        this.type = type;
         this.quoteProcessor = quoteProcessor;
         this.lowTotalRetail = lowTotal;
         this.highTotalRetail = highTotal;
