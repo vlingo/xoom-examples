@@ -23,29 +23,4 @@ public class PriceQuoteInterest
         this.lowTotalRetail = lowTotal;
         this.highTotalRetail = highTotal;
     }
-    
-    public static class PriceQuote
-    {
-        public final QuoteProcessor quoteProcessor;
-        public final String rfqId;
-        public final String itemId;
-        public final Double retailPrice;
-        public final Double discountPrice;
-        
-        public PriceQuote( final QuoteProcessor quoteProcessor, final String rfqId, final String itemId, final Double retailPrice, final Double discountPrice )
-        {
-            this.quoteProcessor = quoteProcessor;
-            this.rfqId = rfqId;
-            this.itemId = itemId;
-            this.retailPrice = retailPrice;
-            this.discountPrice = discountPrice;
-        }
-
-        /* @see java.lang.Object#toString() */
-        @Override
-        public String toString()
-        {
-            return String.format( "%s %s %s $%.2f $%.2f", quoteProcessor.getClass().getSimpleName(), rfqId, itemId, retailPrice, discountPrice );
-        }
-    }
 }

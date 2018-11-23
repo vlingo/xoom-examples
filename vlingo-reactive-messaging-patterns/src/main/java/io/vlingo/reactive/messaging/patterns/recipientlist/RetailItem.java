@@ -7,11 +7,16 @@
 package io.vlingo.reactive.messaging.patterns.recipientlist;
 
 /**
- * OrderProcessor behavior for registering interest and quoting discounts for baskets of retail items.
+ * RetailItem id of item to be purchased and its price.
  */
-public interface OrderProcessor
+public class RetailItem
 {
-    void register( PriceQuoteInterest interest );
-    void requestForQuote( RetailBasket basket );
-    void remittedPriceQuote( PriceQuote quote );
+    public final String itemId;
+    public final Double retailPrice;
+    
+    public RetailItem( final String itemId, final Double retailPrice )
+    {
+        this.itemId = itemId;
+        this.retailPrice = retailPrice;
+    }
 }

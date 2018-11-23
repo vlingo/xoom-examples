@@ -11,12 +11,13 @@ import org.junit.Test;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.BudgetHikersPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.HighSierraPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.MountainAscentPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.PinnacleGearPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.RockBottomOuterwearPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket.RetailItem;
+import io.vlingo.reactive.messaging.patterns.recipientlist.BudgetHikersPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.HighSierraPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.MountainAscentPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.PinnacleGearPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.RockBottomOuterwearPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket;
+import io.vlingo.reactive.messaging.patterns.recipientlist.RetailItem;
 
 /**
  * RecipientListTest driver for this recipient list example.
