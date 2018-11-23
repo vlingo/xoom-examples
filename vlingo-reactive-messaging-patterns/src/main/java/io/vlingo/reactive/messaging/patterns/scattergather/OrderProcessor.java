@@ -10,9 +10,6 @@ import io.vlingo.reactive.messaging.patterns.scattergather.BestPriceQuotation.Pr
 
 /**
  * OrderProcessor behavior for registering interest and quoting discounts for baskets of retail items.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public interface OrderProcessor
 {

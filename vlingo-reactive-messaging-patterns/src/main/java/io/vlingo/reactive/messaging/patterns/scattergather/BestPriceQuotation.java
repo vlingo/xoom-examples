@@ -9,10 +9,7 @@ package io.vlingo.reactive.messaging.patterns.scattergather;
 import java.util.Vector;
 
 /**
- * BestPriceQuotation
- *
- * @author brsg.io
- * @since Nov 21, 2018
+ * BestPriceQuotation represents data objects in support of placing, aggregating, and fulfilling price quotes.
  */
 public class BestPriceQuotation
 {

@@ -7,10 +7,7 @@
 package io.vlingo.reactive.messaging.patterns.scattergather;
 
 /**
- * QuoteSubscriptionRequest
- *
- * @author brsg.io
- * @since Nov 21, 2018
+ * QuoteSubscriptionRequest data required to subscribe for price quote privileges.
  */
 public class QuoteSubscriptionRequest
 {
