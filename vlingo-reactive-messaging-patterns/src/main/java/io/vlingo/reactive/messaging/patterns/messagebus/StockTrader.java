@@ -15,9 +15,6 @@ import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.Tradi
  * StockTrader {@link ACtor} registers interest in buy and sell commands; performs the work the work related to
  * a buy or sell execution method invocation; and then publishes a notification that the specific 
  * buy or sell order was executed.
- *
- * @author brsg.io
- * @since Oct 31, 2018
  */
 public class StockTrader 
 extends Actor

@@ -11,9 +11,6 @@ import io.vlingo.actors.Actor;
 /**
  * WorkerProcessor {@link Actor} able to perform workloads based on {@link Processor} interface.  
  * The route method is the hook for where this work is to be performed. 
- *
- * @author brsg.io
- * @since Oct 25, 2018
  */
 public class WorkerProcessor
 extends Actor

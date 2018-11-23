@@ -11,9 +11,6 @@ import io.vlingo.actors.Stoppable;
 /**
  * Processor interface declaring a method for routing a message with a parameter to help validate 
  * expected behavior.
- *
- * @author brsg.io
- * @since Oct 25, 2018
  */
 public interface Processor
 extends Stoppable

@@ -8,9 +8,6 @@ package io.vlingo.reactive.messaging.patterns.messageexpiration;
 
 /**
  * ExpiringMessage defines the behavior required of a message that can expire.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public interface ExpiringMessage
 {

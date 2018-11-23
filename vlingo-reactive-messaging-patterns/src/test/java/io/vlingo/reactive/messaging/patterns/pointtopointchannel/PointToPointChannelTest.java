@@ -16,9 +16,6 @@ import io.vlingo.actors.testkit.TestUntil;
 /**
  * PointToPointChannelTest demonstrates that {@link Actor} communication is naturally point-to-point
  * and, therefore, the messages from point A to point B are sent and received sequentially. 
- *
- * @author brsg.io
- * @since Oct 26, 2018
  */
 public class PointToPointChannelTest
 {

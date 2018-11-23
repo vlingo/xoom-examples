@@ -9,9 +9,6 @@ package io.vlingo.reactive.messaging.patterns.messagebus;
 /**
  * TradingProcessor defines methods that brings together disparate systems
  * in this case covering trades as commands, management and analysis as notifications
- *
- * @author brsg.io
- * @since Oct 31, 2018
  */
 public interface TradingProcessor
 {
