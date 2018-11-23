@@ -104,7 +104,7 @@ implements OrderProcessor
         @Override
         protected void beforeStart()
         {
-            orderProcessor.register( new PriceQuoteInterest( this.getClass().getName(), this, 1d, 1000d ));
+            orderProcessor.register( new PriceQuoteInterest( this.getClass().getName(), selfAs( QuoteProcessor.class ), 1d, 1000d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -113,7 +113,7 @@ implements OrderProcessor
         {
             Double discountPercentage = discountPercentage( totalRetailPrice );
             Double discountPrice = retailPrice - ( retailPrice * discountPercentage );
-            orderProcessor.remittedPriceQuote( new PriceQuote( this, rfqId, itemId, retailPrice, discountPrice ));
+            orderProcessor.remittedPriceQuote( new PriceQuote( selfAs( QuoteProcessor.class ), rfqId, itemId, retailPrice, discountPrice ));
         }
 
         protected Double discountPercentage( Double orderTotalRetailprice )
@@ -143,7 +143,7 @@ implements OrderProcessor
         @Override
         protected void beforeStart()
         {
-            orderProcessor.register( new PriceQuoteInterest( this.getClass().getName(), this, 100d, 10000d ));
+            orderProcessor.register( new PriceQuoteInterest( this.getClass().getName(), selfAs( QuoteProcessor.class ), 100d, 10000d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -152,7 +152,7 @@ implements OrderProcessor
         {
             Double discountPercentage = discountPercentage( totalRetailPrice );
             Double discountPrice = retailPrice - ( retailPrice * discountPercentage );
-            orderProcessor.remittedPriceQuote( new PriceQuote( this, rfqId, itemId, retailPrice, discountPrice ));
+            orderProcessor.remittedPriceQuote( new PriceQuote( selfAs( QuoteProcessor.class ), rfqId, itemId, retailPrice, discountPrice ));
         }
 
         protected Double discountPercentage( Double orderTotalRetailprice )
@@ -182,7 +182,7 @@ implements OrderProcessor
         @Override
         protected void beforeStart()
         {
-            orderProcessor.register( new PriceQuoteInterest( getClass().getName(), this, 70d, 500d ));
+            orderProcessor.register( new PriceQuoteInterest( getClass().getName(), selfAs( QuoteProcessor.class ), 70d, 500d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -191,7 +191,7 @@ implements OrderProcessor
         {
             Double discountPercentage = discountPercentage( totalRetailPrice );
             Double discountPrice = retailPrice - ( retailPrice * discountPercentage );
-            orderProcessor.remittedPriceQuote( new PriceQuote( this, rfqId, itemId, retailPrice, discountPrice ));
+            orderProcessor.remittedPriceQuote( new PriceQuote( selfAs( QuoteProcessor.class ), rfqId, itemId, retailPrice, discountPrice ));
         }
 
         protected Double discountPercentage( Double orderTotalRetailprice )
@@ -223,7 +223,7 @@ implements OrderProcessor
         @Override
         protected void beforeStart()
         {
-            orderProcessor.register( new PriceQuoteInterest( getClass().getName(), this, 250d, 500000d ));
+            orderProcessor.register( new PriceQuoteInterest( getClass().getName(), selfAs( QuoteProcessor.class ), 250d, 500000d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -232,7 +232,7 @@ implements OrderProcessor
         {
             Double discountPercentage = discountPercentage( totalRetailPrice );
             Double discountPrice = retailPrice - ( retailPrice * discountPercentage );
-            orderProcessor.remittedPriceQuote( new PriceQuote( this, rfqId, itemId, retailPrice, discountPrice ));
+            orderProcessor.remittedPriceQuote( new PriceQuote( selfAs( QuoteProcessor.class ), rfqId, itemId, retailPrice, discountPrice ));
         }
 
         protected Double discountPercentage( Double orderTotalRetailprice )
@@ -265,7 +265,7 @@ implements OrderProcessor
         @Override
         protected void beforeStart()
         {
-            orderProcessor.register( new PriceQuoteInterest( getClass().getName(), this, .50, 7500d ));
+            orderProcessor.register( new PriceQuoteInterest( getClass().getName(), selfAs( QuoteProcessor.class ), .50, 7500d ));
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.recipientlist.QuoteProcessor#requestPriceQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -274,7 +274,7 @@ implements OrderProcessor
         {
             Double discountPercentage = discountPercentage( totalRetailPrice );
             Double discountPrice = retailPrice - ( retailPrice * discountPercentage );
-            orderProcessor.remittedPriceQuote( new PriceQuote( this, rfqId, itemId, retailPrice, discountPrice ));
+            orderProcessor.remittedPriceQuote( new PriceQuote( selfAs( QuoteProcessor.class ), rfqId, itemId, retailPrice, discountPrice ));
         }
 
         protected Double discountPercentage( Double orderTotalRetailprice )
