@@ -19,10 +19,10 @@ public class PriceQuoteInterest
     public final Double lowTotalRetail;
     public final Double highTotalRetail;
     
-    public PriceQuoteInterest( final String aPath, final QuoteProcessor aProcessor, final Double lowTotal, final Double highTotal )
+    public PriceQuoteInterest( final String path, final QuoteProcessor quoteProcessor, final Double lowTotal, final Double highTotal )
     {
-        this.path = aPath;
-        this.quoteProcessor = aProcessor;
+        this.path = path;
+        this.quoteProcessor = quoteProcessor;
         this.lowTotalRetail = lowTotal;
         this.highTotalRetail = highTotal;
     }
@@ -35,13 +35,13 @@ public class PriceQuoteInterest
         public final Double retailPrice;
         public final Double discountPrice;
         
-        public PriceQuote( final QuoteProcessor qProcessor, final String anRfqId, final String anItemId, final Double aRetailPrice, final Double aDiscountPrice )
+        public PriceQuote( final QuoteProcessor quoteProcessor, final String rfqId, final String itemId, final Double retailPrice, final Double discountPrice )
         {
-            this.quoteProcessor = qProcessor;
-            this.rfqId = anRfqId;
-            this.itemId = anItemId;
-            this.retailPrice = aRetailPrice;
-            this.discountPrice = aDiscountPrice;
+            this.quoteProcessor = quoteProcessor;
+            this.rfqId = rfqId;
+            this.itemId = itemId;
+            this.retailPrice = retailPrice;
+            this.discountPrice = discountPrice;
         }
 
         /* @see java.lang.Object#toString() */

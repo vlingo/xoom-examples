@@ -16,7 +16,7 @@ import io.vlingo.reactive.messaging.patterns.recipientlist.PriceQuoteInterest.Pr
  */
 public interface OrderProcessor
 {
-    void registerPriceQuoteInterest( PriceQuoteInterest interest );
+    void register( PriceQuoteInterest interest );
     void requestForQuote( RetailBasket basket );
     void remittedPriceQuote( PriceQuote quote );
 }
