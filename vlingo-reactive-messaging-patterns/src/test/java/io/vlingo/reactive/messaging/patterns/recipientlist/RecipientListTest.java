@@ -20,9 +20,6 @@ import io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket.RetailIt
 
 /**
  * RecipientListTest driver for this recipient list example.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class RecipientListTest
 {

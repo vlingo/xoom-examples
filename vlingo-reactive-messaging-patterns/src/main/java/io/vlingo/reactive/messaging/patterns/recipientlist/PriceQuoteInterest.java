@@ -8,9 +8,6 @@ package io.vlingo.reactive.messaging.patterns.recipientlist;
 
 /**
  * PriceQuoteInterest used to register interest in providing {@link PriceQuote} for each retail item where appropriate.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class PriceQuoteInterest
 {
