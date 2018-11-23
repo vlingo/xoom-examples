@@ -6,9 +6,6 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.scattergather;
 
-import io.vlingo.reactive.messaging.patterns.scattergather.BestPriceQuotation.PriceQuote;
-import io.vlingo.reactive.messaging.patterns.scattergather.BestPriceQuotation.PriceQuoteTimedOut;
-
 /**
  * AggregateProcessor establishes quotes to be fulfilled, what it means to be fulfilled, as well as timeout semantics.
  */

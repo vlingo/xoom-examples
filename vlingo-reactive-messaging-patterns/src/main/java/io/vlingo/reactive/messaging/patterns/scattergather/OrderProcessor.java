@@ -6,8 +6,6 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.scattergather;
 
-import io.vlingo.reactive.messaging.patterns.scattergather.BestPriceQuotation.PriceQuote;
-
 /**
  * OrderProcessor behavior for registering interest and quoting discounts for baskets of retail items.
  */
