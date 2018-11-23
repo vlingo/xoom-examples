@@ -11,13 +11,14 @@ import org.junit.Test;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
-import io.vlingo.reactive.messaging.patterns.scattergather.MountainSuppliesOrderProcessor.BudgetHikersPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.scattergather.MountainSuppliesOrderProcessor.HighSierraPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.scattergather.MountainSuppliesOrderProcessor.MountainAscentPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.scattergather.MountainSuppliesOrderProcessor.PinnacleGearPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.scattergather.MountainSuppliesOrderProcessor.PriceQuoteAggregator;
-import io.vlingo.reactive.messaging.patterns.scattergather.MountainSuppliesOrderProcessor.RockBottomOuterwearPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.scattergather.RetailBasket.RetailItem;
+import io.vlingo.reactive.messaging.patterns.scattergather.BudgetHikersPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.scattergather.HighSierraPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.scattergather.MountainAscentPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.scattergather.PinnacleGearPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.scattergather.PriceQuoteAggregator;
+import io.vlingo.reactive.messaging.patterns.scattergather.RockBottomOuterwearPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.scattergather.RetailBasket;
+import io.vlingo.reactive.messaging.patterns.scattergather.RetailItem;
 
 /**
  * ScatterGatherTest driver for this scatter-gather example.

@@ -29,16 +29,4 @@ public class RetailBasket
         }
         totalRetailPrice = d;
     }
-    
-    public static final class RetailItem
-    {
-        public final String itemId;
-        public final Double retailPrice;
-        
-        public RetailItem( final String itemId, final Double retailPrice )
-        {
-            this.itemId = itemId;
-            this.retailPrice = retailPrice;
-        }
-    }
 }
