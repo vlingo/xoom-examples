@@ -42,8 +42,8 @@ implements OrderProcessor
     @Override
     public void register( PriceQuoteInterest interest )
     {
-        logger().log( String.format( "%s interested", interest.path ));
-        interestRegistry.put( interest.path, interest );
+        logger().log( String.format( "%s interested", interest.type ));
+        interestRegistry.put( interest.type, interest );
         untilRegistered.happened();
     }
 
