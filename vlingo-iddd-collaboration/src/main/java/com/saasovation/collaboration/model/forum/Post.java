@@ -4,12 +4,11 @@
 // Mozilla Public License, v. 2.0. If a copy of the MPL
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
-package io.vlingo.reactive.messaging.patterns.pointtopointchannel;
 
-/**
- * PointToPointProcessor provides a simple method to verify that peer-to-peer messages are received in order.
- */
-public interface PointToPointProcessor
-{
-    void process( Integer messageId );
+package com.saasovation.collaboration.model.forum;
+
+import com.saasovation.collaboration.model.Moderator;
+
+public interface Post {
+  void moderate(final Moderator moderator, final String subject, final String bodyText);
 }

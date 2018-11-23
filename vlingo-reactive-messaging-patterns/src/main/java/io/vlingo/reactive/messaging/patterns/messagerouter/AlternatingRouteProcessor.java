@@ -13,9 +13,6 @@ import io.vlingo.actors.testkit.TestUntil;
  * AlternatingRouteProcessor {@link Actor} that delegates workload to {@link Processor} {@link Actor} based
  * on simple alternating algorithm.  This could be used to extrapolate to round-robin and other
  * more sophisticated delegation strategies.
- *
- * @author brsg.io
- * @since Oct 25, 2018
  */
 public class AlternatingRouteProcessor 
 extends Actor 

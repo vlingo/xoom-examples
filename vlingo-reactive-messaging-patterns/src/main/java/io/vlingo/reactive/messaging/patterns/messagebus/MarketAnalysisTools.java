@@ -13,9 +13,6 @@ import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.Regis
 /**
  * MarketAnalysisTools {@link Actor} registers interest in specific notifications related to analysis
  * and provides the behavior to be executed when these notifications arrive.
- *
- * @author brsg.io
- * @since Oct 31, 2018
  */
 public class MarketAnalysisTools 
 extends Actor
