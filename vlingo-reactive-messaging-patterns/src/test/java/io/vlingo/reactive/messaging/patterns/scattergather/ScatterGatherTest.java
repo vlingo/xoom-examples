@@ -21,9 +21,6 @@ import io.vlingo.reactive.messaging.patterns.scattergather.RetailBasket.RetailIt
 
 /**
  * ScatterGatherTest driver for this scatter-gather example.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class ScatterGatherTest
 {
