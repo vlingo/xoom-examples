@@ -11,18 +11,16 @@ import org.junit.Test;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.BudgetHikersPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.HighSierraPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.MountainAscentPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.PinnacleGearPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainSuppliesOrderProcessor.RockBottomOuterwearPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket.RetailItem;
+import io.vlingo.reactive.messaging.patterns.recipientlist.BudgetHikersPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.HighSierraPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.MountainAscentPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.PinnacleGearPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.RockBottomOuterwearPriceQuotes;
+import io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket;
+import io.vlingo.reactive.messaging.patterns.recipientlist.RetailItem;
 
 /**
  * RecipientListTest driver for this recipient list example.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class RecipientListTest
 {
@@ -58,48 +56,48 @@ public class RecipientListTest
             );
         
         mtnSppliesOrderProcessor
-        .requestForQuote( 
-            new RetailBasket( 
-                "125", 
-                new RetailItem( "4", 39.95 ), 
-                new RetailItem( "5", 199.95 ), 
-                new RetailItem( "6", 149.95 ),
-                new RetailItem( "7", 724.99 )
-            )
-        );
+            .requestForQuote( 
+                new RetailBasket( 
+                    "125", 
+                    new RetailItem( "4", 39.95 ), 
+                    new RetailItem( "5", 199.95 ), 
+                    new RetailItem( "6", 149.95 ),
+                    new RetailItem( "7", 724.99 )
+                )
+            );
     
         mtnSppliesOrderProcessor
-        .requestForQuote( 
-            new RetailBasket( 
-                "129", 
-                new RetailItem( "8", 119.99 ), 
-                new RetailItem( "9", 499.95 ), 
-                new RetailItem( "10", 519.00 ),
-                new RetailItem( "11", 209.50 )
-            )
-        );
+            .requestForQuote( 
+                new RetailBasket( 
+                    "129", 
+                    new RetailItem( "8", 119.99 ), 
+                    new RetailItem( "9", 499.95 ), 
+                    new RetailItem( "10", 519.00 ),
+                    new RetailItem( "11", 209.50 )
+                )
+            );
     
         mtnSppliesOrderProcessor
-        .requestForQuote( 
-            new RetailBasket( 
-                "135", 
-                new RetailItem( "12", .97 ), 
-                new RetailItem( "13", 9.50 ), 
-                new RetailItem( "14", 1.99 )
-            )
-        );
+            .requestForQuote( 
+                new RetailBasket( 
+                    "135", 
+                    new RetailItem( "12", .97 ), 
+                    new RetailItem( "13", 9.50 ), 
+                    new RetailItem( "14", 1.99 )
+                )
+            );
     
         mtnSppliesOrderProcessor
-        .requestForQuote( 
-            new RetailBasket( 
-                "140", 
-                new RetailItem( "15", 107.50 ), 
-                new RetailItem( "16", 9.50 ), 
-                new RetailItem( "17", 599.99 ),
-                new RetailItem( "18", 249.95 ),
-                new RetailItem( "19", 789.99 )
-            )
-        );
+            .requestForQuote( 
+                new RetailBasket( 
+                    "140", 
+                    new RetailItem( "15", 107.50 ), 
+                    new RetailItem( "16", 9.50 ), 
+                    new RetailItem( "17", 599.99 ),
+                    new RetailItem( "18", 249.95 ),
+                    new RetailItem( "19", 789.99 )
+                )
+            );
     
         until.completes();
         

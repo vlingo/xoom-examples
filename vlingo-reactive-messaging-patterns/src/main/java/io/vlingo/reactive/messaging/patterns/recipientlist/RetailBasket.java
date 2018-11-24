@@ -10,9 +10,6 @@ import java.util.Vector;
 
 /**
  * RetailBasket basket of {@link RetailItem} to be quoted for discount where appropriate.
- *
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public class RetailBasket
 {
@@ -20,9 +17,9 @@ public class RetailBasket
     public final Vector<RetailItem> retailItems;
     public final Double totalRetailPrice;
     
-    public RetailBasket( final String anRfqId, final RetailItem...items )
+    public RetailBasket( final String rfqId, final RetailItem...items )
     {
-        this.rfqId = anRfqId;
+        this.rfqId = rfqId;
         this.retailItems = new Vector<>();
         double d = 0;
         for ( RetailItem item : items ) 
@@ -31,17 +28,5 @@ public class RetailBasket
             d += item.retailPrice; 
         }
         totalRetailPrice = d;
-    }
-    
-    public static final class RetailItem
-    {
-        public final String itemId;
-        public final Double retailPrice;
-        
-        public RetailItem( final String anItemId, final Double aRetailPrice )
-        {
-            this.itemId = anItemId;
-            this.retailPrice = aRetailPrice;
-        }
     }
 }
