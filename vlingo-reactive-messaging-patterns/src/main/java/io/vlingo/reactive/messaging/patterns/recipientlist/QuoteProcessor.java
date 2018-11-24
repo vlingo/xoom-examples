@@ -9,9 +9,6 @@ package io.vlingo.reactive.messaging.patterns.recipientlist;
 /**
  * QuoteProcessor data needed to quote a discount price for an item according to a discount schedule
  * based on total price of a basket of items. 
- * 
- * @author brsg.io
- * @since Nov 20, 2018
  */
 public interface QuoteProcessor
 {
