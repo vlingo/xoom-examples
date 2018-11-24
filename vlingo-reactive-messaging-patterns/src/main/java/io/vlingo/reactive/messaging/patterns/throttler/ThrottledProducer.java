@@ -11,14 +11,12 @@ public class ThrottledProducer extends Actor implements Producer {
     private final List<Consumer> pending;
     private final int maxMessagesPerPeriod;
     private final Producer delegate;
-    private final int period;
     private int messagesSentInPeriod;
     private Cancellable periodRefresher;
 
     public ThrottledProducer(final int maxMessagesPerPeriod, int period, final Producer delegate) {
         this.maxMessagesPerPeriod = maxMessagesPerPeriod;
         this.delegate = delegate;
-        this.period = period;
 
         this.pending = new LinkedList<>();
         this.messagesSentInPeriod = 0;
@@ -31,8 +29,7 @@ public class ThrottledProducer extends Actor implements Producer {
         if (shouldThrottle()) {
             pending.add(consumer);
         } else {
-            delegate.produceMessage(consumer);
-            messagesSentInPeriod++;
+            doDispatchTo(consumer);
         }
     }
 
@@ -40,16 +37,15 @@ public class ThrottledProducer extends Actor implements Producer {
         messagesSentInPeriod = 0;
 
         while (!shouldThrottle() && thereAreMessagesPending()) {
-            dispatchMessage();
+            final Consumer consumer = pending.get(0);
+            doDispatchTo(consumer);
+            pending.remove(0);
         }
     }
 
-    private void dispatchMessage() {
-        final Consumer consumer = pending.get(0);
+    private void doDispatchTo(Consumer consumer) {
         delegate.produceMessage(consumer);
-
         messagesSentInPeriod++;
-        pending.remove(0);
     }
 
     private boolean thereAreMessagesPending() {
