@@ -6,8 +6,7 @@ import java.util.UUID;
 
 public class RandomStringProducer extends Actor implements Producer {
     @Override
-    public void produceMessage(Consumer consumer) {
-        final UUID uuid = UUID.randomUUID();
-        consumer.onReceiveMessage(uuid.toString());
+    public void produceMessage(final Consumer consumer) {
+        consumer.onReceiveMessage(UUID.randomUUID().toString());
     }
 }
