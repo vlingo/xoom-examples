@@ -2,11 +2,16 @@ package io.vlingo.reactive.messaging.patterns.throttler;
 
 import io.vlingo.actors.Actor;
 
-import java.util.UUID;
 
 public class RandomStringProducer extends Actor implements Producer {
+    private int messageCount;
+
+    public RandomStringProducer() {
+        this.messageCount = 0;
+    }
+
     @Override
     public void produceMessage(final Consumer consumer) {
-        consumer.onReceiveMessage(UUID.randomUUID().toString());
+        consumer.onReceiveMessage(String.valueOf(++messageCount));
     }
 }
