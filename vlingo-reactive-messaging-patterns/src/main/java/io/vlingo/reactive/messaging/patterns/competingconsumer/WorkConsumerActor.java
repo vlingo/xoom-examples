@@ -9,7 +9,7 @@ package io.vlingo.reactive.messaging.patterns.competingconsumer;
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
 /**
- * WorkConsumerActor
+ * WorkConsumerActor is an actor to which a WorkItem may be routed.
  */
 public class WorkConsumerActor extends Actor implements WorkConsumer {
   
