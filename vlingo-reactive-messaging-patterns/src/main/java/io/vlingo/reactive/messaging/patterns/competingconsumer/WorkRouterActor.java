@@ -12,7 +12,8 @@ import io.vlingo.actors.Router;
 import io.vlingo.actors.RouterSpecification;
 import io.vlingo.actors.testkit.TestUntil;
 /**
- * WorkRouterActor
+ * WorkRouterActor is a {@link Router} that routes {@link WorkItem}s
+ * to {@link WorkConsumer}s, specifically to {@link WorkConsumerActor}s.
  */
 public class WorkRouterActor extends Router implements WorkConsumer {
   

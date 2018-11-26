@@ -6,7 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.competingconsumer;
 /**
- * WorkItem
+ * WorkItem represent some work to be done.
  */
 public class WorkItem {
   
