@@ -1,0 +1,40 @@
+POST http://localhost:8081/users
+Content-Type: application/json
+
+{
+  "nameData": {
+    "given": "John",
+    "family": "Doe"
+  },
+  "contactData": {
+    "emailAddress": "example@vlingo.io",
+    "telephoneNumber": "1"
+  }
+}
+
+###
+
+PATCH http://localhost:8081/users/242/contact
+Content-Type: application/json
+
+{
+  "emailAddress": "another@vlingo.io",
+  "telephoneNumber": "33"
+}
+
+###
+
+PATCH http://localhost:8081/users/242/name
+Content-Type: application/json
+
+{
+  "given": "Dolores",
+  "family": "Abernathy"
+}
+
+
+###
+
+GET http://localhost:8081/users/242
+
+###
