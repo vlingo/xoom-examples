@@ -11,34 +11,23 @@ import io.vlingo.actors.World;
 import io.vlingo.frontservice.infra.persistence.CommandModelStoreProvider;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
 import io.vlingo.frontservice.infra.projection.ProjectionDispatcherProvider;
+import io.vlingo.frontservice.resource.ProfileResource;
+import io.vlingo.frontservice.resource.UserResource;
+import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
+
+import static io.vlingo.http.resource.Configuration.Sizing;
+import static io.vlingo.http.resource.Configuration.Timing;
 
 public class Bootstrap {
   private static Bootstrap instance;
+  public final Server server;
 
-  public static final Bootstrap instance() {
-    if (instance == null) instance = new Bootstrap();
-    return instance;
-  }
-
-//  public static final Bootstrap testInstance() {
+  //  public static final Bootstrap testInstance() {
 //    if (instance == null) instance = new Bootstrap(true);
 //    return instance;
 //  }
-
-  public static final void terminateTestInstance() {
-    instance = null;
-  }
-
-  public final Server server;
   public final World world;
-
-  public static void main(final String[] args) throws Exception {
-    System.out.println("=======================");
-    System.out.println("frontservice: started.");
-    System.out.println("=======================");
-    Bootstrap.instance();
-  }
 
   private Bootstrap() {
     this.world = World.startWithDefaults("frontservice");
@@ -47,7 +36,12 @@ public class Bootstrap {
 
     CommandModelStoreProvider.using(world.stage(), ProjectionDispatcherProvider.using(world.stage()).textStateStoreDispatcher);
 
-    this.server = Server.startWith(world.stage());
+    final UserResource userResource = new UserResource(world);
+    final ProfileResource profileResource = new ProfileResource(world);
+
+    final Resources resources = Resources.are(userResource.routes(), profileResource.routes());
+
+    this.server = Server.startWith(world.stage(), resources, 8081, Sizing.define(), Timing.define());
 
     Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override
@@ -63,6 +57,22 @@ public class Bootstrap {
         }
       }
     });
+  }
+
+  public static final Bootstrap instance() {
+    if (instance == null) instance = new Bootstrap();
+    return instance;
+  }
+
+  public static final void terminateTestInstance() {
+    instance = null;
+  }
+
+  public static void main(final String[] args) throws Exception {
+    System.out.println("=======================");
+    System.out.println("frontservice: started.");
+    System.out.println("=======================");
+    Bootstrap.instance();
   }
 
   private void pause() {

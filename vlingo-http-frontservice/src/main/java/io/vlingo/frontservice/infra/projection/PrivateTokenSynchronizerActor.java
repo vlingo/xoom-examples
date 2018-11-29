@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.AddressFactory;
+import io.vlingo.common.Tuple4;
 import io.vlingo.frontservice.model.User;
 import io.vlingo.http.Request;
 import io.vlingo.http.RequestHeader;
@@ -68,10 +69,10 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
               .and(URI.create("/tokens/" + state.security.publicToken))
               .and(host("localhost"))
               .and(RequestHeader.of(RequestHeader.XCorrelationID, correlationId)))
-          .consumeAfter(response -> {
+          .andThenConsume(response -> {
              switch (response.status) {
              case Ok:
-               logger().log("RESPONDED FOR TOKEN: " + correlationId);
+               logger().log("STARTING PROCESSING FOR TOKEN: " + correlationId);
                break;
              default:
                logger().log("Failed token request for user: " + state.id + " because: " + response.status);
@@ -112,20 +113,18 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
               .and(host("localhost"))
               .and(RequestHeader.accept("text/event-stream"))
               .and(RequestHeader.correlationId(getClass().getSimpleName() + "-tokens")))
-            .consumeAfter(response -> {
+            .andThenConsume(response -> {
               switch (response.status) {
               case Ok: {
                 final List<MessageEvent> events = MessageEvent.from(response);
-                for (MessageEvent event : events) {
+                for (final MessageEvent event : events) {
                   logger().log("EVENT: " + event);
-                  final String[] attributes = event.data.split(DataAttributesSeparator);
-                  final String identities[] = attributes[Identities].split(IdentitiesSeparator);
-                  final io.vlingo.actors.Address address = addressFactory.from(identities[UserId]);
-                  stage().actorOf(address, User.class)
-                    .consumeAfter(user -> {
-                      user.attachPrivateToken(attributes[Token]);
-                      control.confirmProjected(identities[ProjectionId]);
-                      logger().log("USER TOKEN SYNCHRONIZED: " + identities[UserId] + " WITH: " + attributes[Token]);
+                  final Tuple4<io.vlingo.actors.Address, String, String, String> eventData = eventDataFrom(event);
+                  stage().actorOf(eventData._1, User.class)
+                    .andThenConsume(user -> {
+                      user.attachPrivateToken(eventData._4);
+                      control.confirmProjected(eventData._3);
+                      logger().log("USER TOKEN SYNCHRONIZED: " + eventData._2 + " WITH: " + eventData._4);
                     });
                 }
                break;
@@ -136,5 +135,12 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
               }
             })
             .repeat();
+  }
+
+  private Tuple4<io.vlingo.actors.Address, String, String, String> eventDataFrom(final MessageEvent event) {
+    final String[] attributes = event.data.split(DataAttributesSeparator);
+    final String[] identities = attributes[Identities].split(IdentitiesSeparator);
+    final io.vlingo.actors.Address address = addressFactory.from(identities[UserId]);
+    return Tuple4.from(address, identities[UserId], identities[ProjectionId], attributes[Token]);
   }
 }
