@@ -8,6 +8,7 @@
 package io.vlingo.reactive.messaging.patterns.publishsubscribe;
 
 import io.vlingo.actors.Actor;
+import io.vlingo.actors.pubsub.Message;
 import io.vlingo.actors.pubsub.Subscriber;
 import io.vlingo.actors.testkit.TestUntil;
 
@@ -18,10 +19,11 @@ public class NASDAQSubscriber extends Actor implements Subscriber<PriceQuoted> {
     public NASDAQSubscriber(final TestUntil until) {
         this.until = until;
     }
-
+    
+    /* @see io.vlingo.actors.pubsub.Subscriber#receive(io.vlingo.actors.pubsub.Message) */
     @Override
-    public void receive(final PriceQuoted priceQuoted) {
-        logger().log("NASDAQSubscriber received " + priceQuoted);
-        until.happened();
+    public void receive(Message message) {
+      logger().log("NASDAQSubscriber received " + message);
+      until.happened();
     }
 }
