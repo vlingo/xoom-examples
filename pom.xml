@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-examples</artifactId>
-  <version>0.7.2</version>
+  <version>0.7.4</version>
   <packaging>pom</packaging>
 
   <name>vlingo-examples</name>
@@ -13,6 +13,36 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+
+  <build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>versions-maven-plugin</artifactId>
+            <version>2.7</version>
+            <configuration>
+                <generateBackupPoms>false</generateBackupPoms>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            <configuration>
+                <release>11</release>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.0.0-M2</version>
+            <configuration>
+                <!-- Allow reflection access for third party libraries -->
+                <argLine>--illegal-access=permit</argLine>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
 
   <dependencies>
     <dependency>

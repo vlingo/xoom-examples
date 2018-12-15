@@ -1,8 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.vlingo</groupId>
+  <parent>
+    <groupId>io.vlingo</groupId>
+    <artifactId>vlingo-examples</artifactId>
+    <version>0.7.4</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
   <artifactId>vlingo-http-backservice</artifactId>
-  <version>0.7.4</version>
   <name>vlingo-http-backservice</name>
   <description>Example of vlingo/http non-public service.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -60,12 +64,6 @@
     </plugins>
   </build>
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-common</artifactId>

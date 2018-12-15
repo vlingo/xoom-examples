@@ -44,7 +44,7 @@ public class ThrottlerTest {
         testUntil.completes();
         long elapsedTime = System.currentTimeMillis() - startTime;
 
-        Assert.assertTrue("Processed messages in a faster rate (10 messages in " + elapsedTime + "ms)", elapsedTime >= 850);
+        Assert.assertTrue("Processed messages in a faster rate (10 messages in " + elapsedTime + "ms)", elapsedTime >= 800);
         Assert.assertEquals(0, testUntil.remaining());
     }
 
