@@ -7,27 +7,25 @@
 
 package io.vlingo.frontservice.resource;
 
-import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Status.Created;
-import static io.vlingo.http.Response.Status.NotFound;
-import static io.vlingo.http.Response.Status.Ok;
-import static io.vlingo.http.ResponseHeader.Location;
-import static io.vlingo.http.ResponseHeader.headers;
-import static io.vlingo.http.ResponseHeader.of;
-
 import io.vlingo.actors.AddressFactory;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
+import io.vlingo.common.Completes;
 import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.infra.persistence.Queries;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
 import io.vlingo.frontservice.model.Profile;
 import io.vlingo.frontservice.model.ProfileEntity;
 import io.vlingo.http.Response;
-import io.vlingo.http.resource.ResourceHandler;
+import io.vlingo.http.resource.Resource;
 
-public class ProfileResource extends ResourceHandler {
+import static io.vlingo.common.serialization.JsonSerialization.serialized;
+import static io.vlingo.http.Response.Status.*;
+import static io.vlingo.http.ResponseHeader.*;
+import static io.vlingo.http.resource.ResourceBuilder.*;
+
+public class ProfileResource {
   private final AddressFactory addressFactory;
   private final Queries queries;
   private final Stage stage;
@@ -38,40 +36,40 @@ public class ProfileResource extends ResourceHandler {
     this.queries = QueryModelStoreProvider.instance().queries;
   }
 
-  public void define(final String userId, final ProfileData profileData) {
-    stage.actorOf(addressFactory.findableBy(Integer.parseInt(userId)), Profile.class)
-      .andThenConsume(profile -> {
-        queries.profileOf(userId).andThenConsume(data -> {
-          completes().with(Response.of(Ok, headers(of(Location, profileLocation(userId))), serialized(data)));
-        });
-      })
+  public Completes<Response> define(final String userId, final ProfileData profileData) {
+    return stage.actorOf(addressFactory.findableBy(Integer.parseInt(userId)), Profile.class)
+      .andThenTo(profile -> queries.profileOf(userId))
+      .andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(Location, profileLocation(userId))), serialized(data))))
       .otherwise(noProfile -> {
         final Profile.ProfileState profileState =
-                Profile.from(
-                        userId,
-                        profileData.twitterAccount,
-                        profileData.linkedInAccount,
-                        profileData.website);
-
-        stage().actorFor(Definition.has(ProfileEntity.class, Definition.parameters(profileState)), Profile.class);
-        completes().with(Response.of(Created, serialized(ProfileData.from(profileState))));
-
-        return noProfile;
+          Profile.from(
+            userId,
+            profileData.twitterAccount,
+            profileData.linkedInAccount,
+            profileData.website);
+        stage.actorFor(Definition.has(ProfileEntity.class, Definition.parameters(profileState)), Profile.class);
+        return Response.of(Created, serialized(ProfileData.from(profileState)));
       });
   }
 
-  public void query(final String userId) {
-    queries.profileOf(userId)
-      .andThenConsume(data -> {
-        completes().with(Response.of(Ok, serialized(data)));
-      })
-      .otherwise(noData -> {
-        completes().with(Response.of(NotFound, profileLocation(userId)));
-        return noData;
-      });
+  public Completes<Response> query(final String userId) {
+    return queries.profileOf(userId)
+      .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+      .otherwise(noData -> Response.of(NotFound, profileLocation(userId)));
   }
 
   private String profileLocation(final String userId) {
     return "/users/" + userId + "/profile";
+  }
+
+  public Resource<?> routes() {
+    return resource("profile resource fluent api",
+      put("/users/{userId}/profile")
+        .param(String.class)
+        .body(ProfileData.class)
+        .handle(this::define),
+      get("/users/{userId}/profile")
+        .param(String.class)
+        .handle(this::query));
   }
 }
