@@ -9,17 +9,17 @@ package io.vlingo.frontservice.infra.persistence;
 
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.frontservice.model.Profile;
-import io.vlingo.lattice.model.stateful.StateAdapter;
+import io.vlingo.symbio.StateAdapter;
 
 public class ProfileStateAdapter implements StateAdapter<Profile.ProfileState,String> {
 
   @Override
-  public Profile.ProfileState from(final String raw, final int stateVersion, final int typeVersion) {
+  public Profile.ProfileState fromRaw(final String raw, final int stateVersion, final int typeVersion) {
     return JsonSerialization.deserialized(raw, Profile.ProfileState.class);
   }
 
   @Override
-  public String to(final Profile.ProfileState state, final int stateVersion, final int typeVersion) {
+  public String toRaw(final Profile.ProfileState state, final int stateVersion, final int typeVersion) {
     return JsonSerialization.serialized(state);
   }
 }
