@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import io.vlingo.actors.Actor;
+import io.vlingo.common.Outcome;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
 import io.vlingo.frontservice.infra.persistence.UserDataStateAdapter;
@@ -21,6 +22,7 @@ import io.vlingo.lattice.model.projection.ProjectionControl;
 import io.vlingo.symbio.State;
 import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.store.Result;
+import io.vlingo.symbio.store.StorageException;
 import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
 import io.vlingo.symbio.store.state.StateStore.WriteResultInterest;
 import io.vlingo.symbio.store.state.TextStateStore;
@@ -49,7 +51,7 @@ public class UserProjectionActor extends Actor
 
     switch (projectable.becauseOf()) {
       case "User:new": {
-        final State<String> projection = new TextState(data.id, UserData.class, 1, adapter.to(data, 1, 1), state.version);
+        final State<String> projection = new TextState(data.id, UserData.class, 1, adapter.toRaw(data, 1, 1), state.version);
         store.write(projection, writeInterest, confirmation);
         break;
       }
@@ -78,31 +80,33 @@ public class UserProjectionActor extends Actor
 
   @Override
   @SuppressWarnings("unchecked")
-  public void readResultedIn(final Result result, final String id, final State<String> state, final Object object) {
-    ((Consumer<State<String>>) object).accept(state);
+  public void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final State<String> state, final Object object) {
+    outcome.andThen(result -> {
+      ((Consumer<State<String>>) object).accept(state);
+      return result;
+    }).otherwise(cause -> {
+      // log but don't retry, allowing re-delivery of Projectable
+      logger().log("Query state not read for update because: " + cause.getMessage(), cause);
+      return cause.result;
+    });
   }
 
   @Override
-  public void readResultedIn(Result result, Exception cause, String id, State<String> state, Object object) {
-    // log but don't retry, allowing re-delivery of Projectable
-    logger().log("Query state not read for update because: " + cause.getMessage(), cause);
-  }
-
-  @Override
-  public void writeResultedIn(final Result result, final String id, final State<String> state, final Object object) {
-    ((Confirmer) object).confirm();
-  }
-
-  @Override
-  public void writeResultedIn(final Result result, final Exception cause, final String id, final State<String> state, final Object object) {
-    // log but don't retry, allowing re-delivery of Projectable
-    logger().log("Query state not written for update because: " + cause.getMessage(), cause);
+  public void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final State<String> state, final Object object) {
+    outcome.andThen(result -> {
+      ((Confirmer) object).confirm();
+      return result;
+    }).otherwise(cause -> {
+      // log but don't retry, allowing re-delivery of Projectable
+      logger().log("Query state not written for update because: " + cause.getMessage(), cause);
+      return cause.result;
+    });
   }
 
   private void updateWith(final State<String> state, final UserData data, final int version, final Function<UserData,UserData> updater, final Confirmer confirmer) {
-    final UserData read = adapter.from(state.data, state.dataVersion, state.typeVersion);
+    final UserData read = adapter.fromRaw(state.data, state.dataVersion, state.typeVersion);
     final UserData write = updater.apply(read);
-    final State<String> projection = new TextState(write.id, UserData.class, 1, adapter.to(write, 1, 1), version);
+    final State<String> projection = new TextState(write.id, UserData.class, 1, adapter.toRaw(write, 1, 1), version);
     store.write(projection, writeInterest, confirmer);
   }
 
