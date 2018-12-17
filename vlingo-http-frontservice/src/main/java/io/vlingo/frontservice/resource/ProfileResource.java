@@ -38,8 +38,8 @@ public class ProfileResource {
 
   public Completes<Response> define(final String userId, final ProfileData profileData) {
     return stage.actorOf(addressFactory.findableBy(Integer.parseInt(userId)), Profile.class)
-      .andThenInto(profile -> queries.profileOf(userId))
-      .andThenInto(data -> Completes.withSuccess(Response.of(Ok, headers(of(Location, profileLocation(userId))), serialized(data))))
+      .andThenTo(profile -> queries.profileOf(userId))
+      .andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(Location, profileLocation(userId))), serialized(data))))
       .otherwise(noProfile -> {
         final Profile.ProfileState profileState =
           Profile.from(
@@ -54,7 +54,7 @@ public class ProfileResource {
 
   public Completes<Response> query(final String userId) {
     return queries.profileOf(userId)
-      .andThenInto(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+      .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
       .otherwise(noData -> Response.of(NotFound, profileLocation(userId)));
   }
 
@@ -62,7 +62,7 @@ public class ProfileResource {
     return "/users/" + userId + "/profile";
   }
 
-  public Resource routes() {
+  public Resource<?> routes() {
     return resource("profile resource fluent api",
       put("/users/{userId}/profile")
         .param(String.class)
