@@ -1,8 +1,9 @@
 package io.vlingo.eventjournal;
 
-import io.vlingo.actors.World;
 import org.junit.After;
 import org.junit.Before;
+
+import io.vlingo.actors.World;
 
 public abstract class ActorTest {
     protected static final int TIMEOUT = 1000;

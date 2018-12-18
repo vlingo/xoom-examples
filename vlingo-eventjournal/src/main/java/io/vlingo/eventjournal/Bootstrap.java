@@ -1,5 +1,7 @@
 package io.vlingo.eventjournal;
 
+import org.flywaydb.core.Flyway;
+
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.eventjournal.counter.Counter;
@@ -8,11 +10,10 @@ import io.vlingo.eventjournal.counter.CounterQuery;
 import io.vlingo.eventjournal.counter.CounterQueryActor;
 import io.vlingo.eventjournal.interest.NoopConfigurationInterest;
 import io.vlingo.eventjournal.interest.NoopEventJournalListener;
-import io.vlingo.symbio.store.eventjournal.EventJournal;
+import io.vlingo.symbio.store.journal.Journal;
+import io.vlingo.symbio.store.journal.jdbc.postgres.PostgresJournalActor;
 import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.jdbc.Configuration;
-import io.vlingo.symbio.store.state.jdbc.postgres.eventjournal.PostgresEventJournalActor;
-import org.flywaydb.core.Flyway;
 
 public class Bootstrap {
     private static final String DB_URL = "jdbc:postgresql://[::1]:5432/";
@@ -36,9 +37,10 @@ public class Bootstrap {
         );
 
         final World world = World.startWithDefaults("event-journal");
-        EventJournal journal = world.actorFor(
-                Definition.has(PostgresEventJournalActor.class, Definition.parameters(configuration, new NoopEventJournalListener())),
-                EventJournal.class
+        @SuppressWarnings("unchecked")
+        Journal<String> journal = world.actorFor(
+                Definition.has(PostgresJournalActor.class, Definition.parameters(configuration, new NoopEventJournalListener())),
+                Journal.class
         );
 
         final Counter counter = world.actorFor(
@@ -47,7 +49,7 @@ public class Bootstrap {
         );
 
         final CounterQuery counterQuery = world.actorFor(
-                Definition.has(CounterQueryActor.class, Definition.parameters(journal.eventJournalReader(DB_NAME).await())),
+                Definition.has(CounterQueryActor.class, Definition.parameters(journal.journalReader(DB_NAME).await())),
                 CounterQuery.class
         );
 

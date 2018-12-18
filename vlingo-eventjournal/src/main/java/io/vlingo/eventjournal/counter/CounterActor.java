@@ -1,39 +1,40 @@
+// Copyright © 2012-2018 Vaughn Vernon. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package io.vlingo.eventjournal.counter;
 
 import io.vlingo.actors.Actor;
+import io.vlingo.eventjournal.MockAppendResultInterest;
 import io.vlingo.eventjournal.counter.events.CounterDecreased;
-import io.vlingo.eventjournal.counter.events.CounterDecreasedAdapter;
 import io.vlingo.eventjournal.counter.events.CounterIncreased;
-import io.vlingo.eventjournal.counter.events.CounterIncreasedAdapter;
-import io.vlingo.symbio.store.eventjournal.EventJournal;
-import io.vlingo.symbio.store.state.jdbc.postgres.eventjournal.MockAppendResultInterest;
+import io.vlingo.symbio.store.journal.Journal;
 
 public class CounterActor extends Actor implements Counter {
     private final String counterName;
-    private final EventJournal<String> journal;
-    private final CounterIncreasedAdapter counterIncreasedAdapter;
-    private final CounterDecreasedAdapter counterDecreasedAdapter;
+    private final Journal<String> journal;
     private int currentCount;
     private int version;
 
-    public CounterActor(final String counterName, final EventJournal<String> journal) {
+    public CounterActor(final String counterName, final Journal<String> journal) {
         this.counterName = counterName;
         this.journal = journal;
         this.currentCount = 0;
         this.version = 1;
-        this.counterIncreasedAdapter = new CounterIncreasedAdapter();
-        this.counterDecreasedAdapter = new CounterDecreasedAdapter();
     }
 
     @Override
     public void increase() {
         currentCount++;
-        journal.append(counterName, version++, counterIncreasedAdapter.serialize(new CounterIncreased(currentCount)), new MockAppendResultInterest(), this);
+        journal.append(counterName, version++, new CounterIncreased(currentCount), new MockAppendResultInterest(), this);
     }
 
     @Override
     public void decrease() {
         currentCount--;
-        journal.append(counterName, version++, counterDecreasedAdapter.serialize(new CounterDecreased(currentCount)), new MockAppendResultInterest(), this);
+        journal.append(counterName, version++, new CounterDecreased(currentCount), new MockAppendResultInterest(), this);
     }
 }
