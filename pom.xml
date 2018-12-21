@@ -25,5 +25,6 @@
     <module>vlingo-http-frontservice</module>
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-eventjournal</module>
+    <module>vlingo-auth-authservice</module>
   </modules>
 </project>
