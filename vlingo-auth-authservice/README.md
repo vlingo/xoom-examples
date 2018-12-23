@@ -37,3 +37,22 @@ Content-Length: 173
 ```
 
 Notice that the tenantId is generated and returned.
+
+## How-to Load
+A `jmeter` directory has been added that contains a load script, `authDataBootstrap.jmx` as well as a data directory with sub-directories containing CSV files for: tenant, group, role, and permissions.  Ten tenants worth of data are included and written into the JMeter script.
+
+In order to load data:
+
+1. Start authservice as described above.
+2. [Download Apache JMeter](https://jmeter.apache.org) for your OS.
+3. Start Apache JMeter according to your OS.
+4. It's important to navigate to the JMeter script so that a present-working-directory is established as data is accessed relative to this direcctory.  Open `authDataBootstrap.jmx` in this directory vlingo-auth-authservice/jmeter/.
+5. Click the `start` icon (green triangle).
+
+Each of ten tenants data is loaded by way of 10 separate threads named `Load Tenant One`, `Load Tenant Two`, etc.  Spin down and click on each of the elements of the threads to see how this was setup.
+
+Access to the result of the load is in a number of locations.
+
+1. A top level `Summary Report` displays overall runtime and throughput information.
+2. Data specific to each of the Tenant loads is found in the `View Results in Table`, and `View Results Tree` within each thread.  Of the two, `View Results Tree` is more valuable for finding `tenantId` instances in either the `Request` or `Response Data` tabs of each individual request-response displayed in the `View Results Tree` portion of the JMeter UI.
+ 
