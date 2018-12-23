@@ -1,0 +1,6 @@
+tenantId,Name,Description
+1,Administer,Individual can create new and delete existing permissions and assign existing permissions to tenant users.
+1,Author,Wide ranging publishing and editing capabilities.
+1,Contributor,Ability to create and edit artifacts.
+1,Reviewer,Ability to comment on existing artifacts.
+1,Read-only,Ability to view existing artifacts.
