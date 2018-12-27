@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>vlingo-examples</artifactId>
+        <groupId>io.vlingo</groupId>
+        <version>0.7.2</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>vlingo-examples-process-manager</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.vlingo</groupId>
+            <artifactId>vlingo-lattice</artifactId>
+            <version>0.7.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.vlingo</groupId>
+            <artifactId>vlingo-http</artifactId>
+            <version>0.7.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.vlingo</groupId>
+            <artifactId>vlingo-reactive-messaging-patterns</artifactId>
+            <version>0.7.2</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>

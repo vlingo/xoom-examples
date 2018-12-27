@@ -27,8 +27,10 @@
     <module>vlingo-actors-playground</module>
     <module>vlingo-http-backservice</module>
     <module>vlingo-http-frontservice</module>
+    <module>vlingo-iddd-collaboration</module>
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-eventjournal</module>
+    <module>vlingo-process-manager</module>
   </modules>
 
 </project>
