@@ -29,7 +29,7 @@ public class QueryModelStoreProvider {
     return instance;
   }
 
-  public static QueryModelStoreProvider using(final Stage stage) {
+  public static QueryModelStoreProvider using(final Stage stage, final StatefulTypeRegistry registry) {
     if (instance != null) return instance;
 
     final TextDispatcher noop = new TextDispatcher() {
@@ -47,16 +47,16 @@ public class QueryModelStoreProvider {
                     Definition.has(QueriesActor.class, Definition.parameters(store)),
                     Queries.class);
 
-    instance = new QueryModelStoreProvider(store, queries);
+    instance = new QueryModelStoreProvider(registry, store, queries);
 
     return instance;
   }
 
-  private QueryModelStoreProvider(final TextStateStore store, final Queries queries) {
+  private QueryModelStoreProvider(final StatefulTypeRegistry registry, final TextStateStore store, final Queries queries) {
     this.store = store;
     this.queries = queries;
 
-    StatefulTypeRegistry.instance
+    registry
       .register(new Info<UserData,String>(store, UserData.class, UserData.class.getSimpleName(), new UserDataStateAdapter()))
       .register(new Info<ProfileData,String>(store, ProfileData.class, ProfileData.class.getSimpleName(), new ProfileDataStateAdapter()));
   }
