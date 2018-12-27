@@ -29,7 +29,7 @@ public class CommandModelStoreProvider {
     return instance;
   }
 
-  public static CommandModelStoreProvider using(final Stage stage, final TextDispatcher dispatcher) {
+  public static CommandModelStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final TextDispatcher dispatcher) {
     if (instance != null) return instance;
 
     final Protocols storeProtocols =
@@ -39,16 +39,16 @@ public class CommandModelStoreProvider {
 
     final Protocols.Two<TextStateStore, DispatcherControl> storeWithControl = Protocols.two(storeProtocols);
 
-    instance = new CommandModelStoreProvider(storeWithControl._1, storeWithControl._2);
+    instance = new CommandModelStoreProvider(registry, storeWithControl._1, storeWithControl._2);
 
     return instance;
   }
 
-  private CommandModelStoreProvider(final TextStateStore store, final DispatcherControl dispatcherControl) {
+  private CommandModelStoreProvider(final StatefulTypeRegistry registry, final TextStateStore store, final DispatcherControl dispatcherControl) {
     this.store = store;
     this.dispatcherControl = dispatcherControl;
 
-    StatefulTypeRegistry.instance
+    registry
       .register(new Info<User.UserState,String>(store, User.UserState.class, User.UserState.class.getSimpleName(), new UserStateAdapter()))
       .register(new Info<Profile.ProfileState,String>(store, Profile.ProfileState.class, Profile.ProfileState.class.getSimpleName(), new ProfileStateAdapter()));
   }
