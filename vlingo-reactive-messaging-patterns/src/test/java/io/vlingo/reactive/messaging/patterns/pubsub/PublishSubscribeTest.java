@@ -19,6 +19,7 @@ import org.junit.Test;
 public class PublishSubscribeTest {
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testThatPublishSubscribeRuns() {
 
         System.out.println("Publish Subscribe: is starting.");
