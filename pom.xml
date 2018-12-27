@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-examples</artifactId>
-  <version>0.7.5</version>
+  <version>0.7.6</version>
   <packaging>pom</packaging>
   <name>vlingo-examples</name>
   <url>http://maven.apache.org</url>
@@ -26,5 +26,6 @@
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-eventjournal</module>
     <module>vlingo-auth-authservice</module>
+    <module>vlingo-iddd-collaboration</module>
   </modules>
 </project>
