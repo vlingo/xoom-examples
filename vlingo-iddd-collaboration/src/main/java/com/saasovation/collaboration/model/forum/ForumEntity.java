@@ -7,35 +7,38 @@
 
 package com.saasovation.collaboration.model.forum;
 
-import static com.saasovation.collaboration.model.forum.Events.*;
-
 import java.util.function.BiConsumer;
 
 import com.saasovation.collaboration.model.Author;
 import com.saasovation.collaboration.model.Creator;
 import com.saasovation.collaboration.model.Moderator;
 import com.saasovation.collaboration.model.Tenant;
+import com.saasovation.collaboration.model.forum.Events.ForumClosed;
+import com.saasovation.collaboration.model.forum.Events.ForumDescribed;
+import com.saasovation.collaboration.model.forum.Events.ForumModeratorAssigned;
+import com.saasovation.collaboration.model.forum.Events.ForumReopened;
+import com.saasovation.collaboration.model.forum.Events.ForumStarted;
+import com.saasovation.collaboration.model.forum.Events.ForumTopicChanged;
 
 import io.vlingo.common.Completes;
+import io.vlingo.common.Tuple2;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
 public class ForumEntity extends EventSourced implements Forum {
   private State state;
 
-  public ForumEntity(
-          final Tenant tenant,
-          final ForumId forumId,
-          final Creator creator,
-          final Moderator moderator,
-          final String topic,
-          final String description,
-          final String exclusiveOwner) {
-    apply(ForumStarted.with(tenant, forumId, creator, moderator, topic, description, exclusiveOwner));
+  public ForumEntity(final Tenant tenant, final ForumId forumId) {
+    super(tenant.value, forumId.value);
+
+    if (state == null) {
+      // state was not recovered from event stream
+      state = new State(tenant, forumId);
+    }
   }
 
   @Override
   public void assign(final Moderator moderator) {
-    if (!state.moderator.value.equals(moderator.value)) {
+    if (!moderator.equals(state.moderator)) {
       apply(ForumModeratorAssigned.with(state.tenant, state.forumId, moderator, state.exclusiveOwner));
     }
   }
@@ -49,14 +52,17 @@ public class ForumEntity extends EventSourced implements Forum {
 
   @Override
   public void describeAs(final String description) {
-    if (!state.description.equals(description)) {
+    if (!description.equals(state.description)) {
       apply(ForumDescribed.with(state.tenant, state.forumId, description, state.exclusiveOwner));
     }
   }
 
   @Override
-  public Completes<Discussion> discuss(final Author author, final String topic) {
-    return null;
+  public Completes<Tuple2<DiscussionId, Discussion>> discussFor(final Author author, final String topic) {
+    final DiscussionId discussionId = DiscussionId.unique();
+    final Discussion discussion = stage().actorFor(Discussion.class, DiscussionEntity.class, state.tenant, state.forumId, discussionId);
+    discussion.startWith(author, topic);
+    return completes().with(Tuple2.from(discussionId, discussion));
   }
 
   @Override
@@ -67,8 +73,15 @@ public class ForumEntity extends EventSourced implements Forum {
   }
 
   @Override
+  public void startWith(final Creator creator, final Moderator moderator, final String topic, final String description, final String exclusiveOwner) {
+    if (state.creator == null) {
+      apply(ForumStarted.with(state.tenant, state.forumId, creator, moderator, topic, description, exclusiveOwner));
+    }
+  }
+
+  @Override
   public void topicIs(final String topic) {
-    if (!state.topic.equals(topic)) {
+    if (!topic.equals(state.topic)) {
       apply(ForumTopicChanged.with(state.tenant, state.forumId, topic, state.exclusiveOwner));
     }
   }
@@ -76,15 +89,21 @@ public class ForumEntity extends EventSourced implements Forum {
   private final class State {
     public final Tenant tenant;
     public final ForumId forumId;
+    public final Creator creator;
     public final Moderator moderator;
     public final String topic;
     public final String description;
     public final String exclusiveOwner;
     public final boolean open;
-    
+
+    State(final Tenant tenant, final ForumId forumId) {
+      this(tenant, forumId, null, null, null, null, null, false);
+    }
+
     State(
             final Tenant tenant,
             final ForumId forumId,
+            final Creator creator,
             final Moderator moderator,
             final String topic,
             final String description,
@@ -92,6 +111,7 @@ public class ForumEntity extends EventSourced implements Forum {
             final boolean open) {
       this.tenant = tenant;
       this.forumId = forumId;
+      this.creator = creator;
       this.moderator = moderator;
       this.topic = topic;
       this.description = description;
@@ -99,24 +119,29 @@ public class ForumEntity extends EventSourced implements Forum {
       this.open = open;
     }
 
+    @Override
+    public String toString() {
+      return "[" + tenant + " " + forumId + " " + moderator + " topic=\"" + topic + "\" description=\" " + description + " exclusiveOwner=" + exclusiveOwner + " open=" + open + "]";
+    }
+
     State closed() {
-      return new State(tenant, forumId, moderator, topic, description, exclusiveOwner, false);
+      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, false);
     }
 
     State opened() {
-      return new State(tenant, forumId, moderator, topic, description, exclusiveOwner, true);
+      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, true);
     }
 
     State withDescription(final String description) {
-      return new State(tenant, forumId, moderator, topic, description, exclusiveOwner, open);
+      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, open);
     }
 
     State withModerator(final Moderator moderator) {
-      return new State(tenant, forumId, moderator, topic, description, exclusiveOwner, open);
+      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, open);
     }
 
     State withTopic(final String topic) {
-      return new State(tenant, forumId, moderator, topic, description, exclusiveOwner, open);
+      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, open);
     }
   }
 
@@ -136,7 +161,7 @@ public class ForumEntity extends EventSourced implements Forum {
   }
 
   private void applyForumStarted(final ForumStarted e) {
-    state = new State(Tenant.fromExisting(e.tenantId), ForumId.fromExisting(e.forumId), Moderator.fromExisting(e.moderatorId), e.topic, e.description, e.exclusiveOwner, true);
+    state = new State(Tenant.fromExisting(e.tenantId), ForumId.fromExisting(e.forumId), Creator.fromExisting(e.creatorId), Moderator.fromExisting(e.moderatorId), e.topic, e.description, e.exclusiveOwner, true);
   }
 
   private void applyForumModeratorAssigned(final ForumModeratorAssigned e) {
