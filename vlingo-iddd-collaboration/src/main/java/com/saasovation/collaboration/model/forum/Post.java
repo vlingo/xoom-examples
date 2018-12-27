@@ -7,8 +7,10 @@
 
 package com.saasovation.collaboration.model.forum;
 
+import com.saasovation.collaboration.model.Author;
 import com.saasovation.collaboration.model.Moderator;
 
 public interface Post {
   void moderate(final Moderator moderator, final String subject, final String bodyText);
+  void submitWith(final Author author, final String subject, final String bodyText);
 }
