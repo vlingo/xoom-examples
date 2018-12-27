@@ -14,9 +14,7 @@ import io.vlingo.common.Cancellable;
 import io.vlingo.common.Completes;
 import io.vlingo.common.Scheduled;
 import io.vlingo.eventjournal.counter.events.Event;
-import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.EntryAdapterProvider;
-import io.vlingo.symbio.Source;
 import io.vlingo.symbio.store.journal.JournalReader;
 
 public class CounterQueryActor extends Actor implements CounterQuery, Scheduled {
@@ -24,9 +22,9 @@ public class CounterQueryActor extends Actor implements CounterQuery, Scheduled 
     private final Cancellable cancellable;
     private Event counted;
     private Optional<Integer> currentCount;
-    private EntryAdapterProvider<Source<String>,Entry<String>> entryAdapterProvider;
+    private EntryAdapterProvider entryAdapterProvider;
 
-    public CounterQueryActor(JournalReader<String> streamReader, EntryAdapterProvider<Source<String>,Entry<String>> entryAdapterProvider) {
+    public CounterQueryActor(JournalReader<String> streamReader, EntryAdapterProvider entryAdapterProvider) {
         this.streamReader = streamReader;
         this.entryAdapterProvider = entryAdapterProvider;
         this.cancellable = scheduler().schedule(selfAs(Scheduled.class), null, 0, 5);
