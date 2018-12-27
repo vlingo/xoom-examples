@@ -19,6 +19,7 @@ import io.vlingo.frontservice.model.User;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.Projection;
 import io.vlingo.lattice.model.projection.ProjectionControl;
+import io.vlingo.lattice.model.projection.ProjectionControl.Confirmer;
 import io.vlingo.symbio.State;
 import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.store.Result;
@@ -47,19 +48,18 @@ public class UserProjectionActor extends Actor
   public void projectWith(final Projectable projectable, final ProjectionControl control) {
     final User.UserState state = projectable.object();
     final UserData data = UserData.from(state);
-    final Confirmer confirmation = () -> control.confirmProjected(projectable.projectionId());
 
     switch (projectable.becauseOf()) {
       case "User:new": {
         final State<String> projection = new TextState(data.id, UserData.class, 1, adapter.toRaw(data, 1, 1), state.version);
-        store.write(projection, writeInterest, confirmation);
+        store.write(projection, writeInterest, control.confirmerFor(projectable));
         break;
       }
       case "User:contact": {
         final Consumer<State<String>> updater = readState -> {
           updateWith(readState, data, state.version,
             (writeData) -> UserData.from(writeData.id, writeData.nameData, data.contactData, writeData.publicSecurityToken),
-            confirmation
+            control.confirmerFor(projectable)
           );
         };
         store.read(data.id, UserData.class, readInterest, updater);
@@ -69,7 +69,7 @@ public class UserProjectionActor extends Actor
         final Consumer<State<String>> updater = readState -> {
           updateWith(readState, data, state.version,
             (writeData) -> UserData.from(writeData.id, data.nameData, writeData.contactData, writeData.publicSecurityToken),
-            confirmation
+            control.confirmerFor(projectable)
           );
         };
         store.read(data.id, UserData.class, readInterest, updater);
@@ -108,10 +108,5 @@ public class UserProjectionActor extends Actor
     final UserData write = updater.apply(read);
     final State<String> projection = new TextState(write.id, UserData.class, 1, adapter.toRaw(write, 1, 1), version);
     store.write(projection, writeInterest, confirmer);
-  }
-
-  @FunctionalInterface
-  private static interface Confirmer {
-    void confirm();
   }
 }
