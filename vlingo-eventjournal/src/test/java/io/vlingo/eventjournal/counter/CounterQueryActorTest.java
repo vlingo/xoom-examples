@@ -25,7 +25,6 @@ import io.vlingo.eventjournal.counter.events.CounterIncreased;
 import io.vlingo.eventjournal.counter.events.CounterIncreasedAdapter;
 import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.EntryAdapterProvider;
-import io.vlingo.symbio.Source;
 import io.vlingo.symbio.store.journal.JournalReader;
 
 public class CounterQueryActorTest extends ActorTest {
@@ -34,13 +33,13 @@ public class CounterQueryActorTest extends ActorTest {
     private JournalReader<String> journalReader;
     private CounterIncreasedAdapter counterIncreasedAdapter;
     private CounterDecreasedAdapter counterDecreasedAdapter;
-    private EntryAdapterProvider<Source<String>,Entry<String>> entryAdapterProvider;
+    private EntryAdapterProvider entryAdapterProvider;
 
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() throws Exception {
         journalReader = mock(JournalReader.class);
-        this.entryAdapterProvider = new EntryAdapterProvider<>();
+        this.entryAdapterProvider = new EntryAdapterProvider();
         counterIncreasedAdapter = new CounterIncreasedAdapter();
         this.entryAdapterProvider.registerAdapter(CounterIncreased.class, counterIncreasedAdapter);
         counterDecreasedAdapter = new CounterDecreasedAdapter();
