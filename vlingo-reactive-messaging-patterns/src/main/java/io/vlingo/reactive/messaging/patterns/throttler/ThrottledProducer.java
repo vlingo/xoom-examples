@@ -7,14 +7,14 @@
 
 package io.vlingo.reactive.messaging.patterns.throttler;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import io.vlingo.actors.Actor;
 import io.vlingo.common.Cancellable;
 import io.vlingo.common.Scheduled;
 
-import java.util.LinkedList;
-import java.util.List;
-
-public class ThrottledProducer extends Actor implements Producer {
+public class ThrottledProducer extends Actor implements Producer, Scheduled {
     private final List<Consumer> pending;
     private final int maxMessagesPerPeriod;
     private final Producer delegate;
@@ -28,7 +28,7 @@ public class ThrottledProducer extends Actor implements Producer {
         this.pending = new LinkedList<>();
         this.messagesSentInPeriod = 0;
 
-        this.periodRefresher = scheduler().schedule(this::refreshPeriod, null, 0, period);
+        this.periodRefresher = scheduler().schedule(selfAs(Scheduled.class), null, 0, period);
     }
 
     @Override
@@ -40,14 +40,22 @@ public class ThrottledProducer extends Actor implements Producer {
         }
     }
 
-    private void refreshPeriod(Scheduled scheduled, Object data) {
-        messagesSentInPeriod = 0;
+    @Override
+    public void intervalSignal(Scheduled scheduled, Object data) {
+      messagesSentInPeriod = 0;
 
-        while (!shouldThrottle() && thereAreMessagesPending()) {
-            final Consumer consumer = pending.get(0);
-            doDispatchTo(consumer);
-            pending.remove(0);
-        }
+      while (!shouldThrottle() && thereAreMessagesPending()) {
+          final Consumer consumer = pending.get(0);
+          doDispatchTo(consumer);
+          pending.remove(0);
+      }
+    }
+
+    @Override
+    public void stop() {
+      periodRefresher.cancel();
+
+      super.stop();
     }
 
     private void doDispatchTo(Consumer consumer) {
