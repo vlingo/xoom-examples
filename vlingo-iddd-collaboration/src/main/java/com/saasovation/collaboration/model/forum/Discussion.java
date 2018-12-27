@@ -10,10 +10,12 @@ package com.saasovation.collaboration.model.forum;
 import com.saasovation.collaboration.model.Author;
 
 import io.vlingo.common.Completes;
+import io.vlingo.common.Tuple2;
 
 public interface Discussion {
   void close();
-  Completes<Post> post(final Author author, final String subject, final String bodyText);
+  Completes<Tuple2<PostId,Post>> postFor(final Author author, final String subject, final String bodyText);
   void reopen();
+  void startWith(final Author author, final String topic);
   void topicTo(final String topic);
 }
