@@ -1,14 +1,18 @@
-package io.vlingo.examples.processmanager.choreography;
+package io.vlingo.examples.ecommerce.model;
 
 
 import com.google.common.base.Objects;
 
 public class ProductId {
 
-    public final int id;
+    public final String id;
 
-    public ProductId(int id) {
+    ProductId(String id) {
         this.id = id;
+    }
+
+    public static ProductId fromId(String id) {
+        return new ProductId(id);
     }
 
     @Override
@@ -16,7 +20,7 @@ public class ProductId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductId productId = (ProductId) o;
-        return id == productId.id;
+        return id.equals(productId.id);
     }
 
     @Override

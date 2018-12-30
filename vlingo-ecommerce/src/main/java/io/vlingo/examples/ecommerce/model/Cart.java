@@ -1,10 +1,10 @@
-package io.vlingo.examples.processmanager.choreography;
+package io.vlingo.examples.ecommerce.model;
 
 import java.util.List;
 
 
 
-public interface ShoppingCart {
+public interface Cart {
 
     void addItem(ProductId productId);
 

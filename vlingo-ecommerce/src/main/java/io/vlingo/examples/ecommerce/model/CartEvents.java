@@ -1,8 +1,8 @@
-package io.vlingo.examples.processmanager.choreography;
+package io.vlingo.examples.ecommerce.model;
 
 import io.vlingo.lattice.model.DomainEvent;
 
-public class ShoppingCartEvents {
+public class CartEvents {
 
     public static class CreatedEvent extends DomainEvent {
 

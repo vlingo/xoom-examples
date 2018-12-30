@@ -1,4 +1,4 @@
-package io.vlingo.examples.processmanager.choreography;
+package io.vlingo.examples.ecommerce.model;
 
 
 import com.google.common.base.Objects;

@@ -30,7 +30,7 @@
     <module>vlingo-iddd-collaboration</module>
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-eventjournal</module>
-    <module>vlingo-process-manager</module>
+    <module>vlingo-ecommerce</module>
   </modules>
 
 </project>

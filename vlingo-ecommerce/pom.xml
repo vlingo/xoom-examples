@@ -9,7 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>vlingo-examples-process-manager</artifactId>
+    <artifactId>vlingo-ecommerce</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>com.google.collections</groupId>
@@ -20,7 +21,7 @@
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-lattice</artifactId>
-            <version>0.7.4</version>
+            <version>0.7.6</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -34,6 +35,12 @@
             <artifactId>vlingo-reactive-messaging-patterns</artifactId>
             <version>0.7.2</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.6</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

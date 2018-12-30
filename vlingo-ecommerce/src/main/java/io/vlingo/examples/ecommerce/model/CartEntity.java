@@ -1,4 +1,4 @@
-package io.vlingo.examples.processmanager.choreography;
+package io.vlingo.examples.ecommerce.model;
 
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
@@ -8,40 +8,39 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import static io.vlingo.examples.processmanager.choreography.ShoppingCartEvents.*;
-
-public class ShoppingCartEntity extends EventSourced implements ShoppingCart {
+public class CartEntity extends EventSourced implements Cart {
 
     private State state;
 
-    public ShoppingCartEntity(final String shoppingCartId, final UserId userId) {
-        apply(CreatedEvent.forUser(shoppingCartId, userId));
+    public CartEntity(final String shoppingCartId, final UserId userId) {
+        super("cartStream");
+        apply(CartEvents.CreatedEvent.forUser(shoppingCartId, userId));
     }
 
 
     static {
-        BiConsumer<ShoppingCartEntity, CreatedEvent> applyCartCreated = ShoppingCartEntity::applyCartCreated;
-        EventSourced.registerConsumer(ShoppingCartEntity.class, CreatedEvent.class, applyCartCreated);
+        BiConsumer<CartEntity, CartEvents.CreatedEvent> applyCartCreated = CartEntity::applyCartCreated;
+        EventSourced.registerConsumer(CartEntity.class, CartEvents.CreatedEvent.class, applyCartCreated);
 
-        BiConsumer<ShoppingCartEntity, ProductAddedEvent> applyItemAdded = ShoppingCartEntity::applyItemAdded;
-        EventSourced.registerConsumer(ShoppingCartEntity.class, ProductAddedEvent.class, applyItemAdded);
+        BiConsumer<CartEntity, CartEvents.ProductAddedEvent> applyItemAdded = CartEntity::applyItemAdded;
+        EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductAddedEvent.class, applyItemAdded);
 
-        BiConsumer<ShoppingCartEntity, ProductRemovedEvent> applyItemRemoved = ShoppingCartEntity::applyItemRemoved;
-        EventSourced.registerConsumer(ShoppingCartEntity.class, ProductAddedEvent.class, applyItemRemoved);
+        BiConsumer<CartEntity, CartEvents.ProductRemovedEvent> applyItemRemoved = CartEntity::applyItemRemoved;
+        EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductAddedEvent.class, applyItemRemoved);
 
-        BiConsumer<ShoppingCartEntity, AllItemsRemovedEvent> applyRemoveAll = ShoppingCartEntity::applyAllItemsRemoved;
-        EventSourced.registerConsumer(ShoppingCartEntity.class, AllItemsRemovedEvent.class, applyRemoveAll);
+        BiConsumer<CartEntity, CartEvents.AllItemsRemovedEvent> applyRemoveAll = CartEntity::applyAllItemsRemoved;
+        EventSourced.registerConsumer(CartEntity.class, CartEvents.AllItemsRemovedEvent.class, applyRemoveAll);
     }
 
     @Override
     public void addItem(ProductId productId) {
-        apply(ProductAddedEvent.with(state.userId, productId));
+        apply(CartEvents.ProductAddedEvent.with(state.userId, productId));
     }
 
     @Override
     public void removeItem(ProductId productId) {
         if (state.basketProductsById.containsKey(productId)) {
-            apply(ProductRemovedEvent.with(state.userId, productId));
+            apply(CartEvents.ProductRemovedEvent.with(state.userId, productId));
         }
     }
 
@@ -54,7 +53,7 @@ public class ShoppingCartEntity extends EventSourced implements ShoppingCart {
 
     @Override
     public void removeAllItems() {
-        apply(AllItemsRemovedEvent.with(state.userId));
+        apply(CartEvents.AllItemsRemovedEvent.with(state.userId));
     }
 
     private static class State {
@@ -98,19 +97,19 @@ public class ShoppingCartEntity extends EventSourced implements ShoppingCart {
     }
 
 
-    private void applyCartCreated(final CreatedEvent e) {
+    private void applyCartCreated(final CartEvents.CreatedEvent e) {
         state = State.created(e.shoppingCartId, e.userId);
     }
 
-    private void applyItemAdded(final ProductAddedEvent e) {
+    private void applyItemAdded(final CartEvents.ProductAddedEvent e) {
         state = state.productAdded(e.productId);
     }
 
-    private void applyItemRemoved(final ProductRemovedEvent e) {
+    private void applyItemRemoved(final CartEvents.ProductRemovedEvent e) {
         state = state.productRemoved(e.productId);
     }
 
-    private void applyAllItemsRemoved(final AllItemsRemovedEvent e) {
+    private void applyAllItemsRemoved(final CartEvents.AllItemsRemovedEvent e) {
         state = state.removeAllItems();
     }
 
