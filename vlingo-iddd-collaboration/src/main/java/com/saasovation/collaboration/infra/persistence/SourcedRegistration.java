@@ -40,11 +40,12 @@ import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 import io.vlingo.symbio.store.journal.Journal;
 
 public class SourcedRegistration {
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <T> void registerAllWith(final SourcedTypeRegistry registry, final Journal<T> journal) {
     registry
-      .register(new Info<>(journal, ForumEntity.class, ForumEntity.class.getSimpleName()))
-      .register(new Info<>(journal, DiscussionEntity.class, DiscussionEntity.class.getSimpleName()))
-      .register(new Info<>(journal, PostEntity.class, PostEntity.class.getSimpleName()));
+      .register(new Info(journal, ForumEntity.class, ForumEntity.class.getSimpleName()))
+      .register(new Info(journal, DiscussionEntity.class, DiscussionEntity.class.getSimpleName()))
+      .register(new Info(journal, PostEntity.class, PostEntity.class.getSimpleName()));
 
     registry.info(ForumEntity.class)
       .register(ForumStarted.class, new ForumStartedAdapter(),
