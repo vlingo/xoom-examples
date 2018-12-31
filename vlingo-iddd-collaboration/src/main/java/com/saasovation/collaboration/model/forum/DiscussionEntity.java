@@ -20,16 +20,11 @@ import io.vlingo.common.Completes;
 import io.vlingo.common.Tuple2;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
-public class DiscussionEntity extends EventSourced implements Discussion {
+public class DiscussionEntity extends EventSourced<String> implements Discussion {
   private State state;
 
   public DiscussionEntity(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId) {
-    super(tenant.value, discussionId.value);
-
-    if (state == null) {
-      // state was not recovered from event stream
-      state = new State(tenant, forumId, discussionId);
-    }
+    state = new State(tenant, forumId, discussionId);
   }
 
   @Override
@@ -66,6 +61,11 @@ public class DiscussionEntity extends EventSourced implements Discussion {
     if (!state.topic.equals(topic)) {
       apply(DiscussionTopicChanged.with(state.tenant, state.forumId, state.discussionId, topic));
     }
+  }
+
+  @Override
+  protected String streamName() {
+    return streamNameFrom(":", state.tenant.value, state.discussionId.value);
   }
 
   private final class State {
