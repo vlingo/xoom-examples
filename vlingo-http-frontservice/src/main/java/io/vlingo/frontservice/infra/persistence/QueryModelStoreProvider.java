@@ -13,7 +13,7 @@ import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
-import io.vlingo.symbio.State;
+import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.store.state.StateStore.DispatcherControl;
 import io.vlingo.symbio.store.state.TextStateStore;
 import io.vlingo.symbio.store.state.TextStateStore.TextDispatcher;
@@ -34,7 +34,7 @@ public class QueryModelStoreProvider {
 
     final TextDispatcher noop = new TextDispatcher() {
       public void controlWith(final DispatcherControl control) { }
-      public void dispatchText(final String dispatchId, final State<String> state) { }
+      public void dispatchText(final String dispatchId, final TextState state) { }
     };
 
     final TextStateStore store =
@@ -52,12 +52,13 @@ public class QueryModelStoreProvider {
     return instance;
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   private QueryModelStoreProvider(final StatefulTypeRegistry registry, final TextStateStore store, final Queries queries) {
     this.store = store;
     this.queries = queries;
 
     registry
-      .register(new Info<UserData,String>(store, UserData.class, UserData.class.getSimpleName(), new UserDataStateAdapter()))
-      .register(new Info<ProfileData,String>(store, ProfileData.class, ProfileData.class.getSimpleName(), new ProfileDataStateAdapter()));
+      .register(new Info(store, UserData.class, UserData.class.getSimpleName(), new UserDataStateAdapter()))
+      .register(new Info(store, ProfileData.class, ProfileData.class.getSimpleName(), new ProfileDataStateAdapter()));
   }
 }

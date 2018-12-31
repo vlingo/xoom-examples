@@ -12,7 +12,6 @@ import java.util.function.Consumer;
 import io.vlingo.actors.Actor;
 import io.vlingo.common.Outcome;
 import io.vlingo.frontservice.data.ProfileData;
-import io.vlingo.frontservice.data.UserData;
 import io.vlingo.frontservice.infra.persistence.ProfileDataStateAdapter;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
 import io.vlingo.frontservice.model.Profile;
@@ -22,20 +21,20 @@ import io.vlingo.lattice.model.projection.ProjectionControl;
 import io.vlingo.lattice.model.projection.ProjectionControl.Confirmer;
 import io.vlingo.symbio.State;
 import io.vlingo.symbio.State.TextState;
-import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
-import io.vlingo.symbio.store.state.StateStore.WriteResultInterest;
 import io.vlingo.symbio.store.Result;
 import io.vlingo.symbio.store.StorageException;
+import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
+import io.vlingo.symbio.store.state.StateStore.WriteResultInterest;
 import io.vlingo.symbio.store.state.TextStateStore;
 
 public class ProfileProjectionActor extends Actor
-    implements Projection, ReadResultInterest<String>, WriteResultInterest<String> {
+    implements Projection, ReadResultInterest<TextState>, WriteResultInterest<TextState> {
 
   // TODO: for you to complete the implementation
 
   private final ProfileDataStateAdapter adapter;
   //private final ReadResultInterest<String> readInterest;
-  private final WriteResultInterest<String> writeInterest;
+  private final WriteResultInterest<TextState> writeInterest;
   private final TextStateStore store;
 
   @SuppressWarnings("unchecked")
@@ -53,7 +52,7 @@ public class ProfileProjectionActor extends Actor
 
     switch (projectable.becauseOf()) {
     case "Profile:new": {
-      final State<String> projection = new TextState(state.id, UserData.class, 1, adapter.toRaw(data, 1, 1), 1);
+      final TextState projection = adapter.toRawState(data, 1);
       store.write(projection, writeInterest, control.confirmerFor(projectable));
       break;
     }
@@ -68,7 +67,7 @@ public class ProfileProjectionActor extends Actor
 
   @Override
   @SuppressWarnings("unchecked")
-  public void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final State<String> state, final Object object) {
+  public void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final TextState state, final Object object) {
     outcome.andThen(result -> {
       ((Consumer<State<String>>) object).accept(state);
       return result;
@@ -80,7 +79,7 @@ public class ProfileProjectionActor extends Actor
   }
 
   @Override
-  public void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final State<String> state, final Object object) {
+  public void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final TextState state, final Object object) {
     outcome.andThen(result -> {
       ((Confirmer) object).confirm();
       return result;
