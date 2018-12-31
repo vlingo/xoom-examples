@@ -1,11 +1,8 @@
-package io.vlingo.examples.ecommerce.infra;
+package io.vlingo.examples.ecommerce.model;
 
 import io.vlingo.actors.*;
 import io.vlingo.common.Completes;
-import io.vlingo.examples.ecommerce.model.Cart;
-import io.vlingo.examples.ecommerce.model.UserId;
-import io.vlingo.examples.ecommerce.model.ProductId;
-import io.vlingo.examples.ecommerce.model.CartEntity;
+import io.vlingo.http.Body;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
 
@@ -26,7 +23,7 @@ public class CartResource {
 
     public Completes<Response> create(final UserId userId) {
         // Check if already exists and then return 404?
-        final Address cartAddress = addressFactory.uniquePrefixedWith("sc-");
+        final Address cartAddress = addressFactory.uniquePrefixedWith("cart-");
 
         stage.actorFor(Definition.has(CartEntity.class,
                 Definition.parameters(cartAddress.idString(), userId)),
@@ -35,14 +32,13 @@ public class CartResource {
 
         return Completes.withSuccess(
                 Response.of(Created,
-                        headers(of(Location, location(cartAddress.idString()))),
-                        ""));
+                        headers(of(Location, urlLocation(cartAddress.idString()))), Body.from("{}")));
     }
 
     public Completes<Response> queryCart(String cartId) {
         return stage.actorOf(addressFactory.from(cartId), CartEntity.class)
                 .andThenTo(cart -> Completes.withSuccess(Response.of(Ok, "")))
-                .otherwise(noUser -> Response.of(NotFound, location(cartId)));
+                .otherwise(noUser -> Response.of(NotFound, urlLocation(cartId)));
     }
 
     private String doChangeItem(CartEntity entity, String idOfProduct, CartItemChange change) {
@@ -58,11 +54,11 @@ public class CartResource {
     public Completes<Response> changeCart(String cartId, String productId, CartItemChange change) {
         return stage.actorOf(addressFactory.from(cartId), CartEntity.class)
                 .andThenTo(cart -> Completes.withSuccess(Response.of(Ok, doChangeItem(cart, productId, change))))
-                .otherwise(noUser -> Response.of(NotFound, location(cartId)));
+                .otherwise(noUser -> Response.of(NotFound, urlLocation(cartId)));
     }
 
 
-    private String location(final String shoppingCartId) {
+    private String urlLocation(final String shoppingCartId) {
         return ROOT_URL + "/" + shoppingCartId;
     }
 

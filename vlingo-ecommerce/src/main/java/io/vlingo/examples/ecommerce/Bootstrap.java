@@ -3,7 +3,7 @@ package io.vlingo.examples.ecommerce;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.examples.ecommerce.infra.CartEventAdapter;
-import io.vlingo.examples.ecommerce.infra.CartResource;
+import io.vlingo.examples.ecommerce.model.CartResource;
 import io.vlingo.examples.ecommerce.infra.MockJournalListener;
 import io.vlingo.examples.ecommerce.model.CartEntity;
 import io.vlingo.examples.ecommerce.model.CartEvents;

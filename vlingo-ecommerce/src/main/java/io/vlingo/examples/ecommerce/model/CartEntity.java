@@ -1,5 +1,7 @@
 package io.vlingo.examples.ecommerce.model;
 
+import io.vlingo.actors.CompletesEventually;
+import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
 import java.util.HashMap;
@@ -45,10 +47,14 @@ public class CartEntity extends EventSourced implements Cart {
     }
 
     @Override
-    public List<CartItem> queryCart() {
-        return state.basketProductsById.entrySet().stream()
-                .map( entry -> new CartItem(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+    public Completes<List<CartItem>> queryCart() {
+        final CompletesEventually completes = completesEventually();
+
+        completes.with(
+                state.basketProductsById.entrySet().stream()
+                .map( entry     -> new CartItem(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList()));
+        return completes();
     }
 
     @Override

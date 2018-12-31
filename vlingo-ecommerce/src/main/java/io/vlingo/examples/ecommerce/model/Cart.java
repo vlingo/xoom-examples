@@ -1,5 +1,7 @@
 package io.vlingo.examples.ecommerce.model;
 
+import io.vlingo.common.Completes;
+
 import java.util.List;
 
 
@@ -12,7 +14,7 @@ public interface Cart {
 
     void removeAllItems();
 
-    List<CartItem> queryCart();
+    Completes<List<CartItem>> queryCart();
 
     class CartItem {
 
