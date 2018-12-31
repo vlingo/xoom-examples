@@ -8,7 +8,7 @@
 package io.vlingo.eventjournal.counter;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.eventjournal.MockAppendResultInterest;
+import io.vlingo.eventjournal.MockCounterAppendResultInterest;
 import io.vlingo.eventjournal.counter.events.CounterDecreased;
 import io.vlingo.eventjournal.counter.events.CounterIncreased;
 import io.vlingo.symbio.store.journal.Journal;
@@ -29,12 +29,12 @@ public class CounterActor extends Actor implements Counter {
     @Override
     public void increase() {
         currentCount++;
-        journal.append(counterName, version++, new CounterIncreased(currentCount), new MockAppendResultInterest(), this);
+        journal.append(counterName, version++, new CounterIncreased(currentCount), new MockCounterAppendResultInterest(), this);
     }
 
     @Override
     public void decrease() {
         currentCount--;
-        journal.append(counterName, version++, new CounterDecreased(currentCount), new MockAppendResultInterest(), this);
+        journal.append(counterName, version++, new CounterDecreased(currentCount), new MockCounterAppendResultInterest(), this);
     }
 }
