@@ -44,12 +44,13 @@ public class CommandModelStoreProvider {
     return instance;
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   private CommandModelStoreProvider(final StatefulTypeRegistry registry, final TextStateStore store, final DispatcherControl dispatcherControl) {
     this.store = store;
     this.dispatcherControl = dispatcherControl;
 
     registry
-      .register(new Info<User.UserState,String>(store, User.UserState.class, User.UserState.class.getSimpleName(), new UserStateAdapter()))
-      .register(new Info<Profile.ProfileState,String>(store, Profile.ProfileState.class, Profile.ProfileState.class.getSimpleName(), new ProfileStateAdapter()));
+      .register(new Info(store, User.UserState.class, User.UserState.class.getSimpleName(), new UserStateAdapter()))
+      .register(new Info(store, Profile.ProfileState.class, Profile.ProfileState.class.getSimpleName(), new ProfileStateAdapter()));
   }
 }

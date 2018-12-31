@@ -29,11 +29,11 @@ import io.vlingo.symbio.store.state.StateStore.WriteResultInterest;
 import io.vlingo.symbio.store.state.TextStateStore;
 
 public class UserProjectionActor extends Actor
-    implements Projection, ReadResultInterest<String>, WriteResultInterest<String> {
+    implements Projection, ReadResultInterest<TextState>, WriteResultInterest<TextState> {
 
   private final UserDataStateAdapter adapter;
-  private final ReadResultInterest<String> readInterest;
-  private final WriteResultInterest<String> writeInterest;
+  private final ReadResultInterest<TextState> readInterest;
+  private final WriteResultInterest<TextState> writeInterest;
   private final TextStateStore store;
 
   @SuppressWarnings("unchecked")
@@ -51,12 +51,12 @@ public class UserProjectionActor extends Actor
 
     switch (projectable.becauseOf()) {
       case "User:new": {
-        final State<String> projection = new TextState(data.id, UserData.class, 1, adapter.toRaw(data, 1, 1), state.version);
+        final TextState projection = adapter.toRawState(data, 1);
         store.write(projection, writeInterest, control.confirmerFor(projectable));
         break;
       }
       case "User:contact": {
-        final Consumer<State<String>> updater = readState -> {
+        final Consumer<TextState> updater = readState -> {
           updateWith(readState, data, state.version,
             (writeData) -> UserData.from(writeData.id, writeData.nameData, data.contactData, writeData.publicSecurityToken),
             control.confirmerFor(projectable)
@@ -66,7 +66,7 @@ public class UserProjectionActor extends Actor
         break;
       }
       case "User:name": {
-        final Consumer<State<String>> updater = readState -> {
+        final Consumer<TextState> updater = readState -> {
           updateWith(readState, data, state.version,
             (writeData) -> UserData.from(writeData.id, data.nameData, writeData.contactData, writeData.publicSecurityToken),
             control.confirmerFor(projectable)
@@ -80,7 +80,7 @@ public class UserProjectionActor extends Actor
 
   @Override
   @SuppressWarnings("unchecked")
-  public void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final State<String> state, final Object object) {
+  public void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final TextState state, final Object object) {
     outcome.andThen(result -> {
       ((Consumer<State<String>>) object).accept(state);
       return result;
@@ -92,7 +92,7 @@ public class UserProjectionActor extends Actor
   }
 
   @Override
-  public void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final State<String> state, final Object object) {
+  public void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final TextState state, final Object object) {
     outcome.andThen(result -> {
       ((Confirmer) object).confirm();
       return result;
@@ -103,10 +103,10 @@ public class UserProjectionActor extends Actor
     });
   }
 
-  private void updateWith(final State<String> state, final UserData data, final int version, final Function<UserData,UserData> updater, final Confirmer confirmer) {
-    final UserData read = adapter.fromRaw(state.data, state.dataVersion, state.typeVersion);
+  private void updateWith(final TextState state, final UserData data, final int version, final Function<UserData,UserData> updater, final Confirmer confirmer) {
+    final UserData read = adapter.fromRawState(state);
     final UserData write = updater.apply(read);
-    final State<String> projection = new TextState(write.id, UserData.class, 1, adapter.toRaw(write, 1, 1), version);
+    final TextState projection = adapter.toRawState(write, 1);
     store.write(projection, writeInterest, confirmer);
   }
 }
