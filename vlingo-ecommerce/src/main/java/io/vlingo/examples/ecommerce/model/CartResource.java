@@ -36,12 +36,13 @@ public class CartResource {
     }
 
     public Completes<Response> queryCart(String cartId) {
-        return stage.actorOf(addressFactory.from(cartId), CartEntity.class)
-                .andThenTo(cart -> Completes.withSuccess(Response.of(Ok, "")))
-                .otherwise(noUser -> Response.of(NotFound, urlLocation(cartId)));
+        return stage.actorOf(addressFactory.from(cartId), Cart.class)
+                .andThenTo(Cart::queryCart)
+                .andThenTo( cartItems -> Completes.withSuccess(Response.of(Ok, serialized(cartItems))))
+                .otherwise( noCart -> Response.of(NotFound, urlLocation(cartId)));
     }
 
-    private String doChangeItem(CartEntity entity, String idOfProduct, CartItemChange change) {
+    private String doChangeItem(Cart entity, String idOfProduct, CartItemChange change) {
         ProductId productId = ProductId.fromId(idOfProduct);
         if (change.isAdd())
             entity.addItem(productId);
@@ -52,7 +53,7 @@ public class CartResource {
     }
 
     public Completes<Response> changeCart(String cartId, String productId, CartItemChange change) {
-        return stage.actorOf(addressFactory.from(cartId), CartEntity.class)
+        return stage.actorOf(addressFactory.from(cartId), Cart.class)
                 .andThenTo(cart -> Completes.withSuccess(Response.of(Ok, doChangeItem(cart, productId, change))))
                 .otherwise(noUser -> Response.of(NotFound, urlLocation(cartId)));
     }

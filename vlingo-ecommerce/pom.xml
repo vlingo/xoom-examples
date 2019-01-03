@@ -21,19 +21,19 @@
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-lattice</artifactId>
-            <version>0.7.6</version>
+            <version>0.7.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-http</artifactId>
-            <version>0.7.4</version>
+            <version>0.7.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.vlingo</groupId>
-            <artifactId>vlingo-reactive-messaging-patterns</artifactId>
-            <version>0.7.2</version>
+            <artifactId>vlingo-actors</artifactId>
+            <version>0.7.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -44,5 +44,19 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M3</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Should.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

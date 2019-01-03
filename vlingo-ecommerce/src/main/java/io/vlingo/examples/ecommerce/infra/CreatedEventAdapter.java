@@ -6,7 +6,7 @@ import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.EntryAdapter;
 import io.vlingo.symbio.Metadata;
 
-public class CartEventAdapter implements EntryAdapter<CartEvents.CreatedEvent,Entry.TextEntry> {
+public class CreatedEventAdapter implements EntryAdapter<CartEvents.CreatedEvent,Entry.TextEntry> {
 
     @Override
     public CartEvents.CreatedEvent fromEntry(final Entry.TextEntry entry) {

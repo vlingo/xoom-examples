@@ -1,6 +1,5 @@
 package io.vlingo.examples.ecommerce.model;
 
-import io.vlingo.actors.CompletesEventually;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
@@ -10,15 +9,18 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public class CartEntity extends EventSourced implements Cart {
+public class CartEntity extends EventSourced<CartEntity.State> implements Cart {
 
     private State state;
 
     public CartEntity(final String shoppingCartId, final UserId userId) {
-        super("cartStream");
         apply(CartEvents.CreatedEvent.forUser(shoppingCartId, userId));
     }
 
+    @Override
+    public String streamName() {
+        return "cartEvents";
+    }
 
     static {
         BiConsumer<CartEntity, CartEvents.CreatedEvent> applyCartCreated = CartEntity::applyCartCreated;
@@ -28,7 +30,7 @@ public class CartEntity extends EventSourced implements Cart {
         EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductAddedEvent.class, applyItemAdded);
 
         BiConsumer<CartEntity, CartEvents.ProductRemovedEvent> applyItemRemoved = CartEntity::applyItemRemoved;
-        EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductAddedEvent.class, applyItemRemoved);
+        EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductRemovedEvent.class, applyItemRemoved);
 
         BiConsumer<CartEntity, CartEvents.AllItemsRemovedEvent> applyRemoveAll = CartEntity::applyAllItemsRemoved;
         EventSourced.registerConsumer(CartEntity.class, CartEvents.AllItemsRemovedEvent.class, applyRemoveAll);
@@ -48,13 +50,10 @@ public class CartEntity extends EventSourced implements Cart {
 
     @Override
     public Completes<List<CartItem>> queryCart() {
-        final CompletesEventually completes = completesEventually();
-
-        completes.with(
-                state.basketProductsById.entrySet().stream()
-                .map( entry     -> new CartItem(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList()));
-        return completes();
+        List<CartItem> collect = state.basketProductsById.entrySet().stream()
+                .map(entry -> new CartItem(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+        return completes().with(collect);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class CartEntity extends EventSourced implements Cart {
         apply(CartEvents.AllItemsRemovedEvent.with(state.userId));
     }
 
-    private static class State {
+    static class State {
         final String shoppingCartId; //todo: make value type
         final Map<ProductId, Integer> basketProductsById;
         final UserId userId;
@@ -85,7 +84,7 @@ public class CartEntity extends EventSourced implements Cart {
         State productAdded(ProductId addedProductId) {
             HashMap<ProductId, Integer> copyBasketProductsById = new HashMap<>(basketProductsById);
             Integer quantity = copyBasketProductsById.getOrDefault(addedProductId, 0);
-            copyBasketProductsById.put(addedProductId, quantity+1);
+            copyBasketProductsById.put(addedProductId, quantity + 1);
 
             return new State(shoppingCartId, userId, copyBasketProductsById);
         }
@@ -96,7 +95,7 @@ public class CartEntity extends EventSourced implements Cart {
             if (quantity == 1) {
                 copyBasketProductsById.remove(removedProductId);
             } else {
-                copyBasketProductsById.put(removedProductId, quantity-1);
+                copyBasketProductsById.put(removedProductId, quantity - 1);
             }
             return new State(shoppingCartId, userId, copyBasketProductsById);
         }

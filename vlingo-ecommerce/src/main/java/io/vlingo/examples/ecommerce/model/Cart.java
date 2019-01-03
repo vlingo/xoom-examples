@@ -5,7 +5,6 @@ import io.vlingo.common.Completes;
 import java.util.List;
 
 
-
 public interface Cart {
 
     void addItem(ProductId productId);
