@@ -37,7 +37,7 @@ public class CartResource {
 
     public Completes<Response> queryCart(String cartId) {
         return stage.actorOf(addressFactory.from(cartId), Cart.class)
-                .andThenTo(Cart::queryCart)
+                .andThenTo( cart -> cart.queryCart())
                 .andThenTo( cartItems -> Completes.withSuccess(Response.of(Ok, serialized(cartItems))))
                 .otherwise( noCart -> Response.of(NotFound, urlLocation(cartId)));
     }

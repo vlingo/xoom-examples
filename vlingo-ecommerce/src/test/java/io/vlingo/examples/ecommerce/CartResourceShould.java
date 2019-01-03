@@ -24,7 +24,7 @@ public class CartResourceShould {
 
     @Before
     public void setUp() throws InterruptedException {
-        Boolean startUpSuccess = Bootstrap.instance().serverStartup().await(1000);
+        Boolean startUpSuccess = Bootstrap.instance().serverStartup().await(100);
         assertThat(startUpSuccess, is(equalTo(true)));
         //Thread.sleep(1000);
     }
@@ -50,8 +50,10 @@ public class CartResourceShould {
         assertThat(code, is((equalTo(201))));
         String locationUrl = response.getFirstHeader("Location").getValue();
         assertThat(locationUrl, notNullValue());
+        String body = EntityUtils.toString(response.getEntity());
         response.close();
 
+        System.out.println(String.format("Created cart with url: %s", locationUrl));
         // Was post and returned 201, due to match on other path?, but there was not a full path match...
         // Every once in a while the test will fail due to recovery not working... and ahppens with changing error code
         //
