@@ -16,21 +16,21 @@ import io.vlingo.common.Completes;
 import io.vlingo.common.Outcome;
 import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
+import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.State;
 import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.store.Result;
 import io.vlingo.symbio.store.StorageException;
+import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
-import io.vlingo.symbio.store.state.TextStateStore;
 
-public class QueriesActor extends Actor implements Queries, ReadResultInterest<TextState> {
-  private final ReadResultInterest<TextState> interest;
-  private final TextStateStore store;
+public class QueriesActor extends Actor implements Queries, ReadResultInterest {
+  private final ReadResultInterest interest;
+  private final StateStore store;
   private final ProfileDataStateAdapter profileDataAdapter;
   private final UserDataStateAdapter userDataAdapter;
 
-  @SuppressWarnings("unchecked")
-  public QueriesActor(final TextStateStore store) {
+  public QueriesActor(final StateStore store) {
     this.store = store;
     this.interest = selfAs(ReadResultInterest.class);
     this.profileDataAdapter = new ProfileDataStateAdapter();
@@ -76,9 +76,9 @@ public class QueriesActor extends Actor implements Queries, ReadResultInterest<T
 
   @Override
   @SuppressWarnings("unchecked")
-  public void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final TextState state, final Object object) {
+  public <S> void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final Metadata metadata, final Object object) {
     outcome.andThen(result -> {
-      ((BiConsumer<TextState,Integer>) object).accept(state, state.dataVersion);
+      ((BiConsumer<S,Integer>) object).accept(state, stateVersion);
       return result;
     }).otherwise(cause -> {
       ((BiConsumer<State<String>,Integer>) object).accept(null, -1);
