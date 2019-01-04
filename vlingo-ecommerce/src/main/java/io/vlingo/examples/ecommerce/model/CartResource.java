@@ -6,6 +6,8 @@ import io.vlingo.http.Body;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
 
+import java.util.List;
+
 import static io.vlingo.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.http.Response.Status.*;
 import static io.vlingo.http.ResponseHeader.*;
@@ -22,7 +24,7 @@ public class CartResource {
     }
 
     public Completes<Response> create(final UserId userId) {
-        // Check if already exists and then return 404?
+        //todo: Check if already exists and then return 404
         final Address cartAddress = addressFactory.uniquePrefixedWith("cart-");
 
         stage.actorFor(Definition.has(CartEntity.class,
@@ -37,27 +39,25 @@ public class CartResource {
 
     public Completes<Response> queryCart(String cartId) {
         return stage.actorOf(addressFactory.from(cartId), Cart.class)
-                .andThenTo( cart -> cart.queryCart())
+                .andThenTo(Cart::queryCart)
                 .andThenTo( cartItems -> Completes.withSuccess(Response.of(Ok, serialized(cartItems))))
                 .otherwise( noCart -> Response.of(NotFound, urlLocation(cartId)));
     }
 
-    private String doChangeItem(Cart entity, String idOfProduct, CartItemChange change) {
-        ProductId productId = ProductId.fromId(idOfProduct);
-        if (change.isAdd())
-            entity.addItem(productId);
-        else
-            entity.removeItem(productId);
-
-        return serialized(entity.queryCart());
-    }
-
-    public Completes<Response> changeCart(String cartId, String productId, CartItemChange change) {
+    public Completes<Response> changeCartProductQuantity(String cartId, String productId, CartItemChange change) {
         return stage.actorOf(addressFactory.from(cartId), Cart.class)
-                .andThenTo(cart -> Completes.withSuccess(Response.of(Ok, doChangeItem(cart, productId, change))))
+                .andThenTo(cart -> doChangeItem(cart, productId, change))
+                .andThenTo(cartItems -> Completes.withSuccess(Response.of(Ok, serialized(cartItems))))
                 .otherwise(noUser -> Response.of(NotFound, urlLocation(cartId)));
     }
 
+    private Completes<List<Cart.CartItem>> doChangeItem(Cart entity, String idOfProduct, CartItemChange change) {
+        ProductId productId = ProductId.fromId(idOfProduct);
+        if (change.isAdd())
+            return entity.addItem(productId);
+        else
+            return entity.removeItem(productId);
+    }
 
     private String urlLocation(final String shoppingCartId) {
         return ROOT_URL + "/" + shoppingCartId;
@@ -87,7 +87,7 @@ public class CartResource {
                         .param(String.class)
                         .param(String.class)
                         .body(CartItemChange.class)
-                        .handle(this::changeCart),
+                        .handle(this::changeCartProductQuantity),
                 get("/cart/{cartId}")
                         .param(String.class)
                         .handle(this::queryCart));

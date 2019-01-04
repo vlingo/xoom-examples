@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface Cart {
 
-    void addItem(ProductId productId);
+    Completes<List<CartItem>> addItem(ProductId productId);
 
-    void removeItem(ProductId productId);
+    Completes<List<CartItem>> removeItem(ProductId productId);
 
-    void removeAllItems();
+    Completes<List<CartItem>> removeAllItems();
 
     Completes<List<CartItem>> queryCart();
 

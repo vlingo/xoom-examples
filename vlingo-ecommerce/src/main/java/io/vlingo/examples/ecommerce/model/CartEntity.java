@@ -37,48 +37,51 @@ public class CartEntity extends EventSourced<CartEntity.State> implements Cart {
     }
 
     @Override
-    public void addItem(ProductId productId) {
-        apply(CartEvents.ProductAddedEvent.with(state.userId, productId));
+    public Completes<List<CartItem>> addItem(ProductId productId) {
+        apply(CartEvents.ProductAddedEvent.with(state.userId, productId), () -> state.getCartItems());
+        return completes();
     }
 
     @Override
-    public void removeItem(ProductId productId) {
+    public Completes<List<CartItem>> removeItem(ProductId productId) {
+        //Ignore silent failure case
         if (state.basketProductsById.containsKey(productId)) {
-            apply(CartEvents.ProductRemovedEvent.with(state.userId, productId));
+            apply(CartEvents.ProductRemovedEvent.with(state.userId, productId), () -> state.getCartItems());
+            return completes();
         }
+        else
+            return queryCart();
     }
 
     @Override
     public Completes<List<CartItem>> queryCart() {
-        List<CartItem> collect = state.basketProductsById.entrySet().stream()
-                .map(entry -> new CartItem(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
-        return completes().with(collect);
+        return completes().with(state.getCartItems());
     }
 
     @Override
-    public void removeAllItems() {
-        apply(CartEvents.AllItemsRemovedEvent.with(state.userId));
+    public Completes<List<CartItem>> removeAllItems() {
+        apply(CartEvents.AllItemsRemovedEvent.with(state.userId), () -> state.getCartItems());
+        return completes();
     }
 
     static class State {
-        final String shoppingCartId; //todo: make value type
+        final String cartId;
         final Map<ProductId, Integer> basketProductsById;
         final UserId userId;
 
 
-        private State(String shoppingCartId, UserId userId, Map<ProductId, Integer> basketProductsById) {
-            this.shoppingCartId = shoppingCartId;
+        private State(String cartId, UserId userId, Map<ProductId, Integer> basketProductsById) {
+            this.cartId = cartId;
             this.basketProductsById = new HashMap<>(basketProductsById);
             this.userId = userId;
         }
 
-        static State created(String shoppingCartId, UserId userId) {
-            return new State(shoppingCartId, userId, new HashMap<>());
+        static State created(String cartId, UserId userId) {
+            return new State(cartId, userId, new HashMap<>());
         }
 
         State removeAllItems() {
-            return created(shoppingCartId, userId);
+            return created(cartId, userId);
         }
 
         State productAdded(ProductId addedProductId) {
@@ -86,18 +89,24 @@ public class CartEntity extends EventSourced<CartEntity.State> implements Cart {
             Integer quantity = copyBasketProductsById.getOrDefault(addedProductId, 0);
             copyBasketProductsById.put(addedProductId, quantity + 1);
 
-            return new State(shoppingCartId, userId, copyBasketProductsById);
+            return new State(cartId, userId, copyBasketProductsById);
         }
 
         State productRemoved(ProductId removedProductId) {
             HashMap<ProductId, Integer> copyBasketProductsById = new HashMap<>(basketProductsById);
             Integer quantity = copyBasketProductsById.getOrDefault(removedProductId, 0);
-            if (quantity == 1) {
+            if (quantity <= 1) {
                 copyBasketProductsById.remove(removedProductId);
             } else {
                 copyBasketProductsById.put(removedProductId, quantity - 1);
             }
-            return new State(shoppingCartId, userId, copyBasketProductsById);
+            return new State(cartId, userId, copyBasketProductsById);
+        }
+
+        private List<CartItem> getCartItems() {
+            return basketProductsById.entrySet().stream()
+                    .map(entry -> new CartItem(entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toList());
         }
     }
 

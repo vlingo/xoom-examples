@@ -1,9 +1,6 @@
 package io.vlingo.examples.ecommerce;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -13,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.function.Supplier;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -21,12 +20,13 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 public class CartResourceShould {
 
+    private CloseableHttpClient client;
 
     @Before
     public void setUp() throws InterruptedException {
         Boolean startUpSuccess = Bootstrap.instance().serverStartup().await(100);
         assertThat(startUpSuccess, is(equalTo(true)));
-        //Thread.sleep(1000);
+        client = HttpClientBuilder.create().build();
     }
 
     @After
@@ -34,46 +34,62 @@ public class CartResourceShould {
         Bootstrap.instance().stop();
     }
 
-    @Test
-    public void createEmptyCartForUser_whenNewCartCreated() throws IOException {
-        CloseableHttpClient client = HttpClientBuilder.create().build();
-        HttpPost httpPost = new HttpPost("http://localhost:8081/cart");
-        String json = "{\"id\": 118}";
-        StringEntity entity = new StringEntity(json);
-        httpPost.setEntity(entity);
-        httpPost.setHeader("Accept", "application/json");
-        httpPost.setHeader("Content-type", "application/json");
+    private HttpEntityEnclosingRequestBase getHttp
+            (Supplier<HttpEntityEnclosingRequestBase> supplier, String entity)
+            throws UnsupportedEncodingException {
 
-        CloseableHttpResponse response = client.execute(httpPost);
+        HttpEntityEnclosingRequestBase base = supplier.get();
+        base.setHeader("Accept", "application/json");
+        base.setHeader("Content-type", "application/json");
+        base.setEntity(new StringEntity(entity));
+        return base;
+    }
 
-        Integer code = response.getStatusLine().getStatusCode();
-        assertThat(code, is((equalTo(201))));
+    private HttpRequestBase getHttp
+            (Supplier<HttpRequestBase> supplier) {
+        HttpRequestBase base = supplier.get();
+        base.setHeader("Accept", "application/json");
+        base.setHeader("Content-type", "application/json");
+        return base;
+    }
+
+    private String getLocation(CloseableHttpResponse response) {
         String locationUrl = response.getFirstHeader("Location").getValue();
         assertThat(locationUrl, notNullValue());
-        String body = EntityUtils.toString(response.getEntity());
-        response.close();
+        return locationUrl;
+    }
 
-        System.out.println(String.format("Created cart with url: %s", locationUrl));
-        // Was post and returned 201, due to match on other path?, but there was not a full path match...
-        // Every once in a while the test will fail due to recovery not working... and ahppens with changing error code
-        //
-        HttpPatch httpPatchAddItem = new HttpPatch(String.format("http://localhost:8081%s/pid1", locationUrl));
-        httpPatchAddItem.setEntity(new StringEntity("{operation: \"add\"}"));
-        httpPatchAddItem.setHeader("Accept", "application/json");
-        httpPatchAddItem.setHeader("Content-type", "application/json");
-        response = client.execute(httpPatchAddItem);
-        code = response.getStatusLine().getStatusCode();
-        assertThat(code, is((equalTo(200))));
+    @Test
+    public void createEmptyCartForUser_whenNewCartCreated() throws IOException {
 
+        String cartLocationPath;
+        HttpEntityEnclosingRequestBase createCartPost = getHttp(
+                () -> new HttpPost("http://localhost:8081/cart"),
+                "{\"id\": 118}");
 
-        HttpGet httpGet = new HttpGet(String.format("http://localhost:8081%s", locationUrl));
+        try (CloseableHttpResponse response = client.execute(createCartPost)) {
+            assertThat(response.getStatusLine().getStatusCode(), is((equalTo(201))));
+            cartLocationPath = getLocation(response);
+        }
 
-        httpGet.setHeader("Accept", "application/json");
+        System.out.println(String.format("Created cart with url: %s", cartLocationPath));
+        // todo: look at issue with partial path match via POST calling create()
+        HttpEntityEnclosingRequestBase addItemPatch = getHttp(
+                () -> new HttpPatch(String.format("http://localhost:8081%s/pid1", cartLocationPath)),
+                "{operation: \"add\"}");
+        try (CloseableHttpResponse response = client.execute(addItemPatch)) {
+            assertThat(response.getStatusLine().getStatusCode(), is((equalTo(200))));
+            String addItemJsonResponse = EntityUtils.toString(response.getEntity());
+            assertThat(addItemJsonResponse, is(equalTo("[{\"productId\":{\"id\":\"pid1\"},\"quantity\":1}]")));
+        }
 
-        response = client.execute(httpGet);
-        code = response.getStatusLine().getStatusCode();
-        assertThat(code, is((equalTo(200))));
-        String bodyJson =  EntityUtils.toString(response.getEntity());
-        assertThat(bodyJson, is(equalTo("[{\"productId\":{\"id\":\"pid1\"},\"quantity\":1}]")));
+        HttpRequestBase httpGet = getHttp(
+                () -> new HttpGet(String.format("http://localhost:8081%s", cartLocationPath)));
+
+        try (CloseableHttpResponse response = client.execute(httpGet)) {
+            assertThat(response.getStatusLine().getStatusCode(), is((equalTo(200))));
+            String queryResponseJson = EntityUtils.toString(response.getEntity());
+            assertThat(queryResponseJson, is(equalTo("[{\"productId\":{\"id\":\"pid1\"},\"quantity\":1}]")));
+        }
     }
 }
