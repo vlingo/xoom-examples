@@ -16,13 +16,13 @@ import io.vlingo.actors.Stage;
 import io.vlingo.lattice.model.projection.ProjectionDispatcher;
 import io.vlingo.lattice.model.projection.ProjectionDispatcher.ProjectToDescription;
 import io.vlingo.lattice.model.projection.state.TextStateProjectionDispatcherActor;
-import io.vlingo.symbio.store.state.TextStateStore.TextDispatcher;
+import io.vlingo.symbio.store.state.StateStore.Dispatcher;
 
 public class ProjectionDispatcherProvider {
   private static ProjectionDispatcherProvider instance;
 
   public final ProjectionDispatcher projectionDispatcher;
-  public final TextDispatcher textStateStoreDispatcher;
+  public final Dispatcher stateStoreDispatcher;
 
   public static ProjectionDispatcherProvider instance() {
     return instance;
@@ -33,24 +33,24 @@ public class ProjectionDispatcherProvider {
 
     final List<ProjectToDescription> descriptions =
             Arrays.asList(
-                    new ProjectToDescription(UserProjectionActor.class, "User:new;User:contact;User:name"),
+                    new ProjectToDescription(UserProjectionActor.class, "User:new", "User:contact", "User:name"),
                     new ProjectToDescription(PrivateTokenSynchronizerActor.class, "User:new"),
-                    new ProjectToDescription(ProfileProjectionActor.class, "Profile:new;Profile:twitter;Profile:linkedIn;Profile:website"));
+                    new ProjectToDescription(ProfileProjectionActor.class, "Profile:new", "Profile:twitter", "Profile:linkedIn", "Profile:website"));
 
     final Protocols dispatcherProtocols =
             stage.actorFor(
                     Definition.has(TextStateProjectionDispatcherActor.class, Definition.parameters(descriptions)),
-                    new Class<?>[] { TextDispatcher.class, ProjectionDispatcher.class });
+                    new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class });
 
-    final Protocols.Two<TextDispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
+    final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
 
     instance = new ProjectionDispatcherProvider(dispatchers._1, dispatchers._2);
 
     return instance;
   }
 
-  private ProjectionDispatcherProvider(final TextDispatcher textStateStoreDispatcher, final ProjectionDispatcher projectionDispatcher) {
-    this.textStateStoreDispatcher = textStateStoreDispatcher;
+  private ProjectionDispatcherProvider(final Dispatcher stateStoreDispatcher, final ProjectionDispatcher projectionDispatcher) {
+    this.stateStoreDispatcher = stateStoreDispatcher;
     this.projectionDispatcher = projectionDispatcher;
   }
 }
