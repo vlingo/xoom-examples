@@ -37,7 +37,7 @@ public class Bootstrap {
 
     QueryModelStoreProvider.using(world.stage(), registry);
 
-    CommandModelStoreProvider.using(world.stage(), registry, ProjectionDispatcherProvider.using(world.stage()).textStateStoreDispatcher);
+    CommandModelStoreProvider.using(world.stage(), registry, ProjectionDispatcherProvider.using(world.stage()).stateStoreDispatcher);
 
     final UserResource userResource = new UserResource(world);
     final ProfileResource profileResource = new ProfileResource(world);
