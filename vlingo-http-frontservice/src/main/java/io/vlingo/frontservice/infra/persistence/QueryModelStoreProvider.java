@@ -13,17 +13,17 @@ import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
-import io.vlingo.symbio.State.TextState;
+import io.vlingo.symbio.State;
+import io.vlingo.symbio.store.state.StateStore;
+import io.vlingo.symbio.store.state.StateStore.Dispatcher;
 import io.vlingo.symbio.store.state.StateStore.DispatcherControl;
-import io.vlingo.symbio.store.state.TextStateStore;
-import io.vlingo.symbio.store.state.TextStateStore.TextDispatcher;
-import io.vlingo.symbio.store.state.inmemory.InMemoryTextStateStoreActor;
+import io.vlingo.symbio.store.state.inmemory.InMemoryStateStoreActor;
 
 public class QueryModelStoreProvider {
   private static QueryModelStoreProvider instance;
 
   public final Queries queries;
-  public final TextStateStore store;
+  public final StateStore store;
 
   public static QueryModelStoreProvider instance() {
     return instance;
@@ -32,15 +32,15 @@ public class QueryModelStoreProvider {
   public static QueryModelStoreProvider using(final Stage stage, final StatefulTypeRegistry registry) {
     if (instance != null) return instance;
 
-    final TextDispatcher noop = new TextDispatcher() {
+    final Dispatcher noop = new Dispatcher() {
       public void controlWith(final DispatcherControl control) { }
-      public void dispatchText(final String dispatchId, final TextState state) { }
+      public <S extends State<?>> void dispatch(final String dispatchId, final S state) { }
     };
 
-    final TextStateStore store =
+    final StateStore store =
             stage.actorFor(
-                    Definition.has(InMemoryTextStateStoreActor.class, Definition.parameters(noop)),
-                    TextStateStore.class);
+                    Definition.has(InMemoryStateStoreActor.class, Definition.parameters(noop)),
+                    StateStore.class);
 
     final Queries queries =
             stage.actorFor(
@@ -53,7 +53,7 @@ public class QueryModelStoreProvider {
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  private QueryModelStoreProvider(final StatefulTypeRegistry registry, final TextStateStore store, final Queries queries) {
+  private QueryModelStoreProvider(final StatefulTypeRegistry registry, final StateStore store, final Queries queries) {
     this.store = store;
     this.queries = queries;
 
