@@ -20,23 +20,22 @@ import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.Projection;
 import io.vlingo.lattice.model.projection.ProjectionControl;
 import io.vlingo.lattice.model.projection.ProjectionControl.Confirmer;
-import io.vlingo.symbio.State;
+import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.store.Result;
 import io.vlingo.symbio.store.StorageException;
+import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
 import io.vlingo.symbio.store.state.StateStore.WriteResultInterest;
-import io.vlingo.symbio.store.state.TextStateStore;
 
 public class UserProjectionActor extends Actor
-    implements Projection, ReadResultInterest<TextState>, WriteResultInterest<TextState> {
+    implements Projection, ReadResultInterest, WriteResultInterest {
 
   private final UserDataStateAdapter adapter;
-  private final ReadResultInterest<TextState> readInterest;
-  private final WriteResultInterest<TextState> writeInterest;
-  private final TextStateStore store;
+  private final ReadResultInterest readInterest;
+  private final WriteResultInterest writeInterest;
+  private final StateStore store;
 
-  @SuppressWarnings("unchecked")
   public UserProjectionActor() {
     this.store = QueryModelStoreProvider.instance().store;
     this.adapter = new UserDataStateAdapter();
@@ -52,7 +51,7 @@ public class UserProjectionActor extends Actor
     switch (projectable.becauseOf()) {
       case "User:new": {
         final TextState projection = adapter.toRawState(data, 1);
-        store.write(projection, writeInterest, control.confirmerFor(projectable));
+        store.write(state.id, projection, 1, writeInterest, control.confirmerFor(projectable));
         break;
       }
       case "User:contact": {
@@ -80,9 +79,9 @@ public class UserProjectionActor extends Actor
 
   @Override
   @SuppressWarnings("unchecked")
-  public void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final TextState state, final Object object) {
+  public <S> void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final Metadata metadata, final Object object) {
     outcome.andThen(result -> {
-      ((Consumer<State<String>>) object).accept(state);
+      ((Consumer<S>) object).accept(state);
       return result;
     }).otherwise(cause -> {
       // log but don't retry, allowing re-delivery of Projectable
@@ -92,7 +91,7 @@ public class UserProjectionActor extends Actor
   }
 
   @Override
-  public void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final TextState state, final Object object) {
+  public <S> void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final Object object) {
     outcome.andThen(result -> {
       ((Confirmer) object).confirm();
       return result;
@@ -107,6 +106,6 @@ public class UserProjectionActor extends Actor
     final UserData read = adapter.fromRawState(state);
     final UserData write = updater.apply(read);
     final TextState projection = adapter.toRawState(write, 1);
-    store.write(projection, writeInterest, confirmer);
+    store.write(state.id, projection, state.dataVersion, writeInterest, confirmer);
   }
 }
