@@ -8,13 +8,12 @@
 package io.vlingo.reactive.messaging.patterns.returnaddress;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.Definition;
 
 public class Server extends Actor implements Service {
   private final ComplexService worker;
 
   public Server() {
-    worker = stage().actorFor(Definition.has(Worker.class, Definition.NoParameters), ComplexService.class);
+    worker = stage().actorFor(ComplexService.class, Worker.class);
   }
 
   @Override

@@ -39,18 +39,18 @@ public class Bootstrap {
         final World world = World.startWithDefaults("event-journal");
         @SuppressWarnings("unchecked")
         Journal<String> journal = world.actorFor(
-                Definition.has(PostgresJournalActor.class, Definition.parameters(configuration, new NoopEventJournalListener())),
-                Journal.class
+                Journal.class,
+                Definition.has(PostgresJournalActor.class, Definition.parameters(configuration, new NoopEventJournalListener()))
         );
 
         final Counter counter = world.actorFor(
-                Definition.has(CounterActor.class, Definition.parameters(DB_NAME, journal)),
-                Counter.class
+                Counter.class,
+                Definition.has(CounterActor.class, Definition.parameters(DB_NAME, journal))
         );
 
         final CounterQuery counterQuery = world.actorFor(
-                Definition.has(CounterQueryActor.class, Definition.parameters(journal.journalReader(DB_NAME).await())),
-                CounterQuery.class
+                CounterQuery.class,
+                Definition.has(CounterQueryActor.class, Definition.parameters(journal.journalReader(DB_NAME).await()))
         );
 
         for (int i = 0; i < 5000; i++) {

@@ -8,7 +8,6 @@ package io.vlingo.reactive.messaging.patterns.splitter;
 
 import org.junit.Test;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem;;
@@ -30,7 +29,7 @@ public class SplitterTest
         
         TestUntil until = TestUntil.happenings( ORDERS_ITEMS );
         
-        final OrderProcessor orderRouter = world.actorFor( Definition.has( OrderRouter.class, Definition.parameters( until )), OrderProcessor.class );
+        final OrderProcessor orderRouter = world.actorFor( OrderProcessor.class, OrderRouter.class, until );
         
         final OrderItem orderItem1 = new OrderItem( "1", OrderProcessor.ITEM_TYPE_A, "An item of type A", 23.95 );
         final OrderItem orderItem2 = new OrderItem( "2", OrderProcessor.ITEM_TYPE_B, "An item of type B", 99.95 );

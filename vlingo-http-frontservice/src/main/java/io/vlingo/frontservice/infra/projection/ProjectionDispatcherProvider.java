@@ -39,8 +39,8 @@ public class ProjectionDispatcherProvider {
 
     final Protocols dispatcherProtocols =
             stage.actorFor(
-                    Definition.has(TextStateProjectionDispatcherActor.class, Definition.parameters(descriptions)),
-                    new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class });
+                    new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class },
+                    Definition.has(TextStateProjectionDispatcherActor.class, Definition.parameters(descriptions)));
 
     final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
 

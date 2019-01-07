@@ -27,8 +27,8 @@ public class CounterActorTest extends ActorTest {
         streamName = UUID.randomUUID().toString();
         journal = Mockito.mock(Journal.class);
         counter = world().actorFor(
-                Definition.has(CounterActor.class, Definition.parameters(streamName, journal)),
-                Counter.class
+                Counter.class,
+                Definition.has(CounterActor.class, Definition.parameters(streamName, journal))
         );
     }
 

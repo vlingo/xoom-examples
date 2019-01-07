@@ -34,8 +34,8 @@ public class CommandModelStoreProvider {
 
     final Protocols storeProtocols =
             stage.actorFor(
-                    Definition.has(InMemoryStateStoreActor.class, Definition.parameters(dispatcher)),
-                    new Class<?>[] { StateStore.class, DispatcherControl.class });
+                    new Class<?>[] { StateStore.class, DispatcherControl.class },
+                    Definition.has(InMemoryStateStoreActor.class, Definition.parameters(dispatcher)));
 
     final Protocols.Two<StateStore, DispatcherControl> storeWithControl = Protocols.two(storeProtocols);
 
