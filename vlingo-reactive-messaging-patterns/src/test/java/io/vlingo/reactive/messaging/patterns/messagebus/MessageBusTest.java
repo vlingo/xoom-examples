@@ -9,7 +9,6 @@ package io.vlingo.reactive.messaging.patterns.messagebus;
 import org.junit.Test;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.TradingCommand;
@@ -36,14 +35,14 @@ public class MessageBusTest
         
         TestUntil until = TestUntil.happenings( EVENTS );
         
-        final TradingBusProcessor tradingBus = world.actorFor( Definition.has( TradingBus.class, Definition.parameters( until )), TradingBusProcessor.class );
+        final TradingBusProcessor tradingBus = world.actorFor(TradingBusProcessor.class, TradingBus.class, until);
         
         @SuppressWarnings("unused")
-        final TradingProcessor stockTrader = world.actorFor( Definition.has( StockTrader.class, Definition.parameters( until, tradingBus )), TradingProcessor.class );
+        final TradingProcessor stockTrader = world.actorFor(TradingProcessor.class, StockTrader.class, until, tradingBus);
         @SuppressWarnings("unused")
-        final TradingProcessor portfolioManager = world.actorFor( Definition.has( PortfolioManager.class, Definition.parameters( until, tradingBus )), TradingProcessor.class );
+        final TradingProcessor portfolioManager = world.actorFor(TradingProcessor.class, PortfolioManager.class, until, tradingBus);
         @SuppressWarnings("unused")
-        final TradingProcessor marketAnalysisTool = world.actorFor( Definition.has(  MarketAnalysisTools.class, Definition.parameters( until, tradingBus )), TradingProcessor.class );
+        final TradingProcessor marketAnalysisTool = world.actorFor(TradingProcessor.class,  MarketAnalysisTools.class, until, tradingBus);
         
         tradingBus.trade( new TradingCommand( TradingProcessor.EXECUTE_BUY_ORDER, "p123", "MSFT", 100, 31.85 ));
         tradingBus.trade( new TradingCommand( TradingProcessor.EXECUTE_SELL_ORDER, "p456", "MSFT", 200, 31.80 ));

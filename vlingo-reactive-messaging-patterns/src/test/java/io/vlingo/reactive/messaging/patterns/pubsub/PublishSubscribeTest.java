@@ -7,14 +7,19 @@
 
 package io.vlingo.reactive.messaging.patterns.pubsub;
 
-import io.vlingo.actors.Definition;
+import org.junit.Test;
+
 import io.vlingo.actors.World;
 import io.vlingo.actors.pubsub.DefaultPublisher;
 import io.vlingo.actors.pubsub.Publisher;
 import io.vlingo.actors.pubsub.Subscriber;
 import io.vlingo.actors.testkit.TestUntil;
-import io.vlingo.reactive.messaging.patterns.publishsubscribe.*;
-import org.junit.Test;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.AllMarketsSubscriber;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.Market;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.Money;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.NASDAQSubscriber;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.NYSESubscriber;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.PriceQuoted;
 
 public class PublishSubscribeTest {
 
@@ -29,22 +34,13 @@ public class PublishSubscribeTest {
         final TestUntil until = TestUntil.happenings(6);
 
         final Subscriber<PriceQuoted> allMarketsSubscriber =
-                world.actorFor(
-                        Definition.has(AllMarketsSubscriber.class,
-                                Definition.parameters(until)),
-                        Subscriber.class);
+                world.actorFor(Subscriber.class, AllMarketsSubscriber.class, until);
 
         final Subscriber<PriceQuoted> nasdaqSubscriber =
-                world.actorFor(
-                        Definition.has(NASDAQSubscriber.class,
-                                Definition.parameters(until)),
-                        Subscriber.class);
+                world.actorFor(Subscriber.class, NASDAQSubscriber.class, until);
 
         final Subscriber<PriceQuoted> nyseSubscriber =
-                world.actorFor(
-                        Definition.has(NYSESubscriber.class,
-                                Definition.parameters(until)),
-                        Subscriber.class);
+                world.actorFor(Subscriber.class, NYSESubscriber.class, until);
 
         final Publisher publisher = new DefaultPublisher();
 

@@ -8,7 +8,6 @@ package io.vlingo.reactive.messaging.patterns.messageexpiration;
 
 import org.junit.Test;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
@@ -28,8 +27,8 @@ public class MessageExpirationTest
         
         TestUntil until = TestUntil.happenings( ORDERS );
         
-        OrderProcessor purchaseAgent = world.actorFor( Definition.has( PurchaseAgent.class, Definition.parameters( until )), OrderProcessor.class );
-        OrderProcessor purchaseRouter = world.actorFor( Definition.has( PurchaseRouter.class, Definition.parameters( purchaseAgent )), OrderProcessor.class );
+        OrderProcessor purchaseAgent = world.actorFor(OrderProcessor.class, PurchaseAgent.class, until);
+        OrderProcessor purchaseRouter = world.actorFor(OrderProcessor.class, PurchaseRouter.class, purchaseAgent);
         
         purchaseRouter.placeOrder( new Order( "1", "11", 50.00, 1000L ));
         purchaseRouter.placeOrder( new Order( "2", "22", 250.00, 100L ));

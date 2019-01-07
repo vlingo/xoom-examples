@@ -7,14 +7,13 @@
 
 package io.vlingo.reactive.messaging.patterns.throttler;
 
-import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static io.vlingo.actors.Definition.*;
+import io.vlingo.actors.World;
+import io.vlingo.actors.testkit.TestUntil;
 
 public class ThrottlerTest {
     private World world;
@@ -27,9 +26,9 @@ public class ThrottlerTest {
         world = World.startWithDefaults("throttling");
         testUntil = TestUntil.happenings(10);
 
-        Producer realTimeProducer = world.actorFor(has(RandomStringProducer.class, NoParameters), Producer.class);
-        producer = world.actorFor(has(ThrottledProducer.class, parameters(1, 100, realTimeProducer)), Producer.class);
-        consumer = world.actorFor(has(PrintingConsumer.class, parameters(testUntil)), Consumer.class);
+        Producer realTimeProducer = world.actorFor(Producer.class, RandomStringProducer.class );
+        producer = world.actorFor(Producer.class, ThrottledProducer.class, 1, 100, realTimeProducer );
+        consumer = world.actorFor(Consumer.class, PrintingConsumer.class, testUntil );
     }
 
     @After

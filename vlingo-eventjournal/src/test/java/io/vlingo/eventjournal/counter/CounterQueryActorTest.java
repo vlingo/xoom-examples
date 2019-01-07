@@ -68,8 +68,8 @@ public class CounterQueryActorTest extends ActorTest {
         when(journalReader.readNext()).thenReturn(withSuccess(event));
 
         query = world().actorFor(
-                Definition.has(CounterQueryActor.class, Definition.parameters(journalReader, entryAdapterProvider)),
-                CounterQuery.class
+                CounterQuery.class,
+                Definition.has(CounterQueryActor.class, Definition.parameters(journalReader, entryAdapterProvider))
         );
     }
 }

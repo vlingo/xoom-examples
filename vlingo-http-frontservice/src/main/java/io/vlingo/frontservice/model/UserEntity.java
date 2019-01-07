@@ -7,14 +7,12 @@
 
 package io.vlingo.frontservice.model;
 
-import io.vlingo.actors.CompletesEventually;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 import io.vlingo.symbio.State.TextState;
 
 public class UserEntity extends StatefulEntity<User.UserState,TextState> implements User {
   private User.UserState state;
-  private int stateVersion;
 
   public UserEntity(final User.UserState state) {
     this.state = state;
@@ -23,7 +21,7 @@ public class UserEntity extends StatefulEntity<User.UserState,TextState> impleme
   @Override
   public void start() {
     if (state.isIdentifiedOnly()) {
-      restore((state, version) -> state(state, version));
+      restore();
     } else {
       preserve(state, "User:new");
     }
@@ -40,23 +38,17 @@ public class UserEntity extends StatefulEntity<User.UserState,TextState> impleme
     preserve(transitioned);
   }
 
+  @Override
   public Completes<User.UserState> withContact(final Contact contact) {
-    final CompletesEventually completes = completesEventually();
     final User.UserState transitioned = state.withContact(contact);
-    preserve(transitioned, "User:contact", (state, version) -> {
-      state(state, version);
-      completes.with(state);
-    });
+    preserve(transitioned, "User:contact", () -> state);
     return completes(); // unanswered until preserved
   }
 
+  @Override
   public Completes<User.UserState> withName(final Name name) {
-    final CompletesEventually completes = completesEventually();
     final User.UserState transitioned = state.withName(name);
-    preserve(transitioned, "User:name", (state, version) -> {
-      state(state, version);
-      completes.with(state);
-    });
+    preserve(transitioned, "User:name", () -> state);
     return completes(); // unanswered until preserved
   }
 
@@ -71,18 +63,12 @@ public class UserEntity extends StatefulEntity<User.UserState,TextState> impleme
   }
 
   @Override
-  public void state(final UserState state, final int stateVersion) {
+  public void state(final UserState state) {
     this.state = state;
-    this.stateVersion = stateVersion;
   }
 
   @Override
-  public Class<?> stateType() {
+  public Class<UserState> stateType() {
     return User.UserState.class;
-  }
-
-  @Override
-  public int stateVersion() {
-    return stateVersion;
   }
 }

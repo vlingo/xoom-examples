@@ -15,7 +15,6 @@ package io.vlingo.reactive.messaging.patterns.competingconsumer;
  */
 import org.junit.Test;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
@@ -27,9 +26,8 @@ public class CompetingConsumerTest {
     final int poolSize = 4;
     final int messagesToSend = 8;
     final TestUntil until = TestUntil.happenings(messagesToSend);
-    final WorkConsumer workConsumer = world.actorFor(
-            Definition.has(WorkRouterActor.class, Definition.parameters(poolSize, until)),
-            WorkConsumer.class);
+    final WorkConsumer workConsumer =
+            world.actorFor(WorkConsumer.class,  WorkRouterActor.class, poolSize, until);
     
     for (int i = 0; i < messagesToSend; i++) {
       workConsumer.consumeWork(new WorkItem(i));

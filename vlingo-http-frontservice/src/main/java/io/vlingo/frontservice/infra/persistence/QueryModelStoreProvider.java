@@ -7,7 +7,6 @@
 
 package io.vlingo.frontservice.infra.persistence;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
 import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
@@ -37,15 +36,9 @@ public class QueryModelStoreProvider {
       public <S extends State<?>> void dispatch(final String dispatchId, final S state) { }
     };
 
-    final StateStore store =
-            stage.actorFor(
-                    Definition.has(InMemoryStateStoreActor.class, Definition.parameters(noop)),
-                    StateStore.class);
+    final StateStore store = stage.actorFor(StateStore.class, InMemoryStateStoreActor.class, noop);
 
-    final Queries queries =
-            stage.actorFor(
-                    Definition.has(QueriesActor.class, Definition.parameters(store)),
-                    Queries.class);
+    final Queries queries = stage.actorFor(Queries.class, QueriesActor.class, store);
 
     instance = new QueryModelStoreProvider(registry, store, queries);
 

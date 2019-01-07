@@ -9,7 +9,6 @@ package io.vlingo.reactive.messaging.patterns.pipesandfilters;
 
 import org.junit.Test;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
@@ -25,11 +24,11 @@ public class PipesAndFiltersTest {
     final String orderText = "(encryption)(certificate)<order id='123'>...</order>";
     final byte[] rawOrderBytes = orderText.getBytes();
 
-    final OrderProcessor filter5 = world.actorFor(Definition.has(OrderManagementSystem.class, Definition.parameters(until)), OrderProcessor.class);
-    final OrderProcessor filter4 = world.actorFor(Definition.has(Deduplicator.class, Definition.parameters(filter5, until)), OrderProcessor.class);
-    final OrderProcessor filter3 = world.actorFor(Definition.has(Authenticator.class, Definition.parameters(filter4, until)), OrderProcessor.class);
-    final OrderProcessor filter2 = world.actorFor(Definition.has(Decrypter.class, Definition.parameters(filter3, until)), OrderProcessor.class);
-    final OrderProcessor filter1 = world.actorFor(Definition.has(OrderAcceptanceEndpoint.class, Definition.parameters(filter2, until)), OrderProcessor.class);
+    final OrderProcessor filter5 = world.actorFor(OrderProcessor.class, OrderManagementSystem.class, until);
+    final OrderProcessor filter4 = world.actorFor(OrderProcessor.class, Deduplicator.class, filter5, until);
+    final OrderProcessor filter3 = world.actorFor(OrderProcessor.class, Authenticator.class, filter4, until);
+    final OrderProcessor filter2 = world.actorFor(OrderProcessor.class, Decrypter.class, filter3, until);
+    final OrderProcessor filter1 = world.actorFor(OrderProcessor.class, OrderAcceptanceEndpoint.class, filter2, until);
 
     filter1.processIncomingOrder(rawOrderBytes);
     filter1.processIncomingOrder(rawOrderBytes);
