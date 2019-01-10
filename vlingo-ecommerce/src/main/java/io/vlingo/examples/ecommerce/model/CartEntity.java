@@ -26,11 +26,8 @@ public class CartEntity extends EventSourced<CartEntity.State> implements Cart {
         BiConsumer<CartEntity, CartEvents.CreatedEvent> applyCartCreated = CartEntity::applyCartCreated;
         EventSourced.registerConsumer(CartEntity.class, CartEvents.CreatedEvent.class, applyCartCreated);
 
-        BiConsumer<CartEntity, CartEvents.ProductAddedEvent> applyItemAdded = CartEntity::applyItemAdded;
-        EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductAddedEvent.class, applyItemAdded);
-
-        BiConsumer<CartEntity, CartEvents.ProductRemovedEvent> applyItemRemoved = CartEntity::applyItemRemoved;
-        EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductRemovedEvent.class, applyItemRemoved);
+        BiConsumer<CartEntity, CartEvents.ProductQuantityChangeEvent> applyQuantityChange = CartEntity::applyQuantityChange;
+        EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductQuantityChangeEvent.class, applyQuantityChange);
 
         BiConsumer<CartEntity, CartEvents.AllItemsRemovedEvent> applyRemoveAll = CartEntity::applyAllItemsRemoved;
         EventSourced.registerConsumer(CartEntity.class, CartEvents.AllItemsRemovedEvent.class, applyRemoveAll);
@@ -38,19 +35,26 @@ public class CartEntity extends EventSourced<CartEntity.State> implements Cart {
 
     @Override
     public Completes<List<CartItem>> addItem(ProductId productId) {
-        apply(CartEvents.ProductAddedEvent.with(state.userId, productId), () -> state.getCartItems());
+        apply(CartEvents
+                .ProductQuantityChangeEvent
+                .with(state.userId,
+                        productId,
+                        1,
+                        state.calcNewQuantityByProductId(productId, 1)),
+                () -> state.getCartItems());
         return completes();
     }
 
     @Override
     public Completes<List<CartItem>> removeItem(ProductId productId) {
-        //Ignore silent failure case
-        if (state.basketProductsById.containsKey(productId)) {
-            apply(CartEvents.ProductRemovedEvent.with(state.userId, productId), () -> state.getCartItems());
-            return completes();
-        }
-        else
-            return queryCart();
+        apply(CartEvents
+                        .ProductQuantityChangeEvent
+                        .with(state.userId,
+                                productId,
+                                -1,
+                                state.calcNewQuantityByProductId(productId, -1)),
+                () -> state.getCartItems());
+        return completes();
     }
 
     @Override
@@ -84,23 +88,21 @@ public class CartEntity extends EventSourced<CartEntity.State> implements Cart {
             return created(cartId, userId);
         }
 
-        State productAdded(ProductId addedProductId) {
+        State productQuantityChange(ProductId productId, int quantityChange) {
             HashMap<ProductId, Integer> copyBasketProductsById = new HashMap<>(basketProductsById);
-            Integer quantity = copyBasketProductsById.getOrDefault(addedProductId, 0);
-            copyBasketProductsById.put(addedProductId, quantity + 1);
-
+            Integer quantity = calcNewQuantityByProductId(productId, quantityChange);
+            if (quantity <= 0) {
+                copyBasketProductsById.remove(productId);
+            } else {
+                copyBasketProductsById.put(productId, quantity);
+            }
             return new State(cartId, userId, copyBasketProductsById);
         }
 
-        State productRemoved(ProductId removedProductId) {
-            HashMap<ProductId, Integer> copyBasketProductsById = new HashMap<>(basketProductsById);
-            Integer quantity = copyBasketProductsById.getOrDefault(removedProductId, 0);
-            if (quantity <= 1) {
-                copyBasketProductsById.remove(removedProductId);
-            } else {
-                copyBasketProductsById.put(removedProductId, quantity - 1);
-            }
-            return new State(cartId, userId, copyBasketProductsById);
+        int calcNewQuantityByProductId(ProductId productId, int quantityChange) {
+            Integer quantity = basketProductsById.getOrDefault(productId, 0);
+            Integer newQuantity = quantity + quantityChange;
+            return (newQuantity < 0) ?  0 : newQuantity;
         }
 
         private List<CartItem> getCartItems() {
@@ -115,12 +117,8 @@ public class CartEntity extends EventSourced<CartEntity.State> implements Cart {
         state = State.created(e.shoppingCartId, e.userId);
     }
 
-    private void applyItemAdded(final CartEvents.ProductAddedEvent e) {
-        state = state.productAdded(e.productId);
-    }
-
-    private void applyItemRemoved(final CartEvents.ProductRemovedEvent e) {
-        state = state.productRemoved(e.productId);
+    private void applyQuantityChange(final CartEvents.ProductQuantityChangeEvent e) {
+        state = state.productQuantityChange(e.productId, e.newQuantity);
     }
 
     private void applyAllItemsRemoved(final CartEvents.AllItemsRemovedEvent e) {

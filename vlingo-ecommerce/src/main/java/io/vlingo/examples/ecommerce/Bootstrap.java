@@ -1,12 +1,11 @@
 package io.vlingo.examples.ecommerce;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
+import io.vlingo.examples.ecommerce.infra.AllItemsRemoveEventAdapter;
 import io.vlingo.examples.ecommerce.infra.CreatedEventAdapter;
 import io.vlingo.examples.ecommerce.infra.MockJournalListener;
-import io.vlingo.examples.ecommerce.infra.ProductAddedEventAdapter;
-import io.vlingo.examples.ecommerce.infra.ProductRemovedEventAdapter;
+import io.vlingo.examples.ecommerce.infra.ProductQuantityChangedEventAdapter;
 import io.vlingo.examples.ecommerce.model.CartEntity;
 import io.vlingo.examples.ecommerce.model.CartResource;
 import io.vlingo.http.resource.Configuration;
@@ -27,10 +26,10 @@ public class Bootstrap {
         World world = World.startWithDefaults("cartservice");
 
         MockJournalListener listener = new MockJournalListener();
-        Journal<String> journal = world.actorFor(Definition.has(InMemoryJournalActor.class, Definition.parameters(listener)), Journal.class);
+        Journal<String> journal = world.actorFor(Journal.class, InMemoryJournalActor.class, listener);
         journal.registerAdapter(CreatedEvent.class, new CreatedEventAdapter());
-        journal.registerAdapter(ProductAddedEvent.class, new ProductAddedEventAdapter());
-        journal.registerAdapter(ProductRemovedEvent.class, new ProductRemovedEventAdapter());
+        journal.registerAdapter(ProductQuantityChangeEvent.class, new ProductQuantityChangedEventAdapter());
+        journal.registerAdapter(AllItemsRemovedEvent.class, new AllItemsRemoveEventAdapter());
 
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
         registry.register(new SourcedTypeRegistry.Info(journal, CartEntity.class, CartEntity.class.getSimpleName()));
@@ -76,7 +75,7 @@ public class Bootstrap {
     }
 
     public void stop() throws InterruptedException {
-        instance.server.stop();
+        instance.server.shutDown().await(1000);
     }
 
     private void pause() {

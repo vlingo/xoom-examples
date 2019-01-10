@@ -24,28 +24,25 @@ public class CartResource {
     }
 
     public Completes<Response> create(final UserId userId) {
-        //todo: Check if already exists and then return 404
         final Address cartAddress = addressFactory.uniquePrefixedWith("cart-");
-
-        stage.actorFor(Definition.has(CartEntity.class,
-                Definition.parameters(cartAddress.idString(), userId)),
+        stage.actorFor(
                 Cart.class,
+                Definition.has(CartEntity.class, Definition.parameters(cartAddress.idString(), userId)),
                 cartAddress);
-
         return Completes.withSuccess(
                 Response.of(Created,
                         headers(of(Location, urlLocation(cartAddress.idString()))), Body.from("{}")));
     }
 
     public Completes<Response> queryCart(String cartId) {
-        return stage.actorOf(addressFactory.from(cartId), Cart.class)
+        return stage.actorOf(Cart.class, addressFactory.from(cartId))
                 .andThenTo(Cart::queryCart)
                 .andThenTo( cartItems -> Completes.withSuccess(Response.of(Ok, serialized(cartItems))))
                 .otherwise( noCart -> Response.of(NotFound, urlLocation(cartId)));
     }
 
     public Completes<Response> changeCartProductQuantity(String cartId, String productId, CartItemChange change) {
-        return stage.actorOf(addressFactory.from(cartId), Cart.class)
+        return stage.actorOf(Cart.class, addressFactory.from(cartId))
                 .andThenTo(cart -> doChangeItem(cart, productId, change))
                 .andThenTo(cartItems -> Completes.withSuccess(Response.of(Ok, serialized(cartItems))))
                 .otherwise(noUser -> Response.of(NotFound, urlLocation(cartId)));

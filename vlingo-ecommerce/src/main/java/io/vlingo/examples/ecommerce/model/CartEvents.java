@@ -21,35 +21,23 @@ public class CartEvents {
     }
 
 
-    public static class ProductAddedEvent extends DomainEvent {
-        public ProductAddedEvent(UserId userId, ProductId productId) {
+    public static class ProductQuantityChangeEvent extends DomainEvent {
+        public ProductQuantityChangeEvent(UserId userId, ProductId productId, int quantityChange, int newQuantity) {
             super(1);
             this.userId = userId;
             this.productId = productId;
+            this.quantityChange = quantityChange;
+            this.newQuantity = newQuantity;
         }
 
-        public static ProductAddedEvent with(UserId userId, ProductId productId) {
-            return new ProductAddedEvent(userId, productId);
+        public static ProductQuantityChangeEvent with(UserId userId, ProductId productId, int quantityChange, int newQuantity) {
+            return new ProductQuantityChangeEvent(userId, productId, quantityChange, newQuantity);
         }
 
         public final ProductId productId;
+        public final int quantityChange;
+        public final int newQuantity;
         public final UserId userId;
-    }
-
-
-    public static class ProductRemovedEvent extends DomainEvent {
-        public final ProductId productId;
-        public final UserId userId;
-
-        public static ProductRemovedEvent with(UserId userId, ProductId productId) {
-            return new ProductRemovedEvent(userId, productId);
-        }
-
-        public ProductRemovedEvent(UserId userId, ProductId productId) {
-            super(1);
-            this.productId = productId;
-            this.userId = userId;
-        }
     }
 
     public static class AllItemsRemovedEvent extends DomainEvent {

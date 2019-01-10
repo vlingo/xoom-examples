@@ -21,19 +21,19 @@
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-lattice</artifactId>
-            <version>0.7.7</version>
+            <version>0.7.9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-http</artifactId>
-            <version>0.7.7</version>
+            <version>0.7.9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-actors</artifactId>
-            <version>0.7.7</version>
+            <version>0.7.9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
