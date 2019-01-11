@@ -23,51 +23,59 @@ public class MockJournalListener implements JournalListener<String> {
   @Override
   public void appended(final Entry<String> entry) {
     synchronized (allEntries) {
-    allEntries.add(entry);
-    allSnapshots.add(State.TextState.Null);
-    until.happened();
+      allEntries.add(entry);
+      allSnapshots.add(State.TextState.Null);
+      until.happened();
     }
   }
 
   @Override
   public void appendedWith(final Entry<String> entry, final State<String> snapshot) {
     synchronized (allEntries) {
-    allEntries.add(entry);
-    allSnapshots.add(snapshot);
-    until.happened();
+      allEntries.add(entry);
+      allSnapshots.add(snapshot);
+      until.happened();
     }
   }
 
   @Override
   public void appendedAll(final List<Entry<String>> entries) {
     synchronized (allEntries) {
-    allEntries.addAll(entries);
-    for (int idx = 0; idx < entries.size(); ++idx) {
-      allSnapshots.add(State.TextState.Null);
-    }
-    until.happened();
+      allEntries.addAll(entries);
+      for (int idx = 0; idx < entries.size(); ++idx) {
+        allSnapshots.add(State.TextState.Null);
+      }
+      until.happened();
     }
   }
 
   @Override
   public synchronized void appendedAllWith(final List<Entry<String>> entries, final State<String> snapshot) {
     synchronized (allEntries) {
-    allEntries.addAll(entries);
-    for (int idx = 0; idx < (entries.size() - 1); ++idx) {
-      allSnapshots.add(State.TextState.Null);
-    }
-    allSnapshots.add(snapshot == null ? State.TextState.Null : snapshot);
-    until.happened();
+      allEntries.addAll(entries);
+      for (int idx = 0; idx < (entries.size() - 1); ++idx) {
+        allSnapshots.add(State.TextState.Null);
+      }
+      allSnapshots.add(snapshot == null ? State.TextState.Null : snapshot);
+      until.happened();
     }
   }
 
   public int confirmExpectedEntries(final int count, final int retries) {
     for (int idx = 0; idx < retries; ++idx) {
-      if (allEntries.size() == count) {
-        return count;
+      synchronized (allEntries) {
+        if (allEntries.size() == count) {
+          return count;
+        }
       }
       try { Thread.sleep(100); } catch (Exception e) { }
     }
     return allEntries.size();
+  }
+
+  public Entry<String> entry(final int index) {
+    synchronized (allEntries) {
+      return allEntries.get(index);
+    }
   }
 }

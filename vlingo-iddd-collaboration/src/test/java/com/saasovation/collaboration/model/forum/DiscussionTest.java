@@ -31,7 +31,7 @@ public class DiscussionTest extends EntityTest {
     discussionPair._2.close();
     journalListener.until.completes();
     assertEquals(3, journalListener.confirmExpectedEntries(3, 10));
-    final DiscussionClosed event2 = adapter().asSource(journalListener.allEntries.get(2));
+    final DiscussionClosed event2 = adapter().asSource(journalListener.entry(2));
     assertEquals(DiscussionClosed.class, event2.getClass());
   }
 
@@ -43,9 +43,9 @@ public class DiscussionTest extends EntityTest {
     discussionPair._2.reopen();
     journalListener.until.completes();
     assertEquals(4, journalListener.confirmExpectedEntries(4, 10));
-    final DiscussionClosed event2 = adapter().asSource(journalListener.allEntries.get(2));
+    final DiscussionClosed event2 = adapter().asSource(journalListener.entry(2));
     assertEquals(DiscussionClosed.class, event2.getClass());
-    final DiscussionReopened event3 = adapter().asSource(journalListener.allEntries.get(3));
+    final DiscussionReopened event3 = adapter().asSource(journalListener.entry(3));
     assertEquals(DiscussionReopened.class, event3.getClass());
   }
 
@@ -57,7 +57,7 @@ public class DiscussionTest extends EntityTest {
     discussionPair._2.topicTo(topic);
     journalListener.until.completes();
     assertEquals(3, journalListener.confirmExpectedEntries(3, 10));
-    final DiscussionTopicChanged event2 = adapter().asSource(journalListener.allEntries.get(2));
+    final DiscussionTopicChanged event2 = adapter().asSource(journalListener.entry(2));
     assertEquals(DiscussionTopicChanged.class, event2.getClass());
     assertEquals(topic, event2.topic);
   }
@@ -72,7 +72,7 @@ public class DiscussionTest extends EntityTest {
     discussionPair._2.postFor(author, subject, bodyText);
     journalListener.until.completes();
     assertEquals(3, journalListener.confirmExpectedEntries(3, 10));
-    final PostedToDiscussion event2 = postAdapter().asSource(journalListener.allEntries.get(2));
+    final PostedToDiscussion event2 = postAdapter().asSource(journalListener.entry(2));
     assertEquals(PostedToDiscussion.class, event2.getClass());
     assertEquals(author.value, event2.authorId);
     assertEquals(subject, event2.subject);
