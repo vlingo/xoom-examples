@@ -1,5 +1,6 @@
 package io.vlingo.hike;
 
+import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.State;
