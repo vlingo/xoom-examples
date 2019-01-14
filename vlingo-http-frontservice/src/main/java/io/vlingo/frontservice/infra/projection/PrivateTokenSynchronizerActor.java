@@ -117,7 +117,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
                 for (final MessageEvent event : events) {
                   logger().log("EVENT: " + event);
                   final Tuple4<io.vlingo.actors.Address, String, String, String> eventData = eventDataFrom(event);
-                  stage().actorOf(eventData._1, User.class)
+                  stage().actorOf(User.class, eventData._1)
                     .andThenConsume(user -> {
                       user.attachPrivateToken(eventData._4);
                       control.confirmProjected(eventData._3);

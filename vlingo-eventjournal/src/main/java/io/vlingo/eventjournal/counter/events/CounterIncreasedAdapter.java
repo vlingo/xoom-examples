@@ -1,31 +1,28 @@
+// Copyright © 2012-2018 Vaughn Vernon. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package io.vlingo.eventjournal.counter.events;
 
-import com.google.gson.Gson;
-import io.vlingo.eventjournal.events.EventAdapter;
-import io.vlingo.symbio.Event;
+import io.vlingo.common.serialization.JsonSerialization;
+import io.vlingo.symbio.Entry.TextEntry;
+import io.vlingo.symbio.EntryAdapter;
 import io.vlingo.symbio.Metadata;
 
+public class CounterIncreasedAdapter implements EntryAdapter<CounterIncreased, TextEntry> {
+    public CounterIncreasedAdapter() { }
 
-public class CounterIncreasedAdapter implements EventAdapter<CounterIncreased> {
-    private final Gson gson;
-
-    public CounterIncreasedAdapter() {
-        this.gson = new Gson();
+    @Override
+    public CounterIncreased fromEntry(TextEntry entry) {
+      return JsonSerialization.deserialized(entry.entryData, CounterIncreased.class);
     }
 
     @Override
-    public Event.TextEvent serialize(CounterIncreased event) {
-        return new Event.TextEvent(event.uuid.toString(), CounterIncreased.class, 1, gson.toJson(event), new Metadata());
-
-    }
-
-    @Override
-    public boolean canDeserialize(Event.TextEvent event) {
-        return event.type.equals(CounterIncreased.class.getCanonicalName()) && event.typeVersion == 1;
-    }
-
-    @Override
-    public CounterIncreased deserialize(Event.TextEvent event) {
-        return gson.fromJson(event.eventData, CounterIncreased.class);
+    public TextEntry toEntry(CounterIncreased source) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(CounterIncreased.class, 1, serialization, Metadata.nullMetadata());
     }
 }

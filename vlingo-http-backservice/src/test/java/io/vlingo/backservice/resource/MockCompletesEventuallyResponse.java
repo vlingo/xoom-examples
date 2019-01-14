@@ -7,6 +7,7 @@
 
 package io.vlingo.backservice.resource;
 
+import io.vlingo.actors.Address;
 import io.vlingo.actors.CompletesEventually;
 import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.http.Response;
@@ -16,6 +17,11 @@ public class MockCompletesEventuallyResponse implements CompletesEventually {
 
   public Response response;
   
+  @Override
+  public Address address() {
+    return null;
+  }
+
   @Override
   public void with(final Object outcome) {
     this.response = (Response) outcome;

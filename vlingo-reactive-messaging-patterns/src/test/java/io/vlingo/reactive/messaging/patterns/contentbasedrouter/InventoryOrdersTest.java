@@ -1,7 +1,11 @@
 package io.vlingo.reactive.messaging.patterns.contentbasedrouter;
 
+import java.util.Map;
+
+import org.junit.Test;
+
 import com.google.common.collect.Maps;
-import io.vlingo.actors.Definition;
+
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.actor.OrderRouter;
@@ -9,12 +13,8 @@ import io.vlingo.reactive.messaging.patterns.contentbasedrouter.actor.OrderRoute
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.order.Order;
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.order.OrderItem;
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.order.OrderPlaced;
-import org.junit.Test;
-
-import java.util.Map;
 
 /**
- * @author Chandrabhan Kumhar
  * Test for Inventory and Order placed
  */
 public class InventoryOrdersTest {
@@ -54,7 +54,7 @@ public class InventoryOrdersTest {
         final World world = World.startWithDefaults ( WORLD_NAME );
         final TestUntil until = TestUntil.happenings ( 2 );
 
-        final OrderRouter orderRouter = world.actorFor ( Definition.has ( OrderRouterActor.class, Definition.parameters ( until ) ), OrderRouter.class );
+        final OrderRouter orderRouter = world.actorFor (OrderRouter.class, OrderRouterActor.class, until );
         orderRouter.routeOrder ( orderPlaced );
         orderRouter.routeOrder ( orderPlaced2 );
 

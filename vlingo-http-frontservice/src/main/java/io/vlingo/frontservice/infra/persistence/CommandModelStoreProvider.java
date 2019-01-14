@@ -14,42 +14,43 @@ import io.vlingo.frontservice.model.Profile;
 import io.vlingo.frontservice.model.User;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
+import io.vlingo.symbio.store.state.StateStore;
+import io.vlingo.symbio.store.state.StateStore.Dispatcher;
 import io.vlingo.symbio.store.state.StateStore.DispatcherControl;
-import io.vlingo.symbio.store.state.TextStateStore;
-import io.vlingo.symbio.store.state.TextStateStore.TextDispatcher;
-import io.vlingo.symbio.store.state.inmemory.InMemoryTextStateStoreActor;
+import io.vlingo.symbio.store.state.inmemory.InMemoryStateStoreActor;
 
 public class CommandModelStoreProvider {
   private static CommandModelStoreProvider instance;
 
   public final DispatcherControl dispatcherControl;
-  public final TextStateStore store;
+  public final StateStore store;
 
   public static CommandModelStoreProvider instance() {
     return instance;
   }
 
-  public static CommandModelStoreProvider using(final Stage stage, final TextDispatcher dispatcher) {
+  public static CommandModelStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final Dispatcher dispatcher) {
     if (instance != null) return instance;
 
     final Protocols storeProtocols =
             stage.actorFor(
-                    Definition.has(InMemoryTextStateStoreActor.class, Definition.parameters(dispatcher)),
-                    new Class<?>[] { TextStateStore.class, DispatcherControl.class });
+                    new Class<?>[] { StateStore.class, DispatcherControl.class },
+                    Definition.has(InMemoryStateStoreActor.class, Definition.parameters(dispatcher)));
 
-    final Protocols.Two<TextStateStore, DispatcherControl> storeWithControl = Protocols.two(storeProtocols);
+    final Protocols.Two<StateStore, DispatcherControl> storeWithControl = Protocols.two(storeProtocols);
 
-    instance = new CommandModelStoreProvider(storeWithControl._1, storeWithControl._2);
+    instance = new CommandModelStoreProvider(registry, storeWithControl._1, storeWithControl._2);
 
     return instance;
   }
 
-  private CommandModelStoreProvider(final TextStateStore store, final DispatcherControl dispatcherControl) {
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  private CommandModelStoreProvider(final StatefulTypeRegistry registry, final StateStore store, final DispatcherControl dispatcherControl) {
     this.store = store;
     this.dispatcherControl = dispatcherControl;
 
-    StatefulTypeRegistry.instance
-      .register(new Info<User.UserState,String>(store, User.UserState.class, User.UserState.class.getSimpleName(), new UserStateAdapter()))
-      .register(new Info<Profile.ProfileState,String>(store, Profile.ProfileState.class, Profile.ProfileState.class.getSimpleName(), new ProfileStateAdapter()));
+    registry
+      .register(new Info(store, User.UserState.class, User.UserState.class.getSimpleName(), new UserStateAdapter()))
+      .register(new Info(store, Profile.ProfileState.class, Profile.ProfileState.class.getSimpleName(), new ProfileStateAdapter()));
   }
 }

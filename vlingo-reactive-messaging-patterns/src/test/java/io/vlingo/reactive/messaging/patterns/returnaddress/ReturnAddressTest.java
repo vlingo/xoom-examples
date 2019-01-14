@@ -9,7 +9,6 @@ package io.vlingo.reactive.messaging.patterns.returnaddress;
 
 import org.junit.Test;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
@@ -22,8 +21,8 @@ public class ReturnAddressTest {
 
     final TestUntil until = TestUntil.happenings(1);
 
-    final Service service = world.actorFor(Definition.has(Server.class, Definition.NoParameters), Service.class);
-    world.actorFor(Definition.has(Client.class, Definition.parameters(service, until)), Consumer.class);
+    final Service service = world.actorFor(Service.class, Server.class);
+    world.actorFor(Consumer.class, Client.class, service, until);
 
     until.completes();
 

@@ -7,15 +7,15 @@
 
 package io.vlingo.reactive.messaging.patterns.messagefilter;
 
-import io.vlingo.actors.Definition;
-import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
-import org.junit.Test;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 import java.util.Arrays;
 
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
+import org.junit.Test;
+
+import io.vlingo.actors.World;
+import io.vlingo.actors.testkit.TestUntil;
 
 public class MessageFilterTest {
 
@@ -29,23 +29,13 @@ public class MessageFilterTest {
         final TestUntil until = TestUntil.happenings(3);
 
         final InventorySystem restrictedInventorySystemActor =
-                world.actorFor(
-                        Definition.has(
-                                RestrictedInventorySystemActor.class,
-                                Definition.parameters(until)),
-                        InventorySystem.class);
+                world.actorFor(InventorySystem.class, RestrictedInventorySystemActor.class,until);
 
         final InventorySystem notRestrictedInventorySystemActor =
-                world.actorFor(
-                        Definition.has(NotRestrictedInventorySystemActor.class,
-                                Definition.parameters(until)),
-                        InventorySystem.class);
+                world.actorFor(InventorySystem.class, NotRestrictedInventorySystemActor.class,until);
 
         final InventorySystem inventoryMessageFilter =
-                world.actorFor(
-                        Definition.has(InventorySystemMessageFilter.class,
-                                Definition.parameters(until, notRestrictedInventorySystemActor)),
-                        InventorySystem.class);
+                world.actorFor(InventorySystem.class, InventorySystemMessageFilter.class, until, notRestrictedInventorySystemActor);
 
         final Order order =
                 new Order("1",

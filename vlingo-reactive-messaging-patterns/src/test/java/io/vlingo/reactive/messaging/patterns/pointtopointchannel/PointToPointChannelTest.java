@@ -9,7 +9,6 @@ package io.vlingo.reactive.messaging.patterns.pointtopointchannel;
 import org.junit.Test;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
@@ -36,7 +35,7 @@ public class PointToPointChannelTest
         
         final TestUntil until = TestUntil.happenings( NUMBER_MESSAGES );
         
-        final PointToPointProcessor peerNodeActor = world.actorFor( Definition.has( PeerNodeActor.class, Definition.parameters( until )), PointToPointProcessor.class );
+        final PointToPointProcessor peerNodeActor = world.actorFor(PointToPointProcessor.class, PeerNodeActor.class, until );
         
         peerNodeActor.process( MSG_ID_1 );
         peerNodeActor.process( MSG_ID_2 );
