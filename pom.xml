@@ -29,6 +29,7 @@
     <module>vlingo-http-frontservice</module>
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-eventjournal</module>
+    <module>vlingo-hike-backend</module>
   </modules>
 
 </project>
