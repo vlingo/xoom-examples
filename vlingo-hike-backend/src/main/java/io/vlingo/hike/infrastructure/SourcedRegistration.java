@@ -1,7 +1,9 @@
 package io.vlingo.hike.infrastructure;
 
 import io.vlingo.hike.domain.route.RouteActor;
+import io.vlingo.hike.domain.route.events.EmergencyRaised;
 import io.vlingo.hike.domain.route.events.WalkedThrough;
+import io.vlingo.hike.infrastructure.route.EmergencyRaisedAdapter;
 import io.vlingo.hike.infrastructure.route.WalkedThroughAdapter;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
@@ -13,6 +15,7 @@ public class SourcedRegistration {
         registry.register(new Info(journal, RouteActor.class, RouteActor.class.getSimpleName()));
 
         registry.info(RouteActor.class)
-                .register(WalkedThrough.class, WalkedThroughAdapter.instance(), journal::registerAdapter);
+                .register(WalkedThrough.class, WalkedThroughAdapter.instance(), journal::registerAdapter)
+                .register(EmergencyRaised.class, EmergencyRaisedAdapter.instance(), journal::registerAdapter);
     }
 }
