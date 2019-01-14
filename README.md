@@ -1,2 +1,5 @@
 # vlingo-examples
-Examples demonstrating features and functionality available in the reactive components of the vlingo/platform.
+
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/vlingo-platform-java/examples)
+
+Examples demonstrating features and functionality available in the reactive components of the vlingo/platform. See each of the submodules for specific examples.

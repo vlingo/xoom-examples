@@ -44,41 +44,41 @@ public class UserResource {
         Contact.from(userData.contactData.emailAddress, userData.contactData.telephoneNumber),
         Security.from(userData.publicSecurityToken));
 
-    stage.actorFor(Definition.has(UserEntity.class, Definition.parameters(userState)), User.class, userAddress);
+    stage.actorFor(User.class, Definition.has(UserEntity.class, Definition.parameters(userState)), userAddress);
 
     return Completes.withSuccess(Response.of(Created, headers(of(Location, userLocation(userState.id))), serialized(UserData.from(userState))));
   }
 
   public Completes<Response> changeContact(final String userId, final ContactData contactData) {
-    return stage.actorOf(addressFactory.from(userId), User.class)
-      .andThenInto(user -> user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber)))
-      .andThenInto(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
+    return stage.actorOf(User.class, addressFactory.from(userId))
+      .andThenTo(user -> user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber)))
+      .andThenTo(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
       .otherwise(noUser -> Response.of(NotFound, userLocation(userId)));
   }
 
   public Completes<Response> changeName(final String userId, final NameData nameData) {
-    return stage.actorOf(addressFactory.from(userId), User.class)
-      .andThenInto(user -> user.withName(new Name(nameData.given, nameData.family)))
-      .andThenInto(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
+    return stage.actorOf(User.class, addressFactory.from(userId))
+      .andThenTo(user -> user.withName(new Name(nameData.given, nameData.family)))
+      .andThenTo(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
       .otherwise(noUser -> Response.of(NotFound, userLocation(userId)));
   }
 
   public Completes<Response> queryUser(final String userId) {
     return queries.userDataOf(userId)
-      .andThenInto(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+      .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
       .otherwise(noData -> Response.of(NotFound, userLocation(userId)));
   }
 
   public Completes<Response> queryUsers() {
     return queries.usersData()
-      .andThenInto(data -> Completes.withSuccess(Response.of(Ok, serialized(data))));
+      .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))));
   }
 
   private String userLocation(final String userId) {
     return "/users/" + userId;
   }
 
-  public Resource routes() {
+  public Resource<?> routes() {
     return resource("user resource fluent api",
       post("/users")
         .body(UserData.class)

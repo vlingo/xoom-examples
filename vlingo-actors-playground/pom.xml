@@ -1,8 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-actors-playground</artifactId>
-  <version>0.7.2</version>
+  <version>0.7.9</version>
   <name>vlingo-actors-playground</name>
   <description>Example of vlingo/actors playing ping pong.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -27,7 +27,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.7.2</version>
+      <version>0.7.9</version>
     </dependency>
   </dependencies>
 </project>

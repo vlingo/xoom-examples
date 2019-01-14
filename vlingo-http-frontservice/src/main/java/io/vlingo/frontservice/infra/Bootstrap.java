@@ -13,14 +13,15 @@ import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
 import io.vlingo.frontservice.infra.projection.ProjectionDispatcherProvider;
 import io.vlingo.frontservice.resource.ProfileResource;
 import io.vlingo.frontservice.resource.UserResource;
+import io.vlingo.http.resource.Configuration.Sizing;
+import io.vlingo.http.resource.Configuration.Timing;
 import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
-
-import static io.vlingo.http.resource.Configuration.Sizing;
-import static io.vlingo.http.resource.Configuration.Timing;
+import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 
 public class Bootstrap {
   private static Bootstrap instance;
+  private final StatefulTypeRegistry registry;
   public final Server server;
 
   //  public static final Bootstrap testInstance() {
@@ -32,9 +33,11 @@ public class Bootstrap {
   private Bootstrap() {
     this.world = World.startWithDefaults("frontservice");
 
-    QueryModelStoreProvider.using(world.stage());
+    registry = new StatefulTypeRegistry(world);
 
-    CommandModelStoreProvider.using(world.stage(), ProjectionDispatcherProvider.using(world.stage()).textStateStoreDispatcher);
+    QueryModelStoreProvider.using(world.stage(), registry);
+
+    CommandModelStoreProvider.using(world.stage(), registry, ProjectionDispatcherProvider.using(world.stage()).stateStoreDispatcher);
 
     final UserResource userResource = new UserResource(world);
     final ProfileResource profileResource = new ProfileResource(world);

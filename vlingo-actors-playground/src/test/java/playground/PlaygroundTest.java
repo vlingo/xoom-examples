@@ -9,7 +9,6 @@ package playground;
 
 import org.junit.Test;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
@@ -19,8 +18,8 @@ public class PlaygroundTest {
   public void testPlayPingPong() {
     final World world = World.startWithDefaults("playground");
     final TestUntil until = TestUntil.happenings(1);
-    final Pinger pinger = world.actorFor(Definition.has(PingerActor.class, Definition.parameters(until)), Pinger.class);
-    final Ponger ponger = world.actorFor(Definition.has(PongerActor.class, Definition.NoParameters), Ponger.class);
+    final Pinger pinger = world.actorFor(Pinger.class, PingerActor.class, until);
+    final Ponger ponger = world.actorFor(Ponger.class, PongerActor.class);
 
     pinger.ping(ponger);
 
