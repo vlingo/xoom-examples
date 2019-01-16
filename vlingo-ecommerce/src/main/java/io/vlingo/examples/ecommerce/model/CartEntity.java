@@ -3,6 +3,7 @@ package io.vlingo.examples.ecommerce.model;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,7 @@ public class CartEntity extends EventSourced<CartEntity.State> implements Cart {
 
         private State(String cartId, UserId userId, Map<ProductId, Integer> basketProductsById) {
             this.cartId = cartId;
-            this.basketProductsById = new HashMap<>(basketProductsById);
+            this.basketProductsById = Collections.unmodifiableMap(basketProductsById);
             this.userId = userId;
         }
 

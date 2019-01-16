@@ -8,12 +8,12 @@ import io.vlingo.common.Completes;
 
 public interface Order {
 
-    void orderItemChange(ProductId productId, int newQuantity);
-
-    void changeShipmentAddress(MailingAddress shipmentAddress);
-
     void paymentComplete(PaymentId paymentId, int orderStateHash);
 
+    void orderShipped(PaymentId paymentId, int orderStateHash);
+
     Completes<OrderInfo> query();
+
+    OrderInfo doesSyncOperatorWork();
 
 }

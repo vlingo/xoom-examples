@@ -14,9 +14,9 @@ import static io.vlingo.http.ResponseHeader.*;
 import static io.vlingo.http.resource.ResourceBuilder.*;
 
 public class CartResource {
-    public static final String ROOT_URL = "/cart";
-    private final AddressFactory addressFactory;
-    private final Stage stage;
+    public static final String         ROOT_URL = "/cart";
+    private final       AddressFactory addressFactory;
+    private final       Stage          stage;
 
     public CartResource(final World world) {
         this.addressFactory = world.addressFactory();
@@ -37,41 +37,19 @@ public class CartResource {
     public Completes<Response> queryCart(String cartId) {
         return stage.actorOf(Cart.class, addressFactory.from(cartId))
                 .andThenTo(Cart::queryCart)
-                .andThenTo( cartItems -> Completes.withSuccess(Response.of(Ok, serialized(cartItems))))
-                .otherwise( noCart -> Response.of(NotFound, urlLocation(cartId)));
+                .andThenTo(cartItems -> Completes.withSuccess(Response.of(Ok, serialized(cartItems))))
+                .otherwise(noCart -> Response.of(NotFound, urlLocation(cartId)));
     }
 
-    public Completes<Response> changeCartProductQuantity(String cartId, String productId, CartItemChange change) {
+    public Completes<Response> changeCartProductQuantity(String cartId, String idOfProduct, CartItemChange change) {
         return stage.actorOf(Cart.class, addressFactory.from(cartId))
-                .andThenTo(cart -> doChangeItem(cart, productId, change))
+                .andThenTo(cart -> change.applyTo(cart, ProductId.fromId(idOfProduct)))
                 .andThenTo(cartItems -> Completes.withSuccess(Response.of(Ok, serialized(cartItems))))
                 .otherwise(noUser -> Response.of(NotFound, urlLocation(cartId)));
     }
 
-    private Completes<List<Cart.CartItem>> doChangeItem(Cart entity, String idOfProduct, CartItemChange change) {
-        ProductId productId = ProductId.fromId(idOfProduct);
-        if (change.isAdd())
-            return entity.addItem(productId);
-        else
-            return entity.removeItem(productId);
-    }
-
     private String urlLocation(final String shoppingCartId) {
         return ROOT_URL + "/" + shoppingCartId;
-    }
-
-
-    public static class CartItemChange {
-
-        public CartItemChange(String operation) {
-            this.operation = operation;
-        }
-
-        public final String operation;
-
-        public boolean isAdd() {
-            return operation.equals("add");
-        }
     }
 
     public Resource routes() {
@@ -88,6 +66,26 @@ public class CartResource {
                 get("/cart/{cartId}")
                         .param(String.class)
                         .handle(this::queryCart));
+    }
+
+    public static class CartItemChange {
+
+        public final String operation;
+
+        public CartItemChange(String operation) {
+            this.operation = operation;
+        }
+
+        public Completes<List<Cart.CartItem>> applyTo(Cart cart, ProductId productId) {
+            if (operation.equals("add")) {
+                return cart.addItem(productId);
+            } else if (operation == "remove") {
+                return cart.removeItem(productId);
+            } else {
+                throw new IllegalArgumentException("Operation invalid: " + operation);
+            }
+        }
+
     }
 }
 

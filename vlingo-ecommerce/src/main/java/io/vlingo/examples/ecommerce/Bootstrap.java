@@ -2,12 +2,12 @@ package io.vlingo.examples.ecommerce;
 
 import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
-import io.vlingo.examples.ecommerce.infra.AllItemsRemoveEventAdapter;
-import io.vlingo.examples.ecommerce.infra.CreatedEventAdapter;
 import io.vlingo.examples.ecommerce.infra.MockJournalListener;
-import io.vlingo.examples.ecommerce.infra.ProductQuantityChangedEventAdapter;
-import io.vlingo.examples.ecommerce.model.CartEntity;
-import io.vlingo.examples.ecommerce.model.CartResource;
+import io.vlingo.examples.ecommerce.infra.cart.CartAllItemsRemoveEventAdapter;
+import io.vlingo.examples.ecommerce.infra.cart.CartCreatedEventAdapter;
+import io.vlingo.examples.ecommerce.infra.cart.CartProductQuantityChangedEventAdapter;
+import io.vlingo.examples.ecommerce.infra.order.OrderCreatedEventAdapter;
+import io.vlingo.examples.ecommerce.model.*;
 import io.vlingo.http.resource.Configuration;
 import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
@@ -21,22 +21,29 @@ public class Bootstrap {
     private static Bootstrap instance;
     private final Server server;
 
+    public final World world;
+
     @SuppressWarnings({ "unchecked" })
     private Bootstrap() {
-        World world = World.startWithDefaults("cartservice");
+        world = World.startWithDefaults("cartservice");
 
         MockJournalListener listener = new MockJournalListener();
         Journal<String> journal = world.actorFor(Journal.class, InMemoryJournalActor.class, listener);
-        journal.registerAdapter(CreatedEvent.class, new CreatedEventAdapter());
-        journal.registerAdapter(ProductQuantityChangeEvent.class, new ProductQuantityChangedEventAdapter());
-        journal.registerAdapter(AllItemsRemovedEvent.class, new AllItemsRemoveEventAdapter());
+
+        journal.registerAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter());
+
+        journal.registerAdapter(CreatedEvent.class, new CartCreatedEventAdapter());
+        journal.registerAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter());
+        journal.registerAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter());
 
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
         registry.register(new SourcedTypeRegistry.Info(journal, CartEntity.class, CartEntity.class.getSimpleName()));
+        registry.register(new SourcedTypeRegistry.Info(journal, OrderEntity.class, OrderEntity.class.getSimpleName()));
 
         final CartResource cartResource = new CartResource(world);
+        final OrderResource orderResource = new OrderResource(world);
 
-        final Resources resources = Resources.are(cartResource.routes());
+        final Resources resources = Resources.are(cartResource.routes(), orderResource.routes());
         this.server = Server.startWith(world.stage(),
                 resources,
                 8081,

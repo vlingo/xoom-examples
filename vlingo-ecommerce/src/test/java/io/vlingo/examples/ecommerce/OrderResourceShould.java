@@ -5,6 +5,9 @@ import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import io.vlingo.examples.ecommerce.model.OrderResource;
+import io.vlingo.examples.ecommerce.model.ProductId;
+import io.vlingo.examples.ecommerce.model.UserId;
 import org.apache.http.HttpStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,13 +16,14 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
+import static io.vlingo.common.serialization.JsonSerialization.serialized;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
 
-public class CartResourceShould {
+public class OrderResourceShould {
 
     @BeforeClass
     public static void setUp() throws InterruptedException {
@@ -39,24 +43,31 @@ public class CartResourceShould {
         return given().port(8081).accept(ContentType.JSON);
     }
 
-    String createCart() {
-        //todo:exceptions cause hangs, not 500  errors!!
+    String createOrder() {
+
+        OrderResource.OrderCreateRequest request = OrderResource.OrderCreateRequest.Builder
+                                         .create()
+                .withProduct(new ProductId("pid1"), 100)
+                .withProduct(new ProductId("pid2"), 200)
+                .withUser(new UserId(1))
+                .build();
+
         Response response =
                 baseGiven()
                         .when()
-                        .body("{id: 100}")
+                        .body(serialized(request))
                         .post("/cart")
                         .then()
                         .assertThat()
                         .statusCode(HttpStatus.SC_CREATED)
-                        .header("Location", matchesPattern("/cart/(\\d+)"))
+                        .header("Location", matchesPattern("/order/(\\d+)"))
                         .extract().response();
         return response.header("Location");
     }
 
     @Test
     public void cartIsEmpty_whenCreated() {
-        String cartUrl = createCart();
+        String cartUrl = createOrder();
 
         baseGiven()
                 .when()
@@ -69,7 +80,7 @@ public class CartResourceShould {
     @Test
     public void cartAddsProduct_whenProductIsAdded() throws IOException {
 
-        String cartUrl = createCart();
+        String cartUrl = createOrder();
 
         baseGiven()
                 .log().all()

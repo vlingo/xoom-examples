@@ -32,10 +32,10 @@ HTTP/1.1 201 Created
 Location: /users/175
 Content-Length: 198
 
-{"id":"175","nameData":{"given":"Jane","family":"Doe"},"contactData":{"emailAddress":"jane.doe@vlingo.io","telephoneNumber":"+1 212-555-1212"},"publicSecurityToken":"jfhf90r8re978er88e,ndf!--88dh*"}
+{"orderId":"175","nameData":{"given":"Jane","family":"Doe"},"contactData":{"emailAddress":"jane.doe@vlingo.io","telephoneNumber":"+1 212-555-1212"},"publicSecurityToken":"jfhf90r8re978er88e,ndf!--88dh*"}
 ```
 
-Note that the result you observe in your own usage may differ. For example, you may see an `id` in the response `Location` header and `JSON` body other than `175`. In case the actual `id` found in your response's `Location` header is different than `175`, execute the HTTP `GET` request seen next, but replace the value `175` with the actual `id` value from the above response.
+Note that the result you observe in your own usage may differ. For example, you may see an `orderId` in the response `Location` header and `JSON` body other than `175`. In case the actual `orderId` found in your response's `Location` header is different than `175`, execute the HTTP `GET` request seen next, but replace the value `175` with the actual `orderId` value from the above response.
 
 ```
 $ curl -i -X GET -H "Content-Type: application/json" http://localhost:8081/users/175
@@ -47,7 +47,7 @@ This `GET` request responds with a result similar to the following:
 HTTP/1.1 200 OK
 Content-Length: 198
 
-{"id":"175","nameData":{"given":"Jane","family":"Doe"},"contactData":{"emailAddress":"jane.doe@vlingo.io","telephoneNumber":"+1 212-555-1212"},"publicSecurityToken":"jfhf90r8re978er88e,ndf!--88dh*"}
+{"orderId":"175","nameData":{"given":"Jane","family":"Doe"},"contactData":{"emailAddress":"jane.doe@vlingo.io","telephoneNumber":"+1 212-555-1212"},"publicSecurityToken":"jfhf90r8re978er88e,ndf!--88dh*"}
 ```
 
 Try it yourself.

@@ -18,5 +18,4 @@ public class MailingAddress {
         this.zipCode = zipCode;
     }
 
-
 }

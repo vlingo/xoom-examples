@@ -1,4 +1,4 @@
-package io.vlingo.examples.ecommerce.infra;
+package io.vlingo.examples.ecommerce.infra.cart;
 
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.examples.ecommerce.model.CartEvents;
@@ -6,7 +6,7 @@ import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.EntryAdapter;
 import io.vlingo.symbio.Metadata;
 
-public class AllItemsRemoveEventAdapter implements EntryAdapter<CartEvents.AllItemsRemovedEvent,Entry.TextEntry> {
+public class CartAllItemsRemoveEventAdapter implements EntryAdapter<CartEvents.AllItemsRemovedEvent,Entry.TextEntry> {
 
     @Override
     public CartEvents.AllItemsRemovedEvent fromEntry(final Entry.TextEntry entry) {
