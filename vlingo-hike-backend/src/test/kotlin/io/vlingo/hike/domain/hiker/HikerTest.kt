@@ -16,7 +16,7 @@ class HikerTest: ActorTest() {
 
     @Test
     fun testThatCreatesANewRoute() {
-        val events = withEvents(1) {
+        val events = withExpectedEvents(1) {
             hiker.routeStarted()
         }
 

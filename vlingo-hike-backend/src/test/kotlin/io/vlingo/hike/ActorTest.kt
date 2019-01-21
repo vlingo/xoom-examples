@@ -40,7 +40,7 @@ abstract class ActorTest {
         return testWorld.stage()
     }
 
-    protected fun withEvents(number: Int, fn: () -> Unit): List<Entry<String>> {
+    protected fun withExpectedEvents(number: Int, fn: () -> Unit): List<Entry<String>> {
         expectedEvents(number)
         fn()
         waitForEvents()
