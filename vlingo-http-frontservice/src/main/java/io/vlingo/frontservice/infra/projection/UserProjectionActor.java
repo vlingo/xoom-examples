@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import io.vlingo.actors.Actor;
+import io.vlingo.common.Outcome;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
 import io.vlingo.frontservice.infra.persistence.UserDataStateAdapter;
@@ -18,22 +19,23 @@ import io.vlingo.frontservice.model.User;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.Projection;
 import io.vlingo.lattice.model.projection.ProjectionControl;
-import io.vlingo.symbio.State;
+import io.vlingo.lattice.model.projection.ProjectionControl.Confirmer;
+import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.store.Result;
+import io.vlingo.symbio.store.StorageException;
+import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
 import io.vlingo.symbio.store.state.StateStore.WriteResultInterest;
-import io.vlingo.symbio.store.state.TextStateStore;
 
 public class UserProjectionActor extends Actor
-    implements Projection, ReadResultInterest<String>, WriteResultInterest<String> {
+    implements Projection, ReadResultInterest, WriteResultInterest {
 
   private final UserDataStateAdapter adapter;
-  private final ReadResultInterest<String> readInterest;
-  private final WriteResultInterest<String> writeInterest;
-  private final TextStateStore store;
+  private final ReadResultInterest readInterest;
+  private final WriteResultInterest writeInterest;
+  private final StateStore store;
 
-  @SuppressWarnings("unchecked")
   public UserProjectionActor() {
     this.store = QueryModelStoreProvider.instance().store;
     this.adapter = new UserDataStateAdapter();
@@ -45,29 +47,28 @@ public class UserProjectionActor extends Actor
   public void projectWith(final Projectable projectable, final ProjectionControl control) {
     final User.UserState state = projectable.object();
     final UserData data = UserData.from(state);
-    final Confirmer confirmation = () -> control.confirmProjected(projectable.projectionId());
 
     switch (projectable.becauseOf()) {
       case "User:new": {
-        final State<String> projection = new TextState(data.id, UserData.class, 1, adapter.to(data, 1, 1), state.version);
-        store.write(projection, writeInterest, confirmation);
+        final TextState projection = adapter.toRawState(data, 1);
+        store.write(state.id, projection, 1, writeInterest, control.confirmerFor(projectable));
         break;
       }
       case "User:contact": {
-        final Consumer<State<String>> updater = readState -> {
+        final Consumer<TextState> updater = readState -> {
           updateWith(readState, data, state.version,
             (writeData) -> UserData.from(writeData.id, writeData.nameData, data.contactData, writeData.publicSecurityToken),
-            confirmation
+            control.confirmerFor(projectable)
           );
         };
         store.read(data.id, UserData.class, readInterest, updater);
         break;
       }
       case "User:name": {
-        final Consumer<State<String>> updater = readState -> {
+        final Consumer<TextState> updater = readState -> {
           updateWith(readState, data, state.version,
             (writeData) -> UserData.from(writeData.id, data.nameData, writeData.contactData, writeData.publicSecurityToken),
-            confirmation
+            control.confirmerFor(projectable)
           );
         };
         store.read(data.id, UserData.class, readInterest, updater);
@@ -78,36 +79,33 @@ public class UserProjectionActor extends Actor
 
   @Override
   @SuppressWarnings("unchecked")
-  public void readResultedIn(final Result result, final String id, final State<String> state, final Object object) {
-    ((Consumer<State<String>>) object).accept(state);
+  public <S> void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final Metadata metadata, final Object object) {
+    outcome.andThen(result -> {
+      ((Consumer<S>) object).accept(state);
+      return result;
+    }).otherwise(cause -> {
+      // log but don't retry, allowing re-delivery of Projectable
+      logger().log("Query state not read for update because: " + cause.getMessage(), cause);
+      return cause.result;
+    });
   }
 
   @Override
-  public void readResultedIn(Result result, Exception cause, String id, State<String> state, Object object) {
-    // log but don't retry, allowing re-delivery of Projectable
-    logger().log("Query state not read for update because: " + cause.getMessage(), cause);
+  public <S> void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final Object object) {
+    outcome.andThen(result -> {
+      ((Confirmer) object).confirm();
+      return result;
+    }).otherwise(cause -> {
+      // log but don't retry, allowing re-delivery of Projectable
+      logger().log("Query state not written for update because: " + cause.getMessage(), cause);
+      return cause.result;
+    });
   }
 
-  @Override
-  public void writeResultedIn(final Result result, final String id, final State<String> state, final Object object) {
-    ((Confirmer) object).confirm();
-  }
-
-  @Override
-  public void writeResultedIn(final Result result, final Exception cause, final String id, final State<String> state, final Object object) {
-    // log but don't retry, allowing re-delivery of Projectable
-    logger().log("Query state not written for update because: " + cause.getMessage(), cause);
-  }
-
-  private void updateWith(final State<String> state, final UserData data, final int version, final Function<UserData,UserData> updater, final Confirmer confirmer) {
-    final UserData read = adapter.from(state.data, state.dataVersion, state.typeVersion);
+  private void updateWith(final TextState state, final UserData data, final int version, final Function<UserData,UserData> updater, final Confirmer confirmer) {
+    final UserData read = adapter.fromRawState(state);
     final UserData write = updater.apply(read);
-    final State<String> projection = new TextState(write.id, UserData.class, 1, adapter.to(write, 1, 1), version);
-    store.write(projection, writeInterest, confirmer);
-  }
-
-  @FunctionalInterface
-  private static interface Confirmer {
-    void confirm();
+    final TextState projection = adapter.toRawState(write, 1);
+    store.write(state.id, projection, state.dataVersion, writeInterest, confirmer);
   }
 }

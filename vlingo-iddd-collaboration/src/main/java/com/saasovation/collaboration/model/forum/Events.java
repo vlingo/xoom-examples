@@ -196,4 +196,56 @@ public class Events {
       this.topic = topic;
     }
   }
+
+  public static final class PostedToDiscussion extends DomainEvent {
+    public final String tenantId;
+    public final String forumId;
+    public final String discussionId;
+    public final String postId;
+    public final String authorId;
+    public final String subject;
+    public final String bodyText;
+
+    public static PostedToDiscussion with(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final PostId postId, final Author author,
+            final String subject, final String bodyText) {
+      return new PostedToDiscussion(tenant, forumId, discussionId, postId, author, subject, bodyText);
+    }
+
+    public PostedToDiscussion(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final PostId postId, final Author author,
+            final String subject, final String bodyText) {
+      this.tenantId = tenant.value;
+      this.forumId = forumId.value;
+      this.discussionId = discussionId.value;
+      this.postId = postId.value;
+      this.authorId = author.value;
+      this.subject = subject;
+      this.bodyText = bodyText;
+    }
+  }
+
+  public static final class PostModerated extends DomainEvent {
+    public final String tenant;
+    public final String forumId;
+    public final String discussionId;
+    public final String postId;
+    public final String moderatorId;
+    public final String subject;
+    public final String bodyText;
+
+    public static PostModerated with(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final PostId postId, final Moderator moderator,
+            final String subject, final String bodyText) {
+      return new PostModerated(tenant, forumId, discussionId, postId, moderator, subject, bodyText);
+    }
+
+    public PostModerated(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final PostId postId, final Moderator moderator,
+            final String subject, final String bodyText) {
+      this.tenant = tenant.value;
+      this.forumId = forumId.value;
+      this.discussionId = discussionId.value;
+      this.postId = postId.value;
+      this.moderatorId = moderator.value;
+      this.subject = subject;
+      this.bodyText = bodyText;
+    }
+  }
 }

@@ -1,51 +1,50 @@
+// Copyright © 2012-2018 Vaughn Vernon. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package io.vlingo.eventjournal.counter;
 
-import com.google.gson.Gson;
+import java.util.Optional;
+
 import io.vlingo.actors.Actor;
 import io.vlingo.common.Cancellable;
 import io.vlingo.common.Completes;
 import io.vlingo.common.Scheduled;
-import io.vlingo.eventjournal.counter.events.CounterDecreased;
-import io.vlingo.eventjournal.counter.events.CounterDecreasedAdapter;
-import io.vlingo.eventjournal.counter.events.CounterIncreased;
-import io.vlingo.eventjournal.counter.events.CounterIncreasedAdapter;
-import io.vlingo.symbio.store.eventjournal.EventJournalReader;
+import io.vlingo.eventjournal.counter.events.Event;
+import io.vlingo.symbio.EntryAdapterProvider;
+import io.vlingo.symbio.store.journal.JournalReader;
 
-import java.util.Optional;
-
-public class CounterQueryActor extends Actor implements CounterQuery {
-    private final EventJournalReader<String> streamReader;
-    private final Gson gson;
-    private final CounterIncreasedAdapter counterIncreasedAdapter;
-    private final CounterDecreasedAdapter counterDecreasedAdapter;
+public class CounterQueryActor extends Actor implements CounterQuery, Scheduled {
+    private final JournalReader<String> streamReader;
     private final Cancellable cancellable;
+    private Event counted;
     private Optional<Integer> currentCount;
+    private EntryAdapterProvider entryAdapterProvider;
 
-    public CounterQueryActor(EventJournalReader<String> streamReader) {
+    public CounterQueryActor(JournalReader<String> streamReader, EntryAdapterProvider entryAdapterProvider) {
         this.streamReader = streamReader;
-        this.gson = new Gson();
-        this.counterIncreasedAdapter = new CounterIncreasedAdapter();
-        this.counterDecreasedAdapter = new CounterDecreasedAdapter();
+        this.entryAdapterProvider = entryAdapterProvider;
+        this.cancellable = scheduler().schedule(selfAs(Scheduled.class), null, 0, 5);
         this.currentCount = Optional.empty();
-        this.cancellable = scheduler().schedule(this::updateCounter, null, 0, 5);
-        this.updateCounter(null, null);
+        intervalSignal(null, null);
     }
 
     @Override
     public Completes<Integer> counter() {
-        return completes().with(currentCount.orElse(null));
+        return completes().with(currentCount.orElse(-1));
     }
 
-    private void updateCounter(Scheduled scheduled, Object data) {
-        streamReader.readNext()
-                .andThenInto(event -> Completes.withSuccess(event.asTextEvent()))
-                .andThenConsume(event -> {
-                    if (counterIncreasedAdapter.canDeserialize(event)) {
-                        currentCount = Optional.of(counterIncreasedAdapter.deserialize(event).currentCounter);
-                    } else if (counterDecreasedAdapter.canDeserialize(event)) {
-                        currentCount = Optional.of(counterDecreasedAdapter.deserialize(event).currentCounter);
-                    }
-                });
+    @Override
+    public void intervalSignal(Scheduled scheduled, Object data) {
+      streamReader.readNext()
+        .andThen(event -> event.asTextEntry())
+        .andThenConsume(entry -> {
+          counted = (Event) entryAdapterProvider.asSource(entry);
+          currentCount = Optional.of(counted.currentCounter);
+        });
     }
 
     @Override

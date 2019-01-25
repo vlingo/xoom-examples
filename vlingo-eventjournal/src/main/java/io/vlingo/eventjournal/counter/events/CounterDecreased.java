@@ -2,12 +2,16 @@ package io.vlingo.eventjournal.counter.events;
 
 import java.util.UUID;
 
-public class CounterDecreased {
+public class CounterDecreased extends Event {
     public final UUID uuid;
-    public final int currentCounter;
 
     public CounterDecreased(int currentCounter) {
+        super(currentCounter);
         this.uuid = UUID.randomUUID();
-        this.currentCounter = currentCounter;
+    }
+
+    @Override
+    public boolean isDecreased() {
+      return true;
     }
 }

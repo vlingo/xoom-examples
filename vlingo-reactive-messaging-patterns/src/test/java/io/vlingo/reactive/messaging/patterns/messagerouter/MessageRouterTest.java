@@ -9,7 +9,6 @@ package io.vlingo.reactive.messaging.patterns.messagerouter;
 import org.junit.Test;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 
@@ -34,9 +33,9 @@ public class MessageRouterTest
         
         final TestUntil until = TestUntil.happenings( ROUTES );
         
-        final Processor messageProcessor1 = world.actorFor( Definition.has( WorkerProcessor.class, Definition.parameters( "MP One" ) ), Processor.class );
-        final Processor messageProcessor2 = world.actorFor( Definition.has( WorkerProcessor.class, Definition.parameters( "MP Two" )), Processor.class );
-        final Processor alternatingRouter = world.actorFor( Definition.has( AlternatingRouteProcessor.class, Definition.parameters( until, messageProcessor1, messageProcessor2 )), Processor.class );
+        final Processor messageProcessor1 = world.actorFor(Processor.class, WorkerProcessor.class, "MP One" );
+        final Processor messageProcessor2 = world.actorFor(Processor.class, WorkerProcessor.class, "MP Two" );
+        final Processor alternatingRouter = world.actorFor(Processor.class, AlternatingRouteProcessor.class, until, messageProcessor1, messageProcessor2 );
         
         int routeCount = 0;
         int j = 0;

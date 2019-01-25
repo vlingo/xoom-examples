@@ -7,6 +7,20 @@
 
 package io.vlingo.frontservice.resource;
 
+import static io.vlingo.common.serialization.JsonSerialization.deserialized;
+import static io.vlingo.common.serialization.JsonSerialization.serialized;
+import static io.vlingo.http.Response.Status.Created;
+import static io.vlingo.http.ResponseHeader.Location;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.nio.ByteBuffer;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.frontservice.data.ContactData;
@@ -15,24 +29,10 @@ import io.vlingo.frontservice.data.UserData;
 import io.vlingo.frontservice.infra.Bootstrap;
 import io.vlingo.http.Context;
 import io.vlingo.http.Request;
-import io.vlingo.http.resource.Action;
 import io.vlingo.http.resource.Dispatcher;
 import io.vlingo.http.resource.Resources;
 import io.vlingo.wire.message.ByteBufferAllocator;
 import io.vlingo.wire.message.Converters;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.List;
-
-import static io.vlingo.common.serialization.JsonSerialization.deserialized;
-import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Status.Created;
-import static io.vlingo.http.ResponseHeader.Location;
-import static org.junit.Assert.*;
 
 public class UserTest {
   private static final UserData janeDoeUserData =
@@ -44,8 +44,6 @@ public class UserTest {
   private static final String postJaneDoeUserMessage =
           "POST /users HTTP/1.1\nHost: vlingo.io\nContent-Length: " + janeDoeUserSerialized.length() + "\n\n" + janeDoeUserSerialized;
 
-  private Action actionGetUser;
-  private Action actionPostUser;
   private final ByteBuffer buffer = ByteBufferAllocator.allocate(65535);
   private Dispatcher dispatcher;
   private World world;
@@ -81,14 +79,8 @@ public class UserTest {
   }
 
   @Before
-  @SuppressWarnings("unchecked")
   public void setUp() throws Exception {
     world = Bootstrap.instance().world;
-
-    actionPostUser = new Action(0, "POST", "/users", "register(body:io.vlingo.frontservice.data.UserData userData)", null, true);
-    actionGetUser = new Action(1, "GET", "/users/{userId}", "queryUser(String userId)", null, true);
-    final List<Action> actions = Arrays.asList(actionPostUser, actionGetUser);
-
     final UserResource userResource = new UserResource(world);
     dispatcher = Dispatcher.startWith(world.stage(), Resources.are(userResource.routes()));
   }
