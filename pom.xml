@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-examples</artifactId>
-  <version>0.7.2</version>
+  <version>0.7.9</version>
   <packaging>pom</packaging>
 
   <name>vlingo-examples</name>
@@ -27,7 +27,6 @@
     <module>vlingo-actors-playground</module>
     <module>vlingo-http-backservice</module>
     <module>vlingo-http-frontservice</module>
-    <module>vlingo-iddd-collaboration</module>
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-eventjournal</module>
     <module>vlingo-ecommerce</module>

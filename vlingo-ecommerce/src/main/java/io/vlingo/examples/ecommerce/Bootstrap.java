@@ -19,8 +19,7 @@ import static io.vlingo.examples.ecommerce.model.CartEvents.*;
 
 public class Bootstrap {
     private static Bootstrap instance;
-    private final Server server;
-
+    public final Server server;
     public final World world;
 
     @SuppressWarnings({ "unchecked" })
@@ -30,11 +29,12 @@ public class Bootstrap {
         MockJournalListener listener = new MockJournalListener();
         Journal<String> journal = world.actorFor(Journal.class, InMemoryJournalActor.class, listener);
 
-        journal.registerAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter());
 
-        journal.registerAdapter(CreatedForUser.class, new CartCreatedEventAdapter());
-        journal.registerAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter());
-        journal.registerAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter());
+        journal.registerEntryAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter());
+
+        journal.registerEntryAdapter(CreatedForUser.class, new CartCreatedEventAdapter());
+        journal.registerEntryAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter());
+        journal.registerEntryAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter());
 
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
         registry.register(new SourcedTypeRegistry.Info(journal, CartEntity.class, CartEntity.class.getSimpleName()));
@@ -65,11 +65,11 @@ public class Bootstrap {
         }));
     }
 
-    public Completes<Boolean> serverStartup() {
+    Completes<Boolean> serverStartup() {
         return server.startUp();
     }
 
-    public static final Bootstrap instance() {
+    static Bootstrap instance() {
         if (instance == null) {
             instance = new Bootstrap();
         }
@@ -84,7 +84,10 @@ public class Bootstrap {
     }
 
     public void stop() throws InterruptedException {
-        instance.server.shutDown().await(1000);
+        //todo: this call fails after timeout / does not throw exception
+        //instance.server.shutDown().await(10000);
+        Bootstrap.instance().server.stop();
+        instance = null;
     }
 
     private void pause() {

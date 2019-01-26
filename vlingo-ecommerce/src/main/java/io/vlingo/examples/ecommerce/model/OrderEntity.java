@@ -9,8 +9,10 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import static io.vlingo.examples.ecommerce.model.OrderInfo.*;
 
-public class OrderEntity extends EventSourced<String> implements Order {
+
+public class OrderEntity extends EventSourced implements Order {
 
     static {
         BiConsumer<OrderEntity, OrderEvents.Created> created = OrderEntity::applyCreated;
@@ -32,11 +34,11 @@ public class OrderEntity extends EventSourced<String> implements Order {
     }
 
     private void applyShipment(OrderEvents.OrderShipped orderShipped) {
-        this.state = state.orderStatusUpdate(OrderInfo.OrderStatusEnum.paid);
+        this.state = state.orderStatusUpdate(OrderStatusEnum.paid);
     }
 
     private void applyPaymentReceived(OrderEvents.PaymentReceived paymentReceived) {
-        this.state = state.orderStatusUpdate(OrderInfo.OrderStatusEnum.paid);
+        this.state = state.orderStatusUpdate(OrderStatusEnum.paid);
     }
 
     private void applyCreated(OrderEvents.Created created) {
@@ -44,23 +46,28 @@ public class OrderEntity extends EventSourced<String> implements Order {
     }
 
     @Override
-    public void initOrderForUserProducts(UserId userId, Map<ProductId, Integer> quantityByProduct) {
-        apply(OrderEvents.Created.with(state.orderId, userId,  quantityByProduct));
+    public Completes<Boolean> initOrderForUserProducts(UserId userId,
+                                                       Map<ProductId, Integer> quantityByProduct) {
+
+        apply(OrderEvents.Created.with(state.orderId, userId,  quantityByProduct),
+                () -> true);
+        return completes();
     }
 
+    @Override
     public void paymentComplete(PaymentId paymentId, int orderStateHash) {
-        if (state.status != OrderInfo.OrderStatusEnum.notPaid) {
+        if (state.status != OrderStatusEnum.notPaid) {
             throw new IllegalStateException("Payment unexpected, already paid for.");
         }
-        apply(OrderEvents.PaymentReceived.with(state.orderId, paymentId, OrderInfo.OrderStatusEnum.paid));
+        apply(OrderEvents.PaymentReceived.with(state.orderId, paymentId, OrderStatusEnum.paid));
     }
 
     @Override
     public void orderShipped(PaymentId paymentId, int orderStateHash) {
-        if (state.status != OrderInfo.OrderStatusEnum.notPaid) {
+        if (state.status != OrderStatusEnum.notPaid) {
             throw new IllegalStateException("Payment unexpected, already paid for.");
         }
-        apply(OrderEvents.OrderShipped.with(state.orderId, OrderInfo.OrderStatusEnum.paid));
+        apply(OrderEvents.OrderShipped.with(state.orderId, OrderStatusEnum.paid));
     }
 
     @Override
@@ -70,7 +77,7 @@ public class OrderEntity extends EventSourced<String> implements Order {
 
     @Override
     public OrderInfo doesSyncOperatorWork() {
-        return OrderInfo.empty(state.orderId);
+        return empty(state.orderId);
     }
 
     @Override
@@ -82,13 +89,13 @@ public class OrderEntity extends EventSourced<String> implements Order {
         final String                    orderId;
         final UserId                    userId;
         final Map<ProductId, OrderItem> itemsByProductId;
-        final OrderInfo.OrderStatusEnum status;
+        final OrderStatusEnum status;
 
         private State(
                 String orderId,
                 UserId userId,
                 Map<ProductId, OrderItem> itemsByProductId,
-                OrderInfo.OrderStatusEnum status
+                OrderStatusEnum status
         ) {
             this.orderId = orderId;
             this.userId = userId;
@@ -97,7 +104,7 @@ public class OrderEntity extends EventSourced<String> implements Order {
         }
 
         static State init(String orderId) {
-            return new State(orderId, UserId.Unspecified(), new HashMap<>(), OrderInfo.OrderStatusEnum.notPaid);
+            return new State(orderId, UserId.Unspecified(), new HashMap<>(), OrderStatusEnum.notPaid);
         }
 
         State createForUserOrderItems(
@@ -108,10 +115,10 @@ public class OrderEntity extends EventSourced<String> implements Order {
                     .map((entry) -> new OrderItem(entry.getKey(), entry.getValue()))
                     .collect(Collectors.toMap(OrderItem::getProductId, orderItem -> orderItem));
 
-            return new State(orderId, userId, orderItemsByProductId, OrderInfo.OrderStatusEnum.notPaid);
+            return new State(orderId, userId, orderItemsByProductId, OrderStatusEnum.notPaid);
         }
 
-        State orderStatusUpdate(OrderInfo.OrderStatusEnum newState) {
+        State orderStatusUpdate(OrderStatusEnum newState) {
             return new State(orderId, userId, itemsByProductId, newState);
         }
 

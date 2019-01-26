@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public class CartEntity extends EventSourced<String> implements Cart {
+public class CartEntity extends EventSourced implements Cart {
 
     private State state;
 
@@ -26,7 +26,8 @@ public class CartEntity extends EventSourced<String> implements Cart {
 
     static {
         BiConsumer<CartEntity, CartEvents.CreatedForUser> applyCartCreated = CartEntity::applyCartCreated;
-        EventSourced.registerConsumer(CartEntity.class, CartEvents.CreatedForUser.class, applyCartCreated);
+        EventSourced.registerConsumer(CartEntity.class, CartEvents.CreatedForUser.class,
+                applyCartCreated);
 
         BiConsumer<CartEntity, CartEvents.ProductQuantityChangeEvent> applyQuantityChange = CartEntity::applyQuantityChange;
         EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductQuantityChangeEvent.class, applyQuantityChange);

@@ -10,7 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>vlingo-ecommerce</artifactId>
-
+    <properties>
+        <vlingo.version>0.8.0</vlingo.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.google.collections</groupId>
@@ -21,19 +23,19 @@
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-lattice</artifactId>
-            <version>0.7.9</version>
+            <version>${vlingo.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-http</artifactId>
-            <version>0.7.9</version>
+            <version>${vlingo.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-actors</artifactId>
-            <version>0.7.9</version>
+            <version>${vlingo.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

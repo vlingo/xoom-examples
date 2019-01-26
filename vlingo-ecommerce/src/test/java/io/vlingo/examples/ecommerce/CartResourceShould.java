@@ -31,7 +31,9 @@ public class CartResourceShould {
 
     @AfterClass
     public static void cleanUp() throws InterruptedException {
-        Bootstrap.instance().stop();
+        //todo: this call fails after timeout / does not throw exception
+        //Bootstrap.instance().server.shutDown().await(1);
+        Bootstrap.instance().server.stop();
     }
 
 
