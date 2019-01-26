@@ -30,6 +30,6 @@ public class WorkRouterActor extends RoundRobinRouter<WorkConsumer> implements W
   /* @see io.vlingo.reactive.messaging.patterns.competingconsumer.WorkConsumer#consume(io.vlingo.reactive.messaging.patterns.competingconsumer.WorkItem) */
   @Override
   public void consumeWork(final WorkItem item) {
-    routeCommand(WorkConsumer::consumeWork, item);
+    dispatchCommand(WorkConsumer::consumeWork, item);
   }
 }
