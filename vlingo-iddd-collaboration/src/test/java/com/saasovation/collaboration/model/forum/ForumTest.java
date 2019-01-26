@@ -43,7 +43,8 @@ public class ForumTest extends EntityTest {
     UUID.fromString(forumPair._1.value); // throws if not correct format
     assertNotNull(forumPair._2);
     journalListener.until.completes();
-    assertEquals(1, journalListener.confirmExpectedEntries(1, 10));
+    journalListener.confirmExpectedEntries(1, 10);
+    assertEquals(1, journalListener.confirmedCount.get().intValue());
     final ForumStarted event = adapter().asSource(journalListener.allEntries.get(0));
     assertEquals(ForumStarted.class, event.getClass());
     assertEquals(description.creator.value, event.creatorId);
@@ -61,7 +62,8 @@ public class ForumTest extends EntityTest {
     final Moderator moderator = Moderator.unique();
     forumPair._2.assign(moderator);
     journalListener.until.completes();
-    assertEquals(2, journalListener.confirmExpectedEntries(2, 10));
+    journalListener.confirmExpectedEntries(2, 10);
+    assertEquals(2, journalListener.confirmedCount.get().intValue());
     final ForumStarted event0 = adapter().asSource(journalListener.allEntries.get(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumModeratorAssigned event1 = adapter().asSource(journalListener.allEntries.get(1));
@@ -75,7 +77,8 @@ public class ForumTest extends EntityTest {
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
     forumPair._2.close();
     journalListener.until.completes();
-    assertEquals(2, journalListener.confirmExpectedEntries(2, 10));
+    journalListener.confirmExpectedEntries(2, 10);
+    assertEquals(2, journalListener.confirmedCount.get().intValue());
     final ForumStarted event0 = adapter().asSource(journalListener.allEntries.get(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumClosed event1 = adapter().asSource(journalListener.allEntries.get(1));
@@ -89,7 +92,8 @@ public class ForumTest extends EntityTest {
     final String description = "Let's discuss the vlingo/platform";
     forumPair._2.describeAs(description);
     journalListener.until.completes();
-    assertEquals(2, journalListener.confirmExpectedEntries(2, 10));
+    journalListener.confirmExpectedEntries(2, 10);
+    assertEquals(2, journalListener.confirmedCount.get().intValue());
     final ForumStarted event0 = adapter().asSource(journalListener.allEntries.get(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumDescribed event1 = adapter().asSource(journalListener.allEntries.get(1));
@@ -99,15 +103,21 @@ public class ForumTest extends EntityTest {
 
   @Test
   public void testThatForumReopened() {
-    this.journalListener.until = until(3);
+    this.journalListener.until = until(1);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
-    assertEquals(1, journalListener.confirmExpectedEntries(1, 10));
-    forumPair._2.close();
-    assertEquals(2, journalListener.confirmExpectedEntries(2, 10));
-    forumPair._2.reopen();
-    assertEquals(3, journalListener.confirmExpectedEntries(3, 10));
     journalListener.until.completes();
-    assertEquals(3, journalListener.confirmExpectedEntries(3, 10));
+    journalListener.confirmExpectedEntries(1, 10);
+    assertEquals(1, journalListener.confirmedCount.get().intValue());
+    this.journalListener.until = until(1);
+    forumPair._2.close();
+    journalListener.until.completes();
+    journalListener.confirmExpectedEntries(2, 10);
+    assertEquals(2, journalListener.confirmedCount.get().intValue());
+    this.journalListener.until = until(1);
+    forumPair._2.reopen();
+    journalListener.until.completes();
+    journalListener.confirmExpectedEntries(3, 10);
+    assertEquals(3, journalListener.confirmedCount.get().intValue());
     final ForumStarted event0 = adapter().asSource(journalListener.allEntries.get(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumClosed event1 = adapter().asSource(journalListener.allEntries.get(1));
@@ -123,7 +133,8 @@ public class ForumTest extends EntityTest {
     final String topic = "Even More Than All Things vlingo/platform";
     forumPair._2.topicIs(topic);
     journalListener.until.completes();
-    assertEquals(2, journalListener.confirmExpectedEntries(2, 10));
+    journalListener.confirmExpectedEntries(2, 10);
+    assertEquals(2, journalListener.confirmedCount.get().intValue());
     final ForumStarted event0 = adapter().asSource(journalListener.allEntries.get(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumTopicChanged event1 = adapter().asSource(journalListener.allEntries.get(1));
@@ -145,7 +156,8 @@ public class ForumTest extends EntityTest {
         assertNotNull(discussionPair._2);
       });
     journalListener.until.completes();
-    assertEquals(2, journalListener.confirmExpectedEntries(2, 10));
+    journalListener.confirmExpectedEntries(2, 10);
+    assertEquals(2, journalListener.confirmedCount.get().intValue());
     final ForumStarted event0 = adapter().asSource(journalListener.allEntries.get(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final DiscussionStarted event1 = discussionAdapter().asSource(journalListener.allEntries.get(1));

@@ -25,7 +25,8 @@ public class PostTest extends EntityTest {
   @Test
   public void testThatPostModerated() {
     final Tuple2<PostId, Post> postPair = fixtures.postFixture(world, journalListener);
-    assertEquals(3, journalListener.confirmExpectedEntries(3, 10));
+    journalListener.confirmExpectedEntries(3, 10);
+    assertEquals(3, journalListener.confirmedCount.get().intValue());
     this.journalListener.until = until(1);
     final Moderator moderator = Moderator.unique();
     final String subject = "A Moderated Subject";
@@ -35,7 +36,8 @@ public class PostTest extends EntityTest {
     assertNotNull(postPair._2);
     postPair._2.moderate(moderator, subject, bodyText);
     journalListener.until.completes();
-    assertEquals(4, journalListener.confirmExpectedEntries(4, 10));
+    journalListener.confirmExpectedEntries(4, 10);
+    assertEquals(4, journalListener.confirmedCount.get().intValue());
     final PostModerated event3 = adapter().asSource(journalListener.allEntries.get(3));
     assertEquals(PostModerated.class, event3.getClass());
     assertEquals(moderator.value, event3.moderatorId);

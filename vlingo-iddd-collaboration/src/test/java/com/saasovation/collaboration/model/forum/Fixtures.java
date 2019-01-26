@@ -7,7 +7,7 @@
 
 package com.saasovation.collaboration.model.forum;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 
 import com.saasovation.collaboration.model.Author;
 import com.saasovation.collaboration.model.Creator;
@@ -33,7 +33,8 @@ public class Fixtures {
           final MockJournalListener journalListener) {
     journalListener.until = TestUntil.happenings(1);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), forumDescriptionFixture());
-    Assert.assertEquals(1, journalListener.confirmExpectedEntries(1, 10));
+    journalListener.confirmExpectedEntries(1, 10);
+    assertEquals(1, journalListener.confirmedCount.get().intValue());
     journalListener.until.completes();
     journalListener.until = TestUntil.happenings(2);
     forumPair._2.discussFor(Author.unique(), "By Way of Discussion")
@@ -41,7 +42,8 @@ public class Fixtures {
         this.discussionPair = discussionPair;
         journalListener.until.happened();
       });
-    Assert.assertEquals(2, journalListener.confirmExpectedEntries(2, 20));
+    journalListener.confirmExpectedEntries(2, 10);
+    assertEquals(2, journalListener.confirmedCount.get().intValue());
     journalListener.until.completes();
     return discussionPair;
   }
