@@ -19,6 +19,7 @@ import io.vlingo.symbio.store.journal.JournalListener;
 public class MockJournalListener implements JournalListener<String> {
   public final List<Entry<String>> allEntries = new CopyOnWriteArrayList<>();
   public final List<State<String>> allSnapshots = new CopyOnWriteArrayList<>();
+  public final AtomicReference<Integer> confirmedCount = new AtomicReference<>(0);
   public TestUntil until = TestUntil.happenings(0);
 
   @Override
@@ -62,19 +63,23 @@ public class MockJournalListener implements JournalListener<String> {
     until.happened();
   }
 
-  public void confirmExpectedEntries(final int count, final int retries, final AtomicReference<Integer> outCount) {
+  public void confirmExpectedEntries(final int count, final int retries) {
     for (int idx = 0; idx < retries; ++idx) {
       until.completesWithin(100L);
       synchronized (allEntries) {
-        if (allEntries.size() == count) {
-          outCount.set(count);
+        final int peekCount = allEntries.size();
+        if (peekCount == count) {
+          confirmedCount.set(peekCount);
           break;
         }
       }
     }
-    
-    if (outCount.get() != count) {
-      outCount.set(allEntries.size());
+
+    if (confirmedCount.get() != count) {
+      synchronized (allEntries) {
+        final int peekCount = allEntries.size();
+        confirmedCount.set(peekCount);
+      }
     }
     until.happened();
   }
