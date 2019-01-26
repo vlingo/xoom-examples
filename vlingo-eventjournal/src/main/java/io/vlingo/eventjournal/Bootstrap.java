@@ -10,10 +10,10 @@ import io.vlingo.eventjournal.counter.CounterQuery;
 import io.vlingo.eventjournal.counter.CounterQueryActor;
 import io.vlingo.eventjournal.interest.NoopConfigurationInterest;
 import io.vlingo.eventjournal.interest.NoopEventJournalListener;
+import io.vlingo.symbio.store.DataFormat;
+import io.vlingo.symbio.store.common.jdbc.Configuration;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.jdbc.postgres.PostgresJournalActor;
-import io.vlingo.symbio.store.state.StateStore;
-import io.vlingo.symbio.store.state.jdbc.Configuration;
 
 public class Bootstrap {
     private static final String DB_URL = "jdbc:postgresql://[::1]:5432/";
@@ -26,7 +26,7 @@ public class Bootstrap {
         final Configuration configuration = new Configuration(
                 new NoopConfigurationInterest(),
                 "org.postgresql.Driver",
-                StateStore.DataFormat.Text,
+                DataFormat.Text,
                 DB_URL,
                 DB_NAME,
                 DB_USER,

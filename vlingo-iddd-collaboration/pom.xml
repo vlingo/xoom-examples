@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-iddd-collaboration</artifactId>
-  <version>0.7.9</version>
+  <version>0.8.0</version>
   <packaging>jar</packaging>
   <name>vlingo-iddd-collaboration</name>
   <description>Example of vlingo/platform IDDD SaaSOvation Collaboration Context.</description>
@@ -70,27 +70,27 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-common</artifactId>
-      <version>0.7.9</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.7.9</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>0.7.9</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio</artifactId>
-      <version>0.7.9</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>0.7.9</version>
+      <version>0.8.0</version>
     </dependency>
   </dependencies>
 </project>

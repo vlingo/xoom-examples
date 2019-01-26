@@ -20,7 +20,7 @@ import io.vlingo.common.Completes;
 import io.vlingo.common.Tuple2;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
-public class DiscussionEntity extends EventSourced<String> implements Discussion {
+public class DiscussionEntity extends EventSourced implements Discussion {
   private State state;
 
   public DiscussionEntity(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId) {
@@ -66,46 +66,6 @@ public class DiscussionEntity extends EventSourced<String> implements Discussion
   @Override
   protected String streamName() {
     return streamNameFrom(":", state.tenant.value, state.discussionId.value);
-  }
-
-  private final class State {
-    public final Tenant tenant;
-    public final ForumId forumId;
-    public final DiscussionId discussionId;
-    public final Author author;
-    public final String topic;
-    public final boolean open;
-
-    State(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId) {
-      this(tenant, forumId, discussionId, null, null, false);
-    }
-
-    State(
-            final Tenant tenant,
-            final ForumId forumId,
-            final DiscussionId discussionId,
-            final Author author,
-            final String topic,
-            final boolean open) {
-      this.tenant = tenant;
-      this.forumId = forumId;
-      this.discussionId = discussionId;
-      this.author = author;
-      this.topic = topic;
-      this.open = open;
-    }
-
-    State closed() {
-      return new State(tenant, forumId, discussionId, author, topic, false);
-    }
-
-    State opened() {
-      return new State(tenant, forumId, discussionId, author, topic, true);
-    }
-
-    State withTopic(final String topic) {
-      return new State(tenant, forumId, discussionId, author, topic, open);
-    }
   }
 
   static {

@@ -17,7 +17,7 @@ import com.saasovation.collaboration.model.forum.Events.PostedToDiscussion;
 
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
-public class PostEntity extends EventSourced<String> implements Post {
+public class PostEntity extends EventSourced implements Post {
   private State state;
 
   public PostEntity(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final PostId postId) {
@@ -44,44 +44,6 @@ public class PostEntity extends EventSourced<String> implements Post {
   @Override
   protected String streamName() {
     return streamNameFrom(":", state.tenant.value, state.postId.value);
-  }
-
-  private final class State {
-    public final Tenant tenant;
-    public final ForumId forumId;
-    public final DiscussionId discussionId;
-    public final PostId postId;
-    public final Author author;
-    public final Moderator moderator;
-    public final String subject;
-    public final String bodyText;
-
-    State(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final PostId postId) {
-      this(tenant, forumId, discussionId, postId, null, null, null, null);
-    }
-
-    State(
-            final Tenant tenant,
-            final ForumId forumId,
-            final DiscussionId discussionId,
-            final PostId postId,
-            final Author author,
-            final Moderator moderator,
-            final String subject,
-            final String bodyText) {
-      this.tenant = tenant;
-      this.forumId = forumId;
-      this.discussionId = discussionId;
-      this.postId = postId;
-      this.author = author;
-      this.subject = subject;
-      this.bodyText = bodyText;
-      this.moderator = moderator;
-    }
-
-    State withModeratedContent(final Moderator moderator, final String subject, final String bodyText) {
-      return new State(tenant, forumId, discussionId, postId, author, moderator, subject, bodyText);
-    }
   }
 
   static {
