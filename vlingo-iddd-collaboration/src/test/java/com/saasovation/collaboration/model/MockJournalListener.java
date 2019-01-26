@@ -7,8 +7,9 @@
 
 package com.saasovation.collaboration.model;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.symbio.Entry;
@@ -16,8 +17,8 @@ import io.vlingo.symbio.State;
 import io.vlingo.symbio.store.journal.JournalListener;
 
 public class MockJournalListener implements JournalListener<String> {
-  public final List<Entry<String>> allEntries = new ArrayList<>();
-  public final List<State<String>> allSnapshots = new ArrayList<>();
+  public final List<Entry<String>> allEntries = new CopyOnWriteArrayList<>();
+  public final List<State<String>> allSnapshots = new CopyOnWriteArrayList<>();
   public TestUntil until = TestUntil.happenings(0);
 
   @Override
@@ -25,8 +26,8 @@ public class MockJournalListener implements JournalListener<String> {
     synchronized (allEntries) {
       allEntries.add(entry);
       allSnapshots.add(State.TextState.Null);
-      until.happened();
     }
+    until.happened();
   }
 
   @Override
@@ -34,8 +35,8 @@ public class MockJournalListener implements JournalListener<String> {
     synchronized (allEntries) {
       allEntries.add(entry);
       allSnapshots.add(snapshot);
-      until.happened();
     }
+    until.happened();
   }
 
   @Override
@@ -45,8 +46,8 @@ public class MockJournalListener implements JournalListener<String> {
       for (int idx = 0; idx < entries.size(); ++idx) {
         allSnapshots.add(State.TextState.Null);
       }
-      until.happened();
     }
+    until.happened();
   }
 
   @Override
@@ -57,20 +58,25 @@ public class MockJournalListener implements JournalListener<String> {
         allSnapshots.add(State.TextState.Null);
       }
       allSnapshots.add(snapshot == null ? State.TextState.Null : snapshot);
-      until.happened();
     }
+    until.happened();
   }
 
-  public int confirmExpectedEntries(final int count, final int retries) {
+  public void confirmExpectedEntries(final int count, final int retries, final AtomicReference<Integer> outCount) {
     for (int idx = 0; idx < retries; ++idx) {
+      until.completesWithin(100L);
       synchronized (allEntries) {
         if (allEntries.size() == count) {
-          return count;
+          outCount.set(count);
+          break;
         }
       }
-      try { Thread.sleep(100); } catch (Exception e) { }
     }
-    return allEntries.size();
+    
+    if (outCount.get() != count) {
+      outCount.set(allEntries.size());
+    }
+    until.happened();
   }
 
   public Entry<String> entry(final int index) {
