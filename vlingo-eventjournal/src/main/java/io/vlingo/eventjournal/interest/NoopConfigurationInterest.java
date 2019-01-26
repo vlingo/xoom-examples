@@ -2,7 +2,7 @@ package io.vlingo.eventjournal.interest;
 
 import java.sql.Connection;
 
-import io.vlingo.symbio.store.state.jdbc.Configuration;
+import io.vlingo.symbio.store.common.jdbc.Configuration;
 
 public class NoopConfigurationInterest implements Configuration.ConfigurationInterest {
     @Override

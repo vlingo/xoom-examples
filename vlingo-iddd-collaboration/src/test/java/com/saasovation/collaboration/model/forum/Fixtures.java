@@ -33,7 +33,7 @@ public class Fixtures {
           final MockJournalListener journalListener) {
     journalListener.until = TestUntil.happenings(1);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), forumDescriptionFixture());
-    Assert.assertEquals(1, journalListener.confirmExpectedEntries(1, 20));
+    Assert.assertEquals(1, journalListener.confirmExpectedEntries(1, 10));
     journalListener.until.completes();
     journalListener.until = TestUntil.happenings(2);
     forumPair._2.discussFor(Author.unique(), "By Way of Discussion")

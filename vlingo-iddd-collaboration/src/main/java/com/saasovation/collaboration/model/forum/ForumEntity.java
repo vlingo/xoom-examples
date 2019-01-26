@@ -24,7 +24,7 @@ import io.vlingo.common.Completes;
 import io.vlingo.common.Tuple2;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
-public class ForumEntity extends EventSourced<String> implements Forum {
+public class ForumEntity extends EventSourced implements Forum {
   private State state;
 
   public ForumEntity(final Tenant tenant, final ForumId forumId) {
@@ -82,67 +82,17 @@ public class ForumEntity extends EventSourced<String> implements Forum {
   }
 
   @Override
-  protected String streamName() {
-    return streamNameFrom(":", state.tenant.value, state.forumId.value);
+  @SuppressWarnings("unchecked")
+  protected State snapshot() {
+    if (currentVersion() % 100 == 0) {
+      return state;
+    }
+    return null;
   }
 
-  private final class State {
-    public final Tenant tenant;
-    public final ForumId forumId;
-    public final Creator creator;
-    public final Moderator moderator;
-    public final String topic;
-    public final String description;
-    public final String exclusiveOwner;
-    public final boolean open;
-
-    State(final Tenant tenant, final ForumId forumId) {
-      this(tenant, forumId, null, null, null, null, null, false);
-    }
-
-    State(
-            final Tenant tenant,
-            final ForumId forumId,
-            final Creator creator,
-            final Moderator moderator,
-            final String topic,
-            final String description,
-            final String exclusiveOwner,
-            final boolean open) {
-      this.tenant = tenant;
-      this.forumId = forumId;
-      this.creator = creator;
-      this.moderator = moderator;
-      this.topic = topic;
-      this.description = description;
-      this.exclusiveOwner = exclusiveOwner;
-      this.open = open;
-    }
-
-    @Override
-    public String toString() {
-      return "[" + tenant + " " + forumId + " " + moderator + " topic=\"" + topic + "\" description=\" " + description + " exclusiveOwner=" + exclusiveOwner + " open=" + open + "]";
-    }
-
-    State closed() {
-      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, false);
-    }
-
-    State opened() {
-      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, true);
-    }
-
-    State withDescription(final String description) {
-      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, open);
-    }
-
-    State withModerator(final Moderator moderator) {
-      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, open);
-    }
-
-    State withTopic(final String topic) {
-      return new State(tenant, forumId, creator, moderator, topic, description, exclusiveOwner, open);
-    }
+  @Override
+  protected String streamName() {
+    return streamNameFrom(":", state.tenant.value, state.forumId.value);
   }
 
   static {

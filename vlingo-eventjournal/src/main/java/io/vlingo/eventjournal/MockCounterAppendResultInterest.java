@@ -11,23 +11,22 @@ import java.util.List;
 import java.util.Optional;
 
 import io.vlingo.common.Outcome;
-import io.vlingo.eventjournal.counter.Counter;
 import io.vlingo.symbio.Source;
 import io.vlingo.symbio.store.Result;
 import io.vlingo.symbio.store.StorageException;
 import io.vlingo.symbio.store.journal.Journal.AppendResultInterest;
 
-public class MockCounterAppendResultInterest implements AppendResultInterest<Counter> {
+public class MockCounterAppendResultInterest implements AppendResultInterest {
 
   @Override
-  public <S> void appendResultedIn(Outcome<StorageException, Result> outcome, String streamName, int streamVersion,
-          Source<S> source, Optional<Counter> snapshot, Object object) {
+  public <S,ST> void appendResultedIn(Outcome<StorageException, Result> outcome, String streamName, int streamVersion,
+          Source<S> source, Optional<ST> snapshot, Object object) {
     
   }
 
   @Override
-  public <S> void appendAllResultedIn(Outcome<StorageException, Result> outcome, String streamName, int streamVersion,
-          List<Source<S>> sources, Optional<Counter> snapshot, Object object) {
+  public <S,ST> void appendAllResultedIn(Outcome<StorageException, Result> outcome, String streamName, int streamVersion,
+          List<Source<S>> sources, Optional<ST> snapshot, Object object) {
     
   }
 }

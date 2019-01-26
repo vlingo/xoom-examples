@@ -8,6 +8,7 @@
 package com.saasovation.collaboration.model.forum;
 
 import com.saasovation.collaboration.model.Author;
+import com.saasovation.collaboration.model.Tenant;
 
 import io.vlingo.common.Completes;
 import io.vlingo.common.Tuple2;
@@ -18,4 +19,44 @@ public interface Discussion {
   void reopen();
   void startWith(final Author author, final String topic);
   void topicTo(final String topic);
+
+  public final class State {
+    public final Tenant tenant;
+    public final ForumId forumId;
+    public final DiscussionId discussionId;
+    public final Author author;
+    public final String topic;
+    public final boolean open;
+
+    State(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId) {
+      this(tenant, forumId, discussionId, null, null, false);
+    }
+
+    State(
+            final Tenant tenant,
+            final ForumId forumId,
+            final DiscussionId discussionId,
+            final Author author,
+            final String topic,
+            final boolean open) {
+      this.tenant = tenant;
+      this.forumId = forumId;
+      this.discussionId = discussionId;
+      this.author = author;
+      this.topic = topic;
+      this.open = open;
+    }
+
+    State closed() {
+      return new State(tenant, forumId, discussionId, author, topic, false);
+    }
+
+    State opened() {
+      return new State(tenant, forumId, discussionId, author, topic, true);
+    }
+
+    State withTopic(final String topic) {
+      return new State(tenant, forumId, discussionId, author, topic, open);
+    }
+  }
 }
