@@ -17,6 +17,6 @@ public class OrderCreatedEventAdapter implements EntryAdapter<OrderEvents.Create
     @Override
     public Entry.TextEntry toEntry(final OrderEvents.Created source) {
         final String serialization = JsonSerialization.serialized(source);
-        return new Entry.TextEntry(CartEvents.CreatedEvent.class, 1, serialization, Metadata.nullMetadata());
+        return new Entry.TextEntry(CartEvents.CreatedForUser.class, 1, serialization, Metadata.nullMetadata());
     }
 }

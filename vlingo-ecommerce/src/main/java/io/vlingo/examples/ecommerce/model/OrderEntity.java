@@ -10,7 +10,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 
-public class OrderEntity extends EventSourced<OrderEntity.State> implements Order {
+public class OrderEntity extends EventSourced<String> implements Order {
 
     static {
         BiConsumer<OrderEntity, OrderEvents.Created> created = OrderEntity::applyCreated;
@@ -27,11 +27,8 @@ public class OrderEntity extends EventSourced<OrderEntity.State> implements Orde
     private State state;
 
     public OrderEntity(
-            String orderId,
-            UserId userId,
-            Map<ProductId, Integer> productQuanityById
-    ) {
-        apply(OrderEvents.Created.with(orderId, userId, productQuanityById));
+            String orderId) {
+        this.state =  State.init(orderId);
     }
 
     private void applyShipment(OrderEvents.OrderShipped orderShipped) {
@@ -43,10 +40,14 @@ public class OrderEntity extends EventSourced<OrderEntity.State> implements Orde
     }
 
     private void applyCreated(OrderEvents.Created created) {
-        state = State.created(created.orderId, created.userId, created.quantityByProductId);
+        state = state.createForUserOrderItems(created.userId, created.quantityByProductId);
     }
 
     @Override
+    public void initOrderForUserProducts(UserId userId, Map<ProductId, Integer> quantityByProduct) {
+        apply(OrderEvents.Created.with(state.orderId, userId,  quantityByProduct));
+    }
+
     public void paymentComplete(PaymentId paymentId, int orderStateHash) {
         if (state.status != OrderInfo.OrderStatusEnum.notPaid) {
             throw new IllegalStateException("Payment unexpected, already paid for.");
@@ -74,7 +75,7 @@ public class OrderEntity extends EventSourced<OrderEntity.State> implements Orde
 
     @Override
     protected String streamName() {
-        return "orderEvents";
+        return String.format("orderEvents:%s", state.orderId);
     }
 
     static class State {
@@ -95,8 +96,11 @@ public class OrderEntity extends EventSourced<OrderEntity.State> implements Orde
             this.status = status;
         }
 
-        static State created(
-                String orderId,
+        static State init(String orderId) {
+            return new State(orderId, UserId.Unspecified(), new HashMap<>(), OrderInfo.OrderStatusEnum.notPaid);
+        }
+
+        State createForUserOrderItems(
                 UserId userId,
                 Map<ProductId, Integer> itemsByProductId
         ) {

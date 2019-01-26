@@ -5,6 +5,7 @@ import io.vlingo.common.Completes;
 import io.vlingo.http.Body;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,16 +29,25 @@ public class OrderResource {
 
     private Completes<Response> create(final OrderCreateRequest request) {
         final Address orderAddress = addressFactory.uniquePrefixedWith("order-");
-        stage.actorFor(
-                Cart.class,
-                Definition.has(CartEntity.class,
-                        Definition.parameters(orderAddress.idString(), request.userId, request.quantityByProductId)),
+        Map<ProductId, Integer> quantityByProductId = new HashMap<>();
+        request.quantityByIdOfProduct.forEach((key, value) -> quantityByProductId.put(new ProductId(key), value));
+
+        Order orderActor = stage.actorFor(
+                Order.class,
+                Definition.has(OrderEntity.class,
+                        Definition.parameters(orderAddress.idString())),
                 orderAddress);
+
+        orderActor.initOrderForUserProducts(request.userId, quantityByProductId);
+
         return Completes.withSuccess(
                 Response.of(Created,
                         headers(of(Location, urlLocation(orderAddress.idString()))), Body.from("{}")));
     }
 
+    private Completes<Response> postPayment(String orderId, PaymentId paymentId) {
+        throw new NotImplementedException();
+    }
 
     private Completes<Response> queryOrder(String orderId) {
         return stage.actorOf(Order.class, addressFactory.from(orderId))
@@ -51,25 +61,25 @@ public class OrderResource {
     }
 
     public static class OrderCreateRequest {
-        public OrderCreateRequest(Map<ProductId, Integer> quantityByProductId, UserId userId) {
-            this.quantityByProductId = quantityByProductId;
+        OrderCreateRequest(Map<String, Integer> quantityByIdOfProduct, UserId userId) {
+            this.quantityByIdOfProduct = quantityByIdOfProduct;
             this.userId = userId;
         }
-        public final Map<ProductId, Integer> quantityByProductId;
-        public final UserId userId;
+        final Map<String, Integer> quantityByIdOfProduct;
+        final UserId               userId;
 
         public static class Builder {
-            private Map<ProductId, Integer>  quantityByProductId;
+            private Map<String, Integer>  quantityByIdOfProduct;
             private UserId userId;
 
             private Builder() {
-                quantityByProductId = new HashMap<>();
+                quantityByIdOfProduct = new HashMap<>();
             }
             public static Builder create() {
                 return new Builder();
             }
             public Builder withProduct(ProductId productId, Integer quantity) {
-                quantityByProductId.put(productId, quantity);
+                quantityByIdOfProduct.put(productId.id, quantity);
                 return this;
             }
             public Builder withUser(UserId userId) {
@@ -77,7 +87,7 @@ public class OrderResource {
                 return this;
             }
             public OrderCreateRequest build() {
-                return new OrderCreateRequest(quantityByProductId, userId);
+                return new OrderCreateRequest(quantityByIdOfProduct, userId);
             }
         }
     }
@@ -85,12 +95,17 @@ public class OrderResource {
     public Resource routes() {
         //todo: fix issue where resources can overwrite each other even though they are not equal
         return resource("Order resource fluent api",
-                post(ROOT_URL + "/")
+                post(ROOT_URL)
                         .body(OrderCreateRequest.class)
                         .handle(this::create),
-                get( ROOT_URL + "/{cartId}")
+                get( ROOT_URL + "/{orderId}")
                         .param(String.class)
-                        .handle(this::queryOrder));
+                        .handle(this::queryOrder),
+                post( ROOT_URL + "/{cartId}/payment")
+                        .param(String.class)
+                        .body(PaymentId.class)
+                        .handle(this::postPayment));
     }
+
 }
 

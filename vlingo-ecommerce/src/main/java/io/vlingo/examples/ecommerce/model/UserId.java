@@ -11,6 +11,10 @@ public class UserId {
         this.id = id;
     }
 
+    public static UserId Unspecified() {
+        return new UserId(-1);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

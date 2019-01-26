@@ -32,7 +32,7 @@ public class Bootstrap {
 
         journal.registerAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter());
 
-        journal.registerAdapter(CreatedEvent.class, new CartCreatedEventAdapter());
+        journal.registerAdapter(CreatedForUser.class, new CartCreatedEventAdapter());
         journal.registerAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter());
         journal.registerAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter());
 
@@ -43,7 +43,9 @@ public class Bootstrap {
         final CartResource cartResource = new CartResource(world);
         final OrderResource orderResource = new OrderResource(world);
 
-        final Resources resources = Resources.are(cartResource.routes(), orderResource.routes());
+        final Resources resources = Resources.are(
+                cartResource.routes(),
+                orderResource.routes());
         this.server = Server.startWith(world.stage(),
                 resources,
                 8081,

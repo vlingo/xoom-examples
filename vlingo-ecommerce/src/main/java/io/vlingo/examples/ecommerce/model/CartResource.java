@@ -10,7 +10,9 @@ import java.util.List;
 
 import static io.vlingo.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.http.Response.Status.*;
-import static io.vlingo.http.ResponseHeader.*;
+import static io.vlingo.http.ResponseHeader.Location;
+import static io.vlingo.http.ResponseHeader.headers;
+import static io.vlingo.http.ResponseHeader.of;
 import static io.vlingo.http.resource.ResourceBuilder.*;
 
 public class CartResource {
@@ -25,13 +27,17 @@ public class CartResource {
 
     public Completes<Response> create(final UserId userId) {
         final Address cartAddress = addressFactory.uniquePrefixedWith("cart-");
-        stage.actorFor(
+        Cart cartActor = stage.actorFor(
                 Cart.class,
-                Definition.has(CartEntity.class, Definition.parameters(cartAddress.idString(), userId)),
+                Definition.has(CartEntity.class, Definition.parameters(cartAddress.idString())),
                 cartAddress);
+
+        cartActor.createEmptyCartFor(userId);
+
         return Completes.withSuccess(
                 Response.of(Created,
-                        headers(of(Location, urlLocation(cartAddress.idString()))), Body.from("{}")));
+                        headers(of(Location, urlLocation(cartAddress.idString()))),
+                        Body.from("")));
     }
 
     public Completes<Response> queryCart(String cartId) {
@@ -79,7 +85,7 @@ public class CartResource {
         public Completes<List<Cart.CartItem>> applyTo(Cart cart, ProductId productId) {
             if (operation.equals("add")) {
                 return cart.addItem(productId);
-            } else if (operation == "remove") {
+            } else if (operation.equals("remove")) {
                 return cart.removeItem(productId);
             } else {
                 throw new IllegalArgumentException("Operation invalid: " + operation);

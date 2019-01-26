@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface Cart {
 
+    void createEmptyCartFor(UserId userId);
+
     Completes<List<CartItem>> addItem(ProductId productId);
 
     Completes<List<CartItem>> removeItem(ProductId productId);

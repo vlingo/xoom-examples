@@ -2,6 +2,7 @@ package io.vlingo.examples.ecommerce;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.mapper.ObjectMapperType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -16,14 +17,13 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
-import static io.vlingo.common.serialization.JsonSerialization.serialized;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
 
 public class OrderResourceShould {
+
 
     @BeforeClass
     public static void setUp() throws InterruptedException {
@@ -48,15 +48,15 @@ public class OrderResourceShould {
         OrderResource.OrderCreateRequest request = OrderResource.OrderCreateRequest.Builder
                                          .create()
                 .withProduct(new ProductId("pid1"), 100)
-                .withProduct(new ProductId("pid2"), 200)
                 .withUser(new UserId(1))
                 .build();
 
         Response response =
                 baseGiven()
                         .when()
-                        .body(serialized(request))
-                        .post("/cart")
+                        .body(request, ObjectMapperType.GSON)
+                        .log().body()
+                        .post("/order")
                         .then()
                         .assertThat()
                         .statusCode(HttpStatus.SC_CREATED)
@@ -66,31 +66,46 @@ public class OrderResourceShould {
     }
 
     @Test
-    public void cartIsEmpty_whenCreated() {
-        String cartUrl = createOrder();
+    public void orderContainsProducts_whenQueried() {
+        String orderUrl = createOrder();
+        String orderId  = getOrderId(orderUrl);
+
+        final String expected = String.format(
+                "{\"orderId\":\"%s\",\"orderItems\":[{\"productId\":{\"id\":\"pid1\"},\"quantity\":100}]," +
+                "\"orderState\":\"notPaid\"}", orderId);
 
         baseGiven()
                 .when()
-                .get(cartUrl)
+                .get(orderUrl)
                 .then()
-                .body("$", empty());
+                .assertThat()
+                .body(is(equalTo(expected)));
+    }
 
+    private String getOrderId(String orderUrl) {
+        return orderUrl.split("/")[2];
     }
 
     @Test
-    public void cartAddsProduct_whenProductIsAdded() throws IOException {
+    public void orderIsPaid_whenPaymentReceived() throws IOException {
 
-        String cartUrl = createOrder();
+        String orderUrl = createOrder();
+        String orderId  = getOrderId(orderUrl);
+
+        final String expected = String.format(
+                "{\"orderId\":\"%s\",\"orderItems\":[{\"productId\":{\"id\":\"pid1\"},\"quantity\":100}]," +
+                        "\"orderState\":\"paid\"}", orderId);
+
 
         baseGiven()
                 .log().all()
                 .when()
-                .body("{operation: \"add\"}")
-                .patch(cartUrl + "/pid1")
+                .body("{\"id\": 4564}")
+                .post(orderUrl + "/payment")
                 .then()
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
-                .body(is(equalTo("[{\"productId\":{\"id\":\"pid1\"},\"quantity\":1}]")));
+                .body(is(equalTo(expected)));
     }
 }
