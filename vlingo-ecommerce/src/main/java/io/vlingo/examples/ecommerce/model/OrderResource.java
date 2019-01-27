@@ -37,11 +37,11 @@ public class OrderResource {
 
         return orderActor
                 .initOrderForUserProducts(request.userId, quantityByProductId)
-                .andThenTo(msg ->
+                .andThenTo((v) ->
                         Completes.withSuccess(
                                 Response.of(Created,
                                         headers(of(Location, urlLocation(orderAddress.idString()))),
-                                        msg.toString())))
+                                        "")))
                 .otherwise(noOrder -> Response.of(NotFound));
     }
 

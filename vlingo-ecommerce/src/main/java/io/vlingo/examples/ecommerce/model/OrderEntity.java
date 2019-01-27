@@ -46,11 +46,11 @@ public class OrderEntity extends EventSourced implements Order {
     }
 
     @Override
-    public Completes<Boolean> initOrderForUserProducts(UserId userId,
+    public Completes<Void> initOrderForUserProducts(UserId userId,
                                                        Map<ProductId, Integer> quantityByProduct) {
 
         apply(OrderEvents.Created.with(state.orderId, userId,  quantityByProduct),
-                () -> true);
+                () -> null);
         return completes();
     }
 

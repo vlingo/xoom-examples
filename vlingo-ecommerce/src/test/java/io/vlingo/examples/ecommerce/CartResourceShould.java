@@ -33,7 +33,7 @@ public class CartResourceShould {
     public static void cleanUp() throws InterruptedException {
         //todo: this call fails after timeout / does not throw exception
         //Bootstrap.instance().server.shutDown().await(1);
-        Bootstrap.instance().server.stop();
+        Bootstrap.instance().stop();
     }
 
 
