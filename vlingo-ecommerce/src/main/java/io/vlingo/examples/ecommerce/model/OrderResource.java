@@ -35,14 +35,11 @@ public class OrderResource {
                         Definition.parameters(orderAddress.idString())),
                 orderAddress);
 
-        return orderActor
-                .initOrderForUserProducts(request.userId, quantityByProductId)
-                .andThenTo((v) ->
-                        Completes.withSuccess(
-                                Response.of(Created,
-                                        headers(of(Location, urlLocation(orderAddress.idString()))),
-                                        "")))
-                .otherwise(noOrder -> Response.of(NotFound));
+        orderActor.initOrderForUserProducts(request.userId, quantityByProductId);
+        return Completes.withSuccess(
+                Response.of(Created,
+                        headers(of(Location, urlLocation(orderAddress.idString()))),
+                        ""));
     }
 
     private Completes<Response> postPayment(String orderId, PaymentId paymentId) {
@@ -78,6 +75,7 @@ public class OrderResource {
     public static class OrderCreateRequest {
         final Map<String, Integer> quantityByIdOfProduct;
         final UserId               userId;
+
         OrderCreateRequest(Map<String, Integer> quantityByIdOfProduct, UserId userId) {
             this.quantityByIdOfProduct = quantityByIdOfProduct;
             this.userId = userId;

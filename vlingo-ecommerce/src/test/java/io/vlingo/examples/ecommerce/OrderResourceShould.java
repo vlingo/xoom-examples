@@ -69,14 +69,15 @@ public class OrderResourceShould {
     }
 
     @Test
-    public void orderContainsProducts_whenQueried() {
+    public void orderContainsProducts_whenQueried() throws InterruptedException {
         String orderUrl = createOrder();
         String orderId  = getOrderId(orderUrl);
 
         final String expected = String.format(
                 "{\"orderId\":\"%s\",\"orderItems\":[{\"productId\":{\"id\":\"pid1\"},\"quantity\":100}]," +
                 "\"orderState\":\"notPaid\"}", orderId);
-
+        //  If you  uncomment this line the test will pass
+        // Thread.sleep(100);
         baseGiven()
                 .when()
                 .get(orderUrl)
