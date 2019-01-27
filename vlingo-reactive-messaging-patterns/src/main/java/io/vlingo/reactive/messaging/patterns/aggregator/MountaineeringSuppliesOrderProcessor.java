@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.reactive.messaging.patterns.aggregator.PriceQuotes.PriceQuote;
 import io.vlingo.reactive.messaging.patterns.aggregator.PriceQuotes.PriceQuoteRequest;
@@ -33,10 +32,9 @@ public class MountaineeringSuppliesOrderProcessor extends Actor
     this.requester = selfAs(PriceQuoteRequester.class);
     this.aggregator =
             stage().actorFor(
-                    Definition.has(
-                            PriceQuoteAggregatorActor.class,
-                            Definition.parameters(selfAs(PriceQuotesFulfillmentWatcher.class))),
-                    PriceQuoteAggregator.class);
+                    PriceQuoteAggregator.class,
+                    PriceQuoteAggregatorActor.class,
+                    selfAs(PriceQuotesFulfillmentWatcher.class));
   }
 
   //========================================

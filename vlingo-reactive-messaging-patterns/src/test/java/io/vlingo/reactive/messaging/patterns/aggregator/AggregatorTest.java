@@ -11,7 +11,6 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
@@ -34,24 +33,23 @@ public class AggregatorTest {
 
     final Protocols protocols =
             world.actorFor(
-                    Definition.has(
-                            MountaineeringSuppliesOrderProcessor.class,
-                            Definition.parameters(until)),
                     new Class[] { RequestForQuotationProcessor.class,
-                                  RequestForQuotationSupplier.class,
-                                  PriceQuotesFulfillmentWatcher.class });
+                        RequestForQuotationSupplier.class,
+                        PriceQuotesFulfillmentWatcher.class },
+                    MountaineeringSuppliesOrderProcessor.class,
+                    until);
 
     final Protocols.Three<RequestForQuotationProcessor, RequestForQuotationSupplier, PriceQuotesFulfillmentWatcher> three = Protocols.three(protocols);
     final RequestForQuotationProcessor processor = three._1;
     final RequestForQuotationSupplier supplier = three._2;
 
-    world.actorFor(Definition.has(PriceQuoteAggregatorActor.class, Definition.parameters(three._3)), PriceQuoteAggregator.class);
+    world.actorFor(PriceQuoteAggregator.class, PriceQuoteAggregatorActor.class, three._3);
 
-    world.actorFor(Definition.has(BudgetHikersPriceQuotesActor.class, Definition.parameters(supplier)), PriceQuotes.class);
-    world.actorFor(Definition.has(HighSierraPriceQuotesActor.class, Definition.parameters(supplier)), PriceQuotes.class);
-    world.actorFor(Definition.has(MountainAscentPriceQuotesActor.class, Definition.parameters(supplier)), PriceQuotes.class);
-    world.actorFor(Definition.has(PinnacleGearPriceQuotesActor.class, Definition.parameters(supplier)), PriceQuotes.class);
-    world.actorFor(Definition.has(RockBottomOuterwearPriceQuotesActor.class,Definition.parameters(supplier)), PriceQuotes.class);
+    world.actorFor(PriceQuotes.class, BudgetHikersPriceQuotesActor.class, supplier);
+    world.actorFor(PriceQuotes.class, HighSierraPriceQuotesActor.class, supplier);
+    world.actorFor(PriceQuotes.class, MountainAscentPriceQuotesActor.class, supplier);
+    world.actorFor(PriceQuotes.class, PinnacleGearPriceQuotesActor.class, supplier);
+    world.actorFor(PriceQuotes.class, RockBottomOuterwearPriceQuotesActor.class,supplier);
 
     processor.requestPriceQuotationFor(
             new RequestForQuotation(

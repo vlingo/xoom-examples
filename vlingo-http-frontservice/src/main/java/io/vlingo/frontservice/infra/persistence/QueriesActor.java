@@ -13,21 +13,24 @@ import java.util.function.BiConsumer;
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.CompletesEventually;
 import io.vlingo.common.Completes;
+import io.vlingo.common.Outcome;
 import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
+import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.State;
+import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.store.Result;
+import io.vlingo.symbio.store.StorageException;
+import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
-import io.vlingo.symbio.store.state.TextStateStore;
 
-public class QueriesActor extends Actor implements Queries, ReadResultInterest<String> {
-  private final ReadResultInterest<String> interest;
-  private final TextStateStore store;
+public class QueriesActor extends Actor implements Queries, ReadResultInterest {
+  private final ReadResultInterest interest;
+  private final StateStore store;
   private final ProfileDataStateAdapter profileDataAdapter;
   private final UserDataStateAdapter userDataAdapter;
 
-  @SuppressWarnings("unchecked")
-  public QueriesActor(final TextStateStore store) {
+  public QueriesActor(final StateStore store) {
     this.store = store;
     this.interest = selfAs(ReadResultInterest.class);
     this.profileDataAdapter = new ProfileDataStateAdapter();
@@ -37,9 +40,9 @@ public class QueriesActor extends Actor implements Queries, ReadResultInterest<S
   @Override
   public Completes<ProfileData> profileOf(final String userId) {
     final CompletesEventually completesEventually = completesEventually();
-    final BiConsumer<State<String>,Integer> translator = (state, version) -> {
+    final BiConsumer<TextState,Integer> translator = (state, version) -> {
       if (state != null) {
-        final ProfileData data = profileDataAdapter.from(state.data, version, 1);
+        final ProfileData data = profileDataAdapter.fromRawState(state);
         completesEventually.with(data);
       } else {
         completesEventually.with(ProfileData.empty());
@@ -53,9 +56,9 @@ public class QueriesActor extends Actor implements Queries, ReadResultInterest<S
   @Override
   public Completes<UserData> userDataOf(final String userId) {
     final CompletesEventually completesEventually = completesEventually();
-    final BiConsumer<State<String>,Integer> translator = (state, version) -> {
+    final BiConsumer<TextState,Integer> translator = (state, version) -> {
       if (state != null) {
-        final UserData data = userDataAdapter.from(state.data, version, 1);
+        final UserData data = userDataAdapter.fromRawState(state);
         completesEventually.with(data);
       } else {
         completesEventually.with(UserData.empty());
@@ -73,13 +76,13 @@ public class QueriesActor extends Actor implements Queries, ReadResultInterest<S
 
   @Override
   @SuppressWarnings("unchecked")
-  public void readResultedIn(final Result result, final String id, final State<String> state, final Object object) {
-    ((BiConsumer<State<String>,Integer>) object).accept(state, state.dataVersion);
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public void readResultedIn(final Result result, final Exception cause, final String id, final State<String> state, final Object object) {
-    ((BiConsumer<State<String>,Integer>) object).accept(null, -1);
+  public <S> void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final Metadata metadata, final Object object) {
+    outcome.andThen(result -> {
+      ((BiConsumer<S,Integer>) object).accept(state, stateVersion);
+      return result;
+    }).otherwise(cause -> {
+      ((BiConsumer<State<String>,Integer>) object).accept(null, -1);
+      return cause.result;
+    });
   }
 }

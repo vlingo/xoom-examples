@@ -17,18 +17,14 @@ import com.saasovation.collaboration.model.forum.Events.DiscussionStarted;
 import com.saasovation.collaboration.model.forum.Events.DiscussionTopicChanged;
 
 import io.vlingo.common.Completes;
+import io.vlingo.common.Tuple2;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
 public class DiscussionEntity extends EventSourced implements Discussion {
   private State state;
 
-  public DiscussionEntity(
-          final Tenant tenant,
-          final ForumId forumId,
-          final DiscussionId discussionId,
-          final Author author,
-          final String topic) {
-    apply(DiscussionStarted.with(tenant, forumId, discussionId, author, topic));
+  public DiscussionEntity(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId) {
+    state = new State(tenant, forumId, discussionId);
   }
 
   @Override
@@ -39,8 +35,11 @@ public class DiscussionEntity extends EventSourced implements Discussion {
   }
 
   @Override
-  public Completes<Post> post(final Author author, final String subject, final String bodyText) {
-    return null;
+  public Completes<Tuple2<PostId,Post>> postFor(final Author author, final String subject, final String bodyText) {
+    final PostId postId = PostId.unique();
+    final Post post = stage().actorFor(Post.class, PostEntity.class, state.tenant, state.forumId, state.discussionId, postId);
+    post.submitWith(author, subject, bodyText);
+    return completes().with(Tuple2.from(postId, post));
   }
 
   @Override
@@ -51,46 +50,22 @@ public class DiscussionEntity extends EventSourced implements Discussion {
   }
 
   @Override
+  public void startWith(final Author author, final String topic) {
+    if (state.author == null) {
+      apply(DiscussionStarted.with(state.tenant, state.forumId, state.discussionId, author, topic));
+    }
+  }
+
+  @Override
   public void topicTo(final String topic) {
     if (!state.topic.equals(topic)) {
       apply(DiscussionTopicChanged.with(state.tenant, state.forumId, state.discussionId, topic));
     }
   }
 
-  private final class State {
-    public final Tenant tenant;
-    public final ForumId forumId;
-    public final DiscussionId discussionId;
-    public final Author author;
-    public final String topic;
-    public final boolean open;
-
-    State(
-            final Tenant tenant,
-            final ForumId forumId,
-            final DiscussionId discussionId,
-            final Author author,
-            final String topic,
-            final boolean open) {
-      this.tenant = tenant;
-      this.forumId = forumId;
-      this.discussionId = discussionId;
-      this.author = author;
-      this.topic = topic;
-      this.open = open;
-    }
-
-    State closed() {
-      return new State(tenant, forumId, discussionId, author, topic, false);
-    }
-
-    State opened() {
-      return new State(tenant, forumId, discussionId, author, topic, true);
-    }
-
-    State withTopic(final String topic) {
-      return new State(tenant, forumId, discussionId, author, topic, open);
-    }
+  @Override
+  protected String streamName() {
+    return streamNameFrom(":", state.tenant.value, state.discussionId.value);
   }
 
   static {

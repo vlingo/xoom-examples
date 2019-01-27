@@ -34,9 +34,9 @@ implements OrderProcessor
     @Override
     protected void beforeStart()
     {
-        orderItemTypeAProcessor = childActorFor( Definition.has( OrderItemTypeAProcessor.class, Definition.parameters( until )), OrderItemProcessor.class );
-        orderItemTypeBProcessor = childActorFor( Definition.has( OrderItemTypeBProcessor.class, Definition.parameters( until ) ), OrderItemProcessor.class );
-        orderItemTypeCProcessor = childActorFor( Definition.has( OrderItemTypeCProcessor.class, Definition.parameters( until ) ), OrderItemProcessor.class );
+        orderItemTypeAProcessor = childActorFor( OrderItemProcessor.class, Definition.has( OrderItemTypeAProcessor.class, Definition.parameters( until )) );
+        orderItemTypeBProcessor = childActorFor( OrderItemProcessor.class, Definition.has( OrderItemTypeBProcessor.class, Definition.parameters( until )) );
+        orderItemTypeCProcessor = childActorFor( OrderItemProcessor.class, Definition.has( OrderItemTypeCProcessor.class, Definition.parameters( until )) );
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderProcessor#placeOrder(io.vlingo.reactive.messaging.patterns.splitter.Order) */

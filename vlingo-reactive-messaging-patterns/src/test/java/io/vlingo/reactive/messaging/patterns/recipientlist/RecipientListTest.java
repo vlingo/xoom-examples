@@ -8,16 +8,8 @@ package io.vlingo.reactive.messaging.patterns.recipientlist;
 
 import org.junit.Test;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestUntil;
-import io.vlingo.reactive.messaging.patterns.recipientlist.BudgetHikersPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.HighSierraPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.MountainAscentPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.PinnacleGearPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.RockBottomOuterwearPriceQuotes;
-import io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket;
-import io.vlingo.reactive.messaging.patterns.recipientlist.RetailItem;
 
 /**
  * RecipientListTest driver for this recipient list example.
@@ -35,12 +27,12 @@ public class RecipientListTest
         TestUntil untilRegistered = TestUntil.happenings( 5 );
         TestUntil until = TestUntil.happenings( 57 );
         
-        OrderProcessor mtnSppliesOrderProcessor = world.actorFor( Definition.has( MountainSuppliesOrderProcessor.class, Definition.parameters( until, untilRegistered )), OrderProcessor.class );
-        world.actorFor( Definition.has( BudgetHikersPriceQuotes.class, Definition.parameters( mtnSppliesOrderProcessor )), QuoteProcessor.class );
-        world.actorFor( Definition.has( HighSierraPriceQuotes.class, Definition.parameters( mtnSppliesOrderProcessor )), QuoteProcessor.class );
-        world.actorFor( Definition.has( MountainAscentPriceQuotes.class, Definition.parameters( mtnSppliesOrderProcessor )), QuoteProcessor.class );
-        world.actorFor( Definition.has( PinnacleGearPriceQuotes.class, Definition.parameters( mtnSppliesOrderProcessor )), QuoteProcessor.class );
-        world.actorFor( Definition.has( RockBottomOuterwearPriceQuotes.class, Definition.parameters( mtnSppliesOrderProcessor )), QuoteProcessor.class );
+        OrderProcessor mtnSppliesOrderProcessor = world.actorFor( OrderProcessor.class, MountainSuppliesOrderProcessor.class, until, untilRegistered );
+        world.actorFor( QuoteProcessor.class, BudgetHikersPriceQuotes.class, mtnSppliesOrderProcessor );
+        world.actorFor( QuoteProcessor.class, HighSierraPriceQuotes.class, mtnSppliesOrderProcessor );
+        world.actorFor( QuoteProcessor.class, MountainAscentPriceQuotes.class, mtnSppliesOrderProcessor );
+        world.actorFor( QuoteProcessor.class, PinnacleGearPriceQuotes.class, mtnSppliesOrderProcessor );
+        world.actorFor( QuoteProcessor.class, RockBottomOuterwearPriceQuotes.class, mtnSppliesOrderProcessor );
         
         untilRegistered.completes();
         world.defaultLogger().log( String.format( "Register completes!!!" ));

@@ -9,7 +9,6 @@ package io.vlingo.backservice.infra.persistence;
 
 import java.util.List;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
 
 public interface EventJournal {
@@ -17,7 +16,7 @@ public interface EventJournal {
   public static Provider provider() { return provider; }
 
   public static EventJournal startWith(final Stage stage) {
-    provider.set(stage.actorFor(Definition.has(EventJournalActor.class, Definition.NoParameters), EventJournal.class));
+    provider.set(stage.actorFor(EventJournal.class, EventJournalActor.class));
     return provider.instance();
   }
 
