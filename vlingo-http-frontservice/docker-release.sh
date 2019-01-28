@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE=$1
+IMAGE=${1:-localhost:5000/vlingo-front:latest}
 
 if [[ -z $IMAGE ]]; then
     echo "Image name should be defined: ./docker-release.sh <image_name>"
