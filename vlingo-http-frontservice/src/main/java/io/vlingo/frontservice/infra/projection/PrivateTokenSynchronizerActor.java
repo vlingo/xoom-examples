@@ -112,20 +112,9 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
               .and(RequestHeader.correlationId(getClass().getSimpleName() + "-tokens")))
             .andThenConsume(response -> {
               switch (response.status) {
-              case Ok: {
-                final List<MessageEvent> events = MessageEvent.from(response);
-                for (final MessageEvent event : events) {
-                  logger().log("EVENT: " + event);
-                  final Tuple4<io.vlingo.actors.Address, String, String, String> eventData = eventDataFrom(event);
-                  stage().actorOf(User.class, eventData._1)
-                    .andThenConsume(user -> {
-                      user.attachPrivateToken(eventData._4);
-                      control.confirmProjected(eventData._3);
-                      logger().log("USER TOKEN SYNCHRONIZED: " + eventData._2 + " WITH: " + eventData._4);
-                    });
-                }
+              case Ok:
+                attachPrivateTokenFrom(response);
                break;
-              }
               default:
                 logger().log("Unexpected: " + response.status);
                 break;
@@ -134,10 +123,38 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
             .repeat();
   }
 
-  private Tuple4<io.vlingo.actors.Address, String, String, String> eventDataFrom(final MessageEvent event) {
+  private void attachPrivateTokenFrom(final Response response) {
+    final List<MessageEvent> events = MessageEvent.from(response);
+    for (final MessageEvent event : events) {
+      logger().log("EVENT: " + event);
+      final SecurityTokenInfo eventData = securityTokenInfoFrom(event);
+      stage().actorOf(User.class, eventData.address)
+        .andThenConsume(user -> {
+          user.attachPrivateToken(eventData.securityToken);
+          control.confirmProjected(eventData.projectionId);
+          logger().log("USER TOKEN SYNCHRONIZED: " + eventData.userId + " WITH: " + eventData.securityToken);
+        });
+    }
+  }
+
+  private SecurityTokenInfo securityTokenInfoFrom(final MessageEvent event) {
     final String[] attributes = event.data.split(DataAttributesSeparator);
     final String[] identities = attributes[Identities].split(IdentitiesSeparator);
     final io.vlingo.actors.Address address = addressFactory.from(identities[UserId]);
-    return Tuple4.from(address, identities[UserId], identities[ProjectionId], attributes[Token]);
+    return new SecurityTokenInfo(address, identities[UserId], identities[ProjectionId], attributes[Token]);
+  }
+
+  private class SecurityTokenInfo {
+    private final io.vlingo.actors.Address address;
+    private final String projectionId;
+    private final String securityToken;
+    private final String userId;
+
+    private SecurityTokenInfo(io.vlingo.actors.Address address, final String userId, final String projectionId, final String securityToken) {
+      this.address = address;
+      this.userId = userId;
+      this.projectionId = projectionId;
+      this.securityToken = securityToken;
+    }
   }
 }
