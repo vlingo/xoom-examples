@@ -62,7 +62,7 @@ public class CartResource {
 
         return resource("Cart resource fluent api",
                 post("/cart")
-                        .body(UserId.class)
+                        .body(UserId.class, new GsonMapper())
                         .handle(this::create),
                 patch("/cart/{cartId}/{productId}")
                         .param(String.class)

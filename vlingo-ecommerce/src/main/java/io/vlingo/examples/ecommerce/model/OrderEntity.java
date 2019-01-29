@@ -76,11 +76,6 @@ public class OrderEntity extends EventSourced implements Order {
     }
 
     @Override
-    public OrderInfo doesSyncOperatorWork() {
-        return empty(state.orderId);
-    }
-
-    @Override
     protected String streamName() {
         return String.format("orderEvents:%s", state.orderId);
     }

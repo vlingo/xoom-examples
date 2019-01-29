@@ -10,12 +10,15 @@ import io.vlingo.examples.ecommerce.model.OrderResource;
 import io.vlingo.examples.ecommerce.model.ProductId;
 import io.vlingo.examples.ecommerce.model.UserId;
 import org.apache.http.HttpStatus;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -25,6 +28,8 @@ import static org.hamcrest.text.MatchesPattern.matchesPattern;
 
 public class OrderResourceShould {
 
+
+    public static final int TASK_COUNT = 10;
 
     @BeforeClass
     public static void setUp() throws InterruptedException {
@@ -49,7 +54,7 @@ public class OrderResourceShould {
     String createOrder() {
 
         OrderResource.OrderCreateRequest request = OrderResource.OrderCreateRequest.Builder
-                                         .create()
+                .create()
                 .withProduct(new ProductId("pid1"), 100)
                 .withUser(new UserId(1))
                 .build();
@@ -58,32 +63,77 @@ public class OrderResourceShould {
                 baseGiven()
                         .when()
                         .body(request, ObjectMapperType.GSON)
-                        .log().body()
                         .post("/order")
                         .then()
                         .assertThat()
                         .statusCode(HttpStatus.SC_CREATED)
                         .header("Location", matchesPattern("/order/(\\d+)"))
-                        .extract().response();
+                        .extract()
+                        .response();
         return response.header("Location");
     }
 
     @Test
-    public void orderContainsProducts_whenQueried() throws InterruptedException {
+    public void orderContainsProducts_whenQueried() {
         String orderUrl = createOrder();
         String orderId  = getOrderId(orderUrl);
 
         final String expected = String.format(
                 "{\"orderId\":\"%s\",\"orderItems\":[{\"productId\":{\"id\":\"pid1\"},\"quantity\":100}]," +
-                "\"orderState\":\"notPaid\"}", orderId);
-        //  If you  uncomment this line the test will pass
-        // Thread.sleep(100);
+                        "\"orderState\":\"notPaid\"}", orderId);
         baseGiven()
                 .when()
                 .get(orderUrl)
                 .then()
                 .assertThat()
+                .log().body()
                 .body(is(equalTo(expected)));
+    }
+
+    private Boolean createdOrderContainsProducts()  {
+        String orderUrl = createOrder();
+        String orderId  = getOrderId(orderUrl);
+
+        final String expected = String.format(
+                "{\"orderId\":\"%s\",\"orderItems\":[{\"productId\":{\"id\":\"pid1\"},\"quantity\":100}]," +
+                        "\"orderState\":\"notPaid\"}", orderId);
+
+        String body  =
+        baseGiven()
+                .when()
+                .get(orderUrl)
+                .then()
+                .assertThat()
+                .extract()
+                .body().asString();
+        return body.equals(expected);
+    }
+
+    @Test
+    public void createdOrderContainsProduct_inParallel() throws InterruptedException {
+        List<Callable<Boolean>> callables       = new ArrayList<>();
+        ExecutorService      executorService = Executors.newFixedThreadPool(4);
+        for (int i = 0; i < TASK_COUNT; i++) {
+            callables.add(this::createdOrderContainsProducts);
+        }
+        List<Future<Boolean>> fList = executorService.invokeAll(callables);
+        do {
+            long count = fList.stream().filter(Future::isDone).count();
+            if (count == TASK_COUNT) {
+                break;
+            }
+            Thread.sleep(100);
+            System.out.println("Waiting for N tasks: " + (TASK_COUNT - count));
+        } while (true);
+        Assert.assertEquals(TASK_COUNT, fList.stream().filter(OrderResourceShould::getOrHandleWithFalse).count());
+    }
+
+    private static Boolean getOrHandleWithFalse(Future<Boolean> f) {
+        try {
+            return  f.get();
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     private String getOrderId(String orderUrl) {
@@ -93,7 +143,7 @@ public class OrderResourceShould {
     @Test
     @Ignore
     public void orderIsPaid_whenPaymentReceived() throws IOException {
-
+        // Not implemented in the actor yet, causes a failure
         String orderUrl = createOrder();
         String orderId  = getOrderId(orderUrl);
 

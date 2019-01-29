@@ -16,6 +16,7 @@ import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
 import static io.vlingo.examples.ecommerce.model.CartEvents.*;
+import static io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.*;
 
 public class Bootstrap {
     private static Bootstrap instance;
@@ -29,16 +30,18 @@ public class Bootstrap {
         MockJournalListener listener = new MockJournalListener();
         Journal<String> journal = world.actorFor(Journal.class, InMemoryJournalActor.class, listener);
 
-
-        journal.registerEntryAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter());
-
-        journal.registerEntryAdapter(CreatedForUser.class, new CartCreatedEventAdapter());
-        journal.registerEntryAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter());
-        journal.registerEntryAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter());
-
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
-        registry.register(new SourcedTypeRegistry.Info(journal, CartEntity.class, CartEntity.class.getSimpleName()));
-        registry.register(new SourcedTypeRegistry.Info(journal, OrderEntity.class, OrderEntity.class.getSimpleName()));
+        registry.register(new Info(journal, CartEntity.class, CartEntity.class.getSimpleName()));
+        registry.register(new Info(journal, OrderEntity.class, OrderEntity.class.getSimpleName()));
+
+        registry.info(OrderEntity.class)
+                .registerEntryAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter(), journal::registerEntryAdapter);
+
+        registry.info(CartEntity.class)
+                .registerEntryAdapter(CreatedForUser.class, new CartCreatedEventAdapter(), journal::registerEntryAdapter)
+                .registerEntryAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter(), journal::registerEntryAdapter)
+                .registerEntryAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter(), journal::registerEntryAdapter);
+
 
         final CartResource cartResource = new CartResource(world);
         final OrderResource orderResource = new OrderResource(world);

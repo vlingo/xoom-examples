@@ -5,9 +5,6 @@ import io.vlingo.common.Completes;
 import java.util.Map;
 
 
-// Orders are initForUser when the "CheckoutStarted" event is received, which triggers the order creation
-// Changes to the basket will change orders that already been initForUser.
-
 public interface Order {
 
     Completes<Void> initOrderForUserProducts(UserId userId, Map<ProductId, Integer> quantityByProduct);
@@ -17,7 +14,4 @@ public interface Order {
     void orderShipped(PaymentId paymentId, int orderStateHash);
 
     Completes<OrderInfo> query();
-
-    OrderInfo doesSyncOperatorWork();
-
 }
