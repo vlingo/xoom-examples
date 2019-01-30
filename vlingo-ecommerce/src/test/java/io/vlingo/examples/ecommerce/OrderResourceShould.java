@@ -141,7 +141,7 @@ public class OrderResourceShould {
     }
 
     //@Test --Not implemented in the actor yet, causes a failure
-    //   
+    //
     public void orderIsPaid_whenPaymentReceived() throws IOException {
         String orderUrl = createOrder();
         String orderId  = getOrderId(orderUrl);

@@ -1,5 +1,7 @@
 package io.vlingo.examples.ecommerce;
 
+import io.vlingo.actors.Actor;
+import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
 import io.vlingo.examples.ecommerce.infra.MockJournalListener;
@@ -13,34 +15,40 @@ import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.symbio.store.journal.Journal;
+import io.vlingo.symbio.store.journal.JournalListener;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
 import static io.vlingo.examples.ecommerce.model.CartEvents.*;
-import static io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.*;
+import static io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 
 public class Bootstrap {
     private static Bootstrap instance;
     public final Server server;
     public final World world;
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     private Bootstrap() {
         world = World.startWithDefaults("cartservice");
 
         MockJournalListener listener = new MockJournalListener();
-        Journal<String> journal = world.actorFor(Journal.class, InMemoryJournalActor.class, listener);
+        Journal<String> journal = using(world.stage(), InMemoryJournalActor.class, listener);
+                //world.actorFor(Journal.class, InMemoryJournalActor.class, listener);
 
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
         registry.register(new Info(journal, CartEntity.class, CartEntity.class.getSimpleName()));
         registry.register(new Info(journal, OrderEntity.class, OrderEntity.class.getSimpleName()));
 
         registry.info(OrderEntity.class)
-                .registerEntryAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter(), journal::registerEntryAdapter);
+                .registerEntryAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter(),
+                        journal::registerEntryAdapter);
 
         registry.info(CartEntity.class)
-                .registerEntryAdapter(CreatedForUser.class, new CartCreatedEventAdapter(), journal::registerEntryAdapter)
-                .registerEntryAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter(), journal::registerEntryAdapter)
-                .registerEntryAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter(), journal::registerEntryAdapter);
+                .registerEntryAdapter(CreatedForUser.class, new CartCreatedEventAdapter(),
+                        journal::registerEntryAdapter)
+                .registerEntryAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter(),
+                        journal::registerEntryAdapter)
+                .registerEntryAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter(),
+                        journal::registerEntryAdapter);
 
 
         final CartResource cartResource = new CartResource(world);
@@ -68,8 +76,12 @@ public class Bootstrap {
         }));
     }
 
-    Completes<Boolean> serverStartup() {
-        return server.startUp();
+    static <A extends Actor, T> Journal<T> using(
+            final Stage stage,
+            final Class<A> implementor,
+            final JournalListener<T> listener
+    ) {
+        return (Journal<T>) stage.actorFor(Journal.class, implementor, listener);
     }
 
     static Bootstrap instance() {
@@ -84,6 +96,10 @@ public class Bootstrap {
         System.out.println("service: ecommerce-started.");
         System.out.println("=======================");
         Bootstrap.instance();
+    }
+
+    Completes<Boolean> serverStartup() {
+        return server.startUp();
     }
 
     public void stop() throws InterruptedException {

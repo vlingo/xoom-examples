@@ -29,6 +29,8 @@ public class OrderResource {
         Map<ProductId, Integer> quantityByProductId = new HashMap<>();
         request.quantityByIdOfProduct.forEach((key, value) -> quantityByProductId.put(new ProductId(key), value));
 
+        System.out.println("OrderId from address: " + orderAddress.idString());
+
         Order orderActor = stage.actorFor(
                 Order.class,
                 Definition.has(OrderEntity.class,
