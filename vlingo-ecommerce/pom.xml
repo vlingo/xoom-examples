@@ -28,6 +28,12 @@
         </dependency>
         <dependency>
             <groupId>io.vlingo</groupId>
+            <artifactId>vlingo-symbio</artifactId>
+            <version>${vlingo.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.vlingo</groupId>
             <artifactId>vlingo-http</artifactId>
             <version>${vlingo.version}</version>
             <scope>compile</scope>

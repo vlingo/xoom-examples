@@ -1,7 +1,5 @@
 package io.vlingo.examples.ecommerce;
 
-import io.vlingo.actors.Actor;
-import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
 import io.vlingo.examples.ecommerce.infra.MockJournalListener;
@@ -15,7 +13,6 @@ import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.symbio.store.journal.Journal;
-import io.vlingo.symbio.store.journal.JournalListener;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
 import static io.vlingo.examples.ecommerce.model.CartEvents.*;
@@ -31,8 +28,7 @@ public class Bootstrap {
         world = World.startWithDefaults("cartservice");
 
         MockJournalListener listener = new MockJournalListener();
-        Journal<String> journal = using(world.stage(), InMemoryJournalActor.class, listener);
-                //world.actorFor(Journal.class, InMemoryJournalActor.class, listener);
+        Journal<String> journal = Journal.using(world.stage(), InMemoryJournalActor.class, listener);
 
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
         registry.register(new Info(journal, CartEntity.class, CartEntity.class.getSimpleName()));
@@ -76,14 +72,14 @@ public class Bootstrap {
         }));
     }
 
-    static <A extends Actor, T> Journal<T> using(
+    /*static <A extends Actor, T> Journal<T> using(
             final Stage stage,
             final Class<A> implementor,
             final JournalListener<T> listener
     ) {
         return (Journal<T>) stage.actorFor(Journal.class, implementor, listener);
     }
-
+*/
     static Bootstrap instance() {
         if (instance == null) {
             instance = new Bootstrap();
