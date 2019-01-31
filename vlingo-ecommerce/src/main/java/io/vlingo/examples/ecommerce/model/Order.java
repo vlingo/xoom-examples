@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface Order {
 
-    Completes<Void> initOrderForUserProducts(UserId userId, Map<ProductId, Integer> quantityByProduct);
+    void initOrderForUserProducts(UserId userId, Map<ProductId, Integer> quantityByProduct);
 
     void paymentComplete(PaymentId paymentId, int orderStateHash);
 

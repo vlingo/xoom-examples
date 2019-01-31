@@ -46,12 +46,9 @@ public class OrderEntity extends EventSourced implements Order {
     }
 
     @Override
-    public Completes<Void> initOrderForUserProducts(UserId userId,
+    public void initOrderForUserProducts(UserId userId,
                                                        Map<ProductId, Integer> quantityByProduct) {
-
-        apply(OrderEvents.Created.with(state.orderId, userId,  quantityByProduct),
-                () -> null);
-        return completes();
+        apply(OrderEvents.Created.with(state.orderId, userId,  quantityByProduct));
     }
 
     @Override
