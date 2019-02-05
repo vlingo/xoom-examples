@@ -39,8 +39,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final ForumStarted source) {
+      return toEntry(source, source.forumId);
+    }
+
+    @Override
+    public TextEntry toEntry(final ForumStarted source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(ForumStarted.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, ForumStarted.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -52,8 +57,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final ForumModeratorAssigned source) {
+      return toEntry(source, source.forumId);
+    }
+
+    @Override
+    public TextEntry toEntry(final ForumModeratorAssigned source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(ForumModeratorAssigned.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, ForumModeratorAssigned.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -65,8 +75,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final ForumClosed source) {
+      return toEntry(source, source.forumId);
+    }
+
+    @Override
+    public TextEntry toEntry(final ForumClosed source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(ForumClosed.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, ForumClosed.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -78,8 +93,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final ForumDescribed source) {
+      return toEntry(source, source.forumId);
+    }
+
+    @Override
+    public TextEntry toEntry(final ForumDescribed source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(ForumDescribed.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, ForumDescribed.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -91,8 +111,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final ForumReopened source) {
+      return toEntry(source, source.forumId);
+    }
+
+    @Override
+    public TextEntry toEntry(final ForumReopened source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(ForumReopened.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, ForumReopened.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -104,8 +129,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final ForumTopicChanged source) {
+      return toEntry(source, source.forumId);
+    }
+
+    @Override
+    public TextEntry toEntry(final ForumTopicChanged source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(ForumTopicChanged.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, ForumTopicChanged.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -121,8 +151,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final DiscussionStarted source) {
+      return toEntry(source, source.discussionId);
+    }
+
+    @Override
+    public TextEntry toEntry(final DiscussionStarted source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(DiscussionStarted.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, DiscussionStarted.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -134,8 +169,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final DiscussionClosed source) {
+      return toEntry(source, source.discussionId);
+    }
+
+    @Override
+    public TextEntry toEntry(final DiscussionClosed source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(DiscussionClosed.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, DiscussionClosed.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -147,8 +187,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final DiscussionReopened source) {
+      return toEntry(source, source.discussionId);
+    }
+
+    @Override
+    public TextEntry toEntry(final DiscussionReopened source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(DiscussionReopened.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, DiscussionReopened.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -160,8 +205,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final DiscussionTopicChanged source) {
+      return toEntry(source, source.discussionId);
+    }
+
+    @Override
+    public TextEntry toEntry(final DiscussionTopicChanged source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(DiscussionTopicChanged.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, DiscussionTopicChanged.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -177,8 +227,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final PostedToDiscussion source) {
+      return toEntry(source, source.postId);
+    }
+
+    @Override
+    public TextEntry toEntry(final PostedToDiscussion source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(PostedToDiscussion.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, PostedToDiscussion.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 
@@ -190,8 +245,13 @@ public class EntryAdapters {
 
     @Override
     public TextEntry toEntry(final PostModerated source) {
+      return toEntry(source, source.postId);
+    }
+
+    @Override
+    public TextEntry toEntry(final PostModerated source, final String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(PostModerated.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, PostModerated.class, 1, serialization, Metadata.nullMetadata());
     }
   }
 }
