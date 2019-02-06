@@ -59,7 +59,7 @@ public class OrderResource {
         return ROOT_URL + "/" + orderId;
     }
 
-    public Resource routes() {
+    public Resource<?> routes() {
         //todo: fix issue where resources can overwrite each other even though they are not equal
         return resource("Order resource fluent api",
                 post(ROOT_URL)

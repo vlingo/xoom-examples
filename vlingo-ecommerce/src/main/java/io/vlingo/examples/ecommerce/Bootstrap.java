@@ -7,25 +7,32 @@ import io.vlingo.examples.ecommerce.infra.cart.CartAllItemsRemoveEventAdapter;
 import io.vlingo.examples.ecommerce.infra.cart.CartCreatedEventAdapter;
 import io.vlingo.examples.ecommerce.infra.cart.CartProductQuantityChangedEventAdapter;
 import io.vlingo.examples.ecommerce.infra.order.OrderCreatedEventAdapter;
-import io.vlingo.examples.ecommerce.model.*;
+import io.vlingo.examples.ecommerce.model.CartEntity;
+import io.vlingo.examples.ecommerce.model.CartEvents.AllItemsRemovedEvent;
+import io.vlingo.examples.ecommerce.model.CartEvents.CreatedForUser;
+import io.vlingo.examples.ecommerce.model.CartEvents.ProductQuantityChangeEvent;
+import io.vlingo.examples.ecommerce.model.CartResource;
+import io.vlingo.examples.ecommerce.model.OrderEntity;
+import io.vlingo.examples.ecommerce.model.OrderEvents;
+import io.vlingo.examples.ecommerce.model.OrderResource;
 import io.vlingo.http.resource.Configuration;
 import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
+import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
-
-import static io.vlingo.examples.ecommerce.model.CartEvents.*;
-import static io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 
 public class Bootstrap {
     private static Bootstrap instance;
     public final Server server;
     public final World world;
+    public final int portNumber;
 
-    @SuppressWarnings({"unchecked"})
-    private Bootstrap() {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private Bootstrap(final int portNumber) {
         world = World.startWithDefaults("cartservice");
+        this.portNumber = portNumber;
 
         MockJournalListener listener = new MockJournalListener();
         Journal<String> journal = Journal.using(world.stage(), InMemoryJournalActor.class, listener);
@@ -55,7 +62,7 @@ public class Bootstrap {
                 orderResource.routes());
         this.server = Server.startWith(world.stage(),
                 resources,
-                8081,
+                portNumber,
                 Configuration.Sizing.define(),
                 Configuration.Timing.define());
 
@@ -72,19 +79,14 @@ public class Bootstrap {
         }));
     }
 
-    /*static <A extends Actor, T> Journal<T> using(
-            final Stage stage,
-            final Class<A> implementor,
-            final JournalListener<T> listener
-    ) {
-        return (Journal<T>) stage.actorFor(Journal.class, implementor, listener);
-    }
-*/
-    static Bootstrap instance() {
+    static Bootstrap instance(final int portNumber) {
         if (instance == null) {
-            instance = new Bootstrap();
+            instance = new Bootstrap(portNumber);
         }
         return instance;
+    }
+    static Bootstrap instance() {
+      return instance(8081);
     }
 
     public static void main(final String[] args) throws Exception {
