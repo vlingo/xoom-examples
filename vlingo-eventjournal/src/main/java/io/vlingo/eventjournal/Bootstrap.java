@@ -37,11 +37,8 @@ public class Bootstrap {
         );
 
         final World world = World.startWithDefaults("event-journal");
-        @SuppressWarnings("unchecked")
-        Journal<String> journal = world.actorFor(
-                Journal.class,
-                Definition.has(PostgresJournalActor.class, Definition.parameters(configuration, new NoopEventJournalListener()))
-        );
+
+        Journal<String> journal = Journal.using(world.stage(), PostgresJournalActor.class, new NoopEventJournalListener(), configuration);
 
         final Counter counter = world.actorFor(
                 Counter.class,

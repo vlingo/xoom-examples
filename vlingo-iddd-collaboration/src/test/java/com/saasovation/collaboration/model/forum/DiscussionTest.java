@@ -18,6 +18,7 @@ import com.saasovation.collaboration.model.forum.Events.DiscussionReopened;
 import com.saasovation.collaboration.model.forum.Events.DiscussionTopicChanged;
 import com.saasovation.collaboration.model.forum.Events.PostedToDiscussion;
 
+import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.common.Tuple2;
 import io.vlingo.symbio.EntryAdapterProvider;
 
@@ -27,11 +28,11 @@ public class DiscussionTest extends EntityTest {
   @Test
   public void testThatDiscussionClosed() {
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world, journalListener);
-    this.journalListener.until = until(1);
+    final TestUntil until = journalListener.until(1);
     discussionPair._2.close();
-    journalListener.until.completes();
+    until.completes();
     journalListener.confirmExpectedEntries(3, 10);
-    assertEquals(3, journalListener.confirmedCount.get().intValue());
+    assertEquals(3, journalListener.confirmedCount());
     final DiscussionClosed event2 = adapter().asSource(journalListener.entry(2));
     assertEquals(DiscussionClosed.class, event2.getClass());
   }
@@ -39,12 +40,12 @@ public class DiscussionTest extends EntityTest {
   @Test
   public void testThatDiscussionReopened() {
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world, journalListener);
-    this.journalListener.until = until(2);
+    final TestUntil until = journalListener.until(2);
     discussionPair._2.close();
     discussionPair._2.reopen();
-    journalListener.until.completes();
+    until.completes();
     journalListener.confirmExpectedEntries(4, 10);
-    assertEquals(4, journalListener.confirmedCount.get().intValue());
+    assertEquals(4, journalListener.confirmedCount());
     final DiscussionClosed event2 = adapter().asSource(journalListener.entry(2));
     assertEquals(DiscussionClosed.class, event2.getClass());
     final DiscussionReopened event3 = adapter().asSource(journalListener.entry(3));
@@ -54,11 +55,12 @@ public class DiscussionTest extends EntityTest {
   @Test
   public void testThatDiscussionTopicChanged() {
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world, journalListener);
-    this.journalListener.until = until(1);
+    final TestUntil until = journalListener.until(1);
     final String topic = "By Way, Way, Way of Discussion";
     discussionPair._2.topicTo(topic);
+    until.completes();
     journalListener.confirmExpectedEntries(3, 10);
-    assertEquals(3, journalListener.confirmedCount.get().intValue());
+    assertEquals(3, journalListener.confirmedCount());
     final DiscussionTopicChanged event2 = adapter().asSource(journalListener.entry(2));
     assertEquals(DiscussionTopicChanged.class, event2.getClass());
     assertEquals(topic, event2.topic);
@@ -67,14 +69,14 @@ public class DiscussionTest extends EntityTest {
   @Test
   public void testThatDiscussionPosts() {
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world, journalListener);
-    this.journalListener.until = until(1);
+    final TestUntil until = journalListener.until(1);
     final Author author = Author.unique();
     final String subject = "Within the discussion a post";
     final String bodyText = "This is the body of the post which is document text.";
     discussionPair._2.postFor(author, subject, bodyText);
-    journalListener.until.completes();
+    until.completes();
     journalListener.confirmExpectedEntries(3, 10);
-    assertEquals(3, journalListener.confirmedCount.get().intValue());
+    assertEquals(3, journalListener.confirmedCount());
     final PostedToDiscussion event2 = postAdapter().asSource(journalListener.entry(2));
     assertEquals(PostedToDiscussion.class, event2.getClass());
     assertEquals(author.value, event2.authorId);

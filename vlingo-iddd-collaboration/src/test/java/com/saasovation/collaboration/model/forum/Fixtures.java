@@ -31,37 +31,39 @@ public class Fixtures {
   public Tuple2<DiscussionId, Discussion> discussionFixture(
           final World world,
           final MockJournalListener journalListener) {
-    journalListener.until = TestUntil.happenings(1);
+    final TestUntil until1 = journalListener.until(1);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), forumDescriptionFixture());
+    until1.completes();
     journalListener.confirmExpectedEntries(1, 10);
-    assertEquals(1, journalListener.confirmedCount.get().intValue());
-    journalListener.until.completes();
-    journalListener.until = TestUntil.happenings(2);
+    assertEquals(1, journalListener.confirmedCount());
+    final TestUntil until2 = journalListener.until(2);
     forumPair._2.discussFor(Author.unique(), "By Way of Discussion")
       .andThenConsume(discussionPair -> {
         this.discussionPair = discussionPair;
-        journalListener.until.happened();
+        until2.happened();
       });
+    until2.completes();
     journalListener.confirmExpectedEntries(2, 10);
-    assertEquals(2, journalListener.confirmedCount.get().intValue());
-    journalListener.until.completes();
+    assertEquals(2, journalListener.confirmedCount());
     return discussionPair;
   }
 
   public Tuple2<PostId,Post> postFixture(
           final World world,
           final MockJournalListener journalListener) {
+    final TestUntil until1 = journalListener.until(1);
     final Tuple2<DiscussionId, Discussion> discussionPair = discussionFixture(world, journalListener);
-    journalListener.until = TestUntil.happenings(2);
+    until1.completes();
+    final TestUntil until2 = journalListener.until(2);
     final Author author = Author.unique();
     final String subject = "Within the discussion a post";
     final String bodyText = "This is the body of the post which is document text.";
     discussionPair._2.postFor(author, subject, bodyText)
       .andThenConsume(postPair -> {
         this.postPair = postPair;
-        journalListener.until.happened();
+        until2.happened();
       });
-    journalListener.until.completes();
+    until2.completes();
     return postPair;
   }
 }

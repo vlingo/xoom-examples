@@ -22,7 +22,12 @@ public class CounterIncreasedAdapter implements EntryAdapter<CounterIncreased, T
 
     @Override
     public TextEntry toEntry(CounterIncreased source) {
+      return toEntry(source, source.uuid.toString());
+    }
+
+    @Override
+    public TextEntry toEntry(CounterIncreased source, String id) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(CounterIncreased.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, CounterIncreased.class, 1, serialization, Metadata.nullMetadata());
     }
 }
