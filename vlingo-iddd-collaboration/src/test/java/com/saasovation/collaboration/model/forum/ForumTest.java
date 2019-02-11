@@ -27,7 +27,6 @@ import com.saasovation.collaboration.model.forum.Events.ForumStarted;
 import com.saasovation.collaboration.model.forum.Events.ForumTopicChanged;
 import com.saasovation.collaboration.model.forum.Forum.ForumDescription;
 
-import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.common.Tuple2;
 import io.vlingo.symbio.EntryAdapterProvider;
 
@@ -36,16 +35,15 @@ public class ForumTest extends EntityTest {
 
   @Test
   public void testThatForumStarted() {
-    final TestUntil until1 = journalListener.until(1);
+    journalListener.afterCompleting(1);
     final ForumDescription description = fixtures.forumDescriptionFixture();
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), description);
     assertNotNull(forumPair);
     assertNotNull(forumPair._1);
     UUID.fromString(forumPair._1.value); // throws if not correct format
     assertNotNull(forumPair._2);
-    until1.completes();
-    journalListener.confirmExpectedEntries(1, 10);
-    assertEquals(1, journalListener.confirmedCount());
+    final int count = journalListener.confirmedCount();
+    assertEquals(1, count);
     final ForumStarted event = adapter().asSource(journalListener.entry(0));
     assertEquals(ForumStarted.class, event.getClass());
     assertEquals(description.creator.value, event.creatorId);
@@ -58,13 +56,12 @@ public class ForumTest extends EntityTest {
 
   @Test
   public void testThatForumModeratorAssigned() {
-    final TestUntil until1 = journalListener.until(2);
+    journalListener.afterCompleting(2);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
     final Moderator moderator = Moderator.unique();
     forumPair._2.assign(moderator);
-    until1.completes();
-    journalListener.confirmExpectedEntries(2, 10);
-    assertEquals(2, journalListener.confirmedCount());
+    final int count = journalListener.confirmedCount();
+    assertEquals(2, count);
     final ForumStarted event0 = adapter().asSource(journalListener.entry(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumModeratorAssigned event1 = adapter().asSource(journalListener.entry(1));
@@ -74,12 +71,11 @@ public class ForumTest extends EntityTest {
 
   @Test
   public void testThatForumClosed() {
-    final TestUntil until1 = journalListener.until(2);
+    journalListener.afterCompleting(2);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
     forumPair._2.close();
-    until1.completes();
-    journalListener.confirmExpectedEntries(2, 10);
-    assertEquals(2, journalListener.confirmedCount());
+    final int count = journalListener.confirmedCount();
+    assertEquals(2, count);
     final ForumStarted event0 = adapter().asSource(journalListener.entry(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumClosed event1 = adapter().asSource(journalListener.entry(1));
@@ -88,13 +84,12 @@ public class ForumTest extends EntityTest {
 
   @Test
   public void testThatForumDescribed() {
-    final TestUntil until1 = journalListener.until(2);
+    journalListener.afterCompleting(2);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
     final String description = "Let's discuss the vlingo/platform";
     forumPair._2.describeAs(description);
-    until1.completes();
-    journalListener.confirmExpectedEntries(2, 10);
-    assertEquals(2, journalListener.confirmedCount());
+    final int count = journalListener.confirmedCount();
+    assertEquals(2, count);
     final ForumStarted event0 = adapter().asSource(journalListener.entry(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumDescribed event1 = adapter().asSource(journalListener.entry(1));
@@ -104,21 +99,18 @@ public class ForumTest extends EntityTest {
 
   @Test
   public void testThatForumReopened() {
-    final TestUntil until1 = journalListener.until(1);
+    journalListener.afterCompleting(1);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
-    until1.completes();
-    journalListener.confirmExpectedEntries(1, 10);
-    assertEquals(1, journalListener.confirmedCount());
-    final TestUntil until2 = journalListener.until(1);
+    final int count = journalListener.confirmedCount();
+    assertEquals(1, count);
+    journalListener.afterCompleting(1);
     forumPair._2.close();
-    until2.completes();
-    journalListener.confirmExpectedEntries(2, 10);
-    assertEquals(2, journalListener.confirmedCount());
-    final TestUntil until3 = journalListener.until(1);
+    final int count2 = journalListener.confirmedCount();
+    assertEquals(2, count2);
+    journalListener.afterCompleting(1);
     forumPair._2.reopen();
-    until3.completes();
-    journalListener.confirmExpectedEntries(3, 10);
-    assertEquals(3, journalListener.confirmedCount());
+    final int count3 = journalListener.confirmedCount();
+    assertEquals(3, count3);
     final ForumStarted event0 = adapter().asSource(journalListener.entry(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumClosed event1 = adapter().asSource(journalListener.entry(1));
@@ -129,13 +121,12 @@ public class ForumTest extends EntityTest {
 
   @Test
   public void testThatForumTopicChanged() {
-    final TestUntil until1 = journalListener.until(2);
+    journalListener.afterCompleting(2);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
     final String topic = "Even More Than All Things vlingo/platform";
     forumPair._2.topicIs(topic);
-    until1.completes();
-    journalListener.confirmExpectedEntries(2, 10);
-    assertEquals(2, journalListener.confirmedCount());
+    final int count = journalListener.confirmedCount();
+    assertEquals(2, count);
     final ForumStarted event0 = adapter().asSource(journalListener.entry(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final ForumTopicChanged event1 = adapter().asSource(journalListener.entry(1));
@@ -145,7 +136,7 @@ public class ForumTest extends EntityTest {
 
   @Test
   public void testThatForumStartsDiscussion() {
-    final TestUntil until1 = journalListener.until(2);
+    journalListener.afterCompleting(2);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
     final Author author = Author.unique();
     final String topic = "At Topic That Is of Great Interest";
@@ -156,9 +147,8 @@ public class ForumTest extends EntityTest {
         UUID.fromString(discussionPair._1.value); // throws if not correct format
         assertNotNull(discussionPair._2);
       });
-    until1.completes();
-    journalListener.confirmExpectedEntries(2, 10);
-    assertEquals(2, journalListener.confirmedCount());
+    final int count = journalListener.confirmedCount();
+    assertEquals(2, count);
     final ForumStarted event0 = adapter().asSource(journalListener.entry(0));
     assertEquals(ForumStarted.class, event0.getClass());
     final DiscussionStarted event1 = discussionAdapter().asSource(journalListener.entry(1));
