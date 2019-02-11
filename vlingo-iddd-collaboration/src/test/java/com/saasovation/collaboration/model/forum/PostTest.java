@@ -16,7 +16,6 @@ import com.saasovation.collaboration.model.EntityTest;
 import com.saasovation.collaboration.model.Moderator;
 import com.saasovation.collaboration.model.forum.Events.PostModerated;
 
-import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.common.Tuple2;
 import io.vlingo.symbio.EntryAdapterProvider;
 
@@ -25,10 +24,8 @@ public class PostTest extends EntityTest {
 
   @Test
   public void testThatPostModerated() {
-    final Tuple2<PostId, Post> postPair = fixtures.postFixture(world, journalListener);
-    journalListener.confirmExpectedEntries(3, 10);
-    assertEquals(3, journalListener.confirmedCount());
-    final TestUntil until1 = journalListener.until(1);
+    final Tuple2<PostId, Post> postPair = fixtures.postFixture(world);
+    journalListener.afterCompleting(1);
     final Moderator moderator = Moderator.unique();
     final String subject = "A Moderated Subject";
     final String bodyText = "A moderated body text document.";
@@ -36,9 +33,8 @@ public class PostTest extends EntityTest {
     assertNotNull(postPair._1);
     assertNotNull(postPair._2);
     postPair._2.moderate(moderator, subject, bodyText);
-    until1.completes();
-    journalListener.confirmExpectedEntries(4, 10);
-    assertEquals(4, journalListener.confirmedCount());
+    final int count = journalListener.confirmedCount(4);
+    assertEquals(4, count);
     final PostModerated event3 = adapter().asSource(journalListener.entry(3));
     assertEquals(PostModerated.class, event3.getClass());
     assertEquals(moderator.value, event3.moderatorId);
