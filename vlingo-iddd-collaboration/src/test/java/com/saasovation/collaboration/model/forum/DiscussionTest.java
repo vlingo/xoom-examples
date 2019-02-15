@@ -8,6 +8,7 @@
 package com.saasovation.collaboration.model.forum;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -26,10 +27,11 @@ public class DiscussionTest extends EntityTest {
 
   @Test
   public void testThatDiscussionClosed() {
+    System.out.println("=========== testThatDiscussionClosed ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
     journalListener.afterCompleting(1);
     discussionPair._2.close();
-    final int count = journalListener.confirmedCount();
+    final int count = journalListener.confirmedCount(3);
     assertEquals(3, count);
     final DiscussionClosed event2 = adapter().asSource(journalListener.entry(2));
     assertEquals(DiscussionClosed.class, event2.getClass());
@@ -37,11 +39,12 @@ public class DiscussionTest extends EntityTest {
 
   @Test
   public void testThatDiscussionReopened() {
+    System.out.println("=========== testThatDiscussionReopened ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
     journalListener.afterCompleting(2);
     discussionPair._2.close();
     discussionPair._2.reopen();
-    final int count = journalListener.confirmedCount();
+    final int count = journalListener.confirmedCount(4);
     assertEquals(4, count);
     final DiscussionClosed event2 = adapter().asSource(journalListener.entry(2));
     assertEquals(DiscussionClosed.class, event2.getClass());
@@ -51,11 +54,12 @@ public class DiscussionTest extends EntityTest {
 
   @Test
   public void testThatDiscussionTopicChanged() {
+    System.out.println("=========== testThatDiscussionTopicChanged ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
     journalListener.afterCompleting(1);
     final String topic = "By Way, Way, Way of Discussion";
     discussionPair._2.topicTo(topic);
-    final int count = journalListener.confirmedCount();
+    final int count = journalListener.confirmedCount(3);
     assertEquals(3, count);
     final DiscussionTopicChanged event2 = adapter().asSource(journalListener.entry(2));
     assertEquals(DiscussionTopicChanged.class, event2.getClass());
@@ -64,13 +68,22 @@ public class DiscussionTest extends EntityTest {
 
   @Test
   public void testThatDiscussionPosts() throws Exception {
+    System.out.println("=========== testThatDiscussionPosts ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
+    System.out.println("4b");
     journalListener.afterCompleting(1);
+    System.out.println("4c");
     final Author author = Author.unique();
     final String subject = "Within the discussion a post";
     final String bodyText = "This is the body of the post which is document text.";
-    discussionPair._2.postFor(author, subject, bodyText).await();
+    System.out.println("4c.1");
+    Tuple2<PostId,Post> postPair = discussionPair._2.postFor(author, subject, bodyText).await(2000);
+    System.out.println("4c.2");
+    assertNotNull(postPair._1);
+    assertNotNull(postPair._2);
+    System.out.println("4d=" + journalListener.confirmedCount());
     final int count = journalListener.confirmedCount(3);
+    System.out.println("4e");
     assertEquals(3, count);
     final PostedToDiscussion event2 = postAdapter().asSource(journalListener.entry(2));
     assertEquals(PostedToDiscussion.class, event2.getClass());

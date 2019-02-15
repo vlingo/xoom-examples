@@ -21,6 +21,7 @@ public class PostEntity extends EventSourced implements Post {
   private State state;
 
   public PostEntity(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final PostId postId) {
+    System.out.println("POST CTOR");
     state = new State(tenant, forumId, discussionId, postId);
   }
 
@@ -36,7 +37,9 @@ public class PostEntity extends EventSourced implements Post {
 
   @Override
   public void submitWith(final Author author, final String subject, final String bodyText) {
+    System.out.println("POST SUBMIT 1");
     if (state.author == null) {
+      System.out.println("POST SUBMIT 2");
       apply(PostedToDiscussion.with(state.tenant, state.forumId, state.discussionId, state.postId, author, subject, bodyText));
     }
   }
