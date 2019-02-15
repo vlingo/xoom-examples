@@ -24,6 +24,7 @@ public class DiscussionEntity extends EventSourced implements Discussion {
   private State state;
 
   public DiscussionEntity(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId) {
+    System.out.println("DISCUSSION-CTOR");
     state = new State(tenant, forumId, discussionId);
   }
 
@@ -37,8 +38,11 @@ public class DiscussionEntity extends EventSourced implements Discussion {
   @Override
   public Completes<Tuple2<PostId,Post>> postFor(final Author author, final String subject, final String bodyText) {
     final PostId postId = PostId.unique();
+    System.out.println("DISCUSSION-POST-1");
     final Post post = stage().actorFor(Post.class, PostEntity.class, state.tenant, state.forumId, state.discussionId, postId);
+    System.out.println("DISCUSSION-POST-2");
     post.submitWith(author, subject, bodyText);
+    System.out.println("DISCUSSION-POST-3");
     return completes().with(Tuple2.from(postId, post));
   }
 
@@ -51,7 +55,9 @@ public class DiscussionEntity extends EventSourced implements Discussion {
 
   @Override
   public void startWith(final Author author, final String topic) {
+    System.out.println("DISCUSSION-STARTING-1");
     if (state.author == null) {
+      System.out.println("DISCUSSION-STARTING-2");
       apply(DiscussionStarted.with(state.tenant, state.forumId, state.discussionId, author, topic));
     }
   }

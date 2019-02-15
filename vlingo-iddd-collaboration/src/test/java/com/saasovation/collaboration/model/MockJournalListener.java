@@ -26,22 +26,30 @@ public class MockJournalListener implements JournalListener<String> {
 
   @Override
   public void appended(final Entry<String> entry) {
+    System.out.println("APPEND-IN-1");
     access.writeUsing("entry", Tuple2.from(entry, State.TextState.Null));
+    System.out.println("APPEND-OUT-1");
   }
 
   @Override
   public void appendedWith(final Entry<String> entry, final State<String> snapshot) {
+    System.out.println("APPEND-SS-IN-1");
     access.writeUsing("entry", Tuple2.from(entry, snapshot));
+    System.out.println("APPEND-SS-OUT-1");
   }
 
   @Override
   public void appendedAll(final List<Entry<String>> entries) {
+    System.out.println("APPEND-IN-*");
     access.writeUsing("entries", Tuple2.from(entries, snapshots(entries.size(), State.TextState.Null)));
+    System.out.println("APPEND-OUT-*");
   }
 
   @Override
   public void appendedAllWith(final List<Entry<String>> entries, final State<String> snapshot) {
+    System.out.println("APPEND-SS-IN-*");
     access.writeUsing("entries", Tuple2.from(entries, snapshots(entries.size(), snapshot)));
+    System.out.println("APPEND-SS-OUT-*");
   }
 
   public int confirmedCount() {
