@@ -26,7 +26,7 @@ public class DiscussionTest extends EntityTest {
   private Fixtures fixtures = new Fixtures();
 
   @Test
-  public void testThatDiscussionClosed() {
+  public void testThatDiscussionCloses() {
     System.out.println("=========== testThatDiscussionClosed ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
     journalListener.afterCompleting(1);
@@ -70,20 +70,20 @@ public class DiscussionTest extends EntityTest {
   public void testThatDiscussionPosts() throws Exception {
     System.out.println("=========== testThatDiscussionPosts ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
-    System.out.println("4b");
+//    System.out.println("4b");
     journalListener.afterCompleting(1);
-    System.out.println("4c");
+//    System.out.println("4c");
     final Author author = Author.unique();
     final String subject = "Within the discussion a post";
     final String bodyText = "This is the body of the post which is document text.";
-    System.out.println("4c.1");
+//    System.out.println("4c.1");
     Tuple2<PostId,Post> postPair = discussionPair._2.postFor(author, subject, bodyText).await(2000);
-    System.out.println("4c.2");
+//    System.out.println("4c.2");
     assertNotNull(postPair._1);
     assertNotNull(postPair._2);
-    System.out.println("4d=" + journalListener.confirmedCount());
+//    System.out.println("4d=" + journalListener.confirmedCount());
     final int count = journalListener.confirmedCount(3);
-    System.out.println("4e");
+//    System.out.println("4e");
     assertEquals(3, count);
     final PostedToDiscussion event2 = postAdapter().asSource(journalListener.entry(2));
     assertEquals(PostedToDiscussion.class, event2.getClass());
