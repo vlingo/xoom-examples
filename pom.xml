@@ -28,5 +28,6 @@
     <module>vlingo-auth-authservice</module>
     <module>vlingo-iddd-collaboration</module>
     <!-- module>vlingo-hike-backend</module -->
+    <module>vlingo-ecommerce</module>
   </modules>
 </project>
