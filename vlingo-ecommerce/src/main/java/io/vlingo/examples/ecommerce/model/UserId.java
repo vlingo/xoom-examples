@@ -1,0 +1,30 @@
+package io.vlingo.examples.ecommerce.model;
+
+
+import com.google.common.base.Objects;
+
+public class UserId {
+
+    public final int id;
+
+    public UserId(int id) {
+        this.id = id;
+    }
+
+    public static UserId Unspecified() {
+        return new UserId(-1);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserId productId = (UserId) o;
+        return id == productId.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+}
