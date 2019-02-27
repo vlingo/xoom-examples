@@ -44,7 +44,7 @@ public class OrderResourceShould {
     public void setUp() throws InterruptedException {
         Bootstrap.instance(orderPortNumber);
 
-        //todo:missing response Content-Type
+        // This should not be needed; see https://github.com/vlingo/vlingo-http/issues/26
         RestAssured.defaultParser = Parser.JSON;
         Boolean startUpSuccess = Bootstrap.instance().serverStartup().await(100);
         assertThat(startUpSuccess, is(equalTo(true)));
@@ -52,8 +52,7 @@ public class OrderResourceShould {
 
     @After
     public void cleanUp() throws InterruptedException {
-        //todo: this call fails after timeout / does not throw exception
-        //Bootstrap.instance().server.shutDown().await(1);
+        // Shutdown is not reliable yet; see https://github.com/vlingo/vlingo-http/issues/25
         Bootstrap.instance().stop();
     }
 

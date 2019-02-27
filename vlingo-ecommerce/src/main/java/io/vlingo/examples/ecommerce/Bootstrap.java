@@ -101,8 +101,6 @@ public class Bootstrap {
     }
 
     void stop() {
-        //todo: this call fails after timeout / does not throw exception
-        //instance.server.shutDown().await(10000);
         Bootstrap.instance().server.stop();
         instance = null;
     }
