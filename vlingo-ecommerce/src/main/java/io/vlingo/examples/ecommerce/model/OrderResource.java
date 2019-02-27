@@ -64,7 +64,6 @@ public class OrderResource {
     }
 
     public Resource<?> routes() {
-        //todo: fix issue where resources can overwrite each other even though they are not equal
         return resource("Order resource fluent api",
                 post(ROOT_URL)
                         .body(OrderCreateRequest.class)
