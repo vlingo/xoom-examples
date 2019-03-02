@@ -27,6 +27,5 @@
     <module>vlingo-eventjournal</module>
     <module>vlingo-auth-authservice</module>
     <module>vlingo-iddd-collaboration</module>
-    <!-- module>vlingo-hike-backend</module -->
   </modules>
 </project>
