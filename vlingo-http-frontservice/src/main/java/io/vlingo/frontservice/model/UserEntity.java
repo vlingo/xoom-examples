@@ -9,9 +9,8 @@ package io.vlingo.frontservice.model;
 
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
-import io.vlingo.symbio.State;
 
-public class UserEntity extends StatefulEntity<User.UserState, State.TextState> implements User {
+public class UserEntity extends StatefulEntity<User.UserState> implements User {
   private User.UserState state;
 
   public UserEntity(final User.UserState state) {
