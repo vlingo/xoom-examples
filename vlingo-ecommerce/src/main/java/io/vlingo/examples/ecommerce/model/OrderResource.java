@@ -44,10 +44,7 @@ public class OrderResource {
 
     private Completes<Response> postPayment(String orderId, PaymentId paymentId) {
         return stage.actorOf(Order.class, addressFactory.from(orderId))
-                    .andThen(actor -> {
-                        actor.paymentComplete(paymentId);
-                        return actor;
-                    })
+                    .andThenConsume(actor -> actor.paymentComplete(paymentId))
                     .andThenTo(actor -> Completes.withSuccess(Response.of(Ok, "")))
                     .otherwise(noOrder -> Response.of(NotFound, urlLocation(orderId)));
     }
