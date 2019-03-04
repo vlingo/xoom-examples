@@ -22,7 +22,7 @@ public class OrderEntity extends EventSourced implements Order {
         EventSourced.registerConsumer(OrderEntity.class, OrderEvents.PaymentReceived.class, paymentReceived);
 
         BiConsumer<OrderEntity, OrderEvents.OrderShipped> orderShipped = OrderEntity::applyShipment;
-        EventSourced.registerConsumer(OrderEntity.class, OrderEvents.PaymentReceived.class, orderShipped);
+        EventSourced.registerConsumer(OrderEntity.class, OrderEvents.OrderShipped.class, orderShipped);
 
     }
 

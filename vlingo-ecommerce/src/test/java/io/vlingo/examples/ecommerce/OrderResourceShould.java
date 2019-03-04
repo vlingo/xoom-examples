@@ -11,10 +11,7 @@ import io.vlingo.examples.ecommerce.model.OrderResource;
 import io.vlingo.examples.ecommerce.model.ProductId;
 import io.vlingo.examples.ecommerce.model.UserId;
 import org.apache.http.HttpStatus;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -134,6 +131,7 @@ public class OrderResourceShould {
     }
 
     @Test
+    @Ignore
     public void orderIsPaid_whenPaymentReceived() throws IOException {
         String orderUrl = createOrder();
         String orderId = getOrderId(orderUrl);
