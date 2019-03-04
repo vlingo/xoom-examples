@@ -12,23 +12,23 @@ import java.util.stream.Collectors;
 import static io.vlingo.examples.ecommerce.model.OrderInfo.*;
 
 
-public class OrderEntity extends EventSourced implements Order {
+public class OrderActor extends EventSourced implements Order {
 
     static {
-        BiConsumer<OrderEntity, OrderEvents.Created> created = OrderEntity::applyCreated;
-        EventSourced.registerConsumer(OrderEntity.class, OrderEvents.Created.class, created);
+        BiConsumer<OrderActor, OrderEvents.Created> created = OrderActor::applyCreated;
+        EventSourced.registerConsumer(OrderActor.class, OrderEvents.Created.class, created);
 
-        BiConsumer<OrderEntity, OrderEvents.PaymentReceived> paymentReceived = OrderEntity::applyPaymentReceived;
-        EventSourced.registerConsumer(OrderEntity.class, OrderEvents.PaymentReceived.class, paymentReceived);
+        BiConsumer<OrderActor, OrderEvents.PaymentReceived> paymentReceived = OrderActor::applyPaymentReceived;
+        EventSourced.registerConsumer(OrderActor.class, OrderEvents.PaymentReceived.class, paymentReceived);
 
-        BiConsumer<OrderEntity, OrderEvents.OrderShipped> orderShipped = OrderEntity::applyShipment;
-        EventSourced.registerConsumer(OrderEntity.class, OrderEvents.OrderShipped.class, orderShipped);
+        BiConsumer<OrderActor, OrderEvents.OrderShipped> orderShipped = OrderActor::applyShipment;
+        EventSourced.registerConsumer(OrderActor.class, OrderEvents.OrderShipped.class, orderShipped);
 
     }
 
     private State state;
 
-    public OrderEntity(
+    public OrderActor(
             String orderId) {
         this.state =  State.init(orderId);
     }
