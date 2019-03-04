@@ -31,7 +31,7 @@ public class OrderResource {
 
         Order orderActor = stage.actorFor(
                 Order.class,
-                Definition.has(OrderEntity.class,
+                Definition.has(OrderActor.class,
                         Definition.parameters(orderAddress.idString())),
                 orderAddress);
 
@@ -44,8 +44,10 @@ public class OrderResource {
 
     private Completes<Response> postPayment(String orderId, PaymentId paymentId) {
         return stage.actorOf(Order.class, addressFactory.from(orderId))
-                    .andThenConsume(actor -> actor.paymentComplete(paymentId))
-                    .andThenTo(actor -> Completes.withSuccess(Response.of(Ok, "")))
+                    .andThenConsume(actor -> {
+                        actor.paymentComplete(paymentId);
+                    })
+                    .andThen(actor -> Response.of(Ok, ""))
                     .otherwise(noOrder -> Response.of(NotFound, urlLocation(orderId)));
     }
 

@@ -10,11 +10,11 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public class CartEntity extends EventSourced implements Cart {
+public class CartActor extends EventSourced implements Cart {
 
     private State state;
 
-    public CartEntity(final String cartId) {
+    public CartActor(final String cartId) {
         this.state = State.create(cartId);
     }
 
@@ -25,15 +25,15 @@ public class CartEntity extends EventSourced implements Cart {
     }
 
     static {
-        BiConsumer<CartEntity, CartEvents.CreatedForUser> applyCartCreated = CartEntity::applyCartCreated;
-        EventSourced.registerConsumer(CartEntity.class, CartEvents.CreatedForUser.class,
+        BiConsumer<CartActor, CartEvents.CreatedForUser> applyCartCreated = CartActor::applyCartCreated;
+        EventSourced.registerConsumer(CartActor.class, CartEvents.CreatedForUser.class,
                 applyCartCreated);
 
-        BiConsumer<CartEntity, CartEvents.ProductQuantityChangeEvent> applyQuantityChange = CartEntity::applyQuantityChange;
-        EventSourced.registerConsumer(CartEntity.class, CartEvents.ProductQuantityChangeEvent.class, applyQuantityChange);
+        BiConsumer<CartActor, CartEvents.ProductQuantityChangeEvent> applyQuantityChange = CartActor::applyQuantityChange;
+        EventSourced.registerConsumer(CartActor.class, CartEvents.ProductQuantityChangeEvent.class, applyQuantityChange);
 
-        BiConsumer<CartEntity, CartEvents.AllItemsRemovedEvent> applyRemoveAll = CartEntity::applyAllItemsRemoved;
-        EventSourced.registerConsumer(CartEntity.class, CartEvents.AllItemsRemovedEvent.class, applyRemoveAll);
+        BiConsumer<CartActor, CartEvents.AllItemsRemovedEvent> applyRemoveAll = CartActor::applyAllItemsRemoved;
+        EventSourced.registerConsumer(CartActor.class, CartEvents.AllItemsRemovedEvent.class, applyRemoveAll);
     }
 
     @Override
