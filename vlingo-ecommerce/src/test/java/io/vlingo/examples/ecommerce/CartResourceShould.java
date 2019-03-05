@@ -79,12 +79,10 @@ public class CartResourceShould {
         String cartUrl = createCart();
 
         baseGiven()
-                .log().all()
                 .when()
                 .body("{operation: \"add\"}")
                 .patch(cartUrl + "/pid1")
                 .then()
-                .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .body(is(equalTo("[{\"productId\":{\"id\":\"pid1\"},\"quantity\":1}]")));

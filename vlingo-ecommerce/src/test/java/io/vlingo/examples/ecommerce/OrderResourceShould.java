@@ -11,12 +11,8 @@ import io.vlingo.examples.ecommerce.model.OrderResource;
 import io.vlingo.examples.ecommerce.model.ProductId;
 import io.vlingo.examples.ecommerce.model.UserId;
 import org.apache.http.HttpStatus;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -33,17 +29,14 @@ import static org.hamcrest.text.MatchesPattern.matchesPattern;
 
 public class OrderResourceShould {
 
-    public static final int TASK_COUNT = 10;
-
     private static final AtomicInteger portNumber = new AtomicInteger(8081);
 
     private int orderPortNumber = portNumber.getAndIncrement();
     private final Object lock = new Object();
 
     @Before
-    public void setUp() throws InterruptedException {
+    public void setUp() {
         Bootstrap.instance(orderPortNumber);
-
         // This should not be needed; see https://github.com/vlingo/vlingo-http/issues/26
         RestAssured.defaultParser = Parser.JSON;
         Boolean startUpSuccess = Bootstrap.instance().serverStartup().await(100);
@@ -51,16 +44,20 @@ public class OrderResourceShould {
     }
 
     @After
-    public void cleanUp() throws InterruptedException {
+    public void cleanUp() {
         // Shutdown is not reliable yet; see https://github.com/vlingo/vlingo-http/issues/25
         Bootstrap.instance().stop();
     }
 
-    RequestSpecification baseGiven() {
+    private RequestSpecification baseGiven() {
         return given().port(orderPortNumber).accept(ContentType.JSON);
     }
 
-    String createOrder() {
+    private String getOrderId(final String orderUrl) {
+        return orderUrl.split("/")[2];
+    }
+
+    private String createOrderWithSingleItem() {
 
         OrderResource.OrderCreateRequest request = OrderResource.OrderCreateRequest.Builder
                 .create()
@@ -84,7 +81,7 @@ public class OrderResourceShould {
 
     @Test
     public void orderContainsProducts_whenQueried() {
-        String orderUrl = createOrder();
+        String orderUrl = createOrderWithSingleItem();
         String orderId = getOrderId(orderUrl);
 
         final String expected = String.format(
@@ -95,14 +92,14 @@ public class OrderResourceShould {
                 .get(orderUrl)
                 .then()
                 .assertThat()
-                .log().body()
                 .body(is(equalTo(expected)));
     }
 
     @Test
     public void createdOrderContainsProduct_inParallel() throws InterruptedException {
+        final int TASK_COUNT = 10;
         final TestUntil until = TestUntil.happenings(TASK_COUNT);
-        final AtomicLong passCount = new AtomicLong();
+        final AtomicLong testPassCount = new AtomicLong();
         final List<Callable<Void>> callableTests = new ArrayList<>();
         ExecutorService executorService = Executors.newFixedThreadPool(4);
         for (int i = 0; i < TASK_COUNT; i++) {
@@ -114,7 +111,7 @@ public class OrderResourceShould {
                 } catch (Exception ignored) {}
                 finally {
                     synchronized (lock) {
-                        passCount.addAndGet((pass?1:0));
+                        testPassCount.addAndGet((pass?1:0));
                         until.happened();
                     }
                 }
@@ -125,33 +122,36 @@ public class OrderResourceShould {
         until.completes();
 
         synchronized (lock) {
-            Assert.assertEquals(TASK_COUNT, passCount.get());
+            Assert.assertEquals(TASK_COUNT, testPassCount.get());
         }
     }
 
-    private String getOrderId(String orderUrl) {
-        return orderUrl.split("/")[2];
-    }
 
     @Test
-    public void orderIsPaid_whenPaymentReceived() throws IOException {
-        String orderUrl = createOrder();
+    public void orderIsPaid_whenPaymentReceived() {
+        String orderUrl = createOrderWithSingleItem();
         String orderId = getOrderId(orderUrl);
+        String randomPaymentId = "4567";
 
-        final String expected = String.format(
+        final String paidOrderBody = String.format(
                 "{\"orderId\":\"%s\",\"orderItems\":[{\"productId\":{\"id\":\"pid1\"},\"quantity\":100}]," +
                         "\"orderState\":\"paid\"}", orderId);
 
 
         baseGiven()
-                .log().all()
                 .when()
-                .body("{\"id\": 4564}")
+                .body("{\"id\": " + randomPaymentId + "}")
                 .post(orderUrl + "/payment")
                 .then()
-                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_OK);
+
+        baseGiven()
+                .when()
+                .get(orderUrl)
+                .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
-                .body(is(equalTo(expected)));
+                .body(is(equalTo(paidOrderBody)));
     }
 }

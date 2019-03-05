@@ -27,7 +27,7 @@ public class CartResource {
         final Address cartAddress = addressFactory.uniquePrefixedWith("cart-");
         Cart cartActor = stage.actorFor(
                 Cart.class,
-                Definition.has(CartEntity.class, Definition.parameters(cartAddress.idString())),
+                Definition.has(CartActor.class, Definition.parameters(cartAddress.idString())),
                 cartAddress);
 
         cartActor.createEmptyCartFor(userId);
