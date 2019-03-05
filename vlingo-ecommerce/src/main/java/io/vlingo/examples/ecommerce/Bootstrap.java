@@ -34,10 +34,10 @@ public class Bootstrap {
         Journal<String> journal = Journal.using(world.stage(), InMemoryJournalActor.class, listener);
 
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
-        registry.register(new Info(journal, CartEntity.class, CartEntity.class.getSimpleName()));
-        registry.register(new Info(journal, OrderEntity.class, OrderEntity.class.getSimpleName()));
+        registry.register(new Info(journal, CartActor.class, CartActor.class.getSimpleName()));
+        registry.register(new Info(journal, OrderActor.class, OrderActor.class.getSimpleName()));
 
-        registry.info(OrderEntity.class)
+        registry.info(OrderActor.class)
                 .registerEntryAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter(),
                         journal::registerEntryAdapter)
                 .registerEntryAdapter(OrderEvents.PaymentReceived.class, new PaymentReceivedEventAdapter(),
@@ -45,7 +45,7 @@ public class Bootstrap {
                 .registerEntryAdapter(OrderEvents.OrderShipped.class, new ShippedEventAdapter(),
                         journal::registerEntryAdapter);
 
-        registry.info(CartEntity.class)
+        registry.info(CartActor.class)
                 .registerEntryAdapter(CreatedForUser.class, new CartCreatedEventAdapter(),
                         journal::registerEntryAdapter)
                 .registerEntryAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter(),

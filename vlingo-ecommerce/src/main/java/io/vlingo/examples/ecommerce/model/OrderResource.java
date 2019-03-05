@@ -31,7 +31,7 @@ public class OrderResource {
 
         Order orderActor = stage.actorFor(
                 Order.class,
-                Definition.has(OrderEntity.class,
+                Definition.has(OrderActor.class,
                         Definition.parameters(orderAddress.idString())),
                 orderAddress);
 
