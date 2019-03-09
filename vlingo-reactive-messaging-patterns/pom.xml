@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-reactive-messaging-patterns</artifactId>
-  <version>0.8.1</version>
+  <version>0.8.2</version>
   <name>vlingo-reactive-messaging-patterns</name>
   <description>Examples using vlingo-actors from Vaughn Vernon's book "Reactive Messaging Patterns with the Actor Model"</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -27,7 +27,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.8.1</version>
+      <version>0.8.2</version>
     </dependency>
     <dependency>
       <groupId>com.google.collections</groupId>
