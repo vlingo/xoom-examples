@@ -24,10 +24,10 @@ public class MountaineeringSuppliesOrderProcessor extends Actor
   private final PriceQuoteAggregator aggregator;
   private final Map<String,PriceQuoteInterest> interests;
   private final PriceQuoteRequester requester;
-  private final TestUntil until;
+  private final AggregatorResults results;
 
-  public MountaineeringSuppliesOrderProcessor(final TestUntil until) {
-    this.until = until;
+  public MountaineeringSuppliesOrderProcessor(final AggregatorResults results) {
+    this.results = results;
     this.interests = new HashMap<>();
     this.requester = selfAs(PriceQuoteRequester.class);
     this.aggregator =
@@ -72,7 +72,7 @@ public class MountaineeringSuppliesOrderProcessor extends Actor
 
   @Override
   public void quotationFulfillmentCompleted(final QuotationFulfillment fulfillment) {
-    until.happened();
+    results.access.writeUsing("afterQuotationFulfillmentCount", 1);
   }
 
   //========================================

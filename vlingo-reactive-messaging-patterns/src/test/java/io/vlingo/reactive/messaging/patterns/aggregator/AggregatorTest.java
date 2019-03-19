@@ -9,6 +9,8 @@ package io.vlingo.reactive.messaging.patterns.aggregator;
 
 import java.util.Arrays;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.Protocols;
@@ -29,7 +31,9 @@ public class AggregatorTest {
 
     final World world = World.startWithDefaults("aggregator-test");
 
-    final TestUntil until = TestUntil.happenings(1);
+    final AggregatorResults results = new AggregatorResults();
+
+    final AccessSafely access = results.afterCompleting(1);
 
     final Protocols protocols =
             world.actorFor(
@@ -37,7 +41,7 @@ public class AggregatorTest {
                         RequestForQuotationSupplier.class,
                         PriceQuotesFulfillmentWatcher.class },
                     MountaineeringSuppliesOrderProcessor.class,
-                    until);
+                    results);
 
     final Protocols.Three<RequestForQuotationProcessor, RequestForQuotationSupplier, PriceQuotesFulfillmentWatcher> three = Protocols.three(protocols);
     final RequestForQuotationProcessor processor = three._1;
@@ -95,7 +99,7 @@ public class AggregatorTest {
                             new RetailItem("18", 249.95),
                             new RetailItem("19", 789.99))));
 
-    until.completes();
+    Assert.assertEquals(1, (int) access.readFrom("afterQuotationFulfillmentCount"));
 
     System.out.println("Aggregator: is completed.");
   }

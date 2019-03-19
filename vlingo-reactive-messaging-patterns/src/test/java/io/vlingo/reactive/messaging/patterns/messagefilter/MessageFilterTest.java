@@ -12,6 +12,8 @@ import static java.util.stream.Collectors.toMap;
 
 import java.util.Arrays;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.World;
@@ -26,16 +28,18 @@ public class MessageFilterTest {
 
         final World world = World.startWithDefaults("message-filter-test");
 
-        final TestUntil until = TestUntil.happenings(3);
+        final MessageFilterResults results = new MessageFilterResults();
+
+        final AccessSafely access = results.afterCompleting(3);
 
         final InventorySystem restrictedInventorySystemActor =
-                world.actorFor(InventorySystem.class, RestrictedInventorySystemActor.class,until);
+                world.actorFor(InventorySystem.class, RestrictedInventorySystemActor.class, results);
 
         final InventorySystem notRestrictedInventorySystemActor =
-                world.actorFor(InventorySystem.class, NotRestrictedInventorySystemActor.class,until);
+                world.actorFor(InventorySystem.class, NotRestrictedInventorySystemActor.class, results);
 
         final InventorySystem inventoryMessageFilter =
-                world.actorFor(InventorySystem.class, InventorySystemMessageFilter.class, until, notRestrictedInventorySystemActor);
+                world.actorFor(InventorySystem.class, InventorySystemMessageFilter.class, results, notRestrictedInventorySystemActor);
 
         final Order order =
                 new Order("1",
@@ -49,7 +53,8 @@ public class MessageFilterTest {
         notRestrictedInventorySystemActor.processOrder(order);
         inventoryMessageFilter.processOrder(order);
 
-        until.completes();
+        Assert.assertEquals(1, (int) access.readFrom("afterOrderProcessedCount"));
+        Assert.assertEquals(2, (int) access.readFrom("afterOrderFilteredCount"));
 
         System.out.println("Message Filter: is completed.");
     }

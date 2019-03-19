@@ -27,13 +27,13 @@ public class TradingBus
 extends Actor
 implements TradingBusProcessor
 {
-    public final TestUntil until;
+    public final TradingBusResults tradingBusResults;
     private final Map<String, Vector<CommandHandler>> commandHandlers = new HashMap<>();
     private final Map<String, Vector<NotificationInterest>> notificationInterests = new HashMap<>();
     
-    public TradingBus( TestUntil until )
+    public TradingBus( TradingBusResults tradingBusResults )
     {
-        this.until = until;
+        this.tradingBusResults = tradingBusResults;
     }
     
     // ACTTION
@@ -57,8 +57,8 @@ implements TradingBusProcessor
         for ( CommandHandler handler : commandHandlerVector )
         {
             unwrapCommandAndForward( command, handler );
-            
-            until.happened();
+
+            tradingBusResults.access.writeUsing("afterCommandDispatchedCount", 1);
         }
     }
 
@@ -84,8 +84,8 @@ implements TradingBusProcessor
         for ( NotificationInterest notifier : notificationInterestsVector )
         {
             unwrapNotificationAndForward( notification, notifier );
-            
-            until.happened();
+
+            tradingBusResults.access.writeUsing("afterNotificationDispatchedCount", 1);
         }
     }
 
@@ -121,8 +121,8 @@ implements TradingBusProcessor
         }
         
         commandHandlerVector.add( commandHandler );
-        
-        until.happened();
+
+        tradingBusResults.access.writeUsing("afterHandlerRegisteredCount", 1);
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingBusProcessor#registerNotificationInterest(java.lang.String, java.lang.String, io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor) */
@@ -140,8 +140,8 @@ implements TradingBusProcessor
         }
         
         notificationInterestVector.add( notificationInterest );
-        
-        until.happened();
+
+        tradingBusResults.access.writeUsing("afterInterestRegisteredCount", 1);
     }
 
     public static final class CommandHandler
