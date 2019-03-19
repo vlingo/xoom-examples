@@ -1,18 +1,18 @@
 package io.vlingo.reactive.messaging.patterns.contentbasedrouter;
 
-import java.util.Map;
-
-import org.junit.Test;
-
 import com.google.common.collect.Maps;
-
 import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.actors.testkit.AccessSafely;
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.actor.OrderRouter;
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.actor.OrderRouterActor;
+import io.vlingo.reactive.messaging.patterns.contentbasedrouter.actor.OrderRoutingResults;
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.order.Order;
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.order.OrderItem;
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.order.OrderPlaced;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Map;
 
 /**
  * Test for Inventory and Order placed
@@ -52,13 +52,15 @@ public class InventoryOrdersTest {
         OrderPlaced orderPlaced2 = new OrderPlaced ( new Order ( "124", "TypeXYZ", items1 ) );
 
         final World world = World.startWithDefaults ( WORLD_NAME );
-        final TestUntil until = TestUntil.happenings ( 2 );
+        final OrderRoutingResults results = new OrderRoutingResults();
+        final AccessSafely access = results.afterCompleting(2);
 
-        final OrderRouter orderRouter = world.actorFor (OrderRouter.class, OrderRouterActor.class, until );
+        final OrderRouter orderRouter = world.actorFor (OrderRouter.class, OrderRouterActor.class, results);
         orderRouter.routeOrder ( orderPlaced );
         orderRouter.routeOrder ( orderPlaced2 );
 
-        until.completes ();
+        Assert.assertEquals(2, (int) access.readFrom("afterOrderRoutedCount"));
+
         world.terminate ();
     }
 }

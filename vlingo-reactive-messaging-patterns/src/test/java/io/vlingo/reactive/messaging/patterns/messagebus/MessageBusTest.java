@@ -6,6 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.messagebus;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.Actor;
@@ -33,23 +35,33 @@ public class MessageBusTest
         
         world.defaultLogger().log( "TradingBus: is started" );
         
-        TestUntil until = TestUntil.happenings( EVENTS );
+        final TradingBusResults results = new TradingBusResults();
+        final AccessSafely access = results.afterCompleting( EVENTS );
         
-        final TradingBusProcessor tradingBus = world.actorFor(TradingBusProcessor.class, TradingBus.class, until);
+        final TradingBusProcessor tradingBus = world.actorFor(TradingBusProcessor.class, TradingBus.class, results);
         
         @SuppressWarnings("unused")
-        final TradingProcessor stockTrader = world.actorFor(TradingProcessor.class, StockTrader.class, until, tradingBus);
+        final TradingProcessor stockTrader = world.actorFor(TradingProcessor.class, StockTrader.class, results, tradingBus);
         @SuppressWarnings("unused")
-        final TradingProcessor portfolioManager = world.actorFor(TradingProcessor.class, PortfolioManager.class, until, tradingBus);
+        final TradingProcessor portfolioManager = world.actorFor(TradingProcessor.class, PortfolioManager.class, results, tradingBus);
         @SuppressWarnings("unused")
-        final TradingProcessor marketAnalysisTool = world.actorFor(TradingProcessor.class,  MarketAnalysisTools.class, until, tradingBus);
+        final TradingProcessor marketAnalysisTool = world.actorFor(TradingProcessor.class,  MarketAnalysisTools.class, results, tradingBus);
         
         tradingBus.trade( new TradingCommand( TradingProcessor.EXECUTE_BUY_ORDER, "p123", "MSFT", 100, 31.85 ));
         tradingBus.trade( new TradingCommand( TradingProcessor.EXECUTE_SELL_ORDER, "p456", "MSFT", 200, 31.80 ));
         tradingBus.trade( new TradingCommand( TradingProcessor.EXECUTE_BUY_ORDER, "p789", "MSFT", 100, 31.83 ));
-        
-        until.completes();
-        
+
+        Assert.assertEquals(3, (int) access.readFrom("afterCommandDispatchedCount"));
+        Assert.assertEquals(6, (int) access.readFrom("afterNotificationDispatchedCount"));
+        Assert.assertEquals(2, (int) access.readFrom("afterHandlerRegisteredCount"));
+        Assert.assertEquals(4, (int) access.readFrom("afterInterestRegisteredCount"));
+        Assert.assertEquals(2, (int) access.readFrom("afterMarketAnalysisBuyOrderExecutedCount"));
+        Assert.assertEquals(1, (int) access.readFrom("afterMarketAnalysisSellOrderExecutedCount"));
+        Assert.assertEquals(2, (int) access.readFrom("afterPortfolioManagerBuyOrderExecutedCount"));
+        Assert.assertEquals(1, (int) access.readFrom("afterPortfolioManagerSellOrderExecutedCount"));
+        Assert.assertEquals(2, (int) access.readFrom("afterStockTraderBuyOrderExecutedCount"));
+        Assert.assertEquals(1, (int) access.readFrom("afterStockTraderSellOrderExecutedCount"));
+
         world.defaultLogger().log( "TradingBus: is completed" );
         
         world.terminate();
