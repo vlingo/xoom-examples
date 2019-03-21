@@ -6,6 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.messagerouter;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.Actor;
@@ -24,24 +26,25 @@ public class MessageRouterTest
 
     @Test
     public void testAlternatingRouteProcessorRuns()
-    throws Exception
     {
         
         final World world = World.startWithDefaults( WORLD_NAME );
         
         world.defaultLogger().log( "AlternatingRouteProcessor: is starting"  );
-        
-        final TestUntil until = TestUntil.happenings( ROUTES );
-        
+
+        final MessageRouterResults results = new MessageRouterResults();
+
+        final AccessSafely access = results.afterCompleting( ROUTES );
+
         final Processor messageProcessor1 = world.actorFor(Processor.class, WorkerProcessor.class, "MP One" );
         final Processor messageProcessor2 = world.actorFor(Processor.class, WorkerProcessor.class, "MP Two" );
-        final Processor alternatingRouter = world.actorFor(Processor.class, AlternatingRouteProcessor.class, until, messageProcessor1, messageProcessor2 );
+        final Processor alternatingRouter = world.actorFor(Processor.class, AlternatingRouteProcessor.class, results, messageProcessor1, messageProcessor2 );
         
         int routeCount = 0;
         int j = 0;
         while ( true )
         {
-            int remaining = until.remaining();
+            int remaining = ROUTES - access.totalWrites();
             if ( routeCount < ROUTES )
             {
                 alternatingRouter.process( routeCount );
@@ -56,8 +59,9 @@ public class MessageRouterTest
             
             if ( remaining == 0 ) break;
         }
-        
-        until.completes();
+
+        Assert.assertEquals(10, (int) access.readFrom("afterMessageProcessedByFirstProcessorCount"));
+        Assert.assertEquals(10, (int) access.readFrom("afterMessageProcessedBySecondProcessorCount"));
         
         world.defaultLogger().log( "AlternatingRouteProcessor: is completed"  );
         

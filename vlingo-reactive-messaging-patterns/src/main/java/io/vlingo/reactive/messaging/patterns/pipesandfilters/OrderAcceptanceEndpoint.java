@@ -14,11 +14,11 @@ import io.vlingo.actors.testkit.TestUntil;
 
 public class OrderAcceptanceEndpoint extends Actor implements OrderProcessor {
   private final OrderProcessor nextFilter;
-  private final TestUntil until;
+  private final PipeAndFilterResults results;
 
-  public OrderAcceptanceEndpoint(final OrderProcessor nextFilter, final TestUntil until) {
+  public OrderAcceptanceEndpoint(final OrderProcessor nextFilter, final PipeAndFilterResults results) {
     this.nextFilter = nextFilter;
-    this.until = until;
+    this.results = results;
   }
 
   @Override
@@ -26,6 +26,6 @@ public class OrderAcceptanceEndpoint extends Actor implements OrderProcessor {
     final String textOrderInfo = new String(orderInfo, StandardCharsets.UTF_8);
     logger().log("OrderAcceptanceEndpoint: processing " + textOrderInfo);
     nextFilter.processIncomingOrder(orderInfo);
-    until.happened();
+    results.access.writeUsing("afterOrderAcceptedCount", 1);
   }
 }
