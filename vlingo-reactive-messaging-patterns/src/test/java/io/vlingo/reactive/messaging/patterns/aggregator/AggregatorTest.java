@@ -33,7 +33,7 @@ public class AggregatorTest {
 
     final AggregatorResults results = new AggregatorResults();
 
-    final AccessSafely access = results.afterCompleting(1);
+    final AccessSafely access = results.afterCompleting(5);
 
     final Protocols protocols =
             world.actorFor(
@@ -99,7 +99,7 @@ public class AggregatorTest {
                             new RetailItem("18", 249.95),
                             new RetailItem("19", 789.99))));
 
-    Assert.assertEquals(1, (int) access.readFrom("afterQuotationFulfillmentCount"));
+    Assert.assertEquals(5, (int) access.readFrom("afterQuotationFulfillmentCount"));
 
     System.out.println("Aggregator: is completed.");
   }
