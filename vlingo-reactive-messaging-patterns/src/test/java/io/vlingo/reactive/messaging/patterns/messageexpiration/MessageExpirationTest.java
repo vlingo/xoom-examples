@@ -37,9 +37,10 @@ public class MessageExpirationTest
         purchaseRouter.placeOrder( new Order( "2", "22", 250.00, 100L ));
         purchaseRouter.placeOrder( new Order( "3", "33", 32.95, 10L ));
 
-        Assert.assertEquals(2, (int) access.readFrom("afterOrderPlacedCount"));
-        Assert.assertEquals(1, (int) access.readFrom("afterOrderExpiredCount"));
-        
+        final int expectedOrderPlaced = ORDERS - (int) access.readFrom("afterOrderExpiredCount");
+
+        Assert.assertEquals(expectedOrderPlaced, (int) access.readFrom("afterOrderPlacedCount"));
+
         world.defaultLogger().log( "MessageExpirationTest: is completed" );
         
         world.terminate();
