@@ -8,14 +8,13 @@
 package io.vlingo.reactive.messaging.patterns.throttler;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.testkit.TestUntil;
 
 public class PrintingConsumer extends Actor implements Consumer {
     private final long startedAt;
-    private final TestUntil until;
+    private final ThrottlerResults results;
 
-    public PrintingConsumer(TestUntil until) {
-        this.until = until;
+    public PrintingConsumer(final ThrottlerResults results) {
+        this.results = results;
         this.startedAt = System.currentTimeMillis();
     }
 
@@ -23,6 +22,6 @@ public class PrintingConsumer extends Actor implements Consumer {
     public void onReceiveMessage(String message) {
         final long messageTimestamp = System.currentTimeMillis();
         logger().log(String.format("%d\t\t%s", messageTimestamp - startedAt, message));
-        until.happened();
+        results.access.writeUsing("afterMessageReceivedCount", 1);
     }
 }

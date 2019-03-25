@@ -6,6 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.splitter;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.World;
@@ -27,9 +29,10 @@ public class SplitterTest
         World world = World.startWithDefaults( WORLD_NAME );
         world.defaultLogger().log( "SplitterTest: is started" );
         
-        TestUntil until = TestUntil.happenings( ORDERS_ITEMS );
+        final SplitterResults results = new SplitterResults();
+        final AccessSafely access = results.afterCompleting( ORDERS_ITEMS );
         
-        final OrderProcessor orderRouter = world.actorFor( OrderProcessor.class, OrderRouter.class, until );
+        final OrderProcessor orderRouter = world.actorFor( OrderProcessor.class, OrderRouter.class, results );
         
         final OrderItem orderItem1 = new OrderItem( "1", OrderProcessor.ITEM_TYPE_A, "An item of type A", 23.95 );
         final OrderItem orderItem2 = new OrderItem( "2", OrderProcessor.ITEM_TYPE_B, "An item of type B", 99.95 );
@@ -38,8 +41,11 @@ public class SplitterTest
         final Order order = new Order( orderItems );
         
         orderRouter.placeOrder( order );
-        
-        until.completes();
+
+        Assert.assertEquals(1, (int) access.readFrom("afterOrderPlacedCount"));
+        Assert.assertEquals(1, (int) access.readFrom("afterOrderByReceivedAProcessorCount"));
+        Assert.assertEquals(1, (int) access.readFrom("afterOrderByReceivedBProcessorCount"));
+        Assert.assertEquals(1, (int) access.readFrom("afterOrderByReceivedCProcessorCount"));
 
         world.defaultLogger().log( "SplitterTest: is completed" );
         world.terminate();

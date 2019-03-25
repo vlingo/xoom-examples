@@ -19,24 +19,24 @@ public class OrderRouter
 extends Actor
 implements OrderProcessor
 {
-    public final TestUntil until;
+    public final SplitterResults results;
     
     protected OrderItemProcessor orderItemTypeAProcessor;
     protected OrderItemProcessor orderItemTypeBProcessor;
     protected OrderItemProcessor orderItemTypeCProcessor;
     
-    public OrderRouter( TestUntil until )
+    public OrderRouter( final SplitterResults results )
     {
-        this.until = until;
+        this.results = results;
     }
     
     /* @see io.vlingo.actors.Actor#beforeStart() */
     @Override
     protected void beforeStart()
     {
-        orderItemTypeAProcessor = childActorFor( OrderItemProcessor.class, Definition.has( OrderItemTypeAProcessor.class, Definition.parameters( until )) );
-        orderItemTypeBProcessor = childActorFor( OrderItemProcessor.class, Definition.has( OrderItemTypeBProcessor.class, Definition.parameters( until )) );
-        orderItemTypeCProcessor = childActorFor( OrderItemProcessor.class, Definition.has( OrderItemTypeCProcessor.class, Definition.parameters( until )) );
+        orderItemTypeAProcessor = childActorFor( OrderItemProcessor.class, Definition.has( OrderItemTypeAProcessor.class, Definition.parameters( results )) );
+        orderItemTypeBProcessor = childActorFor( OrderItemProcessor.class, Definition.has( OrderItemTypeBProcessor.class, Definition.parameters( results )) );
+        orderItemTypeCProcessor = childActorFor( OrderItemProcessor.class, Definition.has( OrderItemTypeCProcessor.class, Definition.parameters( results )) );
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderProcessor#placeOrder(io.vlingo.reactive.messaging.patterns.splitter.Order) */
@@ -66,19 +66,19 @@ implements OrderProcessor
                     break;
             }
         }
-        
-        until.happened();
+
+        results.access.writeUsing("afterOrderPlacedCount", 1);
     }
     
     public static final class OrderItemTypeAProcessor
     extends Actor
     implements OrderItemProcessor
     {
-        public final TestUntil until;
+        public final SplitterResults results;
         
-        public OrderItemTypeAProcessor( TestUntil until )
+        public OrderItemTypeAProcessor( final SplitterResults results )
         {
-            this.until = until;
+            this.results = results;
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderRouter.OrderItemProcessor#orderTypeAItem(io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem) */
@@ -86,7 +86,7 @@ implements OrderProcessor
         public void orderTypeAItem(OrderItem orderItem)
         {
             logger().log( String.format( "orderTypeAItem: handling %s", orderItem.toString() ));
-            until.happened();
+            results.access.writeUsing("afterOrderByReceivedAProcessorCount", 1);
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderRouter.OrderItemProcessor#orderTypeBItem(io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem) */
@@ -109,11 +109,11 @@ implements OrderProcessor
     extends Actor
     implements OrderItemProcessor
     {
-        public final TestUntil until;
+        public final SplitterResults results;
         
-        public OrderItemTypeBProcessor( TestUntil until )
+        public OrderItemTypeBProcessor( final SplitterResults results )
         {
-            this.until = until;
+            this.results = results;
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderRouter.OrderItemProcessor#orderTypeAItem(io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem) */
@@ -128,7 +128,7 @@ implements OrderProcessor
         public void orderTypeBItem(OrderItem orderItem)
         {
             logger().log( String.format( "orderTypeBItem: handling %s", orderItem.toString() ));
-            until.happened();
+            results.access.writeUsing("afterOrderByReceivedBProcessorCount", 1);
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderRouter.OrderItemProcessor#orderTypeCItem(io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem) */
@@ -144,11 +144,11 @@ implements OrderProcessor
     extends Actor
     implements OrderItemProcessor
     {
-        public final TestUntil until;
+        public final SplitterResults results;
         
-        public OrderItemTypeCProcessor( TestUntil until )
+        public OrderItemTypeCProcessor( final SplitterResults results )
         {
-            this.until = until;
+            this.results = results;
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderRouter.OrderItemProcessor#orderTypeAItem(io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem) */
@@ -170,7 +170,7 @@ implements OrderProcessor
         public void orderTypeCItem(OrderItem orderItem)
         {
             logger().log( String.format( "orderTypeCItem: handling %s", orderItem.toString() ));
-            until.happened();
+            results.access.writeUsing("afterOrderByReceivedCProcessorCount", 1);
         }
         
     }
