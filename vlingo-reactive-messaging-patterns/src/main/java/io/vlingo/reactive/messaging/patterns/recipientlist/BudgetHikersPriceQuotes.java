@@ -16,10 +16,12 @@ extends Actor
 implements QuoteProcessor
 {
     public final OrderProcessor orderProcessor;
+    private final RecipientListResults results;
     
-    public BudgetHikersPriceQuotes( final OrderProcessor orderProcessor )
+    public BudgetHikersPriceQuotes( final OrderProcessor orderProcessor, final RecipientListResults results )
     {
         this.orderProcessor = orderProcessor;
+        this.results = results;
     }
 
     /* @see io.vlingo.actors.Actor#beforeStart() */
@@ -36,6 +38,7 @@ implements QuoteProcessor
         Double discountPercentage = discountPercentage( totalRetailPrice );
         Double discountPrice = retailPrice - ( retailPrice * discountPercentage );
         orderProcessor.remittedPriceQuote( new PriceQuote( selfAs( QuoteProcessor.class ), rfqId, itemId, retailPrice, discountPrice ));
+        results.access.writeUsing("afterQuotationReceivedAtBudgetHikersCount", 1);
     }
 
     protected Double discountPercentage( Double orderTotalRetailprice )
