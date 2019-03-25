@@ -22,14 +22,12 @@ public class MountainSuppliesOrderProcessor
 extends Actor 
 implements OrderProcessor
 {
-    public final TestUntil until;
-    public final TestUntil untilRegistered;
+    public final RecipientListResults results;
     public final Map<String, PriceQuoteInterest> interestRegistry;
     
-    public MountainSuppliesOrderProcessor( TestUntil until, TestUntil untilRegistered )
+    public MountainSuppliesOrderProcessor( final RecipientListResults results )
     {
-        this.until = until;
-        this.untilRegistered = untilRegistered;
+        this.results = results;
         this.interestRegistry = new HashMap<>();
     }
 
@@ -39,7 +37,7 @@ implements OrderProcessor
     {
         logger().log( String.format( "%s interested", interest.type ));
         interestRegistry.put( interest.type, interest );
-        untilRegistered.happened();
+        results.access.writeUsing("afterProcessorRegistered", 1);
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.recipientlist.OrderProcessor#requestForQuote(io.vlingo.reactive.messaging.patterns.recipientlist.RetailBasket) */
@@ -55,7 +53,7 @@ implements OrderProcessor
     public void remittedPriceQuote( PriceQuote quote )
     {
         logger().log( String.format( "OrderProcessor received price quote: %s", quote ));
-        until.happened();
+        results.access.writeUsing("afterQuotationRemitted", 1);
     }
 
     protected List<QuoteProcessor> calculateRecipientList( RetailBasket basket )
