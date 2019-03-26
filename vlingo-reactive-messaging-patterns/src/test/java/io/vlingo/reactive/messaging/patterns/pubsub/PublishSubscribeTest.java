@@ -7,6 +7,9 @@
 
 package io.vlingo.reactive.messaging.patterns.pubsub;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.*;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.World;
@@ -14,12 +17,6 @@ import io.vlingo.actors.pubsub.DefaultPublisher;
 import io.vlingo.actors.pubsub.Publisher;
 import io.vlingo.actors.pubsub.Subscriber;
 import io.vlingo.actors.testkit.TestUntil;
-import io.vlingo.reactive.messaging.patterns.publishsubscribe.AllMarketsSubscriber;
-import io.vlingo.reactive.messaging.patterns.publishsubscribe.Market;
-import io.vlingo.reactive.messaging.patterns.publishsubscribe.Money;
-import io.vlingo.reactive.messaging.patterns.publishsubscribe.NASDAQSubscriber;
-import io.vlingo.reactive.messaging.patterns.publishsubscribe.NYSESubscriber;
-import io.vlingo.reactive.messaging.patterns.publishsubscribe.PriceQuoted;
 
 public class PublishSubscribeTest {
 
@@ -31,16 +28,18 @@ public class PublishSubscribeTest {
 
         final World world = World.startWithDefaults("publish-subscribe-test");
 
-        final TestUntil until = TestUntil.happenings(6);
+        final MarketQuotationResults results = new MarketQuotationResults();
+
+        final AccessSafely access = results.afterCompleting(6);
 
         final Subscriber<PriceQuoted> allMarketsSubscriber =
-                world.actorFor(Subscriber.class, AllMarketsSubscriber.class, until);
+                world.actorFor(Subscriber.class, AllMarketsSubscriber.class, results);
 
         final Subscriber<PriceQuoted> nasdaqSubscriber =
-                world.actorFor(Subscriber.class, NASDAQSubscriber.class, until);
+                world.actorFor(Subscriber.class, NASDAQSubscriber.class, results);
 
         final Subscriber<PriceQuoted> nyseSubscriber =
-                world.actorFor(Subscriber.class, NYSESubscriber.class, until);
+                world.actorFor(Subscriber.class, NYSESubscriber.class, results);
 
         final Publisher publisher = new DefaultPublisher();
 
@@ -53,7 +52,9 @@ public class PublishSubscribeTest {
         publisher.publish(new Market("quotes/DAX"), new PriceQuoted("SAP:GR", new Money("885.00")));
         publisher.publish(new Market("quotes/NKY"), new PriceQuoted("6701:JP", new Money("131.12")));
 
-        until.happened();
+        Assert.assertEquals(4, (int) access.readFrom("afterQuotationReceivedAtGeneralSubscriberCount"));
+        Assert.assertEquals(1, (int) access.readFrom("afterQuotationReceivedAtNASDAQSubscriberCount"));
+        Assert.assertEquals(1, (int) access.readFrom("afterQuotationReceivedAtNYSESubscriberCount"));
     }
 
 }

@@ -10,18 +10,17 @@ import io.vlingo.actors.Definition;
 import io.vlingo.actors.RoundRobinRouter;
 import io.vlingo.actors.Router;
 import io.vlingo.actors.RouterSpecification;
-import io.vlingo.actors.testkit.TestUntil;
 /**
  * WorkRouterActor is a {@link Router} that routes {@link WorkItem}s
  * to {@link WorkConsumer}s, specifically to {@link WorkConsumerActor}s.
  */
 public class WorkRouterActor extends RoundRobinRouter<WorkConsumer> implements WorkConsumer {
   
-  public WorkRouterActor(final int poolSize, final TestUntil testUntil) {
+  public WorkRouterActor(final int poolSize, final CompetingConsumerResults results) {
     super(
             new RouterSpecification<WorkConsumer>(
               poolSize,
-              Definition.has(WorkConsumerActor.class, Definition.parameters(testUntil)),
+              Definition.has(WorkConsumerActor.class, Definition.parameters(results)),
               WorkConsumer.class
             )
           );

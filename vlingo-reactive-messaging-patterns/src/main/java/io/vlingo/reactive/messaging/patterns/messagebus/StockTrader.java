@@ -7,12 +7,11 @@
 package io.vlingo.reactive.messaging.patterns.messagebus;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.RegisterCommandHandler;
 import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.TradingNotification;
 
 /**
- * StockTrader {@link ACtor} registers interest in buy and sell commands; performs the work the work related to
+ * StockTrader {@link Actor} registers interest in buy and sell commands; performs the work the work related to
  * a buy or sell execution method invocation; and then publishes a notification that the specific 
  * buy or sell order was executed.
  */
@@ -20,12 +19,12 @@ public class StockTrader
 extends Actor
 implements TradingProcessor
 {
-    public final TestUntil until;
+    public final TradingBusResults tradingBusResults;
     public final TradingBusProcessor tradingBus;
     
-    public StockTrader( TestUntil until, TradingBusProcessor tradingBus )
+    public StockTrader( TradingBusResults tradingBusResults, TradingBusProcessor tradingBus )
     {
-        this.until = until;
+        this.tradingBusResults = tradingBusResults;
         this.tradingBus = tradingBus;
     }
 
@@ -49,8 +48,8 @@ implements TradingProcessor
          */
         
         tradingBus.notify( new TradingNotification( TradingProcessor.BUY_ORDER_EXECUTED, portfolioId, symbol, quantity, price ));
-        
-        until.happened();
+
+        tradingBusResults.access.writeUsing("afterStockTraderBuyOrderExecutedCount", 1);
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#executeSellOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
@@ -64,8 +63,8 @@ implements TradingProcessor
          */
         
         tradingBus.notify( new TradingNotification( TradingProcessor.SELL_ORDER_EXECUTED, portfolioId, symbol, quantity, price ));
-        
-        until.happened();
+
+        tradingBusResults.access.writeUsing("afterStockTraderSellOrderExecutedCount", 1);
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#buyOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */

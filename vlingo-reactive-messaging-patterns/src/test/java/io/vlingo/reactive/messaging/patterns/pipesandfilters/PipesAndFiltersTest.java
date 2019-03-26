@@ -7,6 +7,9 @@
 
 package io.vlingo.reactive.messaging.patterns.pipesandfilters;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import junit.framework.AssertionFailedError;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.World;
@@ -19,21 +22,26 @@ public class PipesAndFiltersTest {
 
     final World world = World.startWithDefaults("pipesandfilters-test");
 
-    final TestUntil until = TestUntil.happenings(9);
+    final PipeAndFilterResults results = new PipeAndFilterResults();
+    final AccessSafely access = results.afterCompleting(9);
 
     final String orderText = "(encryption)(certificate)<order id='123'>...</order>";
     final byte[] rawOrderBytes = orderText.getBytes();
 
-    final OrderProcessor filter5 = world.actorFor(OrderProcessor.class, OrderManagementSystem.class, until);
-    final OrderProcessor filter4 = world.actorFor(OrderProcessor.class, Deduplicator.class, filter5, until);
-    final OrderProcessor filter3 = world.actorFor(OrderProcessor.class, Authenticator.class, filter4, until);
-    final OrderProcessor filter2 = world.actorFor(OrderProcessor.class, Decrypter.class, filter3, until);
-    final OrderProcessor filter1 = world.actorFor(OrderProcessor.class, OrderAcceptanceEndpoint.class, filter2, until);
+    final OrderProcessor filter5 = world.actorFor(OrderProcessor.class, OrderManagementSystem.class, results);
+    final OrderProcessor filter4 = world.actorFor(OrderProcessor.class, Deduplicator.class, filter5, results);
+    final OrderProcessor filter3 = world.actorFor(OrderProcessor.class, Authenticator.class, filter4, results);
+    final OrderProcessor filter2 = world.actorFor(OrderProcessor.class, Decrypter.class, filter3, results);
+    final OrderProcessor filter1 = world.actorFor(OrderProcessor.class, OrderAcceptanceEndpoint.class, filter2, results);
 
     filter1.processIncomingOrder(rawOrderBytes);
     filter1.processIncomingOrder(rawOrderBytes);
 
-    until.completes();
+    Assert.assertEquals(2, (int) access.readFrom("afterOrderAuthenticatedCount"));
+    Assert.assertEquals(2, (int) access.readFrom("afterOrderDecryptedCount"));
+    Assert.assertEquals(2, (int) access.readFrom("afterOrderDeduplicatedCount"));
+    Assert.assertEquals(2, (int) access.readFrom("afterOrderAcceptedCount"));
+    Assert.assertEquals(1, (int) access.readFrom("afterOrderManagedCount"));
 
     System.out.println("PipesAndFilters: is completed.");
   }

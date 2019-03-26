@@ -16,11 +16,11 @@ public class OrderRouterActor extends Actor implements OrderRouter {
 
     private Inventory inventorySystemA;
     private Inventory inventorySystemX;
-    private TestUntil testUntil;
+    private OrderRoutingResults orderRoutingResults;
 
-    public OrderRouterActor(final TestUntil testUntil) {
+    public OrderRouterActor(final OrderRoutingResults orderRoutingResults) {
         World world = stage ().world ();
-        this.testUntil = testUntil;
+        this.orderRoutingResults = orderRoutingResults;
         inventorySystemA = world.actorFor ( Inventory.class, InventorySystemA.class );
         inventorySystemX = world.actorFor ( Inventory.class, InventorySystemX.class );
     }
@@ -40,12 +40,12 @@ public class OrderRouterActor extends Actor implements OrderRouter {
         } else {
             logger ().log ( "OrderRouter: received unexpected message" );
         }
-        this.testUntil.happened ();
+        this.orderRoutingResults.access.writeUsing("afterOrderRoutedCount", 1);
     }
 
     @Override
     protected void afterStop() {
-        this.testUntil.happened ();
+        this.orderRoutingResults.access.writeUsing("afterStoppedCount", 1);
         super.afterStop ();
     }
 }

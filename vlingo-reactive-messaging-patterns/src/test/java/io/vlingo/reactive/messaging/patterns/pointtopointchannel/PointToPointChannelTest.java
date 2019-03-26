@@ -6,6 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.pointtopointchannel;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.Actor;
@@ -33,16 +35,18 @@ public class PointToPointChannelTest
         
         world.defaultLogger().log( "PointToPointChannel: is starting" );
         
-        final TestUntil until = TestUntil.happenings( NUMBER_MESSAGES );
+        final PointToPointResults results = new PointToPointResults();
+
+        final AccessSafely access = results.afterCompleting( NUMBER_MESSAGES );
         
-        final PointToPointProcessor peerNodeActor = world.actorFor(PointToPointProcessor.class, PeerNodeActor.class, until );
+        final PointToPointProcessor peerNodeActor = world.actorFor(PointToPointProcessor.class, PeerNodeActor.class, results);
         
         peerNodeActor.process( MSG_ID_1 );
         peerNodeActor.process( MSG_ID_2 );
         peerNodeActor.process( MSG_ID_3 );
         peerNodeActor.process( MSG_ID_4 );
-        
-        until.completes();
+
+        Assert.assertEquals(NUMBER_MESSAGES.intValue(), (int) access.readFrom("afterMessageProcessedCount"));
         
         world.defaultLogger().log( "PointToPointChannel: is completed" );
         

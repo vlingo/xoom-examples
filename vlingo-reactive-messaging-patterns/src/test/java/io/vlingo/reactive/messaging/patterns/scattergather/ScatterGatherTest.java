@@ -6,6 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.scattergather;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.World;
@@ -24,21 +26,20 @@ public class ScatterGatherTest
         World world = World.startWithDefaults( WORLD_NAME );
         world.defaultLogger().log( "ScatterGatherTest: is started" );
         
-        TestUntil untilRegistered = TestUntil.happenings( 5 );
-        TestUntil until = TestUntil.happenings( 5 );
+        final ScatterGatherResults results = new ScatterGatherResults();
+        final AccessSafely access = results.afterCompleting(10);
         
         AggregateProcessor priceQuoteAggregator = world.actorFor( AggregateProcessor.class, PriceQuoteAggregator.class );
-        OrderProcessor mtnSppliesOrderProcessor = world.actorFor( OrderProcessor.class, MountainSuppliesOrderProcessor.class, priceQuoteAggregator, until, untilRegistered );
-        world.actorFor( QuoteProcessor.class, BudgetHikersPriceQuotes.class, mtnSppliesOrderProcessor );
-        world.actorFor( QuoteProcessor.class, HighSierraPriceQuotes.class, mtnSppliesOrderProcessor );
-        world.actorFor( QuoteProcessor.class, MountainAscentPriceQuotes.class, mtnSppliesOrderProcessor );
-        world.actorFor( QuoteProcessor.class, PinnacleGearPriceQuotes.class, mtnSppliesOrderProcessor );
-        world.actorFor( QuoteProcessor.class, RockBottomOuterwearPriceQuotes.class, mtnSppliesOrderProcessor );
+        OrderProcessor mtnSuppliesOrderProcessor = world.actorFor( OrderProcessor.class, MountainSuppliesOrderProcessor.class, priceQuoteAggregator, results );
+        world.actorFor( QuoteProcessor.class, BudgetHikersPriceQuotes.class, mtnSuppliesOrderProcessor );
+        world.actorFor( QuoteProcessor.class, HighSierraPriceQuotes.class, mtnSuppliesOrderProcessor );
+        world.actorFor( QuoteProcessor.class, MountainAscentPriceQuotes.class, mtnSuppliesOrderProcessor );
+        world.actorFor( QuoteProcessor.class, PinnacleGearPriceQuotes.class, mtnSuppliesOrderProcessor );
+        world.actorFor( QuoteProcessor.class, RockBottomOuterwearPriceQuotes.class, mtnSuppliesOrderProcessor );
         
-        untilRegistered.completes();
         world.defaultLogger().log( String.format( "Register completes!!!" ));
         
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "123", 
@@ -48,7 +49,7 @@ public class ScatterGatherTest
                 )
             );
         
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "125", 
@@ -59,7 +60,7 @@ public class ScatterGatherTest
                 )
             );
     
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "129", 
@@ -70,7 +71,7 @@ public class ScatterGatherTest
                 )
             );
     
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "135", 
@@ -80,7 +81,7 @@ public class ScatterGatherTest
                 )
             );
     
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "140", 
@@ -91,9 +92,10 @@ public class ScatterGatherTest
                     new RetailItem( "19", 789.99 )
                 )
             );
-    
-        until.completes();
-        
+
+        Assert.assertEquals(5, (int) access.readFrom("afterProcessorRegisteredCount"));
+        Assert.assertEquals(5, (int) access.readFrom("afterBestPriceQuotationRegisteredCount"));
+
         world.defaultLogger().log( "ScatterGatherTest: is completed" );
         world.terminate();
     }

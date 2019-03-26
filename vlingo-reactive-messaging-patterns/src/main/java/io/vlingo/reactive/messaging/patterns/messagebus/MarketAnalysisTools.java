@@ -18,12 +18,12 @@ public class MarketAnalysisTools
 extends Actor
 implements TradingProcessor
 {
-    public final TestUntil until;
+    public final TradingBusResults tradingBusResults;
     public final TradingBusProcessor tradingBus;
     
-    public MarketAnalysisTools( TestUntil until, TradingBusProcessor tradingBus )
+    public MarketAnalysisTools( TradingBusResults tradingBusResults, TradingBusProcessor tradingBus )
     {
-        this.until = until;
+        this.tradingBusResults = tradingBusResults;
         this.tradingBus = tradingBus;
     }
 
@@ -45,8 +45,8 @@ implements TradingProcessor
         /*
          * perform buy order executed analysis work here
          */
-        
-        until.happened();
+
+        tradingBusResults.access.writeUsing("afterMarketAnalysisBuyOrderExecutedCount", 1);
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.AbstractTradingActor#sellOrderExecuted(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
@@ -58,8 +58,8 @@ implements TradingProcessor
         /*
          * perform sell order executed analysis work here
          */
-        
-        until.happened();
+
+        tradingBusResults.access.writeUsing("afterMarketAnalysisSellOrderExecutedCount", 1);
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#executeBuyOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */

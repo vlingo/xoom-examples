@@ -13,16 +13,16 @@ import io.vlingo.actors.Actor;
 import io.vlingo.actors.testkit.TestUntil;
 
 public class OrderManagementSystem extends Actor implements OrderProcessor {
-  private final TestUntil until;
+  private final PipeAndFilterResults results;
 
-  public OrderManagementSystem(final TestUntil until) {
-    this.until = until;
+  public OrderManagementSystem(final PipeAndFilterResults results) {
+    this.results = results;
   }
 
   @Override
   public void processIncomingOrder(byte[] orderInfo) {
     final String textOrderInfo = new String(orderInfo, StandardCharsets.UTF_8);
     logger().log("OrderManagementSystem: processing unique order:" + textOrderInfo);
-    until.happened();
+    results.access.writeUsing("afterOrderManagedCount", 1);
   }
 }

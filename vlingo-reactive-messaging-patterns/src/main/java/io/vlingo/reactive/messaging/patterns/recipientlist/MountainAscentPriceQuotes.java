@@ -14,10 +14,12 @@ import io.vlingo.actors.Actor;
 public class MountainAscentPriceQuotes extends Actor implements QuoteProcessor
 {
     public final OrderProcessor orderProcessor;
+    private final RecipientListResults results;
     
-    public MountainAscentPriceQuotes( final OrderProcessor orderProcessor )
+    public MountainAscentPriceQuotes( final OrderProcessor orderProcessor, final RecipientListResults results )
     {
         this.orderProcessor = orderProcessor;
+        this.results = results;
     }
 
     /* @see io.vlingo.actors.Actor#beforeStart() */
@@ -34,6 +36,7 @@ public class MountainAscentPriceQuotes extends Actor implements QuoteProcessor
         Double discountPercentage = discountPercentage( totalRetailPrice );
         Double discountPrice = retailPrice - ( retailPrice * discountPercentage );
         orderProcessor.remittedPriceQuote( new PriceQuote( selfAs( QuoteProcessor.class ), rfqId, itemId, retailPrice, discountPrice ));
+        results.access.writeUsing("afterQuotationReceivedAtMountainAscentCount", 1);
     }
 
     protected Double discountPercentage( Double orderTotalRetailprice )
