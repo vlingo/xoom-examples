@@ -14,16 +14,16 @@ import io.vlingo.actors.testkit.TestUntil;
 
 public class AllMarketsSubscriber extends Actor implements Subscriber<PriceQuoted> {
 
-    private final TestUntil until;
+    private final MarketQuotationResults results;
 
-    public AllMarketsSubscriber(final TestUntil until) {
-        this.until = until;
+    public AllMarketsSubscriber(final MarketQuotationResults results) {
+        this.results = results;
     }
 
     /* @see io.vlingo.actors.pubsub.Subscriber#receive(io.vlingo.actors.pubsub.Message) */
     @Override
-    public void receive(Message message) {
+    public void receive(final Message message) {
       logger().log("AllMarketsSubscriber received " + message);
-      until.happened();
+      results.access.writeUsing("afterQuotationReceivedAtGeneralSubscriberCount", 1);
     }
 }

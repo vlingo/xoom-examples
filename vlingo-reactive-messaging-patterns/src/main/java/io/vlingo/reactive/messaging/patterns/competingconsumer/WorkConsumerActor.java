@@ -7,23 +7,22 @@
 package io.vlingo.reactive.messaging.patterns.competingconsumer;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.testkit.TestUntil;
 /**
  * WorkConsumerActor is an actor to which a WorkItem may be routed.
  */
 public class WorkConsumerActor extends Actor implements WorkConsumer {
   
-  private final TestUntil until;
+  private final CompetingConsumerResults results;
 
-  public WorkConsumerActor(final TestUntil until) {
+  public WorkConsumerActor(final CompetingConsumerResults results) {
     super();
-    this.until = until;
+    this.results = results;
   }
 
   /* @see io.vlingo.reactive.messaging.patterns.competingconsumer.WorkConsumer#consumeWork(io.vlingo.reactive.messaging.patterns.competingconsumer.WorkItem) */
   @Override
   public void consumeWork(final WorkItem item) {
     logger().log(this + " consumed: " + item);
-    until.happened();
+    results.access.writeUsing("afterItemConsumedCount", 1);
   }
 }

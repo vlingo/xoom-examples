@@ -12,16 +12,16 @@ import io.vlingo.actors.testkit.TestUntil;
 
 public class NotRestrictedInventorySystemActor extends Actor implements InventorySystem {
 
-    private final TestUntil until;
+    private final MessageFilterResults results;
 
-    public NotRestrictedInventorySystemActor(final TestUntil until) {
-        this.until = until;
+    public NotRestrictedInventorySystemActor(final MessageFilterResults results) {
+        this.results = results;
     }
 
     @Override
     public void processOrder(final Order order) {
         logger().log("Handling " + order);
-        until.happened();
+        results.access.writeUsing("afterOrderProcessedCount", 1);
     }
 
 }

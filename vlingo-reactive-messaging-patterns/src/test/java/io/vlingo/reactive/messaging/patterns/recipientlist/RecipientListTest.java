@@ -6,6 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.recipientlist;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.World;
@@ -24,20 +26,19 @@ public class RecipientListTest
         World world = World.startWithDefaults( WORLD_NAME );
         world.defaultLogger().log( "RecipientListTest: is started" );
         
-        TestUntil untilRegistered = TestUntil.happenings( 5 );
-        TestUntil until = TestUntil.happenings( 57 );
+        final RecipientListResults results = new RecipientListResults();
+        final AccessSafely access = results.afterCompleting(119);
         
-        OrderProcessor mtnSppliesOrderProcessor = world.actorFor( OrderProcessor.class, MountainSuppliesOrderProcessor.class, until, untilRegistered );
-        world.actorFor( QuoteProcessor.class, BudgetHikersPriceQuotes.class, mtnSppliesOrderProcessor );
-        world.actorFor( QuoteProcessor.class, HighSierraPriceQuotes.class, mtnSppliesOrderProcessor );
-        world.actorFor( QuoteProcessor.class, MountainAscentPriceQuotes.class, mtnSppliesOrderProcessor );
-        world.actorFor( QuoteProcessor.class, PinnacleGearPriceQuotes.class, mtnSppliesOrderProcessor );
-        world.actorFor( QuoteProcessor.class, RockBottomOuterwearPriceQuotes.class, mtnSppliesOrderProcessor );
+        OrderProcessor mtnSuppliesOrderProcessor = world.actorFor( OrderProcessor.class, MountainSuppliesOrderProcessor.class, results );
+        world.actorFor( QuoteProcessor.class, BudgetHikersPriceQuotes.class, mtnSuppliesOrderProcessor, results );
+        world.actorFor( QuoteProcessor.class, HighSierraPriceQuotes.class, mtnSuppliesOrderProcessor, results );
+        world.actorFor( QuoteProcessor.class, MountainAscentPriceQuotes.class, mtnSuppliesOrderProcessor, results );
+        world.actorFor( QuoteProcessor.class, PinnacleGearPriceQuotes.class, mtnSuppliesOrderProcessor, results );
+        world.actorFor( QuoteProcessor.class, RockBottomOuterwearPriceQuotes.class, mtnSuppliesOrderProcessor, results );
         
-        untilRegistered.completes();
         world.defaultLogger().log( String.format( "Register completes!!!" ));
         
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "123", 
@@ -47,7 +48,7 @@ public class RecipientListTest
                 )
             );
         
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "125", 
@@ -58,7 +59,7 @@ public class RecipientListTest
                 )
             );
     
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "129", 
@@ -69,7 +70,7 @@ public class RecipientListTest
                 )
             );
     
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "135", 
@@ -79,7 +80,7 @@ public class RecipientListTest
                 )
             );
     
-        mtnSppliesOrderProcessor
+        mtnSuppliesOrderProcessor
             .requestForQuote( 
                 new RetailBasket( 
                     "140", 
@@ -90,8 +91,14 @@ public class RecipientListTest
                     new RetailItem( "19", 789.99 )
                 )
             );
-    
-        until.completes();
+
+        Assert.assertEquals(5, (int) access.readFrom("afterProcessorRegistered"));
+        Assert.assertEquals(57, (int) access.readFrom("afterQuotationRemitted"));
+        Assert.assertEquals(6, (int) access.readFrom("afterQuotationReceivedAtBudgetHikersCount"));
+        Assert.assertEquals(16, (int) access.readFrom("afterQuotationReceivedAtHighSierraCount"));
+        Assert.assertEquals(3, (int) access.readFrom("afterQuotationReceivedAtMountainAscentCount"));
+        Assert.assertEquals(13, (int) access.readFrom("afterQuotationReceivedAtPinnacleGearCount"));
+        Assert.assertEquals(19, (int) access.readFrom("afterQuotationReceivedAtRockBottomOuterwearCount"));
         
         world.defaultLogger().log( "RecipientListTest: is completed" );
         world.terminate();

@@ -19,15 +19,15 @@ extends Actor
 implements Processor
 {
     public static final int EXPECTED_DIFFERENCE = 1;
-    private TestUntil testUntil;
+    private MessageRouterResults messageRouterResults;
     private final Processor processor1;
     private final Processor processor2;
     private int alternate = 1;
     private int localCount = 0;
     
-    public AlternatingRouteProcessor( TestUntil testUntil, Processor processor1, Processor processor2 )
+    public AlternatingRouteProcessor( MessageRouterResults messageRouterResults, Processor processor1, Processor processor2 )
     {
-        this.testUntil = testUntil;
+        this.messageRouterResults = messageRouterResults;
         this.processor1 = processor1;
         this.processor2 = processor2;
     }
@@ -42,14 +42,14 @@ implements Processor
         {
             alternate = 2;
             processor1.process( count );
+            messageRouterResults.access.writeUsing("afterMessageProcessedByFirstProcessorCount", 1);
         }
         else 
         {
             alternate = 1;
             processor2.process( count );
+            messageRouterResults.access.writeUsing("afterMessageProcessedBySecondProcessorCount", 1);
         }
-        
-        testUntil.happened();
     }
 
     protected void validateProcess(Integer count)
