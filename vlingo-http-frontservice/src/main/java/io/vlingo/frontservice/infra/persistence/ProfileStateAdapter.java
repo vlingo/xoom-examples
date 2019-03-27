@@ -31,4 +31,9 @@ public class ProfileStateAdapter implements StateAdapter<Profile.ProfileState,Te
     final String serialization = JsonSerialization.serialized(state);
     return new TextState(state.id, ProfileState.class, typeVersion(), serialization, stateVersion, metadata);
   }
+
+  @Override
+  public <ST> ST fromRawState(TextState raw, Class<ST> stateType) {
+    return JsonSerialization.deserialized(raw.data, stateType);
+  }
 }
