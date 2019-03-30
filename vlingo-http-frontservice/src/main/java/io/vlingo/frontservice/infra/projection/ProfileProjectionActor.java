@@ -7,6 +7,7 @@
 
 package io.vlingo.frontservice.infra.projection;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import io.vlingo.actors.Actor;
@@ -20,6 +21,7 @@ import io.vlingo.lattice.model.projection.Projection;
 import io.vlingo.lattice.model.projection.ProjectionControl;
 import io.vlingo.lattice.model.projection.ProjectionControl.Confirmer;
 import io.vlingo.symbio.Metadata;
+import io.vlingo.symbio.Source;
 import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.store.Result;
 import io.vlingo.symbio.store.StorageException;
@@ -78,7 +80,7 @@ public class ProfileProjectionActor extends Actor
   }
 
   @Override
-  public <S> void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final Object object) {
+  public <S,C> void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final List<Source<C>> sources, final Object object) {
     outcome.andThen(result -> {
       ((Confirmer) object).confirm();
       return result;

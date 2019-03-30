@@ -11,9 +11,13 @@ import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
 import io.vlingo.frontservice.model.Profile;
+import io.vlingo.frontservice.model.Profile.ProfileState;
 import io.vlingo.frontservice.model.User;
+import io.vlingo.frontservice.model.User.UserState;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
+import io.vlingo.symbio.EntryAdapterProvider;
+import io.vlingo.symbio.StateAdapterProvider;
 import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.StateStore.Dispatcher;
 import io.vlingo.symbio.store.state.StateStore.DispatcherControl;
@@ -31,6 +35,11 @@ public class CommandModelStoreProvider {
 
   public static CommandModelStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final Dispatcher dispatcher) {
     if (instance != null) return instance;
+
+    final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider(stage.world());
+    stateAdapterProvider.registerAdapter(UserState.class, new UserStateAdapter());
+    stateAdapterProvider.registerAdapter(ProfileState.class, new ProfileStateAdapter());
+    new EntryAdapterProvider(stage.world()); // future
 
     final Protocols storeProtocols =
             stage.actorFor(
@@ -50,7 +59,7 @@ public class CommandModelStoreProvider {
     this.dispatcherControl = dispatcherControl;
 
     registry
-      .register(new Info(store, User.UserState.class, User.UserState.class.getSimpleName(), new UserStateAdapter()))
-      .register(new Info(store, Profile.ProfileState.class, Profile.ProfileState.class.getSimpleName(), new ProfileStateAdapter()));
+      .register(new Info(store, User.UserState.class, User.UserState.class.getSimpleName()))
+      .register(new Info(store, Profile.ProfileState.class, Profile.ProfileState.class.getSimpleName()));
   }
 }
