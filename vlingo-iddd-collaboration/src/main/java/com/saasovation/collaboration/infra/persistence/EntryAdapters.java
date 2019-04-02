@@ -21,7 +21,7 @@ import com.saasovation.collaboration.model.forum.Events.PostModerated;
 import com.saasovation.collaboration.model.forum.Events.PostedToDiscussion;
 
 import io.vlingo.common.serialization.JsonSerialization;
-import io.vlingo.symbio.Entry.TextEntry;
+import io.vlingo.symbio.BaseEntry.TextEntry;
 import io.vlingo.symbio.EntryAdapter;
 import io.vlingo.symbio.Metadata;
 
@@ -34,7 +34,7 @@ public class EntryAdapters {
   public static final class ForumStartedAdapter implements EntryAdapter<ForumStarted,TextEntry> {
     @Override
     public ForumStarted fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, ForumStarted.class);
+      return JsonSerialization.deserialized(entry.entryData(), ForumStarted.class);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class EntryAdapters {
   public static final class ForumModeratorAssignedAdapter implements EntryAdapter<ForumModeratorAssigned,TextEntry> {
     @Override
     public ForumModeratorAssigned fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, ForumModeratorAssigned.class);
+      return JsonSerialization.deserialized(entry.entryData(), ForumModeratorAssigned.class);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class EntryAdapters {
   public static final class ForumClosedAdapter implements EntryAdapter<ForumClosed,TextEntry> {
     @Override
     public ForumClosed fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, ForumClosed.class);
+      return JsonSerialization.deserialized(entry.entryData(), ForumClosed.class);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class EntryAdapters {
   public static final class ForumDescribedAdapter implements EntryAdapter<ForumDescribed,TextEntry> {
     @Override
     public ForumDescribed fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, ForumDescribed.class);
+      return JsonSerialization.deserialized(entry.entryData(), ForumDescribed.class);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class EntryAdapters {
   public static final class ForumReopenedAdapter implements EntryAdapter<ForumReopened,TextEntry> {
     @Override
     public ForumReopened fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, ForumReopened.class);
+      return JsonSerialization.deserialized(entry.entryData(), ForumReopened.class);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class EntryAdapters {
   public static final class ForumTopicChangedAdapter implements EntryAdapter<ForumTopicChanged,TextEntry> {
     @Override
     public ForumTopicChanged fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, ForumTopicChanged.class);
+      return JsonSerialization.deserialized(entry.entryData(), ForumTopicChanged.class);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class EntryAdapters {
   public static final class DiscussionStartedAdapter implements EntryAdapter<DiscussionStarted,TextEntry> {
     @Override
     public DiscussionStarted fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, DiscussionStarted.class);
+      return JsonSerialization.deserialized(entry.entryData(), DiscussionStarted.class);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class EntryAdapters {
   public static final class DiscussionClosedAdapter implements EntryAdapter<DiscussionClosed,TextEntry> {
     @Override
     public DiscussionClosed fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, DiscussionClosed.class);
+      return JsonSerialization.deserialized(entry.entryData(), DiscussionClosed.class);
     }
 
     @Override
@@ -182,7 +182,7 @@ public class EntryAdapters {
   public static final class DiscussionReopenedAdapter implements EntryAdapter<DiscussionReopened,TextEntry> {
     @Override
     public DiscussionReopened fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, DiscussionReopened.class);
+      return JsonSerialization.deserialized(entry.entryData(), DiscussionReopened.class);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class EntryAdapters {
   public static final class DiscussionTopicChangedAdapter implements EntryAdapter<DiscussionTopicChanged,TextEntry> {
     @Override
     public DiscussionTopicChanged fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, DiscussionTopicChanged.class);
+      return JsonSerialization.deserialized(entry.entryData(), DiscussionTopicChanged.class);
     }
 
     @Override
@@ -222,7 +222,7 @@ public class EntryAdapters {
   public static final class PostedToDiscussionAdapter implements EntryAdapter<PostedToDiscussion,TextEntry> {
     @Override
     public PostedToDiscussion fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, PostedToDiscussion.class);
+      return JsonSerialization.deserialized(entry.entryData(), PostedToDiscussion.class);
     }
 
     @Override
@@ -240,7 +240,7 @@ public class EntryAdapters {
   public static final class PostModeratedAdapter implements EntryAdapter<PostModerated,TextEntry> {
     @Override
     public PostModerated fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, PostModerated.class);
+      return JsonSerialization.deserialized(entry.entryData(), PostModerated.class);
     }
 
     @Override
