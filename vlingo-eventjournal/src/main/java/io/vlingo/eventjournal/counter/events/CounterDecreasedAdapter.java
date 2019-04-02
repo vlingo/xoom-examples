@@ -8,7 +8,7 @@
 package io.vlingo.eventjournal.counter.events;
 
 import io.vlingo.common.serialization.JsonSerialization;
-import io.vlingo.symbio.Entry.TextEntry;
+import io.vlingo.symbio.BaseEntry.TextEntry;
 import io.vlingo.symbio.EntryAdapter;
 import io.vlingo.symbio.Metadata;
 
@@ -17,7 +17,7 @@ public class CounterDecreasedAdapter implements EntryAdapter<CounterDecreased,Te
 
     @Override
     public CounterDecreased fromEntry(final TextEntry entry) {
-      return JsonSerialization.deserialized(entry.entryData, CounterDecreased.class);
+      return JsonSerialization.deserialized(entry.entryData(), CounterDecreased.class);
     }
 
     @Override

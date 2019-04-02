@@ -1,11 +1,11 @@
 package io.vlingo.examples.ecommerce.infra;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.State;
 import io.vlingo.symbio.store.journal.JournalListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class MockJournalListener implements JournalListener<String> {
     public List<Entry<String>> entries = new ArrayList<>();
