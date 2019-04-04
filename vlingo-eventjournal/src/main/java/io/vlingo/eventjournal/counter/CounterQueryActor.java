@@ -14,6 +14,7 @@ import io.vlingo.common.Cancellable;
 import io.vlingo.common.Completes;
 import io.vlingo.common.Scheduled;
 import io.vlingo.eventjournal.counter.events.Event;
+import io.vlingo.symbio.BaseEntry;
 import io.vlingo.symbio.EntryAdapterProvider;
 import io.vlingo.symbio.store.journal.JournalReader;
 
@@ -40,7 +41,7 @@ public class CounterQueryActor extends Actor implements CounterQuery, Scheduled 
     @Override
     public void intervalSignal(Scheduled scheduled, Object data) {
       streamReader.readNext()
-        .andThen(event -> event.asTextEntry())
+        .andThen(event -> ((BaseEntry) event).asTextEntry())
         .andThenConsume(entry -> {
           counted = (Event) entryAdapterProvider.asSource(entry);
           currentCount = Optional.of(counted.currentCounter);
