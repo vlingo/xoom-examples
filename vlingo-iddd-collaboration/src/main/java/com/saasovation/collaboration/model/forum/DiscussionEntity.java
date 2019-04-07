@@ -7,8 +7,6 @@
 
 package com.saasovation.collaboration.model.forum;
 
-import java.util.function.BiConsumer;
-
 import com.saasovation.collaboration.model.Author;
 import com.saasovation.collaboration.model.Tenant;
 import com.saasovation.collaboration.model.forum.Events.DiscussionClosed;
@@ -69,14 +67,10 @@ public class DiscussionEntity extends EventSourced implements Discussion {
   }
 
   static {
-    BiConsumer<DiscussionEntity, DiscussionStarted> applyDiscussionStartedFn = DiscussionEntity::applyDiscussionStarted;
-    EventSourced.registerConsumer(DiscussionEntity.class, DiscussionStarted.class, applyDiscussionStartedFn);
-    BiConsumer<DiscussionEntity, DiscussionClosed> applyDiscussionClosedFn = DiscussionEntity::applyDiscussionClosed;
-    EventSourced.registerConsumer(DiscussionEntity.class, DiscussionClosed.class, applyDiscussionClosedFn);
-    BiConsumer<DiscussionEntity, DiscussionReopened> applyDiscussionReopenedFn = DiscussionEntity::applyDiscussionReopened;
-    EventSourced.registerConsumer(DiscussionEntity.class, DiscussionReopened.class, applyDiscussionReopenedFn);
-    BiConsumer<DiscussionEntity, DiscussionTopicChanged> applyDiscussionTopicChangedFn = DiscussionEntity::applyDiscussionTopicChanged;
-    EventSourced.registerConsumer(DiscussionEntity.class, DiscussionTopicChanged.class, applyDiscussionTopicChangedFn);
+    EventSourced.registerConsumer(DiscussionEntity.class, DiscussionStarted.class, DiscussionEntity::applyDiscussionStarted);
+    EventSourced.registerConsumer(DiscussionEntity.class, DiscussionClosed.class, DiscussionEntity::applyDiscussionClosed);
+    EventSourced.registerConsumer(DiscussionEntity.class, DiscussionReopened.class, DiscussionEntity::applyDiscussionReopened);
+    EventSourced.registerConsumer(DiscussionEntity.class, DiscussionTopicChanged.class, DiscussionEntity::applyDiscussionTopicChanged);
   }
 
   private void applyDiscussionStarted(final DiscussionStarted e) {

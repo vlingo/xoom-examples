@@ -7,8 +7,6 @@
 
 package com.saasovation.collaboration.model.forum;
 
-import java.util.function.BiConsumer;
-
 import com.saasovation.collaboration.model.Author;
 import com.saasovation.collaboration.model.Creator;
 import com.saasovation.collaboration.model.Moderator;
@@ -96,18 +94,12 @@ public class ForumEntity extends EventSourced implements Forum {
   }
 
   static {
-    BiConsumer<ForumEntity, ForumStarted> applyForumStartedFn = ForumEntity::applyForumStarted;
-    EventSourced.registerConsumer(ForumEntity.class, ForumStarted.class, applyForumStartedFn);
-    BiConsumer<ForumEntity, ForumModeratorAssigned> applyForumModeratorAssignedFn = ForumEntity::applyForumModeratorAssigned;
-    EventSourced.registerConsumer(ForumEntity.class, ForumModeratorAssigned.class, applyForumModeratorAssignedFn);
-    BiConsumer<ForumEntity, ForumClosed> applyForumClosedFn = ForumEntity::applyForumClosed;
-    EventSourced.registerConsumer(ForumEntity.class, ForumClosed.class, applyForumClosedFn);
-    BiConsumer<ForumEntity, ForumDescribed> applyForumDescribedFn = ForumEntity::applyForumDescribed;
-    EventSourced.registerConsumer(ForumEntity.class, ForumDescribed.class, applyForumDescribedFn);
-    BiConsumer<ForumEntity, ForumReopened> applyForumReopenedFn = ForumEntity::applyForumReopened;
-    EventSourced.registerConsumer(ForumEntity.class, ForumReopened.class, applyForumReopenedFn);
-    BiConsumer<ForumEntity, ForumTopicChanged> applyForumTopicChangedFn = ForumEntity::applyForumTopicChanged;
-    EventSourced.registerConsumer(ForumEntity.class, ForumTopicChanged.class, applyForumTopicChangedFn);
+    EventSourced.registerConsumer(ForumEntity.class, ForumStarted.class, ForumEntity::applyForumStarted);
+    EventSourced.registerConsumer(ForumEntity.class, ForumModeratorAssigned.class, ForumEntity::applyForumModeratorAssigned);
+    EventSourced.registerConsumer(ForumEntity.class, ForumClosed.class, ForumEntity::applyForumClosed);
+    EventSourced.registerConsumer(ForumEntity.class, ForumDescribed.class, ForumEntity::applyForumDescribed);
+    EventSourced.registerConsumer(ForumEntity.class, ForumReopened.class, ForumEntity::applyForumReopened);
+    EventSourced.registerConsumer(ForumEntity.class, ForumTopicChanged.class, ForumEntity::applyForumTopicChanged);
   }
 
   private void applyForumStarted(final ForumStarted e) {
