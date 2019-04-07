@@ -22,29 +22,26 @@ public class ProfileEntity extends StatefulEntity<Profile.ProfileState> implemen
     if (state.isIdentifiedOnly()) {
       restore();
     } else {
-      preserve(state, "Profile:new");
+      apply(state, "Profile:new");
     }
   }
 
   @Override
   public Completes<Profile.ProfileState> withTwitterAccount(final String twitterAccount) {
-    final Profile.ProfileState transitioned = state.withTwitterAccount(twitterAccount);
-    preserve(transitioned, "Profile:twitter");
-    return completes().with(transitioned);
+    apply(state.withTwitterAccount(twitterAccount), "Profile:twitter", () -> state);
+    return completes();
   }
 
   @Override
   public Completes<Profile.ProfileState> withLinkedInAccount(final String linkedInAccount) {
-    final Profile.ProfileState transitioned = state.withLinkedInAccount(linkedInAccount);
-    preserve(transitioned, "Profile:linkedIn");
-    return completes().with(transitioned);
+    apply(state.withLinkedInAccount(linkedInAccount), "Profile:linkedIn", () -> state);
+    return completes();
   }
 
   @Override
   public Completes<Profile.ProfileState> withWebSite(final String website) {
-    final Profile.ProfileState transitioned = state.withWebSite(website);
-    preserve(transitioned, "Profile:website");
-    return completes().with(transitioned);
+    apply(state.withWebSite(website), "Profile:website", () -> state);
+    return completes();
   }
 
 
