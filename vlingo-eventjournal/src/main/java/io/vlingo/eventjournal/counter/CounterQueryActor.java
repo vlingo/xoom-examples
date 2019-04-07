@@ -15,17 +15,19 @@ import io.vlingo.common.Completes;
 import io.vlingo.common.Scheduled;
 import io.vlingo.eventjournal.counter.events.Event;
 import io.vlingo.symbio.BaseEntry;
+import io.vlingo.symbio.BaseEntry.TextEntry;
 import io.vlingo.symbio.EntryAdapterProvider;
 import io.vlingo.symbio.store.journal.JournalReader;
 
-public class CounterQueryActor extends Actor implements CounterQuery, Scheduled {
-    private final JournalReader<String> streamReader;
+public class CounterQueryActor extends Actor implements CounterQuery, Scheduled<Object> {
+    private final JournalReader<TextEntry> streamReader;
     private final Cancellable cancellable;
     private Event counted;
     private Optional<Integer> currentCount;
     private EntryAdapterProvider entryAdapterProvider;
 
-    public CounterQueryActor(JournalReader<String> streamReader, EntryAdapterProvider entryAdapterProvider) {
+    @SuppressWarnings("unchecked")
+    public CounterQueryActor(JournalReader<TextEntry> streamReader, EntryAdapterProvider entryAdapterProvider) {
         this.streamReader = streamReader;
         this.entryAdapterProvider = entryAdapterProvider;
         this.cancellable = scheduler().schedule(selfAs(Scheduled.class), null, 0, 5);
@@ -39,7 +41,8 @@ public class CounterQueryActor extends Actor implements CounterQuery, Scheduled 
     }
 
     @Override
-    public void intervalSignal(Scheduled scheduled, Object data) {
+    @SuppressWarnings("rawtypes")
+    public void intervalSignal(Scheduled<Object> scheduled, Object data) {
       streamReader.readNext()
         .andThen(event -> ((BaseEntry) event).asTextEntry())
         .andThenConsume(entry -> {

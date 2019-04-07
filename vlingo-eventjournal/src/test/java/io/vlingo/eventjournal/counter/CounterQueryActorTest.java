@@ -23,6 +23,7 @@ import io.vlingo.eventjournal.counter.events.CounterDecreased;
 import io.vlingo.eventjournal.counter.events.CounterDecreasedAdapter;
 import io.vlingo.eventjournal.counter.events.CounterIncreased;
 import io.vlingo.eventjournal.counter.events.CounterIncreasedAdapter;
+import io.vlingo.symbio.BaseEntry.TextEntry;
 import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.EntryAdapterProvider;
 import io.vlingo.symbio.store.journal.JournalReader;
@@ -30,7 +31,7 @@ import io.vlingo.symbio.store.journal.JournalReader;
 public class CounterQueryActorTest extends ActorTest {
     private static final int CURRENT_COUNTER = 5;
     private CounterQuery query;
-    private JournalReader<String> journalReader;
+    private JournalReader<TextEntry> journalReader;
     private CounterIncreasedAdapter counterIncreasedAdapter;
     private CounterDecreasedAdapter counterDecreasedAdapter;
     private EntryAdapterProvider entryAdapterProvider;
@@ -64,7 +65,7 @@ public class CounterQueryActorTest extends ActorTest {
         assertEquals(CURRENT_COUNTER, result);
     }
 
-    private void buildWithEvent(Entry<String> event) {
+    private void buildWithEvent(TextEntry event) {
         when(journalReader.readNext()).thenReturn(withSuccess(event));
 
         query = world().actorFor(

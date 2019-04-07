@@ -7,8 +7,6 @@
 
 package com.saasovation.collaboration.model.forum;
 
-import java.util.function.BiConsumer;
-
 import com.saasovation.collaboration.model.Author;
 import com.saasovation.collaboration.model.Moderator;
 import com.saasovation.collaboration.model.Tenant;
@@ -47,10 +45,8 @@ public class PostEntity extends EventSourced implements Post {
   }
 
   static {
-    BiConsumer<PostEntity, PostedToDiscussion> applyPostedToDiscussionFn = PostEntity::applyPostedToDiscussion;
-    EventSourced.registerConsumer(PostEntity.class, PostedToDiscussion.class, applyPostedToDiscussionFn);
-    BiConsumer<PostEntity, PostModerated> applyPostModeratedFn = PostEntity::applyPostModerated;
-    EventSourced.registerConsumer(PostEntity.class, PostModerated.class, applyPostModeratedFn);
+    EventSourced.registerConsumer(PostEntity.class, PostedToDiscussion.class, PostEntity::applyPostedToDiscussion);
+    EventSourced.registerConsumer(PostEntity.class, PostModerated.class, PostEntity::applyPostModerated);
   }
 
   private void applyPostedToDiscussion(final PostedToDiscussion e) {
