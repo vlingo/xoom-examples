@@ -22,7 +22,7 @@ public class UserEntity extends StatefulEntity<User.UserState> implements User {
     if (state.isIdentifiedOnly()) {
       restore();
     } else {
-      preserve(state, "User:new");
+      apply(state, "User:new");
     }
   }
 
@@ -34,21 +34,19 @@ public class UserEntity extends StatefulEntity<User.UserState> implements User {
   @Override
   public void attachPrivateToken(final String privateToken) {
     final User.UserState transitioned = state.withSecurity(state.security.withPrivateToken(privateToken));
-    preserve(transitioned);
+    apply(transitioned);
   }
 
   @Override
   public Completes<User.UserState> withContact(final Contact contact) {
-    final User.UserState transitioned = state.withContact(contact);
-    preserve(transitioned, "User:contact", () -> state);
-    return completes(); // unanswered until preserved
+    apply(state.withContact(contact), "User:contact", () -> state);
+    return completes();
   }
 
   @Override
   public Completes<User.UserState> withName(final Name name) {
-    final User.UserState transitioned = state.withName(name);
-    preserve(transitioned, "User:name", () -> state);
-    return completes(); // unanswered until preserved
+    apply(state.withName(name), "User:name", () -> state);
+    return completes();
   }
 
 
