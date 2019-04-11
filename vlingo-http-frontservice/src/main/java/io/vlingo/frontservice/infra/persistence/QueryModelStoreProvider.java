@@ -14,8 +14,8 @@ import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
+import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.EntryAdapterProvider;
-import io.vlingo.symbio.Source;
 import io.vlingo.symbio.State;
 import io.vlingo.symbio.StateAdapterProvider;
 import io.vlingo.symbio.store.state.StateStore;
@@ -43,7 +43,7 @@ public class QueryModelStoreProvider {
 
     final Dispatcher noop = new Dispatcher() {
       public void controlWith(final DispatcherControl control) { }
-      public <S extends State<?>, C extends Source<?>> void dispatch(final String dispatchId, final S state, final Collection<C> sources) { }
+      public <S extends State<?>, E extends Entry<?>> void dispatch(final String dispatchId, final S state, final Collection<E> entries) { }
     };
 
     final StateStore store = stage.actorFor(StateStore.class, InMemoryStateStoreActor.class, noop);
