@@ -7,23 +7,19 @@
 
 package io.vlingo.frontservice.model;
 
+import java.util.Collections;
+import java.util.List;
+
 import io.vlingo.common.Completes;
+import io.vlingo.common.Tuple3;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
+import io.vlingo.symbio.Source;
 
 public class UserEntity extends StatefulEntity<User.UserState> implements User {
   private User.UserState state;
 
   public UserEntity(final User.UserState state) {
     this.state = state;
-  }
-
-  @Override
-  public void start() {
-    if (state.isIdentifiedOnly()) {
-      restore();
-    } else {
-      apply(state, "User:new");
-    }
   }
 
 
@@ -55,17 +51,25 @@ public class UserEntity extends StatefulEntity<User.UserState> implements User {
   //=====================================
 
   @Override
-  public String id() {
+  protected String id() {
     return state.id;
   }
 
   @Override
-  public void state(final UserState state) {
+  protected void state(final UserState state) {
     this.state = state;
   }
 
   @Override
-  public Class<UserState> stateType() {
+  protected Class<UserState> stateType() {
     return User.UserState.class;
+  }
+
+  @Override
+  protected <C> Tuple3<User.UserState,List<Source<C>>,String> whenNewState() {
+    if (state.isIdentifiedOnly()) {
+      return null;
+    }
+    return Tuple3.from(state, Collections.emptyList(), "User:new");
   }
 }
