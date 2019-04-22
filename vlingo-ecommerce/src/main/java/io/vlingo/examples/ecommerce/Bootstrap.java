@@ -38,20 +38,14 @@ public class Bootstrap {
         registry.register(new Info(journal, OrderActor.class, OrderActor.class.getSimpleName()));
 
         registry.info(OrderActor.class)
-                .registerEntryAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter(),
-                        journal::registerEntryAdapter)
-                .registerEntryAdapter(OrderEvents.PaymentReceived.class, new PaymentReceivedEventAdapter(),
-                        journal::registerEntryAdapter)
-                .registerEntryAdapter(OrderEvents.OrderShipped.class, new ShippedEventAdapter(),
-                        journal::registerEntryAdapter);
+                .registerEntryAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter())
+                .registerEntryAdapter(OrderEvents.PaymentReceived.class, new PaymentReceivedEventAdapter())
+                .registerEntryAdapter(OrderEvents.OrderShipped.class, new ShippedEventAdapter());
 
         registry.info(CartActor.class)
-                .registerEntryAdapter(CreatedForUser.class, new CartCreatedEventAdapter(),
-                        journal::registerEntryAdapter)
-                .registerEntryAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter(),
-                        journal::registerEntryAdapter)
-                .registerEntryAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter(),
-                        journal::registerEntryAdapter);
+                .registerEntryAdapter(CreatedForUser.class, new CartCreatedEventAdapter())
+                .registerEntryAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter())
+                .registerEntryAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter());
 
 
         final CartResource cartResource = new CartResource(world);
