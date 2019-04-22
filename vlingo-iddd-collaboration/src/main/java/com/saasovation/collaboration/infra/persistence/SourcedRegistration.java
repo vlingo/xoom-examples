@@ -50,35 +50,22 @@ public class SourcedRegistration {
       .register(new Info(journal, PostEntity.class, PostEntity.class.getSimpleName()));
 
     registry.info(ForumEntity.class)
-      .registerEntryAdapter(ForumStarted.class, new ForumStartedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerEntryAdapter(ForumModeratorAssigned.class, new ForumModeratorAssignedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerEntryAdapter(ForumClosed.class, new ForumClosedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerEntryAdapter(ForumDescribed.class, new ForumDescribedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerEntryAdapter(ForumReopened.class, new ForumReopenedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerEntryAdapter(ForumTopicChanged.class, new ForumTopicChangedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerStateAdapter(Forum.State.class, new ForumStateAdapter(),
-              (type, adapter) -> journal.registerStateAdapter(type, adapter));
+      .registerEntryAdapter(ForumStarted.class, new ForumStartedAdapter())
+      .registerEntryAdapter(ForumModeratorAssigned.class, new ForumModeratorAssignedAdapter())
+      .registerEntryAdapter(ForumClosed.class, new ForumClosedAdapter())
+      .registerEntryAdapter(ForumDescribed.class, new ForumDescribedAdapter())
+      .registerEntryAdapter(ForumReopened.class, new ForumReopenedAdapter())
+      .registerEntryAdapter(ForumTopicChanged.class, new ForumTopicChangedAdapter())
+      .registerStateAdapter(Forum.State.class, new ForumStateAdapter());
 
     registry.info(DiscussionEntity.class)
-      .registerEntryAdapter(DiscussionStarted.class, new DiscussionStartedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerEntryAdapter(DiscussionClosed.class, new DiscussionClosedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerEntryAdapter(DiscussionReopened.class, new DiscussionReopenedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerEntryAdapter(DiscussionTopicChanged.class, new DiscussionTopicChangedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter));
+      .registerEntryAdapter(DiscussionStarted.class, new DiscussionStartedAdapter())
+      .registerEntryAdapter(DiscussionClosed.class, new DiscussionClosedAdapter())
+      .registerEntryAdapter(DiscussionReopened.class, new DiscussionReopenedAdapter())
+      .registerEntryAdapter(DiscussionTopicChanged.class, new DiscussionTopicChangedAdapter());
 
     registry.info(PostEntity.class)
-      .registerEntryAdapter(PostedToDiscussion.class, new PostedToDiscussionAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter))
-      .registerEntryAdapter(PostModerated.class, new PostModeratedAdapter(),
-              (type, adapter) -> journal.registerEntryAdapter(type, adapter));
+      .registerEntryAdapter(PostedToDiscussion.class, new PostedToDiscussionAdapter())
+      .registerEntryAdapter(PostModerated.class, new PostModeratedAdapter());
   }
 }
