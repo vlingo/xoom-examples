@@ -21,12 +21,13 @@
   </dependencies>
   <modules>
     <module>vlingo-actors-playground</module>
+    <module>vlingo-auth-authservice</module>
+    <module>vlingo-ecommerce</module>
+    <module>vlingo-eventjournal</module>
     <module>vlingo-http-backservice</module>
     <module>vlingo-http-frontservice</module>
-    <module>vlingo-reactive-messaging-patterns</module>
-    <module>vlingo-eventjournal</module>
-    <module>vlingo-auth-authservice</module>
     <module>vlingo-iddd-collaboration</module>
-    <module>vlingo-ecommerce</module>
+    <module>vlingo-reactive-messaging-patterns</module>
+    <module>vlingo-simgui-mediator</module>
   </modules>
 </project>
