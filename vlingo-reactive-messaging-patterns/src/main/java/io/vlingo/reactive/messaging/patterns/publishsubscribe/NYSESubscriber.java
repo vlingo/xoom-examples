@@ -10,7 +10,6 @@ package io.vlingo.reactive.messaging.patterns.publishsubscribe;
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.pubsub.Message;
 import io.vlingo.actors.pubsub.Subscriber;
-import io.vlingo.actors.testkit.TestUntil;
 
 public class NYSESubscriber extends Actor implements Subscriber<PriceQuoted> {
 

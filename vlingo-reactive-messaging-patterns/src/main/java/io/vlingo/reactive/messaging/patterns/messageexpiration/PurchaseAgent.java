@@ -8,7 +8,6 @@ package io.vlingo.reactive.messaging.patterns.messageexpiration;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.DeadLetter;
-import io.vlingo.actors.testkit.TestUntil;
 
 /**
  * PurchaseAgent {@link Actor} responsible for placing an order for messages that have not yet expired.

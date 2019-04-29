@@ -6,12 +6,11 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.scattergather;
 
-import io.vlingo.actors.testkit.AccessSafely;
 import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.actors.testkit.AccessSafely;
 
 /**
  * ScatterGatherTest driver for this scatter-gather example.

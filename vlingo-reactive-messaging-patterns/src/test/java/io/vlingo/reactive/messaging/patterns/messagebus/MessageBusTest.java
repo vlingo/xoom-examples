@@ -6,13 +6,12 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.messagebus;
 
-import io.vlingo.actors.testkit.AccessSafely;
 import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.actors.testkit.AccessSafely;
 import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.TradingCommand;
 
 /**
