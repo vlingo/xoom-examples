@@ -14,13 +14,14 @@ import io.vlingo.actors.Actor;
 import io.vlingo.common.Cancellable;
 import io.vlingo.common.Scheduled;
 
-public class ThrottledProducer extends Actor implements Producer, Scheduled {
+public class ThrottledProducer extends Actor implements Producer, Scheduled<Object> {
     private final List<Consumer> pending;
     private final int maxMessagesPerPeriod;
     private final Producer delegate;
     private int messagesSentInPeriod;
     private Cancellable periodRefresher;
 
+    @SuppressWarnings("unchecked")
     public ThrottledProducer(final int maxMessagesPerPeriod, int period, final Producer delegate) {
         this.maxMessagesPerPeriod = maxMessagesPerPeriod;
         this.delegate = delegate;
@@ -41,7 +42,7 @@ public class ThrottledProducer extends Actor implements Producer, Scheduled {
     }
 
     @Override
-    public void intervalSignal(Scheduled scheduled, Object data) {
+    public void intervalSignal(Scheduled<Object> scheduled, Object data) {
       messagesSentInPeriod = 0;
 
       while (!shouldThrottle() && thereAreMessagesPending()) {

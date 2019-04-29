@@ -2,7 +2,6 @@ package io.vlingo.reactive.messaging.patterns.contentbasedrouter.actor;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
 import io.vlingo.reactive.messaging.patterns.contentbasedrouter.order.OrderPlaced;
 
 /**

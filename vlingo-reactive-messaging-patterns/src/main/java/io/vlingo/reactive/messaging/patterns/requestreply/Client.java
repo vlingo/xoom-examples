@@ -8,7 +8,6 @@
 package io.vlingo.reactive.messaging.patterns.requestreply;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.testkit.TestUntil;
 
 public class Client extends Actor implements Consumer {
   private final Service service;

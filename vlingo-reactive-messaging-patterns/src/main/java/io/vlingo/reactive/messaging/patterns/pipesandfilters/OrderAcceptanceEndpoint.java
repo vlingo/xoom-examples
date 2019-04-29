@@ -10,7 +10,6 @@ package io.vlingo.reactive.messaging.patterns.pipesandfilters;
 import java.nio.charset.StandardCharsets;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.testkit.TestUntil;
 
 public class OrderAcceptanceEndpoint extends Actor implements OrderProcessor {
   private final OrderProcessor nextFilter;

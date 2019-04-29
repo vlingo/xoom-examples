@@ -7,13 +7,11 @@
 
 package io.vlingo.reactive.messaging.patterns.pipesandfilters;
 
-import io.vlingo.actors.testkit.AccessSafely;
-import junit.framework.AssertionFailedError;
 import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.actors.testkit.AccessSafely;
 
 public class PipesAndFiltersTest {
   @Test

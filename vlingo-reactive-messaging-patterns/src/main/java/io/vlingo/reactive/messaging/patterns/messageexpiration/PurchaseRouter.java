@@ -33,13 +33,13 @@ implements OrderProcessor
         Random random = new Random();
         int millis = random.nextInt( 100 ) + 1;
         logger().log( String.format( "PurchaseRouter: delaying delivery of %s for %d milliseconds", order, millis ) );
-        Scheduled scheduled = 
-            new Scheduled()
+        Scheduled<Order> scheduled = 
+            new Scheduled<Order>()
             {
                 @Override
-                public void intervalSignal(Scheduled scheduled, Object data)
+                public void intervalSignal(Scheduled<Order> scheduled, Order data)
                 {
-                    purchaseAgent.placeOrder( (Order)data );
+                    purchaseAgent.placeOrder(data);
                 }
             };
         this.scheduler().scheduleOnce( scheduled, order, millis, 0L );

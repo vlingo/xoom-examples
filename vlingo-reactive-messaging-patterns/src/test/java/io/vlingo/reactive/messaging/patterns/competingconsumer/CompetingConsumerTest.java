@@ -5,6 +5,10 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.competingconsumer;
+import org.junit.Assert;
+import org.junit.Test;
+
+import io.vlingo.actors.World;
 /**
  * CompetingConsumerTest demonstrates the competing consumers
  * pattern utilizing a {@link Router} with a {@link RoundRobinRoutingStrategy}.
@@ -14,11 +18,6 @@ package io.vlingo.reactive.messaging.patterns.competingconsumer;
  * determination of the {@link Router}.
  */
 import io.vlingo.actors.testkit.AccessSafely;
-import org.junit.Assert;
-import org.junit.Test;
-
-import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
 
 public class CompetingConsumerTest {
 

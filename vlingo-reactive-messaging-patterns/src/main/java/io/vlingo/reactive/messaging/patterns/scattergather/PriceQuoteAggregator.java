@@ -33,12 +33,11 @@ implements AggregateProcessor
     {
         QuotationFulfillment quotationFulfillment = new QuotationFulfillment( rfqId, quotesRequested, orderProcessor );
         fulfilledPriceQuotes.put( rfqId, quotationFulfillment );
-        Scheduled scheduled = new Scheduled()
+        Scheduled<String> scheduled = new Scheduled<String>()
         {
             @Override
-            public void intervalSignal(Scheduled scheduled, Object data)
+            public void intervalSignal(Scheduled<String> scheduled, String rfqId)
             {
-                String rfqId = (String) data;
                 priceQuoteTimedOut( new PriceQuoteTimedOut( rfqId ));
             }
         };

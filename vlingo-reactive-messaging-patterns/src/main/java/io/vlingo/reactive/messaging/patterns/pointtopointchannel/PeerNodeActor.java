@@ -7,7 +7,6 @@
 package io.vlingo.reactive.messaging.patterns.pointtopointchannel;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.testkit.TestUntil;
 
 /**
  * PeerNodeActor represents point-to-point messaging that underlies all {@link Actor} communication where

@@ -7,8 +7,6 @@
 
 package io.vlingo.reactive.messaging.patterns.pubsub;
 
-import io.vlingo.actors.testkit.AccessSafely;
-import io.vlingo.reactive.messaging.patterns.publishsubscribe.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,7 +14,14 @@ import io.vlingo.actors.World;
 import io.vlingo.actors.pubsub.DefaultPublisher;
 import io.vlingo.actors.pubsub.Publisher;
 import io.vlingo.actors.pubsub.Subscriber;
-import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.actors.testkit.AccessSafely;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.AllMarketsSubscriber;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.Market;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.MarketQuotationResults;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.Money;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.NASDAQSubscriber;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.NYSESubscriber;
+import io.vlingo.reactive.messaging.patterns.publishsubscribe.PriceQuoted;
 
 public class PublishSubscribeTest {
 

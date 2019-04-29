@@ -7,12 +7,11 @@
 
 package io.vlingo.reactive.messaging.patterns.requestreply;
 
-import io.vlingo.actors.testkit.AccessSafely;
 import org.junit.Assert;
 import org.junit.Test;
 
 import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.actors.testkit.AccessSafely;
 
 public class RequestReplyTest {
   @Test

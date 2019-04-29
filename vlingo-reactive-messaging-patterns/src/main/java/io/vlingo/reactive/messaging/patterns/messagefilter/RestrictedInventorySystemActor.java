@@ -8,7 +8,6 @@
 package io.vlingo.reactive.messaging.patterns.messagefilter;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.testkit.TestUntil;
 
 public class RestrictedInventorySystemActor extends Actor implements InventorySystem {
 

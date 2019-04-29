@@ -7,7 +7,6 @@
 package io.vlingo.reactive.messaging.patterns.messagerouter;
 
 import io.vlingo.actors.Actor;
-import io.vlingo.actors.testkit.TestUntil;
 
 /**
  * AlternatingRouteProcessor {@link Actor} that delegates workload to {@link Processor} {@link Actor} based
