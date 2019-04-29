@@ -8,12 +8,12 @@
 package io.vlingo.simgui.windows;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 
 import org.junit.Test;
 
-import io.vlingo.actors.testkit.AccessSafely;
 import io.vlingo.simgui.Desktop;
 import io.vlingo.simgui.geometry.Point;
 import io.vlingo.simgui.geometry.Rectangle;
@@ -28,44 +28,40 @@ public class DialogBoxTest {
   @Test
   public void testThatSelectListItemCausesEvents() throws Exception {
     final MockParent parent = new MockParent();
-    
-    AccessSafely access = parent.afterCompleting(1);
 
-    final Specification spec =
-            DialogBox.with(
-                    SchemaSelectionDialog.class,
-                    parent,
-                    "Select Schema",
-                    Rectangle.with(10, 10, 250, 250),
-                    "schema-dialog",
-                    Arrays.asList(
-                            "CartItemAdded",
-                            "CartItemRemoved",
-                            "CartItemRegistered",
-                            "CartCheckedOut"));
+    final Specification spec = specification(parent);
 
     final DialogBox dialog = Desktop.instance.windowFor(spec);
 
-    access.readFrom("events");
-
-    access.totalWritesGreaterThan(0, 500);
-    final Enabled dialogEnabled = parent.event(0);
-    assertEquals(Enabled.class, dialogEnabled.getClass());
+    final Enabled dialogEnabled = parent.nextEvent();
+    assertNotNull(dialogEnabled);
 
     final Listbox list = dialog.childOf("list").await();
     list.select(3);
 
-    access.totalWritesGreaterThan(1, 500);
-    final CompletableReached completableReached = parent.event(1);
-    assertEquals(CompletableReached.class, completableReached.getClass());
+    final CompletableReached completableReached = parent.nextEvent();
+    assertNotNull(completableReached);
 
     final Button ok = dialog.childOf("ok").await();
     ok.click(new Point(1, 1));
 
-    access.totalWritesGreaterThan(2, 500);
-    final Completed<String> completed = parent.event(2);
-    assertEquals(Completed.class, completed.getClass());
+    final Completed<String> completed = parent.nextEvent();
+    assertNotNull(completed);
     assertEquals(Result.SUCCEEDED, completed.result);
     assertEquals("CartCheckedOut", completed.value);
+  }
+
+  private Specification specification(final MockParent parent) {
+    return DialogBox.with(
+            SchemaSelectionDialog.class,
+            parent,
+            "Select Schema",
+            Rectangle.with(10, 10, 250, 250),
+            "schema-dialog",
+            Arrays.asList(
+                    "CartItemAdded",
+                    "CartItemRemoved",
+                    "CartItemRegistered",
+                    "CartCheckedOut"));
   }
 }

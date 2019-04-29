@@ -18,26 +18,25 @@ import org.junit.Test;
 
 import io.vlingo.simgui.Desktop;
 import io.vlingo.simgui.geometry.Rectangle;
+import io.vlingo.simgui.windows.Listbox.ItemDeselected;
+import io.vlingo.simgui.windows.Listbox.ItemSelected;
+import io.vlingo.simgui.windows.Window.Enabled;
 
 public class ListboxTest {
 
   @Test
   public void testThatListboxSendsItemSelectedByIndexEvent() {
     final MockParent parent = new MockParent();
-    parent.afterCompleting(1);
     final Specification childSpec = Listbox.with(parent, "list", new Rectangle(), true);
     final Listbox listbox = Desktop.instance.windowFor(childSpec);
     assertNotNull(listbox);
-    List<Event> events = parent.events();
-    final Window.Enabled enabled = events.get(0).typed();
+    final Enabled enabled = parent.nextEvent();
     assertEquals("list", enabled.tag);
-    
-    parent.afterCompleting(1);
+
     final List<String> content = Arrays.asList("One", "Two", "Three");
     listbox.items(content);
     listbox.select(1);
-    events = parent.events();
-    final Listbox.ItemSelected selected = events.get(1).typed();
+    final ItemSelected selected = parent.nextEvent();
     assertEquals(1, selected.itemIndex);
     assertEquals(content.get(1), selected.content);
   }
@@ -45,20 +44,16 @@ public class ListboxTest {
   @Test
   public void testThatListboxSendsItemSelectedByTextEvent() {
     final MockParent parent = new MockParent();
-    parent.afterCompleting(1);
     final Specification childSpec = Listbox.with(parent, "list", new Rectangle(), true);
     final Listbox listbox = Desktop.instance.windowFor(childSpec);
     assertNotNull(listbox);
-    List<Event> events = parent.events();
-    final Window.Enabled enabled = events.get(0).typed();
+    final Enabled enabled = parent.nextEvent();
     assertEquals("list", enabled.tag);
     
-    parent.afterCompleting(1);
     final List<String> content = Arrays.asList("One", "Two", "Three");
     listbox.items(content);
     listbox.select("Three");
-    events = parent.events();
-    final Listbox.ItemSelected selected = events.get(1).typed();
+    final ItemSelected selected = parent.nextEvent();
     assertEquals(2, selected.itemIndex);
     assertEquals(content.get(2), selected.content);
   }
@@ -66,28 +61,21 @@ public class ListboxTest {
   @Test
   public void testThatListboxSendsDeselected() {
     final MockParent parent = new MockParent();
-    parent.afterCompleting(1);
     final Specification childSpec = Listbox.with(parent, "list", new Rectangle(), true);
     final Listbox listbox = Desktop.instance.windowFor(childSpec);
     assertNotNull(listbox);
-    List<Event> events = parent.events();
-    assertEquals(1, events.size());
-    final Window.Enabled enabled = events.get(0).typed();
+    final Enabled enabled = parent.nextEvent();
     assertEquals("list", enabled.tag);
 
-    parent.afterCompleting(2);
     final List<String> content = Arrays.asList("One", "Two", "Three");
     listbox.items(content);
     listbox.select("Three");
-    listbox.select(-1); // deselect
-    events = parent.events();
-    assertEquals(3, events.size());
-    final Listbox.ItemSelected selected = events.get(1).typed();
+    final ItemSelected selected = parent.nextEvent();
     assertEquals(2, selected.itemIndex);
     assertEquals(content.get(2), selected.content);
 
-    assertEquals(Listbox.ItemDeselected.class, events.get(2).typed().getClass());
-    final Listbox.ItemDeselected deselected = events.get(2).typed();
+    listbox.select(-1);
+    final ItemDeselected deselected = parent.nextEvent();
     assertTrue(deselected.content.isEmpty());
   }
 }

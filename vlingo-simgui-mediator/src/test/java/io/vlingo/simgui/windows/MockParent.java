@@ -7,8 +7,9 @@ import io.vlingo.actors.testkit.AccessSafely;
 import io.vlingo.common.Completes;
 
 public class MockParent implements Window {
-  private AccessSafely access;
+  private AccessSafely access = afterCompleting(0);
   private List<Event> events = new CopyOnWriteArrayList<>();
+  private int nextIndex = 0;
 
   @Override
   public void createSelf(final Specification specification) {
@@ -56,5 +57,15 @@ public class MockParent implements Window {
 
   public List<Event> events(final int retries, final List<Event> expected) {
     return access.readFromExpecting("events", expected, retries);
+  }
+
+  public <E extends Event> E nextEvent() {
+    access.totalWritesGreaterThan(nextIndex, 500);
+    return event(nextIndex++);
+  }
+
+  public List<Event> nextEvents() {
+    access.totalWritesGreaterThan(nextIndex++, 500);
+    return events();
   }
 }
