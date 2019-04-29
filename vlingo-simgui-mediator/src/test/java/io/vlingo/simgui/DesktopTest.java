@@ -8,17 +8,13 @@
 package io.vlingo.simgui;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
 
 import org.junit.Test;
 
 import io.vlingo.simgui.geometry.Point;
 import io.vlingo.simgui.geometry.Rectangle;
 import io.vlingo.simgui.windows.Button;
-import io.vlingo.simgui.windows.Event;
 import io.vlingo.simgui.windows.MockParent;
 import io.vlingo.simgui.windows.Specification;
 
@@ -32,18 +28,12 @@ public class DesktopTest {
   @Test
   public void testThatDesktopCreatesWindow() {
     final MockParent parent = new MockParent();
-    parent.afterCompleting(1);
     final Specification childSpec = Button.with(parent, "Ok", new Rectangle(), true);
     final Button button = Desktop.instance.windowFor(childSpec);
     assertNotNull(button);
-    List<Event> events = parent.events();
-    parent.afterCompleting(1);
-    final Point point = new Point(0, 0);
-    button.click(point);
-    events = parent.events();
-    assertNotNull(events);
-    assertFalse(events.isEmpty());
-    final Button.Clicked clicked = events.get(1).typed();
-    assertEquals(point, clicked.point);
+    parent.nextEvent(); // throw out Enabled
+    button.click();
+    final Button.Clicked clicked = parent.nextEvent();
+    assertEquals(Point.home(), clicked.point);
   }
 }

@@ -10,18 +10,16 @@ package io.vlingo.simgui.windows;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 
-import io.vlingo.actors.testkit.AccessSafely;
 import io.vlingo.simgui.Desktop;
 import io.vlingo.simgui.geometry.Point;
 import io.vlingo.simgui.geometry.Rectangle;
 import io.vlingo.simgui.windows.Button.Clicked;
+import io.vlingo.simgui.windows.Window.Disabled;
 import io.vlingo.simgui.windows.Window.Enabled;
 
 public class ButtonTest {
@@ -29,15 +27,14 @@ public class ButtonTest {
   @Test
   public void testThatButtonSendsEvent() {
     final MockParent parent = new MockParent();
-    final AccessSafely access = parent.afterCompleting(1);
     final Specification childSpec = Button.with(parent, "Ok", new Rectangle(), true);
     final Button button = Desktop.instance.windowFor(childSpec);
     assertNotNull(button);
-    access.totalWritesGreaterThan(0, 500);
+    final Enabled enabled = parent.nextEvent();
+    assertNotNull(enabled);
     final Point point = new Point(0, 0);
     button.click(point);
-    access.totalWritesGreaterThan(1, 500);
-    final List<Event> events = parent.events();
+    final List<Event> events = parent.nextEvents();
     assertNotNull(events);
     assertFalse(events.isEmpty());
     final Button.Clicked clicked = events.get(1).typed();
@@ -47,18 +44,16 @@ public class ButtonTest {
   @Test(expected = IllegalStateException.class)
   public void testThatDisabledButtonClickFails() {
     final MockParent parent = new MockParent();
-    parent.afterCompleting(1);
     final Specification childSpec = Button.with(parent, "Ok", new Rectangle(), true);
     final Button button = Desktop.instance.windowFor(childSpec);
     assertNotNull(button);
-    final Enabled enabled = new Enabled(button, childSpec.windowInfo.id, childSpec.windowInfo.tag);
-    List<Event> events = parent.events(500, Arrays.asList(enabled));
+    final Enabled enabled = parent.nextEvent();
+    assertNotNull(enabled);
     button.disable();
-    final Point point = new Point(0, 0);
-    button.click(point);
-    final Clicked clicked = new Clicked(button, childSpec.windowInfo.id, childSpec.windowInfo.tag, "Ok", point);
-    events = parent.events(500, Arrays.asList(clicked)); // should fail here
-    assertNotNull(events);
-    assertTrue(events.isEmpty());
+    button.click();
+    final Disabled disabled = parent.nextEvent();
+    assertNotNull(disabled);
+    final Clicked clicked = parent.nextEvent(); // should fail here
+    assertNotNull(clicked);
   }
 }
