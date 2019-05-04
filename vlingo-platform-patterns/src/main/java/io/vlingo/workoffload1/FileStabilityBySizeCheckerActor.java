@@ -11,6 +11,7 @@ import java.io.File;
 import java.time.Duration;
 
 import io.vlingo.actors.Actor;
+import io.vlingo.actors.Stoppable;
 import io.vlingo.common.Cancellable;
 import io.vlingo.common.Scheduled;
 
@@ -56,6 +57,7 @@ public class FileStabilityBySizeCheckerActor extends Actor implements FileStabil
 
   private void completed() {
     completed = true;
+    selfAs(Stoppable.class).conclude();
   }
 
   private void determineFor(final FileSizeStability stability) {
