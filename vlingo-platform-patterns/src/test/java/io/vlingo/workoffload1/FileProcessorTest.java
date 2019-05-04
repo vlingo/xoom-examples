@@ -120,7 +120,7 @@ public class FileProcessorTest {
     void modifyFileWith(final File file, final Duration frequency, final int times);
   }
 
-  public static final class FileModifierActor extends Actor implements FileModifier, Scheduled<Object>, Stoppable {
+  public static final class FileModifierActor extends Actor implements FileModifier, Scheduled<Object> {
     private Cancellable cancellable;
     private int count;
     private String path;
@@ -165,6 +165,11 @@ public class FileProcessorTest {
       try {
         writer.close();
         cancellable.cancel();
+        // TODO: This is causing a strange problem by suspending the
+        // mailbox before it has a chance to delivery everything up
+        // to the Stoppable::conclude() message.
+        // 
+        // selfAs(Stoppable.class).conclude();
       } catch (IOException e) {
         throw new IllegalStateException("Cannot close file: " + path, e);
       } finally {
