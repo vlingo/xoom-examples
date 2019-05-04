@@ -28,6 +28,7 @@
     <module>vlingo-http-frontservice</module>
     <module>vlingo-iddd-collaboration</module>
     <module>vlingo-reactive-messaging-patterns</module>
+    <module>vlingo-platform-patterns</module>
     <module>vlingo-simgui-mediator</module>
   </modules>
 </project>
