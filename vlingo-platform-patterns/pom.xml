@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.vlingo</groupId>
+  <artifactId>vlingo-platform-patterns</artifactId>
+  <version>0.8.3</version>
+  <name>vlingo-platform-patterns</name>
+  <description>Example of common patterns when using the vlingo/platform.</description>
+  <url>https://github.com/vlingo/vlingo-examples</url>
+  <licenses>
+    <license>
+      <name>Mozilla Public License 2.0</name>
+      <url>https://mozilla.org/MPL/2.0/</url>
+    </license>
+  </licenses>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-common</artifactId>
+      <version>0.8.3</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-actors</artifactId>
+      <version>0.8.3</version>
+    </dependency>
+  </dependencies>
+</project>
