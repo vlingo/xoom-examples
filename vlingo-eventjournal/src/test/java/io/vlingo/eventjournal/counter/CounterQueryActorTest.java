@@ -24,7 +24,6 @@ import io.vlingo.eventjournal.counter.events.CounterDecreasedAdapter;
 import io.vlingo.eventjournal.counter.events.CounterIncreased;
 import io.vlingo.eventjournal.counter.events.CounterIncreasedAdapter;
 import io.vlingo.symbio.BaseEntry.TextEntry;
-import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.EntryAdapterProvider;
 import io.vlingo.symbio.store.journal.JournalReader;
 
