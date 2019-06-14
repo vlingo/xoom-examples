@@ -10,6 +10,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <kotlin.version>1.3.31</kotlin.version>
   </properties>
   <dependencies>
     <dependency>
@@ -18,7 +19,55 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+  <build>
+    <testSourceDirectory>vlingo-iddd-agilepm/src/test/kotlin</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>${kotlin.version}</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <!--
+              <sourceDirs>
+                <source>vlingo-iddd-agilepm/src</source>
+                <source>vlingo-iddd-agilepm/src/main/kotlin</source>
+              </sourceDirs>
+              -->
+            </configuration>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jvmTarget>1.8</jvmTarget>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <modules>
     <module>vlingo-actors-playground</module>
     <module>vlingo-auth-authservice</module>
@@ -26,6 +75,7 @@
     <module>vlingo-eventjournal</module>
     <module>vlingo-http-backservice</module>
     <module>vlingo-http-frontservice</module>
+    <!-- vlingo-iddd-agilepm -->
     <module>vlingo-iddd-collaboration</module>
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-platform-patterns</module>
