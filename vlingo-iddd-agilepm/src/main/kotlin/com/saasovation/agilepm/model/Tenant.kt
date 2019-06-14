@@ -7,4 +7,4 @@
 
 package main.kotlin.com.saasovation.agilepm.model.product
 
-data class ProductOwner(val tenant: Tenant, val username: String)
+data class Tenant(val id: String)
