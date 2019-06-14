@@ -9,15 +9,14 @@ package com.saasovation.agilepm.model.product
 
 import io.vlingo.actors.Stage
 
-public interface Product {
-  companion object {
-    fun define(val stage: Stage, val tenant: Tenant, val productOwner: ProductOwner, val name: String, val description: String): Product {
-      val product = stage.actorFor(Product::class.java, ProductEntity::class.java)
-      product.define(tenant, productOwner, name, description)
-      return product
-    }
+public class ProductEntity : Product, Sourced<io.vlingo.lattice.model.DomainEvent> {
+  var State state
+
+  fun changeProductOwner(val productOwner: ProductOwner): Completes<State> {
+    apply(ProductOwnerChanged(state.tenant.id, state.productId.id, productOwner.id))
   }
 
-  fun changeProductOwner(val productOwner: ProductOwner)
-  fun define(val tenant: Tenant, val productOwner: ProductOwner, val name: String, val description: String)
+  fun define(val tenant: Tenant, val productId: ProductId, val productOwner: ProductOwner, val name: String, val description: String) {
+    apply(ProductDefined())
+  }
 }
