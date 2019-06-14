@@ -21,7 +21,6 @@ import org.junit.Test;
 
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.Stage;
-import io.vlingo.actors.Stoppable;
 import io.vlingo.actors.World;
 import io.vlingo.common.Cancellable;
 import io.vlingo.common.Scheduled;
