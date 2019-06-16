@@ -7,7 +7,7 @@
 
 package io.vlingo.frontservice.resource;
 
-import io.vlingo.http.resource.DefaultMapper;
+import io.vlingo.http.resource.DefaultJsonMapper;
 import io.vlingo.http.resource.Mapper;
 
 /**
@@ -24,11 +24,11 @@ public class ProfileDataMapper implements Mapper {
 
   @Override
   public <T> T from(final String data, final Class<T> type) {
-    return DefaultMapper.instance.from(data, type);
+    return DefaultJsonMapper.instance.from(data, type);
   }
 
   @Override
   public <T> String from(final T data) {
-    return DefaultMapper.instance.from(data);
+    return DefaultJsonMapper.instance.from(data);
   }
 }

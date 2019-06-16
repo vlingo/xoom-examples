@@ -66,11 +66,9 @@ public class OrderResource {
         return resource("Order resource fluent api",
                 post(ROOT_URL)
                         .body(OrderCreateRequest.class)
-                        .handle(this::create),
-                get(ROOT_URL + "/{orderId}")
+                        .handle(this::create), get(ROOT_URL + "/{orderId}")
                         .param(String.class)
-                        .handle(this::queryOrder),
-                post(ROOT_URL + "/{orderId}/payment")
+                        .handle(this::queryOrder), post(ROOT_URL + "/{orderId}/payment")
                         .param(String.class)
                         .body(PaymentId.class)
                         .handle(this::postPayment));
