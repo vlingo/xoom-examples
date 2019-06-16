@@ -30,8 +30,6 @@ public class Bootstrap {
     private Bootstrap(final int portNumber) {
         world = World.startWithDefaults("cartservice");
 
-        // Journal -> exists EventSourced types
-        // Listener -> exists Journal
         MockJournalListener listener = new MockJournalListener();
         Journal<String> journal = Journal.using(world.stage(), InMemoryJournalActor.class, listener);
 
