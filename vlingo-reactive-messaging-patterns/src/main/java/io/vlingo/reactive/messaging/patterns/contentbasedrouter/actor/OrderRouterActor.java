@@ -37,7 +37,7 @@ public class OrderRouterActor extends Actor implements OrderRouter {
         } else if (orderPlaced.getOrder ().getType ().contains ( TYPE_XYZ )) {
             inventorySystemX.handleOrder ( orderPlaced.getOrder () );
         } else {
-            logger ().log ( "OrderRouter: received unexpected message" );
+            logger ().error ( "OrderRouter: received unexpected message" );
         }
         this.orderRoutingResults.access.writeUsing("afterOrderRoutedCount", 1);
     }

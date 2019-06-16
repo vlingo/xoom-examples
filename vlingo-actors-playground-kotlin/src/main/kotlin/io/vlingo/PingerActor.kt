@@ -18,7 +18,7 @@ class PingerActor: Actor, Pinger {
 
     override fun ping(ponger: Ponger) {
         ++count
-        logger().log("ping $count")
+        logger().debug("ping $count")
         if (count > 10) {
             pinger.stop()
             ponger.stop()
@@ -28,7 +28,7 @@ class PingerActor: Actor, Pinger {
     }
 
     override fun afterStop() {
-        logger().log("Pinger: ${address()} just stopped")
+        logger().debug("Pinger: ${address()} just stopped")
         until.happened()
         super.afterStop()
     }

@@ -32,7 +32,7 @@ public class PointToPointChannelTest
     {
         final World world = World.startWithDefaults( WORLD_NAME );
         
-        world.defaultLogger().log( "PointToPointChannel: is starting" );
+        world.defaultLogger().debug( "PointToPointChannel: is starting" );
         
         final PointToPointResults results = new PointToPointResults();
 
@@ -47,7 +47,7 @@ public class PointToPointChannelTest
 
         Assert.assertEquals(NUMBER_MESSAGES.intValue(), (int) access.readFrom("afterMessageProcessedCount"));
         
-        world.defaultLogger().log( "PointToPointChannel: is completed" );
+        world.defaultLogger().debug( "PointToPointChannel: is completed" );
         
         world.terminate();
         

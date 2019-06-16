@@ -27,12 +27,12 @@ public class Deduplicator extends Actor implements OrderProcessor {
   @Override
   public void processIncomingOrder(final byte[] orderInfo) {
     final String textOrderInfo = new String(orderInfo, StandardCharsets.UTF_8);
-    logger().log("Deduplicator: processing: " + textOrderInfo);
+    logger().debug("Deduplicator: processing: " + textOrderInfo);
     final String orderId = orderIdFrom(textOrderInfo);
     if (processedOrderIds.add(orderId)) {
       nextFilter.processIncomingOrder(orderInfo);
     } else {
-      logger().log("Deduplicator: found duplicate order " + orderId);
+      logger().debug("Deduplicator: found duplicate order " + orderId);
     }
     results.access.writeUsing("afterOrderDeduplicatedCount", 1);
   }

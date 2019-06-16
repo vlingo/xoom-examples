@@ -7,14 +7,14 @@
 
 package io.vlingo.workoffload1;
 
+import io.vlingo.actors.Actor;
+import io.vlingo.actors.CompletesEventually;
+import io.vlingo.common.Completes;
+
 import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.vlingo.actors.Actor;
-import io.vlingo.actors.CompletesEventually;
-import io.vlingo.common.Completes;
 
 /**
  * Process stable files.
@@ -70,6 +70,6 @@ public class FileProcessorActor extends Actor implements FileProcessor, FileStab
 
     completesEventually.with(result);
 
-    logger().log(message);
+    logger().info(message);
   }
 }

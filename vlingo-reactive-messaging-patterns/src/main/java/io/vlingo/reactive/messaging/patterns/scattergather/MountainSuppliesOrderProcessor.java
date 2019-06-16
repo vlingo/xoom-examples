@@ -6,10 +6,10 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.scattergather;
 
+import io.vlingo.actors.Actor;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import io.vlingo.actors.Actor;
 
 /**
  * MountainSuppliesOrderProcessor maintains registry of @{@link QuoteProcessor} {@link Actor} instances
@@ -34,7 +34,7 @@ implements OrderProcessor
     @Override
     public void subscribe( QuoteSubscriptionRequest request )
     {
-        logger().log( String.format( "%s interested", request.quoteProcessor ));
+        logger().debug( String.format( "%s interested", request.quoteProcessor ));
         subscribers.put( request.quoterId, request );
         results.access.writeUsing("afterProcessorRegisteredCount", 1);
     }
@@ -58,7 +58,7 @@ implements OrderProcessor
     @Override
     public void bestPriceQuotation( BestPriceQuotation bestPriceQuotation )
     {
-        logger().log( String.format( "OrderProcessor received best quotes: %s", bestPriceQuotation ) );
+        logger().debug( String.format( "OrderProcessor received best quotes: %s", bestPriceQuotation ) );
         results.access.writeUsing("afterBestPriceQuotationRegisteredCount", 1);
     }
     

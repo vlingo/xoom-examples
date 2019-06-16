@@ -56,7 +56,7 @@ implements Processor
         }
         else
         {
-            logger().log( 
+            logger().debug(
                 String.format( "As expected %d::%d::%d::%s", localCount, count, difference, toString() ) 
             );
         }

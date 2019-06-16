@@ -21,13 +21,13 @@ public class Client extends Actor implements Consumer {
 
   @Override
   public void replyToSimple(final String what) {
-    logger().log("Consumer received reply-to-simple: " + what);
+    logger().debug("Consumer received reply-to-simple: " + what);
     results.access.writeUsing("afterSimpleReplyCount", 1);
   }
 
   @Override
   public void replyToComplex(final String what) {
-    logger().log("Consumer received reply-to-complex: " + what);
+    logger().debug("Consumer received reply-to-complex: " + what);
     results.access.writeUsing("afterComplexReplyCount", 1);
   }
 }

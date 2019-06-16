@@ -7,9 +7,9 @@
 
 package io.vlingo.reactive.messaging.patterns.pipesandfilters;
 
-import java.nio.charset.StandardCharsets;
-
 import io.vlingo.actors.Actor;
+
+import java.nio.charset.StandardCharsets;
 
 public class OrderManagementSystem extends Actor implements OrderProcessor {
   private final PipeAndFilterResults results;
@@ -21,7 +21,7 @@ public class OrderManagementSystem extends Actor implements OrderProcessor {
   @Override
   public void processIncomingOrder(byte[] orderInfo) {
     final String textOrderInfo = new String(orderInfo, StandardCharsets.UTF_8);
-    logger().log("OrderManagementSystem: processing unique order:" + textOrderInfo);
+    logger().debug("OrderManagementSystem: processing unique order:" + textOrderInfo);
     results.access.writeUsing("afterOrderManagedCount", 1);
   }
 }

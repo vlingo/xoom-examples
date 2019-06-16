@@ -11,7 +11,7 @@ public class InventorySystemA extends Actor implements Inventory {
 
     @Override
     public void handleOrder(Order orderPlaced) {
-        logger ().log ( "Handling : " + orderPlaced );
+        logger ().debug ( "Handling : " + orderPlaced );
     }
 
 }

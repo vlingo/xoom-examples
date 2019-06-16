@@ -31,12 +31,12 @@ implements OrderProcessor
         {
             this.deadLetters().failedDelivery( new DeadLetter( this, "stop()" ));
             results.access.writeUsing("afterOrderExpiredCount", 1);
-            logger().log( String.format( "PurchaseAgent: delivered expired %s to dead letters", order ));
+            logger().debug( String.format( "PurchaseAgent: delivered expired %s to dead letters", order ));
         }
         else
         {
             results.access.writeUsing("afterOrderPlacedCount", 1);
-            logger().log( String.format( "PurchaseAgent: placing order for %s", order ));
+            logger().debug( String.format( "PurchaseAgent: placing order for %s", order ));
         }
 
     }

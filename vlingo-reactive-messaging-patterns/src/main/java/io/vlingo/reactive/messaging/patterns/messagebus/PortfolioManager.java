@@ -39,7 +39,7 @@ implements TradingProcessor
     @Override
     public void buyOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        logger().log( String.format( "%s::buyOrderExecuted( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
+        logger().debug( String.format( "%s::buyOrderExecuted( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
         
         /*
          * perform buy order executed analysis work here
@@ -51,7 +51,7 @@ implements TradingProcessor
     @Override
     public void sellOrderExecuted( String portfolioId, String symbol, Integer quantity, Double price )
     { 
-        logger().log( String.format( "%s::sellOrderExecuted( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
+        logger().debug( String.format( "%s::sellOrderExecuted( %s, %s, %d, %.2f )", getClass().getSimpleName(), portfolioId, symbol, quantity, price ));
         
         /*
          * perform sell order executed analysis work here
@@ -63,14 +63,14 @@ implements TradingProcessor
     @Override
     public void executeBuyOrder( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        logger().log( "Unsupported method executeBuyOrder" );
+        logger().debug( "Unsupported method executeBuyOrder" );
     }
 
     /* @see io.vlingo.reactive.messaging.patterns.messagebus.TradingProcessor#executeSellOrder(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Double) */
     @Override
     public void executeSellOrder( String portfolioId, String symbol, Integer quantity, Double price )
     {
-        logger().log( "Unsupported method executeSellOrder" );
+        logger().debug( "Unsupported method executeSellOrder" );
     }
 
 }

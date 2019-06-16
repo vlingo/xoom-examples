@@ -7,12 +7,6 @@
 
 package io.vlingo.backservice.resource;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import io.vlingo.actors.Actor;
 import io.vlingo.backservice.infra.persistence.EventJournal;
 import io.vlingo.backservice.infra.persistence.EventJournal.Sink;
@@ -20,6 +14,12 @@ import io.vlingo.backservice.resource.model.PrivateTokenGernerated;
 import io.vlingo.http.resource.sse.SseEvent;
 import io.vlingo.http.resource.sse.SseFeed;
 import io.vlingo.http.resource.sse.SseSubscriber;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
   private final String EventType = PrivateTokenGernerated.class.getSimpleName();
@@ -43,7 +43,7 @@ public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
     this.eventJournal = EventJournal.provider.instance();
     this.pending = new HashMap<>();
     this.sink = selfAs(Sink.class);
-    logger().log("SseFeed started for stream: " + this.streamName);
+    logger().debug("SseFeed started for stream: " + this.streamName);
   }
 
   //=====================================
@@ -71,7 +71,7 @@ public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
     final SseSubscriber subscriber = (SseSubscriber) referencing;
     final boolean fresh = subscriber.currentEventId().isEmpty();
     final int retry = fresh ? RetryThreshold : SseEvent.NoRetry;
-    if (!events.isEmpty()) logger().log("SENDING " + events.size() + " MESSAGES FOR " + subscriber.correlationId());
+    if (!events.isEmpty()) logger().debug("SENDING " + events.size() + " MESSAGES FOR " + subscriber.correlationId());
     subscriber.client().send(subStream(events, startId, retry), subscriber.correlationId());
     subscriber.currentEventId(String.valueOf(startId + events.size()));
     pending.remove(subscriber.id());
