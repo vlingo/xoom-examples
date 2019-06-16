@@ -27,7 +27,7 @@ public class CartResourceShould {
     private int cartPortNumber = portNumber.getAndIncrement();
 
     @Before
-    public void setUp() throws InterruptedException {
+    public void setUp() {
         Bootstrap.instance(cartPortNumber);
 
         // This should not be needed; see https://github.com/vlingo/vlingo-http/issues/26
@@ -37,14 +37,17 @@ public class CartResourceShould {
     }
 
     @After
-    public void cleanUp() throws InterruptedException {
+    public void cleanUp() {
         // Shutdown is not reliable yet; see https://github.com/vlingo/vlingo-http/issues/25
         Bootstrap.instance().stop();
     }
 
 
     RequestSpecification baseGiven() {
-        return given().port(cartPortNumber).accept(ContentType.JSON);
+        return given()
+                .port(cartPortNumber)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON);
     }
 
     String createCart() {
