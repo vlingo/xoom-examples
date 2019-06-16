@@ -50,7 +50,10 @@ public class OrderResourceShould {
     }
 
     private RequestSpecification baseGiven() {
-        return given().port(orderPortNumber).accept(ContentType.JSON);
+        return given()
+                .port(orderPortNumber)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON);
     }
 
     private String getOrderId(final String orderUrl) {
