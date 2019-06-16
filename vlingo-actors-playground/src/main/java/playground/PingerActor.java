@@ -24,7 +24,7 @@ public class PingerActor extends Actor implements Pinger {
   @Override
   public void ping(final Ponger ponger) {
     ++count;
-    logger().log("ping " + count);
+    logger().debug("ping " + count);
     if (count >= 10) {
       self.stop();
       ponger.stop();
@@ -35,7 +35,7 @@ public class PingerActor extends Actor implements Pinger {
 
   @Override
   protected void afterStop() {
-    logger().log("Pinger " + address() + " just stopped!");
+    logger().debug("Pinger " + address() + " just stopped!");
     until.happened();
     super.afterStop();
   }

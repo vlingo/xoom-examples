@@ -26,7 +26,7 @@ public class SplitterTest
     public void testSplitterRuns()
     {
         World world = World.startWithDefaults( WORLD_NAME );
-        world.defaultLogger().log( "SplitterTest: is started" );
+        world.defaultLogger().debug( "SplitterTest: is started" );
         
         final SplitterResults results = new SplitterResults();
         final AccessSafely access = results.afterCompleting( ORDERS_ITEMS );
@@ -46,7 +46,7 @@ public class SplitterTest
         Assert.assertEquals(1, (int) access.readFrom("afterOrderByReceivedBProcessorCount"));
         Assert.assertEquals(1, (int) access.readFrom("afterOrderByReceivedCProcessorCount"));
 
-        world.defaultLogger().log( "SplitterTest: is completed" );
+        world.defaultLogger().debug( "SplitterTest: is completed" );
         world.terminate();
     }
 

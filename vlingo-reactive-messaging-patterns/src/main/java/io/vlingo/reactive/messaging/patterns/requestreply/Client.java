@@ -22,11 +22,11 @@ public class Client extends Actor implements Consumer {
 
   @Override
   public void replyOf(final String what) {
-    logger().log("Consumer received request-reply of: " + what);
+    logger().debug("Consumer received request-reply of: " + what);
     results.access.writeUsing("afterReplyReceivedCount", 1);
 
     service.query("Query from Client-Consumer!").andThenConsume(result -> {
-      logger().log("Consumer received query-reply of: " + what);
+      logger().debug("Consumer received query-reply of: " + what);
       results.access.writeUsing("afterQueryPerformedCount", 1);
     });
   }

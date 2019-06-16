@@ -29,7 +29,7 @@ public class MessageRouterTest
         
         final World world = World.startWithDefaults( WORLD_NAME );
         
-        world.defaultLogger().log( "AlternatingRouteProcessor: is starting"  );
+        world.defaultLogger().debug( "AlternatingRouteProcessor: is starting"  );
 
         final MessageRouterResults results = new MessageRouterResults();
 
@@ -52,7 +52,7 @@ public class MessageRouterTest
             
             if ( j != remaining )
             {
-                world.defaultLogger().log( String.format( "Count: %d", remaining ));
+                world.defaultLogger().debug( String.format( "Count: %d", remaining ));
                 j = remaining;
             }
             
@@ -62,7 +62,7 @@ public class MessageRouterTest
         Assert.assertEquals(10, (int) access.readFrom("afterMessageProcessedByFirstProcessorCount"));
         Assert.assertEquals(10, (int) access.readFrom("afterMessageProcessedBySecondProcessorCount"));
         
-        world.defaultLogger().log( "AlternatingRouteProcessor: is completed"  );
+        world.defaultLogger().debug( "AlternatingRouteProcessor: is completed"  );
         
         world.terminate();
         

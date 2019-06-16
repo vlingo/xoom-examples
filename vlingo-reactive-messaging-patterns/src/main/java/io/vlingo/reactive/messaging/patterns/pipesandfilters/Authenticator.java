@@ -23,7 +23,7 @@ public class Authenticator extends Actor implements OrderProcessor {
   @Override
   public void processIncomingOrder(final byte[] orderInfo) {
     final String textOrderInfo = new String(orderInfo, StandardCharsets.UTF_8);
-    logger().log("Authenticator: processing: " + textOrderInfo);
+    logger().debug("Authenticator: processing: " + textOrderInfo);
     final String orderText = textOrderInfo.replace("(certificate)", "");
     nextFilter.processIncomingOrder(orderText.getBytes());
     results.access.writeUsing("afterOrderAuthenticatedCount", 1);

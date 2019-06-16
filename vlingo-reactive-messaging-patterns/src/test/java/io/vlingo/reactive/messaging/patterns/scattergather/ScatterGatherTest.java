@@ -23,7 +23,7 @@ public class ScatterGatherTest
     public void testScatterGatherRuns()
     {
         World world = World.startWithDefaults( WORLD_NAME );
-        world.defaultLogger().log( "ScatterGatherTest: is started" );
+        world.defaultLogger().debug( "ScatterGatherTest: is started" );
         
         final ScatterGatherResults results = new ScatterGatherResults();
         final AccessSafely access = results.afterCompleting(10);
@@ -36,7 +36,7 @@ public class ScatterGatherTest
         world.actorFor( QuoteProcessor.class, PinnacleGearPriceQuotes.class, mtnSuppliesOrderProcessor );
         world.actorFor( QuoteProcessor.class, RockBottomOuterwearPriceQuotes.class, mtnSuppliesOrderProcessor );
         
-        world.defaultLogger().log( String.format( "Register completes!!!" ));
+        world.defaultLogger().debug("Register completes!!!");
         
         mtnSuppliesOrderProcessor
             .requestForQuote( 
@@ -95,7 +95,7 @@ public class ScatterGatherTest
         Assert.assertEquals(5, (int) access.readFrom("afterProcessorRegisteredCount"));
         Assert.assertEquals(5, (int) access.readFrom("afterBestPriceQuotationRegisteredCount"));
 
-        world.defaultLogger().log( "ScatterGatherTest: is completed" );
+        world.defaultLogger().debug( "ScatterGatherTest: is completed" );
         world.terminate();
     }
 

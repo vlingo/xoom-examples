@@ -24,7 +24,7 @@ public class MessageExpirationTest
     public void testMessageExpirationRuns()
     {
         World world = World.startWithDefaults( WORLD_NAME );
-        world.defaultLogger().log( "MessageExpirationTest: is started" );
+        world.defaultLogger().debug( "MessageExpirationTest: is started" );
 
         final MessageExpirationResults results = new MessageExpirationResults();
         final AccessSafely access = results.afterCompleting( ORDERS );
@@ -40,7 +40,7 @@ public class MessageExpirationTest
 
         Assert.assertEquals(expectedOrderPlaced, (int) access.readFrom("afterOrderPlacedCount"));
 
-        world.defaultLogger().log( "MessageExpirationTest: is completed" );
+        world.defaultLogger().debug( "MessageExpirationTest: is completed" );
         
         world.terminate();
     }

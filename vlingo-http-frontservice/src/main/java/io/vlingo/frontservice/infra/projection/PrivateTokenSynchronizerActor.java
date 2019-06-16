@@ -7,12 +7,6 @@
 
 package io.vlingo.frontservice.infra.projection;
 
-import static io.vlingo.http.Method.GET;
-import static io.vlingo.http.RequestHeader.host;
-
-import java.net.URI;
-import java.util.List;
-
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.AddressFactory;
 import io.vlingo.frontservice.model.User;
@@ -29,6 +23,12 @@ import io.vlingo.lattice.model.projection.ProjectionControl;
 import io.vlingo.wire.node.Address;
 import io.vlingo.wire.node.AddressType;
 import io.vlingo.wire.node.Host;
+
+import java.net.URI;
+import java.util.List;
+
+import static io.vlingo.http.Method.GET;
+import static io.vlingo.http.RequestHeader.host;
 
 public class PrivateTokenSynchronizerActor extends Actor implements Projection {
   private static final int Identities = 0;
@@ -55,11 +55,11 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
     final String correlationId = state.id + IdentitiesSeparator + projectable.projectionId();
 
     if (client == null && client() == null) {
-      logger().log("PrivateTokenSynchronizerActor: Currently no connection to backservice.");
+      logger().warn("PrivateTokenSynchronizerActor: Currently no connection to backservice.");
       return;
     }
 
-    logger().log("REQUESTING TOKEN: " + correlationId);
+    logger().debug("REQUESTING TOKEN: " + correlationId);
 
     client.requestWith(
             Request
@@ -70,10 +70,10 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
           .andThenConsume(response -> {
              switch (response.status) {
              case Ok:
-               logger().log("STARTING PROCESSING FOR TOKEN: " + correlationId);
+               logger().debug("STARTING PROCESSING FOR TOKEN: " + correlationId);
                break;
              default:
-               logger().log("Failed token request for user: " + state.id + " because: " + response.status);
+               logger().error("Failed token request for user: " + state.id + " because: " + response.status);
                break;
              }
            });
@@ -87,7 +87,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
               new ResponseConsumer() {
                 @Override
                 public void consume(final Response response) {
-                  logger().log("Unknown response received: " + response.status);
+                  logger().error("Unknown response received: " + response.status);
                 }
               }));
 
@@ -96,7 +96,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
       return client;
 
     } catch (Exception e) {
-      logger().log("The client could not be created.", e);
+      logger().error("The client could not be created.", e);
       return client;
     }
   }
@@ -115,7 +115,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
                 attachPrivateTokenFrom(response);
                break;
               default:
-                logger().log("Unexpected: " + response.status);
+                logger().error("Unexpected: " + response.status);
                 break;
               }
             })
@@ -125,13 +125,13 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
   private void attachPrivateTokenFrom(final Response response) {
     final List<MessageEvent> events = MessageEvent.from(response);
     for (final MessageEvent event : events) {
-      logger().log("EVENT: " + event);
+      logger().debug("EVENT: " + event);
       final SecurityTokenInfo eventData = securityTokenInfoFrom(event);
       stage().actorOf(User.class, eventData.address)
         .andThenConsume(user -> {
           user.attachPrivateToken(eventData.securityToken);
           control.confirmProjected(eventData.projectionId);
-          logger().log("USER TOKEN SYNCHRONIZED: " + eventData.userId + " WITH: " + eventData.securityToken);
+          logger().debug("USER TOKEN SYNCHRONIZED: " + eventData.userId + " WITH: " + eventData.securityToken);
         });
     }
   }

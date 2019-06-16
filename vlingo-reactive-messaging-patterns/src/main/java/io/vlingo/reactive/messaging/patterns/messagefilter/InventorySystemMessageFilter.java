@@ -25,7 +25,7 @@ public class InventorySystemMessageFilter extends Actor implements InventorySyst
             inventorySystem.processOrder(order);
             results.access.writeUsing("afterOrderProcessedCount", 1);
         } else {
-            logger().log("Filtering out " + order);
+            logger().debug("Filtering out " + order);
             results.access.writeUsing("afterOrderFilteredCount", 1);
         }
     }

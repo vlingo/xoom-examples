@@ -7,14 +7,14 @@
 
 package io.vlingo.reactive.messaging.patterns.aggregator;
 
+import io.vlingo.actors.Actor;
+import io.vlingo.reactive.messaging.patterns.aggregator.PriceQuotes.PriceQuote;
+import io.vlingo.reactive.messaging.patterns.aggregator.PriceQuotes.PriceQuoteRequest;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.vlingo.actors.Actor;
-import io.vlingo.reactive.messaging.patterns.aggregator.PriceQuotes.PriceQuote;
-import io.vlingo.reactive.messaging.patterns.aggregator.PriceQuotes.PriceQuoteRequest;
 
 public class MountaineeringSuppliesOrderProcessor extends Actor
     implements RequestForQuotationProcessor, RequestForQuotationSupplier,
@@ -92,7 +92,7 @@ public class MountaineeringSuppliesOrderProcessor extends Actor
   private void dispatchTo(final RequestForQuotation rfq, Iterable<PriceQuoteInterest> recipientList) {
     recipientList.forEach(recipient -> {
       rfq.retailItems.forEach(retailItem -> {
-        logger().log("OrderProcessor: " + rfq.rfqId + " item: " + retailItem.itemId + " to: " + recipient.id);
+        logger().debug("OrderProcessor: " + rfq.rfqId + " item: " + retailItem.itemId + " to: " + recipient.id);
         recipient.priceQuotes.requestPriceQuote(new PriceQuoteRequest(rfq.rfqId, retailItem.itemId, retailItem.retailPrice, rfq.totalRetailPrice), requester);
       });
     });
