@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-examples</artifactId>
-  <version>0.8.3</version>
+  <version>0.8.4</version>
   <packaging>pom</packaging>
   <name>vlingo-examples</name>
   <url>http://maven.apache.org</url>
@@ -45,14 +45,7 @@
             <goals>
               <goal>compile</goal>
             </goals>
-            <configuration>
-              <!--
-              <sourceDirs>
-                <source>vlingo-iddd-agilepm/src</source>
-                <source>vlingo-iddd-agilepm/src/main/kotlin</source>
-              </sourceDirs>
-              -->
-            </configuration>
+            <configuration/>
           </execution>
           <execution>
             <id>test-compile</id>
@@ -75,7 +68,6 @@
     <module>vlingo-eventjournal</module>
     <module>vlingo-http-backservice</module>
     <module>vlingo-http-frontservice</module>
-    <!-- vlingo-iddd-agilepm -->
     <module>vlingo-iddd-collaboration</module>
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-platform-patterns</module>
