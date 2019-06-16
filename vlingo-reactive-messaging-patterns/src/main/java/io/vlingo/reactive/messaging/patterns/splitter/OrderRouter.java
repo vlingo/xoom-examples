@@ -44,7 +44,7 @@ implements OrderProcessor
     {
         for ( OrderItem item : order.orderItems.values() )
         {
-            logger().log( String.format( "OrderRouter: routing %s", item ));
+            logger().debug( String.format( "OrderRouter: routing %s", item ));
             
             switch ( item.itemType )
             {
@@ -61,7 +61,7 @@ implements OrderProcessor
                     break;
 
                 default:
-                    logger().log( String.format( "Unknown item type '%s'", item.itemType ));
+                    logger().error( String.format( "Unknown item type '%s'", item.itemType ));
                     break;
             }
         }
@@ -84,7 +84,7 @@ implements OrderProcessor
         @Override
         public void orderTypeAItem(OrderItem orderItem)
         {
-            logger().log( String.format( "orderTypeAItem: handling %s", orderItem.toString() ));
+            logger().debug( String.format( "orderTypeAItem: handling %s", orderItem.toString() ));
             results.access.writeUsing("afterOrderByReceivedAProcessorCount", 1);
         }
 
@@ -92,14 +92,14 @@ implements OrderProcessor
         @Override
         public void orderTypeBItem(OrderItem orderItem)
         {
-            logger().log( "orderTypeBItem unsupported method" );
+            logger().warn( "orderTypeBItem unsupported method" );
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderRouter.OrderItemProcessor#orderTypeCItem(io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem) */
         @Override
         public void orderTypeCItem(OrderItem orderItem)
         {
-            logger().log( "orderTypeCItem unsupported method" );
+            logger().warn( "orderTypeCItem unsupported method" );
         }
         
     }
@@ -119,14 +119,14 @@ implements OrderProcessor
         @Override
         public void orderTypeAItem(OrderItem orderItem)
         {
-            logger().log( "orderTypeAItem unsupported method" );
+            logger().warn( "orderTypeAItem unsupported method" );
        }
 
         /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderRouter.OrderItemProcessor#orderTypeBItem(io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem) */
         @Override
         public void orderTypeBItem(OrderItem orderItem)
         {
-            logger().log( String.format( "orderTypeBItem: handling %s", orderItem.toString() ));
+            logger().debug( String.format( "orderTypeBItem: handling %s", orderItem.toString() ));
             results.access.writeUsing("afterOrderByReceivedBProcessorCount", 1);
         }
 
@@ -134,7 +134,7 @@ implements OrderProcessor
         @Override
         public void orderTypeCItem(OrderItem orderItem)
         {
-            logger().log( "orderTypeCItem unsupported method" );
+            logger().warn( "orderTypeCItem unsupported method" );
         }
         
     }
@@ -154,21 +154,21 @@ implements OrderProcessor
         @Override
         public void orderTypeAItem(OrderItem orderItem)
         {
-            logger().log( "orderTypeAItem unsupported method" );
+            logger().warn( "orderTypeAItem unsupported method" );
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderRouter.OrderItemProcessor#orderTypeBItem(io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem) */
         @Override
         public void orderTypeBItem(OrderItem orderItem)
         {
-            logger().log( "orderTypeBItem unsupported method" );
+            logger().warn( "orderTypeBItem unsupported method" );
         }
 
         /* @see io.vlingo.reactive.messaging.patterns.splitter.OrderRouter.OrderItemProcessor#orderTypeCItem(io.vlingo.reactive.messaging.patterns.splitter.Order.OrderItem) */
         @Override
         public void orderTypeCItem(OrderItem orderItem)
         {
-            logger().log( String.format( "orderTypeCItem: handling %s", orderItem.toString() ));
+            logger().debug( String.format( "orderTypeCItem: handling %s", orderItem.toString() ));
             results.access.writeUsing("afterOrderByReceivedCProcessorCount", 1);
         }
         

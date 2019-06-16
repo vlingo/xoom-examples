@@ -22,7 +22,7 @@ public class NYSESubscriber extends Actor implements Subscriber<PriceQuoted> {
     /* @see io.vlingo.actors.pubsub.Subscriber#receive(io.vlingo.actors.pubsub.Message) */
     @Override
     public void receive(final Message message) {
-      logger().log("NYSESubscriber received " + message);
+      logger().debug("NYSESubscriber received " + message);
       results.access.writeUsing("afterQuotationReceivedAtNYSESubscriberCount", 1);
     }
 }

@@ -22,7 +22,7 @@ public class WorkConsumerActor extends Actor implements WorkConsumer {
   /* @see io.vlingo.reactive.messaging.patterns.competingconsumer.WorkConsumer#consumeWork(io.vlingo.reactive.messaging.patterns.competingconsumer.WorkItem) */
   @Override
   public void consumeWork(final WorkItem item) {
-    logger().log(this + " consumed: " + item);
+    logger().debug(this + " consumed: " + item);
     results.access.writeUsing("afterItemConsumedCount", 1);
   }
 }

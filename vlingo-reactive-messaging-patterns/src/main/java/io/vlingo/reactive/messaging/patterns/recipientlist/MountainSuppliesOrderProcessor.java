@@ -6,12 +6,12 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.recipientlist;
 
+import io.vlingo.actors.Actor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.vlingo.actors.Actor;
 
 /**
  * MountainSuppliesOrderProcessor maintains registry of @{@link QuoteProcessor} {@link Actor} instances
@@ -34,7 +34,7 @@ implements OrderProcessor
     @Override
     public void register( PriceQuoteInterest interest )
     {
-        logger().log( String.format( "%s interested", interest.type ));
+        logger().debug( String.format( "%s interested", interest.type ));
         interestRegistry.put( interest.type, interest );
         results.access.writeUsing("afterProcessorRegistered", 1);
     }
@@ -51,7 +51,7 @@ implements OrderProcessor
     @Override
     public void remittedPriceQuote( PriceQuote quote )
     {
-        logger().log( String.format( "OrderProcessor received price quote: %s", quote ));
+        logger().debug( String.format( "OrderProcessor received price quote: %s", quote ));
         results.access.writeUsing("afterQuotationRemitted", 1);
     }
 

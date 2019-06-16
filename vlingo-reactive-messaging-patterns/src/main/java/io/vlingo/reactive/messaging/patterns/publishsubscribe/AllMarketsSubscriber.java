@@ -22,7 +22,7 @@ public class AllMarketsSubscriber extends Actor implements Subscriber<PriceQuote
     /* @see io.vlingo.actors.pubsub.Subscriber#receive(io.vlingo.actors.pubsub.Message) */
     @Override
     public void receive(final Message message) {
-      logger().log("AllMarketsSubscriber received " + message);
+      logger().debug("AllMarketsSubscriber received " + message);
       results.access.writeUsing("afterQuotationReceivedAtGeneralSubscriberCount", 1);
     }
 }

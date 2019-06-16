@@ -18,7 +18,7 @@ public class PongerActor extends Actor implements Ponger {
 
   @Override
   public void pong(final Pinger pinger) {
-    logger().log("pong");
+    logger().debug("pong");
     pinger.ping(self);
   }
 }

@@ -28,7 +28,7 @@ implements PointToPointProcessor
     @Override
     public void process( Integer messageId )
     {
-        logger().log( String.format( "peerMessage %d received", messageId ));
+        logger().debug( String.format( "peerMessage %d received", messageId ));
         if ( messageId < lastOrderedMessageId ) throw new IllegalStateException( "Message id out of order" );
         lastOrderedMessageId = messageId;
         results.access.writeUsing("afterMessageProcessedCount", 1);

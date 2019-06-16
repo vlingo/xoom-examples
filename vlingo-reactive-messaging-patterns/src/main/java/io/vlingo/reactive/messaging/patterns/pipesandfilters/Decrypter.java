@@ -23,7 +23,7 @@ public class Decrypter extends Actor implements OrderProcessor {
   @Override
   public void processIncomingOrder(final byte[] orderInfo) {
     final String textOrderInfo = new String(orderInfo, StandardCharsets.UTF_8);
-    logger().log("Decrypter: processing: " + textOrderInfo);
+    logger().debug("Decrypter: processing: " + textOrderInfo);
     final String orderText = textOrderInfo.replace("(encryption)", "");
     nextFilter.processIncomingOrder(orderText.getBytes());
     results.access.writeUsing("afterOrderDecryptedCount", 1);

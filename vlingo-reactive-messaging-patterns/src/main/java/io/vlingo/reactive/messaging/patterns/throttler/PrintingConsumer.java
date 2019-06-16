@@ -21,7 +21,7 @@ public class PrintingConsumer extends Actor implements Consumer {
     @Override
     public void onReceiveMessage(String message) {
         final long messageTimestamp = System.currentTimeMillis();
-        logger().log(String.format("%d\t\t%s", messageTimestamp - startedAt, message));
+        logger().debug(String.format("%d\t\t%s", messageTimestamp - startedAt, message));
         results.access.writeUsing("afterMessageReceivedCount", 1);
     }
 }
