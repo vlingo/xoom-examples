@@ -19,7 +19,7 @@ public class NotRestrictedInventorySystemActor extends Actor implements Inventor
 
     @Override
     public void processOrder(final Order order) {
-        logger().log("Handling " + order);
+        logger().debug("Handling " + order);
         results.access.writeUsing("afterOrderProcessedCount", 1);
     }
 

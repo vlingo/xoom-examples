@@ -7,9 +7,6 @@
 
 package io.vlingo.frontservice.infra.projection;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 import io.vlingo.actors.Actor;
 import io.vlingo.common.Outcome;
 import io.vlingo.frontservice.data.ProfileData;
@@ -28,6 +25,9 @@ import io.vlingo.symbio.store.StorageException;
 import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
 import io.vlingo.symbio.store.state.StateStore.WriteResultInterest;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 public class ProfileProjectionActor extends Actor
     implements Projection, ReadResultInterest, WriteResultInterest {
@@ -74,7 +74,7 @@ public class ProfileProjectionActor extends Actor
       return result;
     }).otherwise(cause -> {
       // log but don't retry, allowing re-delivery of Projectable
-      logger().log("Query state not read for update because: " + cause.getMessage(), cause);
+      logger().info("Query state not read for update because: " + cause.getMessage(), cause);
       return cause.result;
     });
   }
@@ -86,7 +86,7 @@ public class ProfileProjectionActor extends Actor
       return result;
     }).otherwise(cause -> {
       // log but don't retry, allowing re-delivery of Projectable
-      logger().log("Query state not written for update because: " + cause.getMessage(), cause);
+      logger().info("Query state not written for update because: " + cause.getMessage(), cause);
       return cause.result;
     });
   }

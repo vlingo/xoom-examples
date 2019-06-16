@@ -7,9 +7,9 @@
 
 package io.vlingo.reactive.messaging.patterns.pipesandfilters;
 
-import java.nio.charset.StandardCharsets;
-
 import io.vlingo.actors.Actor;
+
+import java.nio.charset.StandardCharsets;
 
 public class OrderAcceptanceEndpoint extends Actor implements OrderProcessor {
   private final OrderProcessor nextFilter;
@@ -23,7 +23,7 @@ public class OrderAcceptanceEndpoint extends Actor implements OrderProcessor {
   @Override
   public void processIncomingOrder(byte[] orderInfo) {
     final String textOrderInfo = new String(orderInfo, StandardCharsets.UTF_8);
-    logger().log("OrderAcceptanceEndpoint: processing " + textOrderInfo);
+    logger().debug("OrderAcceptanceEndpoint: processing " + textOrderInfo);
     nextFilter.processIncomingOrder(orderInfo);
     results.access.writeUsing("afterOrderAcceptedCount", 1);
   }

@@ -20,10 +20,10 @@ public class RestrictedInventorySystemActor extends Actor implements InventorySy
     @Override
     public void processOrder(final Order order) {
         if(order.isType("TypeABC")) {
-            logger().log("Handling " + order);
+            logger().debug("Handling " + order);
             results.access.writeUsing("afterOrderProcessedCount", 1);
         } else {
-            logger().log("Filtering out " + order);
+            logger().debug("Filtering out " + order);
             results.access.writeUsing("afterOrderFilteredCount", 1);
         }
     }

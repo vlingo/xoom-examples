@@ -32,7 +32,7 @@ public class MessageBusTest
     {
         World world = World.startWithDefaults( WORLD_NAME );
         
-        world.defaultLogger().log( "TradingBus: is started" );
+        world.defaultLogger().debug( "TradingBus: is started" );
         
         final TradingBusResults results = new TradingBusResults();
         final AccessSafely access = results.afterCompleting( EVENTS );
@@ -61,7 +61,7 @@ public class MessageBusTest
         Assert.assertEquals(2, (int) access.readFrom("afterStockTraderBuyOrderExecutedCount"));
         Assert.assertEquals(1, (int) access.readFrom("afterStockTraderSellOrderExecutedCount"));
 
-        world.defaultLogger().log( "TradingBus: is completed" );
+        world.defaultLogger().debug( "TradingBus: is completed" );
         
         world.terminate();
     }

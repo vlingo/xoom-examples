@@ -6,16 +6,16 @@
 // one at https://mozilla.org/MPL/2.0/.
 package io.vlingo.reactive.messaging.patterns.messagebus;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Vector;
-
 import io.vlingo.actors.Actor;
 import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.RegisterCommandHandler;
 import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.RegisterNotificationInterest;
 import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.TradingCommand;
 import io.vlingo.reactive.messaging.patterns.messagebus.TradingBusCommands.TradingNotification;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Vector;
 
 /**
  * TradingBus is the nexus between the {@link StockTrader}, {@link PortfolioManager}, and 
@@ -73,7 +73,7 @@ implements TradingBusProcessor
         }
         else
         {
-            logger().log( String.format( "Unexpected command id '%d'", command.commandId ));
+            logger().debug( String.format( "Unexpected command id '%s'", command.commandId ));
         }
     }
 
@@ -100,7 +100,7 @@ implements TradingBusProcessor
         }
         else
         {
-            logger().log( String.format( "Unexpected notification id '%s'", notification.notificationId ));
+            logger().debug( String.format( "Unexpected notification id '%s'", notification.notificationId ));
         }
     }
 
@@ -110,7 +110,7 @@ implements TradingBusProcessor
     public void registerHandler( RegisterCommandHandler register )
     {
         
-        logger().log( String.format( "%s::registerCommandHandler( %s, %s, %s )", getClass().getSimpleName(), register.applicationId, register.commandId, register.handler.getClass().getSimpleName() ));
+        logger().debug( String.format( "%s::registerCommandHandler( %s, %s, %s )", getClass().getSimpleName(), register.applicationId, register.commandId, register.handler.getClass().getSimpleName() ));
         CommandHandler commandHandler = new CommandHandler( register.commandId, register.applicationId, register.handler );
         Vector<CommandHandler> commandHandlerVector = commandHandlers.get( register.commandId );
         if ( Objects.isNull( commandHandlerVector ))
@@ -129,7 +129,7 @@ implements TradingBusProcessor
     public void registerInterest( RegisterNotificationInterest register )
     {
         
-        logger().log( String.format( "%s::registerNotificationInterest( %s, %s, %s )", getClass().getSimpleName(), register.applicationId, register.notificationId, register.getClass().getSimpleName() ));
+        logger().debug( String.format( "%s::registerNotificationInterest( %s, %s, %s )", getClass().getSimpleName(), register.applicationId, register.notificationId, register.getClass().getSimpleName() ));
         NotificationInterest notificationInterest = new NotificationInterest( register.notificationId, register.applicationId, register.interested );
         Vector<NotificationInterest> notificationInterestVector = notificationInterests.get( register.notificationId );
         if ( Objects.isNull( notificationInterestVector ))
