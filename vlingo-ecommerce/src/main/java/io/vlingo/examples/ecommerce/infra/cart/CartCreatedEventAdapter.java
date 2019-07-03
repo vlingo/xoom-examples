@@ -16,13 +16,13 @@ public class CartCreatedEventAdapter implements EntryAdapter<CartEvents.CreatedF
     }
 
     @Override
-    public BaseEntry.TextEntry toEntry(final CartEvents.CreatedForUser source) {
-      return toEntry(source, source.cartId);
+    public TextEntry toEntry(final CreatedForUser source, final Metadata metadata) {
+        return toEntry(source, source.cartId, metadata);
     }
 
     @Override
-    public TextEntry toEntry(CreatedForUser source, String id) {
+    public TextEntry toEntry(final CreatedForUser source, final String id, final Metadata metadata) {
         final String serialization = JsonSerialization.serialized(source);
-        return new BaseEntry.TextEntry(id, CartEvents.CreatedForUser.class, 1, serialization, Metadata.nullMetadata());
+        return new BaseEntry.TextEntry(id, CartEvents.CreatedForUser.class, 1, serialization, metadata);
     }
 }

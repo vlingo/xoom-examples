@@ -14,14 +14,14 @@ public class CartProductQuantityChangedEventAdapter implements EntryAdapter<Cart
     public CartEvents.ProductQuantityChangeEvent fromEntry(final BaseEntry.TextEntry entry) {
         return JsonSerialization.deserialized(entry.entryData(), CartEvents.ProductQuantityChangeEvent.class);
     }
-
+    
     @Override
-    public BaseEntry.TextEntry toEntry(final CartEvents.ProductQuantityChangeEvent source) {
-      return toEntry(source, source.cartId);
+    public TextEntry toEntry(final ProductQuantityChangeEvent source, final Metadata metadata) {
+        return toEntry(source, source.cartId, metadata);
     }
 
     @Override
-    public TextEntry toEntry(ProductQuantityChangeEvent source, String id) {
+    public TextEntry toEntry(final ProductQuantityChangeEvent source, final String id, final Metadata metadata) {
         final String serialization = JsonSerialization.serialized(source);
         return new BaseEntry.TextEntry(id, CartEvents.ProductQuantityChangeEvent.class, 1, serialization, Metadata.nullMetadata());
     }
