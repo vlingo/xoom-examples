@@ -16,13 +16,13 @@ public class CartAllItemsRemoveEventAdapter implements EntryAdapter<CartEvents.A
     }
 
     @Override
-    public BaseEntry.TextEntry toEntry(final CartEvents.AllItemsRemovedEvent source) {
-        return toEntry(source, source.cartId);
+    public TextEntry toEntry(final AllItemsRemovedEvent source, final Metadata metadata) {
+        return toEntry(source, source.cartId, metadata);
     }
 
     @Override
-    public TextEntry toEntry(final AllItemsRemovedEvent source, final String id) {
+    public TextEntry toEntry(final AllItemsRemovedEvent source, final String id, final Metadata metadata) {
         final String serialization = JsonSerialization.serialized(source);
-        return new BaseEntry.TextEntry(id, CartEvents.AllItemsRemovedEvent.class, 1, serialization, Metadata.nullMetadata());
+        return new BaseEntry.TextEntry(id, CartEvents.AllItemsRemovedEvent.class, 1, serialization, metadata);
     }
 }

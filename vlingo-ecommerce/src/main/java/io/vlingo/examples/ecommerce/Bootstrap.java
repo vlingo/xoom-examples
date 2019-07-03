@@ -2,7 +2,7 @@ package io.vlingo.examples.ecommerce;
 
 import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
-import io.vlingo.examples.ecommerce.infra.MockJournalListener;
+import io.vlingo.examples.ecommerce.infra.MockJournalDispatcher;
 import io.vlingo.examples.ecommerce.infra.cart.CartAllItemsRemoveEventAdapter;
 import io.vlingo.examples.ecommerce.infra.cart.CartCreatedEventAdapter;
 import io.vlingo.examples.ecommerce.infra.cart.CartProductQuantityChangedEventAdapter;
@@ -30,8 +30,8 @@ public class Bootstrap {
     private Bootstrap(final int portNumber) {
         world = World.startWithDefaults("cartservice");
 
-        MockJournalListener listener = new MockJournalListener();
-        Journal<String> journal = Journal.using(world.stage(), InMemoryJournalActor.class, listener);
+        MockJournalDispatcher dispatcher = new MockJournalDispatcher();
+        Journal<String> journal = Journal.using(world.stage(), InMemoryJournalActor.class, dispatcher);
 
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
         registry.register(new Info(journal, CartActor.class, CartActor.class.getSimpleName()));
