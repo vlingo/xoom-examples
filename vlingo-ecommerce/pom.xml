@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-ecommerce</artifactId>
-  <version>0.8.4</version>
+  <version>0.8.5</version>
   <packaging>jar</packaging>
   <name>vlingo-ecommerce</name>
   <description>E-commerce demo.</description>
@@ -36,25 +36,25 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>0.8.4</version>
+      <version>0.8.5</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio</artifactId>
-      <version>0.8.4</version>
+      <version>0.8.5</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>0.8.4</version>
+      <version>0.8.5</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.8.4</version>
+      <version>0.8.5</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
