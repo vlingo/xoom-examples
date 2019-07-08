@@ -14,13 +14,13 @@ public class ShippedEventAdapter implements EntryAdapter<OrderEvents.OrderShippe
     }
 
     @Override
-    public BaseEntry.TextEntry toEntry(final OrderEvents.OrderShipped source) {
-       return toEntry(source, source.orderId);
+    public BaseEntry.TextEntry toEntry(final OrderEvents.OrderShipped source, final Metadata metadata) {
+        return toEntry(source, source.orderId, metadata);
     }
-
+    
     @Override
-    public BaseEntry.TextEntry toEntry(OrderEvents.OrderShipped source, String id) {
+    public BaseEntry.TextEntry toEntry(final OrderEvents.OrderShipped source, final String id, final Metadata metadata) {
         final String serialization = JsonSerialization.serialized(source);
-        return new BaseEntry.TextEntry(id, OrderEvents.OrderShipped.class, 1, serialization, Metadata.nullMetadata());
+        return new BaseEntry.TextEntry(id, OrderEvents.OrderShipped.class, 1, serialization, metadata);
     }
 }

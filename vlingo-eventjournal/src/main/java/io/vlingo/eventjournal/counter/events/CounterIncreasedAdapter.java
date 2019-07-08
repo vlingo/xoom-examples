@@ -19,15 +19,15 @@ public class CounterIncreasedAdapter implements EntryAdapter<CounterIncreased, T
     public CounterIncreased fromEntry(TextEntry entry) {
       return JsonSerialization.deserialized(entry.entryData(), CounterIncreased.class);
     }
-
+    
     @Override
-    public TextEntry toEntry(CounterIncreased source) {
+    public TextEntry toEntry(final CounterIncreased source, final Metadata metadata) {
       return toEntry(source, source.uuid.toString());
     }
-
+    
     @Override
-    public TextEntry toEntry(CounterIncreased source, String id) {
+    public TextEntry toEntry(final CounterIncreased source, final String id, final Metadata metadata) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(id, CounterIncreased.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, CounterIncreased.class, 1, serialization, metadata);
     }
 }

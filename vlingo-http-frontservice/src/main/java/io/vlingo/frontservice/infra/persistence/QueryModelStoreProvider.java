@@ -7,20 +7,17 @@
 
 package io.vlingo.frontservice.infra.persistence;
 
-import java.util.Collection;
-
 import io.vlingo.actors.Stage;
 import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
-import io.vlingo.symbio.Entry;
 import io.vlingo.symbio.EntryAdapterProvider;
-import io.vlingo.symbio.State;
 import io.vlingo.symbio.StateAdapterProvider;
+import io.vlingo.symbio.store.dispatch.Dispatchable;
+import io.vlingo.symbio.store.dispatch.Dispatcher;
+import io.vlingo.symbio.store.dispatch.DispatcherControl;
 import io.vlingo.symbio.store.state.StateStore;
-import io.vlingo.symbio.store.state.StateStore.Dispatcher;
-import io.vlingo.symbio.store.state.StateStore.DispatcherControl;
 import io.vlingo.symbio.store.state.inmemory.InMemoryStateStoreActor;
 
 public class QueryModelStoreProvider {
@@ -43,7 +40,7 @@ public class QueryModelStoreProvider {
 
     final Dispatcher noop = new Dispatcher() {
       public void controlWith(final DispatcherControl control) { }
-      public <S extends State<?>, E extends Entry<?>> void dispatch(final String dispatchId, final S state, final Collection<E> entries) { }
+      public void dispatch(Dispatchable d) { }
     };
 
     final StateStore store = stage.actorFor(StateStore.class, InMemoryStateStoreActor.class, noop);
