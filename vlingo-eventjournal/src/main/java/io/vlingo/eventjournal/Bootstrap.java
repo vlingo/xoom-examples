@@ -9,7 +9,7 @@ import io.vlingo.eventjournal.counter.CounterActor;
 import io.vlingo.eventjournal.counter.CounterQuery;
 import io.vlingo.eventjournal.counter.CounterQueryActor;
 import io.vlingo.eventjournal.interest.NoopConfigurationInterest;
-import io.vlingo.eventjournal.interest.NoopEventJournalListener;
+import io.vlingo.eventjournal.interest.NoopEventJournalDispatcher;
 import io.vlingo.symbio.store.DataFormat;
 import io.vlingo.symbio.store.common.jdbc.Configuration;
 import io.vlingo.symbio.store.journal.Journal;
@@ -38,7 +38,8 @@ public class Bootstrap {
 
         final World world = World.startWithDefaults("event-journal");
 
-        Journal<String> journal = Journal.using(world.stage(), PostgresJournalActor.class, new NoopEventJournalListener(), configuration);
+        final NoopEventJournalDispatcher journalDispatcher = new NoopEventJournalDispatcher();
+        Journal<String> journal = Journal.using(world.stage(), PostgresJournalActor.class, journalDispatcher, configuration);
 
         final Counter counter = world.actorFor(
                 Counter.class,
