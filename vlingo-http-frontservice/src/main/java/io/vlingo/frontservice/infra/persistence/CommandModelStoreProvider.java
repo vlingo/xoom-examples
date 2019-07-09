@@ -33,6 +33,7 @@ public class CommandModelStoreProvider {
     return instance;
   }
 
+  @SuppressWarnings("rawtypes")
   public static CommandModelStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final Dispatcher dispatcher) {
     if (instance != null) return instance;
 
