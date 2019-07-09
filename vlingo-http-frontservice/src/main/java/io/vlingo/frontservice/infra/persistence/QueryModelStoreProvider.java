@@ -30,6 +30,7 @@ public class QueryModelStoreProvider {
     return instance;
   }
 
+  @SuppressWarnings("rawtypes")
   public static QueryModelStoreProvider using(final Stage stage, final StatefulTypeRegistry registry) {
     if (instance != null) return instance;
 
