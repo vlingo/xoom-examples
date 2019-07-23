@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-actors-playground</artifactId>
-  <version>0.8.5</version>
+  <version>0.8.6</version>
   <name>vlingo-actors-playground</name>
   <description>Example of vlingo/actors playing ping pong.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.8.5</version>
+      <version>0.8.6</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
