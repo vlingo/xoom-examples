@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-benchmarks</artifactId>
-  <version>0.8.5</version>
+  <version>0.8.6</version>
   <name>vlingo-benchmarks</name>
   <description>Benchmarks on platform components.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.8.5</version>
+      <version>0.8.6</version>
     </dependency>
   </dependencies>
   <build>
@@ -76,16 +76,15 @@
             </goals>
             <configuration>
               <finalName>benchmarks</finalName>
-                <transformers>
-                  <transformer
-                      implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                    <mainClass>org.openjdk.jmh.Main</mainClass>
-                  </transformer>
-                </transformers>
-              </configuration>
-            </execution>
-          </executions>
-		</plugin>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.openjdk.jmh.Main</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
