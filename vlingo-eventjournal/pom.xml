@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-eventjournal</artifactId>
-  <version>0.8.6</version>
+  <version>0.8.7</version>
   <name>vlingo-eventjournal</name>
   <description>Example of vlingo/symbio-jdbc with an event journal.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -39,12 +39,12 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.8.6</version>
+      <version>0.8.7</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio-jdbc</artifactId>
-      <version>0.8.6</version>
+      <version>0.8.7</version>
     </dependency>
     <dependency>
       <groupId>org.flywaydb</groupId>
