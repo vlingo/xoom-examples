@@ -12,6 +12,7 @@ import io.vlingo.eventjournal.interest.NoopConfigurationInterest;
 import io.vlingo.eventjournal.interest.NoopEventJournalDispatcher;
 import io.vlingo.symbio.store.DataFormat;
 import io.vlingo.symbio.store.common.jdbc.Configuration;
+import io.vlingo.symbio.store.common.jdbc.DatabaseType;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.jdbc.postgres.PostgresJournalActor;
 
@@ -24,6 +25,7 @@ public class Bootstrap {
     public static void main(String[] args) throws Exception {
         Flyway.configure().dataSource(DB_URL, DB_USER, DB_PWD).load().migrate();
         final Configuration configuration = new Configuration(
+        		DatabaseType.Postgres,
                 new NoopConfigurationInterest(),
                 "org.postgresql.Driver",
                 DataFormat.Text,
