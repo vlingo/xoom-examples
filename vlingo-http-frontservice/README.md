@@ -14,7 +14,7 @@ $ java -jar target/vlingo-http-backservice-0.7.0-jar-with-dependencies.jar
 ```
 
 
-Following that, build the `vlingo-http-frontservice` as follows, and then execute the `jar`:
+Following that, in a separate console/command window, build the `vlingo-http-frontservice` as follows, and then execute the `jar`:
 
 ```
 $ mvn clean package
