@@ -28,20 +28,17 @@ public class ProfileEntity extends StatefulEntity<Profile.ProfileState> implemen
 
   @Override
   public Completes<Profile.ProfileState> withTwitterAccount(final String twitterAccount) {
-    apply(state.withTwitterAccount(twitterAccount), "Profile:twitter", () -> state);
-    return completes();
+	return apply(state.withTwitterAccount(twitterAccount), "Profile:twitter", () -> state);
   }
 
   @Override
   public Completes<Profile.ProfileState> withLinkedInAccount(final String linkedInAccount) {
-    apply(state.withLinkedInAccount(linkedInAccount), "Profile:linkedIn", () -> state);
-    return completes();
+	return apply(state.withLinkedInAccount(linkedInAccount), "Profile:linkedIn", () -> state);
   }
 
   @Override
   public Completes<Profile.ProfileState> withWebSite(final String website) {
-    apply(state.withWebSite(website), "Profile:website", () -> state);
-    return completes();
+    return apply(state.withWebSite(website), "Profile:website", () -> state);
   }
 
 
