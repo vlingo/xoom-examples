@@ -35,14 +35,12 @@ public class UserEntity extends StatefulEntity<User.UserState> implements User {
 
   @Override
   public Completes<User.UserState> withContact(final Contact contact) {
-    apply(state.withContact(contact), "User:contact", () -> state);
-    return completes();
+    return apply(state.withContact(contact), "User:contact", () -> state);
   }
 
   @Override
   public Completes<User.UserState> withName(final Name name) {
-    apply(state.withName(name), "User:name", () -> state);
-    return completes();
+    return apply(state.withName(name), "User:name", () -> state);
   }
 
 
