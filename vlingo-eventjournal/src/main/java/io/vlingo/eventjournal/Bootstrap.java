@@ -50,7 +50,7 @@ public class Bootstrap {
 
         final CounterQuery counterQuery = world.actorFor(
                 CounterQuery.class,
-                Definition.has(CounterQueryActor.class, Definition.parameters(journal.journalReader(DB_NAME).await()))
+                Definition.has(CounterQueryActor.class, Definition.parameters(journal.journalReader(DB_NAME).<JournalReader<Entry<?>>>await(), new EntryAdapterProvider()))
         );
 
         for (int i = 0; i < 5000; i++) {
