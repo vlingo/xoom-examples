@@ -27,9 +27,9 @@ public class UserStateAdapter implements StateAdapter<User.UserState,TextState> 
   }
 
   @Override
-  public TextState toRawState(final UserState state, final int stateVersion, final Metadata metadata) {
+  public TextState toRawState(String id, UserState state, int stateVersion, Metadata metadata) {
     final String serialization = JsonSerialization.serialized(state);
-    return new TextState(state.id, UserState.class, typeVersion(), serialization, stateVersion, metadata);
+    return new TextState(id, UserState.class, typeVersion(), serialization, stateVersion, metadata);
   }
 
   @Override
