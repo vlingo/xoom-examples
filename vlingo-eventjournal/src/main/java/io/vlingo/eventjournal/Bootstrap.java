@@ -10,10 +10,13 @@ import io.vlingo.eventjournal.counter.CounterQuery;
 import io.vlingo.eventjournal.counter.CounterQueryActor;
 import io.vlingo.eventjournal.interest.NoopConfigurationInterest;
 import io.vlingo.eventjournal.interest.NoopEventJournalDispatcher;
+import io.vlingo.symbio.Entry;
+import io.vlingo.symbio.EntryAdapterProvider;
 import io.vlingo.symbio.store.DataFormat;
 import io.vlingo.symbio.store.common.jdbc.Configuration;
 import io.vlingo.symbio.store.common.jdbc.DatabaseType;
 import io.vlingo.symbio.store.journal.Journal;
+import io.vlingo.symbio.store.journal.JournalReader;
 import io.vlingo.symbio.store.journal.jdbc.postgres.PostgresJournalActor;
 
 public class Bootstrap {
