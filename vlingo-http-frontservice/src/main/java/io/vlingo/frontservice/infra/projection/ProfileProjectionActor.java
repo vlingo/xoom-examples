@@ -7,10 +7,12 @@
 
 package io.vlingo.frontservice.infra.projection;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 import io.vlingo.actors.Actor;
 import io.vlingo.common.Outcome;
 import io.vlingo.frontservice.data.ProfileData;
-import io.vlingo.frontservice.infra.persistence.ProfileDataStateAdapter;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
 import io.vlingo.frontservice.model.Profile;
 import io.vlingo.lattice.model.projection.Projectable;
@@ -19,29 +21,23 @@ import io.vlingo.lattice.model.projection.ProjectionControl;
 import io.vlingo.lattice.model.projection.ProjectionControl.Confirmer;
 import io.vlingo.symbio.Metadata;
 import io.vlingo.symbio.Source;
-import io.vlingo.symbio.State.TextState;
 import io.vlingo.symbio.store.Result;
 import io.vlingo.symbio.store.StorageException;
 import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
 import io.vlingo.symbio.store.state.StateStore.WriteResultInterest;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 public class ProfileProjectionActor extends Actor
     implements Projection, ReadResultInterest, WriteResultInterest {
 
   // TODO: for you to complete the implementation
 
-  private final ProfileDataStateAdapter adapter;
   //private final ReadResultInterest<String> readInterest;
   private final WriteResultInterest writeInterest;
   private final StateStore store;
 
   public ProfileProjectionActor() {
     this.store = QueryModelStoreProvider.instance().store;
-    this.adapter = new ProfileDataStateAdapter();
     //this.readInterest = selfAs(ReadResultInterest.class);
     this.writeInterest = selfAs(WriteResultInterest.class);
   }
@@ -53,8 +49,7 @@ public class ProfileProjectionActor extends Actor
 
     switch (projectable.becauseOf()) {
     case "Profile:new": {
-      final TextState projection = adapter.toRawState(data, 1);
-      store.write(state.id, projection, 1, writeInterest, control.confirmerFor(projectable));
+      store.write(state.id, data, 1, writeInterest, control.confirmerFor(projectable));
       break;
     }
     case "Profile:twitter":
