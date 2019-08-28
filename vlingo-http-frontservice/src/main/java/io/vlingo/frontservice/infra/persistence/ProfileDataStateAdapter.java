@@ -26,6 +26,12 @@ public class ProfileDataStateAdapter implements StateAdapter<ProfileData,TextSta
   }
 
   @Override
+  public TextState toRawState(String id, ProfileData state, int stateVersion, Metadata metadata) {
+    final String serialization = JsonSerialization.serialized(state);
+    return new TextState(id, ProfileData.class, typeVersion(), serialization, stateVersion, metadata);
+  }
+
+  @Override
   public TextState toRawState(final ProfileData state, final int stateVersion, final Metadata metadata) {
     final String serialization = JsonSerialization.serialized(state);
     return new TextState(TextState.NoOp, ProfileData.class, typeVersion(), serialization, stateVersion, metadata);
