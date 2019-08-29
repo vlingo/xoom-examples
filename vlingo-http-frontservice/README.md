@@ -54,3 +54,6 @@ Content-Length: 198
 ```
 
 Try it yourself.
+
+You can generate random user data using this resource:
+http://www.convertcsv.com/generate-test-data.htm
