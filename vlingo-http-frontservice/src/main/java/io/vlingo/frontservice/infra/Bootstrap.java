@@ -9,12 +9,8 @@ package io.vlingo.frontservice.infra;
 
 import io.vlingo.actors.World;
 import io.vlingo.frontservice.infra.persistence.CommandModelStoreProvider;
-import io.vlingo.frontservice.infra.persistence.ProfileStateAdapter;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
-import io.vlingo.frontservice.infra.persistence.UserStateAdapter;
 import io.vlingo.frontservice.infra.projection.ProjectionDispatcherProvider;
-import io.vlingo.frontservice.model.Profile;
-import io.vlingo.frontservice.model.User;
 import io.vlingo.frontservice.resource.ProfileResource;
 import io.vlingo.frontservice.resource.UserResource;
 import io.vlingo.http.resource.Configuration.Sizing;
@@ -22,8 +18,6 @@ import io.vlingo.http.resource.Configuration.Timing;
 import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
-import io.vlingo.symbio.StateAdapterProvider;
-import io.vlingo.symbio.store.state.StateTypeStateStoreMap;
 
 public class Bootstrap {
   private static Bootstrap instance;
@@ -46,13 +40,6 @@ public class Bootstrap {
 
     final UserResource userResource = new UserResource(world);
     final ProfileResource profileResource = new ProfileResource(world);
-
-    StateTypeStateStoreMap.stateTypeToStoreName(User.UserState.class, User.UserState.class.getSimpleName());
-    StateTypeStateStoreMap.stateTypeToStoreName(Profile.ProfileState.class, Profile.ProfileState.class.getSimpleName());
-
-    final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider(world);
-    stateAdapterProvider.registerAdapter(User.UserState.class, new UserStateAdapter());
-    stateAdapterProvider.registerAdapter(Profile.ProfileState.class, new ProfileStateAdapter());
 
     final Resources resources = Resources.are(userResource.routes(), profileResource.routes());
 
