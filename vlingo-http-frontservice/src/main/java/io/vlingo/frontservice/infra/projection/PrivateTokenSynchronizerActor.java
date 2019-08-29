@@ -46,6 +46,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
   public PrivateTokenSynchronizerActor() {
     this.addressFactory = stage().world().addressFactory();
     this.client = client();
+    subscribeToEvents(this.client);
   }
 
   @Override
@@ -61,13 +62,16 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
 
     logger().debug("REQUESTING TOKEN: " + correlationId);
 
-    client.requestWith(
+    final Client tokenRequestClient = client();
+    
+    tokenRequestClient.requestWith(
             Request
               .has(GET)
               .and(URI.create("/tokens/" + state.security.publicToken))
               .and(host("localhost"))
               .and(RequestHeader.of(RequestHeader.XCorrelationID, correlationId)))
           .andThenConsume(response -> {
+        	 tokenRequestClient.close();
              switch (response.status) {
              case Ok:
                logger().debug("STARTING PROCESSING FOR TOKEN: " + correlationId);
@@ -81,7 +85,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
 
   private Client client() {
     try {
-      client = Client.using(Configuration.defaultedKeepAliveExceptFor(
+      final Client client = Client.using(Configuration.defaultedKeepAliveExceptFor(
               stage(),
               Address.from(Host.of(System.getProperty("BACKSERVICE_HOST", "localhost")), 8082, AddressType.NONE),
               new ResponseConsumer() {
@@ -91,8 +95,6 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
                 }
               }));
 
-      subscribeToEvents();
-
       return client;
 
     } catch (Exception e) {
@@ -101,7 +103,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
     }
   }
 
-  private void subscribeToEvents() {
+  private void subscribeToEvents(final Client client) {
     client.requestWith(
             Request
               .has(GET)

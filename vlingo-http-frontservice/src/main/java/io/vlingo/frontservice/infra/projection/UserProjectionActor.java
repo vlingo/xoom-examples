@@ -52,8 +52,7 @@ public class UserProjectionActor extends Actor
 
     switch (projectable.becauseOf()) {
       case "User:new": {
-        final TextState projection = adapter.toRawState(data, 1);
-        store.write(state.id, projection, 1, writeInterest, control.confirmerFor(projectable));
+        store.write(state.id, data, 1, writeInterest, control.confirmerFor(projectable));
         break;
       }
       case "User:contact": {
@@ -107,7 +106,6 @@ public class UserProjectionActor extends Actor
   private void updateWith(final TextState state, final UserData data, final int version, final Function<UserData,UserData> updater, final Confirmer confirmer) {
     final UserData read = adapter.fromRawState(state);
     final UserData write = updater.apply(read);
-    final TextState projection = adapter.toRawState(write, 1);
-    store.write(state.id, projection, state.dataVersion, writeInterest, confirmer);
+    store.write(state.id, write, state.dataVersion, writeInterest, confirmer);
   }
 }
