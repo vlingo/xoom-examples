@@ -9,10 +9,7 @@ package io.vlingo.frontservice.model;
 
 import java.util.function.Consumer;
 
-import io.vlingo.actors.Actor;
-import io.vlingo.actors.DeadLetter;
-import io.vlingo.actors.LocalMessage;
-import io.vlingo.actors.Mailbox;
+import io.vlingo.actors.*;
 import io.vlingo.common.BasicCompletes;
 import io.vlingo.common.Completes;
 
@@ -43,7 +40,7 @@ public class User__Proxy implements User {
     if (!actor.isStopped()) {
       final Consumer<User> consumer = (actor) -> actor.withContact(arg0);
       final Completes<UserState> completes = new BasicCompletes<>(actor.scheduler());
-      mailbox.send(new LocalMessage<User>(actor, User.class, consumer, completes, withContactRepresentation2));
+      mailbox.send(new LocalMessage<User>(actor, User.class, consumer, Returns.value(completes), withContactRepresentation2));
       return completes;
     } else {
       actor.deadLetters().failedDelivery(new DeadLetter(actor, withContactRepresentation2));
@@ -54,7 +51,7 @@ public class User__Proxy implements User {
     if (!actor.isStopped()) {
       final Consumer<User> consumer = (actor) -> actor.withName(arg0);
       final Completes<UserState> completes = new BasicCompletes<>(actor.scheduler());
-      mailbox.send(new LocalMessage<User>(actor, User.class, consumer, completes, withNameRepresentation3));
+      mailbox.send(new LocalMessage<User>(actor, User.class, consumer, Returns.value(completes), withNameRepresentation3));
       return completes;
     } else {
       actor.deadLetters().failedDelivery(new DeadLetter(actor, withNameRepresentation3));
