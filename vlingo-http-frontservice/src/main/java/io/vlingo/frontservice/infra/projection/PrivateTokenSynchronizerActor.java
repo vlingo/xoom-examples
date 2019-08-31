@@ -7,6 +7,12 @@
 
 package io.vlingo.frontservice.infra.projection;
 
+import static io.vlingo.http.Method.GET;
+import static io.vlingo.http.RequestHeader.host;
+
+import java.net.URI;
+import java.util.List;
+
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.AddressFactory;
 import io.vlingo.frontservice.model.User;
@@ -23,12 +29,6 @@ import io.vlingo.lattice.model.projection.ProjectionControl;
 import io.vlingo.wire.node.Address;
 import io.vlingo.wire.node.AddressType;
 import io.vlingo.wire.node.Host;
-
-import java.net.URI;
-import java.util.List;
-
-import static io.vlingo.http.Method.GET;
-import static io.vlingo.http.RequestHeader.host;
 
 public class PrivateTokenSynchronizerActor extends Actor implements Projection {
   private static final int Identities = 0;
