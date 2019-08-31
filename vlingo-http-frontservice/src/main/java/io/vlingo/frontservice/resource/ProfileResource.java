@@ -7,6 +7,17 @@
 
 package io.vlingo.frontservice.resource;
 
+import static io.vlingo.common.serialization.JsonSerialization.serialized;
+import static io.vlingo.http.Response.Status.Created;
+import static io.vlingo.http.Response.Status.NotFound;
+import static io.vlingo.http.Response.Status.Ok;
+import static io.vlingo.http.ResponseHeader.Location;
+import static io.vlingo.http.ResponseHeader.headers;
+import static io.vlingo.http.ResponseHeader.of;
+import static io.vlingo.http.resource.ResourceBuilder.get;
+import static io.vlingo.http.resource.ResourceBuilder.put;
+import static io.vlingo.http.resource.ResourceBuilder.resource;
+
 import io.vlingo.actors.AddressFactory;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
@@ -19,11 +30,6 @@ import io.vlingo.frontservice.model.Profile;
 import io.vlingo.frontservice.model.ProfileEntity;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
-
-import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Status.*;
-import static io.vlingo.http.ResponseHeader.*;
-import static io.vlingo.http.resource.ResourceBuilder.*;
 
 public class ProfileResource {
   private final AddressFactory addressFactory;
