@@ -7,6 +7,9 @@
 
 package io.vlingo.frontservice.infra.projection;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
@@ -14,9 +17,6 @@ import io.vlingo.lattice.model.projection.ProjectionDispatcher;
 import io.vlingo.lattice.model.projection.ProjectionDispatcher.ProjectToDescription;
 import io.vlingo.lattice.model.projection.state.TextStateProjectionDispatcherActor;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
-
-import java.util.Arrays;
-import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class ProjectionDispatcherProvider {
