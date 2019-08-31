@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-platform-patterns</artifactId>
-  <version>0.8.7</version>
+  <version>0.8.8</version>
   <name>vlingo-platform-patterns</name>
   <description>Example of common patterns when using the vlingo/platform.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -33,12 +33,12 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-common</artifactId>
-      <version>0.8.7</version>
+      <version>0.8.8</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.8.7</version>
+      <version>0.8.8</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>

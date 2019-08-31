@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-http-frontservice</artifactId>
-  <version>0.8.7</version>
+  <version>0.8.8</version>
   <packaging>jar</packaging>
   <name>vlingo-http-frontservice</name>
   <description>Example of vlingo/http public service.</description>
@@ -96,27 +96,27 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-common</artifactId>
-      <version>0.8.7</version>
+      <version>0.8.8</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.8.7</version>
+      <version>0.8.8</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>0.8.7</version>
+      <version>0.8.8</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio</artifactId>
-      <version>0.8.7</version>
+      <version>0.8.8</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>0.8.7</version>
+      <version>0.8.8</version>
     </dependency>
   </dependencies>
 </project>
