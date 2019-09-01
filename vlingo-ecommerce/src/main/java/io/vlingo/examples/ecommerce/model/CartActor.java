@@ -80,7 +80,7 @@ public class CartActor extends EventSourced implements Cart {
     }
 
     private void applyQuantityChange(final CartEvents.ProductQuantityChangeEvent e) {
-        state = state.productQuantityChange(e.productId, e.newQuantity);
+        state = state.productQuantityChange(e.productId, e.quantityChange);
     }
 
     private void applyAllItemsRemoved(final CartEvents.AllItemsRemovedEvent e) {
