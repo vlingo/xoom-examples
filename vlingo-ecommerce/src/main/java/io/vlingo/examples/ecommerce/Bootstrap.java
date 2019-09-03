@@ -2,13 +2,8 @@ package io.vlingo.examples.ecommerce;
 
 import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
-import io.vlingo.examples.ecommerce.infra.MockJournalListener;
-import io.vlingo.examples.ecommerce.infra.cart.CartAllItemsRemoveEventAdapter;
-import io.vlingo.examples.ecommerce.infra.cart.CartCreatedEventAdapter;
-import io.vlingo.examples.ecommerce.infra.cart.CartProductQuantityChangedEventAdapter;
-import io.vlingo.examples.ecommerce.infra.order.OrderCreatedEventAdapter;
-import io.vlingo.examples.ecommerce.infra.order.PaymentReceivedEventAdapter;
-import io.vlingo.examples.ecommerce.infra.order.ShippedEventAdapter;
+import io.vlingo.examples.ecommerce.infra.EventAdapter;
+import io.vlingo.examples.ecommerce.infra.BufferedJournalListener;
 import io.vlingo.examples.ecommerce.model.*;
 import io.vlingo.examples.ecommerce.model.CartEvents.AllItemsRemovedEvent;
 import io.vlingo.examples.ecommerce.model.CartEvents.CreatedForUser;
@@ -30,7 +25,7 @@ public class Bootstrap {
     private Bootstrap(final int portNumber) {
         world = World.startWithDefaults("cartservice");
 
-        MockJournalListener listener = new MockJournalListener();
+        BufferedJournalListener listener = new BufferedJournalListener();
         Journal<String> journal = Journal.using(world.stage(), InMemoryJournalActor.class, listener);
 
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
@@ -38,14 +33,14 @@ public class Bootstrap {
         registry.register(new Info(journal, OrderActor.class, OrderActor.class.getSimpleName()));
 
         registry.info(OrderActor.class)
-                .registerEntryAdapter(OrderEvents.Created.class, new OrderCreatedEventAdapter())
-                .registerEntryAdapter(OrderEvents.PaymentReceived.class, new PaymentReceivedEventAdapter())
-                .registerEntryAdapter(OrderEvents.OrderShipped.class, new ShippedEventAdapter());
+                .registerEntryAdapter(OrderEvents.Created.class, new EventAdapter<>(OrderEvents.Created.class))
+                .registerEntryAdapter(OrderEvents.PaymentReceived.class, new EventAdapter<>(OrderEvents.PaymentReceived.class))
+                .registerEntryAdapter(OrderEvents.OrderShipped.class, new EventAdapter<>(OrderEvents.OrderShipped.class));
 
         registry.info(CartActor.class)
-                .registerEntryAdapter(CreatedForUser.class, new CartCreatedEventAdapter())
-                .registerEntryAdapter(ProductQuantityChangeEvent.class, new CartProductQuantityChangedEventAdapter())
-                .registerEntryAdapter(AllItemsRemovedEvent.class, new CartAllItemsRemoveEventAdapter());
+                .registerEntryAdapter(CreatedForUser.class, new EventAdapter<>(CreatedForUser.class))
+                .registerEntryAdapter(ProductQuantityChangeEvent.class, new EventAdapter<>(ProductQuantityChangeEvent.class))
+                .registerEntryAdapter(AllItemsRemovedEvent.class, new EventAdapter<>(AllItemsRemovedEvent.class));
 
 
         final CartResource cartResource = new CartResource(world);

@@ -36,25 +36,31 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>0.8.4</version>
+      <version>0.8.7</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio</artifactId>
-      <version>0.8.4</version>
+      <version>0.8.7</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>0.8.4</version>
+      <version>0.8.7</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>ß
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-actors</artifactId>
+      <version>0.8.7</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-actors</artifactId>
-      <version>0.8.4</version>
+      <artifactId>vlingo-symbio</artifactId>
+      <version>0.8.7</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -90,6 +96,12 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.0.13</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-symbio</artifactId>
+      <version>0.8.7</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   <build>
