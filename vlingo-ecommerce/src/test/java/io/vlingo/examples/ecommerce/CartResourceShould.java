@@ -89,5 +89,14 @@ public class CartResourceShould {
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .body(is(equalTo("[{\"productId\":{\"id\":\"pid1\"},\"quantity\":1}]")));
+
+        baseGiven()
+                .when()
+                .body("{operation: \"add\"}")
+                .patch(cartUrl + "/pid1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_OK)
+                .body(is(equalTo("[{\"productId\":{\"id\":\"pid1\"},\"quantity\":2}]")));
     }
 }
