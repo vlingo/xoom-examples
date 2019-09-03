@@ -23,7 +23,7 @@ public class ProjectionDispatcherProvider {
   private static ProjectionDispatcherProvider instance;
 
   public final ProjectionDispatcher projectionDispatcher;
-  public final Dispatcher stateStoreDispatcher;
+  public final Dispatcher storeDispatcher;
 
   public static ProjectionDispatcherProvider instance() {
     return instance;
@@ -50,8 +50,8 @@ public class ProjectionDispatcherProvider {
     return instance;
   }
 
-  private ProjectionDispatcherProvider(final Dispatcher stateStoreDispatcher, final ProjectionDispatcher projectionDispatcher) {
-    this.stateStoreDispatcher = stateStoreDispatcher;
+  private ProjectionDispatcherProvider(final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {
+    this.storeDispatcher = storeDispatcher;
     this.projectionDispatcher = projectionDispatcher;
   }
 }

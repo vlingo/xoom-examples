@@ -36,7 +36,7 @@ public class Bootstrap {
     registry = new StatefulTypeRegistry(world);
 
     QueryModelStoreProvider.using(world.stage(), registry);
-    CommandModelStoreProvider.using(world.stage(), registry, ProjectionDispatcherProvider.using(world.stage()).stateStoreDispatcher);
+    CommandModelStoreProvider.using(world.stage(), registry, ProjectionDispatcherProvider.using(world.stage()).storeDispatcher);
 
     final UserResource userResource = new UserResource(world);
     final ProfileResource profileResource = new ProfileResource(world);
