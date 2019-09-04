@@ -15,14 +15,15 @@ import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.model.projection.ProjectionDispatcher;
 import io.vlingo.lattice.model.projection.ProjectionDispatcher.ProjectToDescription;
-import io.vlingo.lattice.model.projection.state.TextStateProjectionDispatcherActor;
-import io.vlingo.symbio.store.state.StateStore.Dispatcher;
+import io.vlingo.lattice.model.projection.TextProjectionDispatcherActor;
+import io.vlingo.symbio.store.dispatch.Dispatcher;
 
+@SuppressWarnings("rawtypes")
 public class ProjectionDispatcherProvider {
   private static ProjectionDispatcherProvider instance;
 
   public final ProjectionDispatcher projectionDispatcher;
-  public final Dispatcher stateStoreDispatcher;
+  public final Dispatcher storeDispatcher;
 
   public static ProjectionDispatcherProvider instance() {
     return instance;
@@ -40,7 +41,7 @@ public class ProjectionDispatcherProvider {
     final Protocols dispatcherProtocols =
             stage.actorFor(
                     new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class },
-                    Definition.has(TextStateProjectionDispatcherActor.class, Definition.parameters(descriptions)));
+                    Definition.has(TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
 
     final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
 
@@ -49,8 +50,8 @@ public class ProjectionDispatcherProvider {
     return instance;
   }
 
-  private ProjectionDispatcherProvider(final Dispatcher stateStoreDispatcher, final ProjectionDispatcher projectionDispatcher) {
-    this.stateStoreDispatcher = stateStoreDispatcher;
+  private ProjectionDispatcherProvider(final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {
+    this.storeDispatcher = storeDispatcher;
     this.projectionDispatcher = projectionDispatcher;
   }
 }

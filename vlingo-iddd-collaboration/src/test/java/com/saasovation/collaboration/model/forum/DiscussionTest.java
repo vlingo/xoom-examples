@@ -29,11 +29,11 @@ public class DiscussionTest extends EntityTest {
   public void testThatDiscussionCloses() {
     System.out.println("=========== testThatDiscussionClosed ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
-    journalListener.afterCompleting(1);
+    journalDispatcher.afterCompleting(1);
     discussionPair._2.close();
-    final int count = journalListener.confirmedCount(3);
+    final int count = journalDispatcher.confirmedCount(3);
     assertEquals(3, count);
-    final DiscussionClosed event2 = adapter().asSource(journalListener.entry(2));
+    final DiscussionClosed event2 = adapter().asSource(journalDispatcher.entry(2));
     assertEquals(DiscussionClosed.class, event2.getClass());
   }
 
@@ -41,14 +41,14 @@ public class DiscussionTest extends EntityTest {
   public void testThatDiscussionReopened() {
     System.out.println("=========== testThatDiscussionReopened ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
-    journalListener.afterCompleting(2);
+    journalDispatcher.afterCompleting(2);
     discussionPair._2.close();
     discussionPair._2.reopen();
-    final int count = journalListener.confirmedCount(4);
+    final int count = journalDispatcher.confirmedCount(4);
     assertEquals(4, count);
-    final DiscussionClosed event2 = adapter().asSource(journalListener.entry(2));
+    final DiscussionClosed event2 = adapter().asSource(journalDispatcher.entry(2));
     assertEquals(DiscussionClosed.class, event2.getClass());
-    final DiscussionReopened event3 = adapter().asSource(journalListener.entry(3));
+    final DiscussionReopened event3 = adapter().asSource(journalDispatcher.entry(3));
     assertEquals(DiscussionReopened.class, event3.getClass());
   }
 
@@ -56,12 +56,12 @@ public class DiscussionTest extends EntityTest {
   public void testThatDiscussionTopicChanged() {
     System.out.println("=========== testThatDiscussionTopicChanged ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
-    journalListener.afterCompleting(1);
+    journalDispatcher.afterCompleting(1);
     final String topic = "By Way, Way, Way of Discussion";
     discussionPair._2.topicTo(topic);
-    final int count = journalListener.confirmedCount(3);
+    final int count = journalDispatcher.confirmedCount(3);
     assertEquals(3, count);
-    final DiscussionTopicChanged event2 = adapter().asSource(journalListener.entry(2));
+    final DiscussionTopicChanged event2 = adapter().asSource(journalDispatcher.entry(2));
     assertEquals(DiscussionTopicChanged.class, event2.getClass());
     assertEquals(topic, event2.topic);
   }
@@ -71,7 +71,7 @@ public class DiscussionTest extends EntityTest {
     System.out.println("=========== testThatDiscussionPosts ===========");
     final Tuple2<DiscussionId, Discussion> discussionPair = fixtures.discussionFixture(world);
 //    System.out.println("4b");
-    journalListener.afterCompleting(1);
+    journalDispatcher.afterCompleting(1);
 //    System.out.println("4c");
     final Author author = Author.unique();
     final String subject = "Within the discussion a post";
@@ -81,11 +81,11 @@ public class DiscussionTest extends EntityTest {
 //    System.out.println("4c.2");
     assertNotNull(postPair._1);
     assertNotNull(postPair._2);
-//    System.out.println("4d=" + journalListener.confirmedCount());
-    final int count = journalListener.confirmedCount(3);
+//    System.out.println("4d=" + journalDispatcher.confirmedCount());
+    final int count = journalDispatcher.confirmedCount(3);
 //    System.out.println("4e");
     assertEquals(3, count);
-    final PostedToDiscussion event2 = postAdapter().asSource(journalListener.entry(2));
+    final PostedToDiscussion event2 = postAdapter().asSource(journalDispatcher.entry(2));
     assertEquals(PostedToDiscussion.class, event2.getClass());
     assertEquals(author.value, event2.authorId);
     assertEquals(subject, event2.subject);

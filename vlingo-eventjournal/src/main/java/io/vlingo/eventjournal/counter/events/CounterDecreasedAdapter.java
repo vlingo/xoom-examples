@@ -21,13 +21,13 @@ public class CounterDecreasedAdapter implements EntryAdapter<CounterDecreased,Te
     }
 
     @Override
-    public TextEntry toEntry(final CounterDecreased source) {
-      return toEntry(source, source.uuid.toString());
+    public TextEntry toEntry(final CounterDecreased source, final Metadata metadata) {
+      return toEntry(source, source.uuid.toString(), metadata);
     }
 
     @Override
-    public TextEntry toEntry(final CounterDecreased source, final String id) {
+    public TextEntry toEntry(final CounterDecreased source, final String id, final Metadata metadata) {
       final String serialization = JsonSerialization.serialized(source);
-      return new TextEntry(id, CounterIncreased.class, 1, serialization, Metadata.nullMetadata());
+      return new TextEntry(id, CounterIncreased.class, 1, serialization, metadata);
     }
 }

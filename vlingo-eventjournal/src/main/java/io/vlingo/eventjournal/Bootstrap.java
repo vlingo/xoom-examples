@@ -9,10 +9,14 @@ import io.vlingo.eventjournal.counter.CounterActor;
 import io.vlingo.eventjournal.counter.CounterQuery;
 import io.vlingo.eventjournal.counter.CounterQueryActor;
 import io.vlingo.eventjournal.interest.NoopConfigurationInterest;
-import io.vlingo.eventjournal.interest.NoopEventJournalListener;
+import io.vlingo.eventjournal.interest.NoopEventJournalDispatcher;
+import io.vlingo.symbio.Entry;
+import io.vlingo.symbio.EntryAdapterProvider;
 import io.vlingo.symbio.store.DataFormat;
 import io.vlingo.symbio.store.common.jdbc.Configuration;
+import io.vlingo.symbio.store.common.jdbc.DatabaseType;
 import io.vlingo.symbio.store.journal.Journal;
+import io.vlingo.symbio.store.journal.JournalReader;
 import io.vlingo.symbio.store.journal.jdbc.postgres.PostgresJournalActor;
 
 public class Bootstrap {
@@ -24,6 +28,7 @@ public class Bootstrap {
     public static void main(String[] args) throws Exception {
         Flyway.configure().dataSource(DB_URL, DB_USER, DB_PWD).load().migrate();
         final Configuration configuration = new Configuration(
+        		DatabaseType.Postgres,
                 new NoopConfigurationInterest(),
                 "org.postgresql.Driver",
                 DataFormat.Text,
@@ -38,7 +43,8 @@ public class Bootstrap {
 
         final World world = World.startWithDefaults("event-journal");
 
-        Journal<String> journal = Journal.using(world.stage(), PostgresJournalActor.class, new NoopEventJournalListener(), configuration);
+        final NoopEventJournalDispatcher journalDispatcher = new NoopEventJournalDispatcher();
+        Journal<String> journal = Journal.using(world.stage(), PostgresJournalActor.class, journalDispatcher, configuration);
 
         final Counter counter = world.actorFor(
                 Counter.class,
@@ -47,7 +53,7 @@ public class Bootstrap {
 
         final CounterQuery counterQuery = world.actorFor(
                 CounterQuery.class,
-                Definition.has(CounterQueryActor.class, Definition.parameters(journal.journalReader(DB_NAME).await()))
+                Definition.has(CounterQueryActor.class, Definition.parameters(journal.journalReader(DB_NAME).<JournalReader<Entry<?>>>await(), new EntryAdapterProvider()))
         );
 
         for (int i = 0; i < 5000; i++) {

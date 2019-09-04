@@ -7,49 +7,33 @@
 
 package com.saasovation.collaboration.model;
 
+import io.vlingo.actors.testkit.AccessSafely;
+import io.vlingo.common.Tuple2;
+import io.vlingo.symbio.Entry;
+import io.vlingo.symbio.State;
+import io.vlingo.symbio.store.dispatch.Dispatchable;
+import io.vlingo.symbio.store.dispatch.Dispatcher;
+import io.vlingo.symbio.store.dispatch.DispatcherControl;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import io.vlingo.actors.testkit.AccessSafely;
-import io.vlingo.common.Tuple2;
-import io.vlingo.symbio.Entry;
-import io.vlingo.symbio.State;
-import io.vlingo.symbio.store.journal.JournalListener;
-
-public class MockJournalListener implements JournalListener<String> {
+public class MockJournalDispatcher implements Dispatcher<Dispatchable<Entry<String>, State<String>>> {
   private AccessSafely access = afterCompleting(1);
 
   private final List<Entry<String>> allEntries = new ArrayList<>();
   private final List<State<String>> allSnapshots = new ArrayList<>();
-
+  
   @Override
-  public void appended(final Entry<String> entry) {
-//    System.out.println("APPEND-IN-1");
-    access.writeUsing("entry", Tuple2.from(entry, State.TextState.Null));
-//    System.out.println("APPEND-OUT-1");
+  public void controlWith(final DispatcherControl control) {
+
   }
 
   @Override
-  public void appendedWith(final Entry<String> entry, final State<String> snapshot) {
-//    System.out.println("APPEND-SS-IN-1");
-    access.writeUsing("entry", Tuple2.from(entry, snapshot));
-//    System.out.println("APPEND-SS-OUT-1");
-  }
-
-  @Override
-  public void appendedAll(final List<Entry<String>> entries) {
-//    System.out.println("APPEND-IN-*");
-    access.writeUsing("entries", Tuple2.from(entries, snapshots(entries.size(), State.TextState.Null)));
-//    System.out.println("APPEND-OUT-*");
-  }
-
-  @Override
-  public void appendedAllWith(final List<Entry<String>> entries, final State<String> snapshot) {
-//    System.out.println("APPEND-SS-IN-*");
-    access.writeUsing("entries", Tuple2.from(entries, snapshots(entries.size(), snapshot)));
-//    System.out.println("APPEND-SS-OUT-*");
+  public void dispatch(final Dispatchable<Entry<String>, State<String>> dispatchable) {
+    access.writeUsing("entries", Tuple2.from(dispatchable.entries(), snapshots(dispatchable.entries().size(), dispatchable.typedState())));
   }
 
   public int confirmedCount() {
@@ -100,4 +84,5 @@ public class MockJournalListener implements JournalListener<String> {
     final List<State<String>> snapshots = Arrays.asList(array);
     return snapshots;
   }
+
 }
