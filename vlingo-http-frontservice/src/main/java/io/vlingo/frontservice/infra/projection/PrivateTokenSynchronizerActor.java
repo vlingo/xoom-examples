@@ -7,6 +7,12 @@
 
 package io.vlingo.frontservice.infra.projection;
 
+import static io.vlingo.http.Method.GET;
+import static io.vlingo.http.RequestHeader.host;
+
+import java.net.URI;
+import java.util.List;
+
 import io.vlingo.actors.Actor;
 import io.vlingo.actors.AddressFactory;
 import io.vlingo.frontservice.model.User;
@@ -24,12 +30,6 @@ import io.vlingo.wire.node.Address;
 import io.vlingo.wire.node.AddressType;
 import io.vlingo.wire.node.Host;
 
-import java.net.URI;
-import java.util.List;
-
-import static io.vlingo.http.Method.GET;
-import static io.vlingo.http.RequestHeader.host;
-
 public class PrivateTokenSynchronizerActor extends Actor implements Projection {
   private static final int Identities = 0;
   private static final int Token = 1;
@@ -46,6 +46,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
   public PrivateTokenSynchronizerActor() {
     this.addressFactory = stage().world().addressFactory();
     this.client = client();
+    subscribeToEvents(this.client);
   }
 
   @Override
@@ -61,13 +62,16 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
 
     logger().debug("REQUESTING TOKEN: " + correlationId);
 
-    client.requestWith(
+    final Client tokenRequestClient = client();
+    
+    tokenRequestClient.requestWith(
             Request
               .has(GET)
               .and(URI.create("/tokens/" + state.security.publicToken))
               .and(host("localhost"))
               .and(RequestHeader.of(RequestHeader.XCorrelationID, correlationId)))
           .andThenConsume(response -> {
+        	 tokenRequestClient.close();
              switch (response.status) {
              case Ok:
                logger().debug("STARTING PROCESSING FOR TOKEN: " + correlationId);
@@ -81,7 +85,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
 
   private Client client() {
     try {
-      client = Client.using(Configuration.defaultedKeepAliveExceptFor(
+      final Client client = Client.using(Configuration.defaultedKeepAliveExceptFor(
               stage(),
               Address.from(Host.of(System.getProperty("BACKSERVICE_HOST", "localhost")), 8082, AddressType.NONE),
               new ResponseConsumer() {
@@ -91,8 +95,6 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
                 }
               }));
 
-      subscribeToEvents();
-
       return client;
 
     } catch (Exception e) {
@@ -101,7 +103,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
     }
   }
 
-  private void subscribeToEvents() {
+  private void subscribeToEvents(final Client client) {
     client.requestWith(
             Request
               .has(GET)

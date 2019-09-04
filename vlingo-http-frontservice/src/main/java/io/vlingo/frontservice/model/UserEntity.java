@@ -29,20 +29,17 @@ public class UserEntity extends StatefulEntity<User.UserState> implements User {
 
   @Override
   public void attachPrivateToken(final String privateToken) {
-    final User.UserState transitioned = state.withSecurity(state.security.withPrivateToken(privateToken));
-    apply(transitioned);
+    apply(state.withSecurity(state.security.withPrivateToken(privateToken)), "User:attachPrivateToken");
   }
 
   @Override
   public Completes<User.UserState> withContact(final Contact contact) {
-    apply(state.withContact(contact), "User:contact", () -> state);
-    return completes();
+    return apply(state.withContact(contact), "User:contact", () -> state);
   }
 
   @Override
   public Completes<User.UserState> withName(final Name name) {
-    apply(state.withName(name), "User:name", () -> state);
-    return completes();
+    return apply(state.withName(name), "User:name", () -> state);
   }
 
 

@@ -65,7 +65,7 @@ public class UserTest {
     assertTrue(Location, completes.response.headerOf(Location).value.startsWith("/users/"));
     assertNotNull(completes.response.entity);
 
-    final UserData createdUserData = deserialized(completes.response.entity.content, UserData.class);
+    final UserData createdUserData = deserialized(completes.response.entity.content(), UserData.class);
     assertNotNull(createdUserData);
     assertEquals(janeDoeUserData.nameData.given, createdUserData.nameData.given);
     assertEquals(janeDoeUserData.nameData.family, createdUserData.nameData.family);

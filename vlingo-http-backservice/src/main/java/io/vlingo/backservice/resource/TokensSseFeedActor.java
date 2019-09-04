@@ -72,7 +72,7 @@ public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
     final boolean fresh = subscriber.currentEventId().isEmpty();
     final int retry = fresh ? RetryThreshold : SseEvent.NoRetry;
     if (!events.isEmpty()) logger().debug("SENDING " + events.size() + " MESSAGES FOR " + subscriber.correlationId());
-    subscriber.client().send(subStream(events, startId, retry), subscriber.correlationId());
+    subscriber.client().send(subStream(events, startId, retry));
     subscriber.currentEventId(String.valueOf(startId + events.size()));
     pending.remove(subscriber.id());
   }

@@ -3,23 +3,26 @@
 This is an example service that manages users with profiles. This service collaborates with the
 `vlingo-http-backservice` to retrieve private tokens for the given user public token.
 
-Build the `vlingo-http-frontservice` as follows, and then execute the `jar`:
+You should run the `vlingo-http-backservice` first and then start the `vlingo-http-frontservice`.
+
+Start a console/command window so you can build the `vlingo-http-backservice` and start it by executing the built `jar`:
 
 ```
 $ mvn clean package
 ...
-$ java -jar target/vlingo-http-frontservice-0.7.0-jar-with-dependencies.jar
+$ java -jar target/vlingo-http-backservice-<version>-jar-with-dependencies.jar
 ```
 
-In a separate command window build and start the `vlingo-http-backservice`:
+
+Following that, in a separate console/command window, build the `vlingo-http-frontservice` as follows, and then execute the `jar`:
 
 ```
 $ mvn clean package
 ...
-$ java -jar target/vlingo-http-backservice-0.7.0-jar-with-dependencies.jar
+$ java -jar target/vlingo-http-frontservice-<version>-jar-with-dependencies.jar
 ```
 
-The following is a sample `curl` command that can be used to create a user on the `vlingo-http-frontservice` and start the process of retrieving the user's private token.
+The following is a sample `curl` command (or use Postman) that can be used to create a user on the `vlingo-http-frontservice` and start the process of retrieving the user's private token.
 
 ```
 $ curl -i -X POST -H "Content-Type: application/json" -d '{"nameData":{"given":"Jane","family":"Doe"},"contactData":{"emailAddress":"jane.doe@vlingo.io","telephoneNumber":"+1 212-555-1212"},"publicSecurityToken":"jfhf90r8re978er88e,ndf!--88dh*"}' http://localhost:8081/users
@@ -51,3 +54,6 @@ Content-Length: 198
 ```
 
 Try it yourself.
+
+You can generate random user data using this resource:
+http://www.convertcsv.com/generate-test-data.htm

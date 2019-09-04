@@ -21,7 +21,7 @@ import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
 public class EntityTest {
   protected Journal<String> journal;
-  protected MockJournalListener journalListener;
+  protected MockJournalDispatcher journalDispatcher;
   protected SourcedTypeRegistry registry;
   protected World world;
   protected TestWorld testWorld;
@@ -39,8 +39,8 @@ public class EntityTest {
   public void setUp() throws Exception {
     testWorld = TestWorld.startWithDefaults("entity-test");
     world = testWorld.world();
-    journalListener = new MockJournalListener();
-    journal = world.actorFor(Journal.class, InMemoryJournalActor.class, journalListener);
+    journalDispatcher = new MockJournalDispatcher();
+    journal = world.actorFor(Journal.class, InMemoryJournalActor.class, journalDispatcher);
     registry = new SourcedTypeRegistry(world);
     SourcedRegistration.registerAllWith(registry, journal);
   }

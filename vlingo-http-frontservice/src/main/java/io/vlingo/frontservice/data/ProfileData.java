@@ -10,19 +10,21 @@ package io.vlingo.frontservice.data;
 import io.vlingo.frontservice.model.Profile;
 
 public class ProfileData {
+  public final String id;
   public final String linkedInAccount;
   public final String twitterAccount;
   public final String website;
 
   public static ProfileData empty() {
-    return new ProfileData(null, null, null);
+    return new ProfileData(null, null, null, null);
   }
 
   public static ProfileData from(final Profile.ProfileState profile) {
-    return new ProfileData(profile.twitterAccount, profile.linkedInAccount, profile.website);
+    return new ProfileData(profile.id, profile.twitterAccount, profile.linkedInAccount, profile.website);
   }
 
-  public ProfileData(final String twitterAccount, final String linkedInAccount, final String website) {
+  public ProfileData(final String id, final String twitterAccount, final String linkedInAccount, final String website) {
+	this.id = id;
     this.twitterAccount = twitterAccount;
     this.linkedInAccount = linkedInAccount;
     this.website = website;

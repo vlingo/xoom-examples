@@ -7,21 +7,36 @@
 
 package io.vlingo.frontservice.resource;
 
-import io.vlingo.actors.*;
+import static io.vlingo.common.serialization.JsonSerialization.serialized;
+import static io.vlingo.http.Response.Status.Created;
+import static io.vlingo.http.Response.Status.NotFound;
+import static io.vlingo.http.Response.Status.Ok;
+import static io.vlingo.http.ResponseHeader.Location;
+import static io.vlingo.http.ResponseHeader.headers;
+import static io.vlingo.http.ResponseHeader.of;
+import static io.vlingo.http.resource.ResourceBuilder.get;
+import static io.vlingo.http.resource.ResourceBuilder.patch;
+import static io.vlingo.http.resource.ResourceBuilder.post;
+import static io.vlingo.http.resource.ResourceBuilder.resource;
+
+import io.vlingo.actors.Address;
+import io.vlingo.actors.AddressFactory;
+import io.vlingo.actors.Definition;
+import io.vlingo.actors.Stage;
+import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
 import io.vlingo.frontservice.data.ContactData;
 import io.vlingo.frontservice.data.NameData;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.frontservice.infra.persistence.Queries;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
-import io.vlingo.frontservice.model.*;
+import io.vlingo.frontservice.model.Contact;
+import io.vlingo.frontservice.model.Name;
+import io.vlingo.frontservice.model.Security;
+import io.vlingo.frontservice.model.User;
+import io.vlingo.frontservice.model.UserEntity;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
-
-import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Status.*;
-import static io.vlingo.http.ResponseHeader.*;
-import static io.vlingo.http.resource.ResourceBuilder.*;
 
 public class UserResource {
   private final AddressFactory addressFactory;

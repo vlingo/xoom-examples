@@ -43,7 +43,7 @@ public class CartActor extends EventSourced implements Cart {
 
     @Override
     public Completes<List<CartItem>> addItem(ProductId productId) {
-        apply(CartEvents
+        return apply(CartEvents
                 .ProductQuantityChangeEvent
                 .with(state.cartId,
                         state.userId,
@@ -51,12 +51,11 @@ public class CartActor extends EventSourced implements Cart {
                         1,
                         state.calcNewQuantityByProductId(productId, 1)),
                 () -> state.getCartItems());
-        return completes();
     }
 
     @Override
     public Completes<List<CartItem>> removeItem(ProductId productId) {
-        apply(CartEvents
+    	return apply(CartEvents
                         .ProductQuantityChangeEvent
                         .with(state.cartId,
                                 state.userId,
@@ -64,7 +63,6 @@ public class CartActor extends EventSourced implements Cart {
                                 -1,
                                 state.calcNewQuantityByProductId(productId, -1)),
                 () -> state.getCartItems());
-        return completes();
     }
 
     @Override
@@ -74,8 +72,7 @@ public class CartActor extends EventSourced implements Cart {
 
     @Override
     public Completes<List<CartItem>> removeAllItems() {
-        apply(CartEvents.AllItemsRemovedEvent.with(state.cartId, state.userId), () -> state.getCartItems());
-        return completes();
+    	return apply(CartEvents.AllItemsRemovedEvent.with(state.cartId, state.userId), () -> state.getCartItems());
     }
 
     private void applyCartCreated(final CartEvents.CreatedForUser e) {
@@ -83,7 +80,7 @@ public class CartActor extends EventSourced implements Cart {
     }
 
     private void applyQuantityChange(final CartEvents.ProductQuantityChangeEvent e) {
-        state = state.productQuantityChange(e.productId, e.newQuantity);
+        state = state.productQuantityChange(e.productId, e.quantityChange);
     }
 
     private void applyAllItemsRemoved(final CartEvents.AllItemsRemovedEvent e) {
