@@ -21,7 +21,7 @@ public class EventJournalActor extends Actor implements EventJournal {
 
   @Override
   public void append(final Object event) {
-    System.out.println("APPENDED: " + event);
+    logger().debug("APPENDED: " + event);
     events.add(event);
   }
 
@@ -32,7 +32,7 @@ public class EventJournalActor extends Actor implements EventJournal {
     final List<Object> substream = new ArrayList<>(limit);
     final int totalEvents = events.size();
     for (int index = lowestId; index <= highestId && index < totalEvents; ++index) {
-      System.out.println("STREAMING: " + index);
+      logger().debug("STREAMING: " + index);
       substream.add(events.get(index));
     }
     sink.consume(substream, startId, referencing);
