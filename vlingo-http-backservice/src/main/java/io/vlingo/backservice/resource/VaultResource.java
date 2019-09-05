@@ -23,7 +23,7 @@ public class VaultResource extends ResourceHandler {
 
   public void generatePrivateToken(final String publicToken) {
     final String id = context().request().headerValueOr(RequestHeader.XCorrelationID, "");
-    System.out.println("GEN TOKEN FOR: " + publicToken + " WITH ID: " + id);
+    logger().debug("GEN TOKEN FOR: " + publicToken + " WITH ID: " + id);
     completes().with(Response.of(Ok).include(ResponseHeader.of(ResponseHeader.XCorrelationID, id)));
     final SCryptHasher hasher = new SCryptHasher(16384, 8, 1);
     final String privateToken = hasher.hash(publicToken);
