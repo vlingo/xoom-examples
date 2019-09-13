@@ -2,15 +2,10 @@ package io.vlingo.examples.ecommerce;
 
 import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
-import io.vlingo.examples.ecommerce.infra.MockJournalDispatcher;
-import io.vlingo.examples.ecommerce.infra.cart.CartAllItemsRemoveEventAdapter;
-import io.vlingo.examples.ecommerce.infra.cart.CartCreatedEventAdapter;
-import io.vlingo.examples.ecommerce.infra.cart.CartProductQuantityChangedEventAdapter;
-import io.vlingo.examples.ecommerce.infra.order.OrderCreatedEventAdapter;
-import io.vlingo.examples.ecommerce.infra.order.PaymentReceivedEventAdapter;
-import io.vlingo.examples.ecommerce.infra.order.ShippedEventAdapter;
 import io.vlingo.examples.ecommerce.infra.EventAdapter;
-import io.vlingo.examples.ecommerce.infra.BufferedJournalListener;
+import io.vlingo.examples.ecommerce.infra.MockJournalDispatcher;
+import io.vlingo.examples.ecommerce.infra.CartQueryProvider;
+import io.vlingo.examples.ecommerce.infra.ProjectionDispatcherProvider;
 import io.vlingo.examples.ecommerce.model.*;
 import io.vlingo.examples.ecommerce.model.CartEvents.AllItemsRemovedEvent;
 import io.vlingo.examples.ecommerce.model.CartEvents.CreatedForUser;
@@ -20,8 +15,15 @@ import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
+import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
+import io.vlingo.symbio.store.dispatch.Dispatchable;
+import io.vlingo.symbio.store.dispatch.Dispatcher;
+import io.vlingo.symbio.store.dispatch.DispatcherControl;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
+import io.vlingo.symbio.store.state.StateStore;
+import io.vlingo.symbio.store.state.inmemory.InMemoryStateStoreActor;
+import org.jetbrains.annotations.NotNull;
 
 public class Bootstrap {
     private static Bootstrap instance;
@@ -32,10 +34,22 @@ public class Bootstrap {
     private Bootstrap(final int portNumber) {
         world = World.startWithDefaults("cartservice");
 
-        MockJournalDispatcher dispatcher = new MockJournalDispatcher();
-        Journal<String> journal = Journal.using(world.stage(), InMemoryJournalActor.class, dispatcher);
+        final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
 
-        SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
+        final StateStore keyValueStateStore = world.stage().actorFor(StateStore.class,
+                InMemoryStateStoreActor.class,
+                createNoOpDispatcher());
+
+        CartQueryProvider.using(world.stage(), statefulTypeRegistry, keyValueStateStore);
+
+
+        ProjectionDispatcherProvider.using(world.stage());
+
+        final Journal<String> journal = Journal.using(world.stage(),
+                                                InMemoryJournalActor.class,
+                                                ProjectionDispatcherProvider.instance().storeDispatcher);
+
+        final SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
         registry.register(new Info(journal, CartActor.class, CartActor.class.getSimpleName()));
         registry.register(new Info(journal, OrderActor.class, OrderActor.class.getSimpleName()));
 
@@ -48,6 +62,7 @@ public class Bootstrap {
                 .registerEntryAdapter(CreatedForUser.class, new EventAdapter<>(CreatedForUser.class))
                 .registerEntryAdapter(ProductQuantityChangeEvent.class, new EventAdapter<>(ProductQuantityChangeEvent.class))
                 .registerEntryAdapter(AllItemsRemovedEvent.class, new EventAdapter<>(AllItemsRemovedEvent.class));
+
 
 
         final CartResource cartResource = new CartResource(world);
@@ -73,6 +88,14 @@ public class Bootstrap {
                 pause();
             }
         }));
+    }
+
+    @NotNull
+    private Dispatcher createNoOpDispatcher() {
+        return new Dispatcher() {
+                public void controlWith(final DispatcherControl control) { }
+                public void dispatch(Dispatchable d) { }
+            };
     }
 
     static Bootstrap instance(final int portNumber) {
