@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-http-backservice</artifactId>
-  <version>0.8.8</version>
+  <version>0.8.9</version>
   <name>vlingo-http-backservice</name>
   <description>Example of vlingo/http non-public service.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -46,6 +46,10 @@
           </execution>
         </executions>
         <configuration>
+          <finalName>vlingo-http-backservice</finalName>
+          <descriptors>
+            <descriptor>assembly.xml</descriptor>
+          </descriptors>
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
@@ -53,9 +57,6 @@
               <classpathPrefix>dependency-jars/</classpathPrefix>
             </manifest>
           </archive>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
         </configuration>
       </plugin>
       <plugin>
@@ -95,22 +96,22 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-common</artifactId>
-      <version>0.8.8</version>
+      <version>0.8.9</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.8.8</version>
+      <version>0.8.9</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>0.8.8</version>
+      <version>0.8.9</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-auth</artifactId>
-      <version>0.8.8</version>
+      <version>0.8.9</version>
     </dependency>
   </dependencies>
 </project>
