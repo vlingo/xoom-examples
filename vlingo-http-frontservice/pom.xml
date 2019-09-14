@@ -46,7 +46,10 @@
           </execution>
         </executions>
         <configuration>
-          <finalName>${artifactId}</finalName>
+          <finalName>vlingo-http-frontservice</finalName>
+          <descriptors>
+            <descriptor>assembly.xml</descriptor>
+          </descriptors>
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
@@ -54,9 +57,6 @@
               <classpathPrefix>dependency-jars/</classpathPrefix>
             </manifest>
           </archive>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
         </configuration>
       </plugin>
       <plugin>
