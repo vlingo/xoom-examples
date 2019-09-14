@@ -46,6 +46,10 @@
           </execution>
         </executions>
         <configuration>
+          <finalName>vlingo-http-backservice</finalName>
+          <descriptors>
+            <descriptor>assembly.xml</descriptor>
+          </descriptors>
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
@@ -53,9 +57,6 @@
               <classpathPrefix>dependency-jars/</classpathPrefix>
             </manifest>
           </archive>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
         </configuration>
       </plugin>
       <plugin>
