@@ -46,7 +46,7 @@ public class UserProjectionActor extends Actor
     final User.UserState state = projectable.object();
     final UserData current = UserData.from(state);
 
-    switch (projectable.becauseOf()) {
+    switch (projectable.becauseOf()[0]) {
       case "User:new": {
         store.write(state.id, current, 1, writeInterest, control.confirmerFor(projectable));
         break;
