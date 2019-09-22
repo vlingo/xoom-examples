@@ -47,7 +47,7 @@ public class ProfileProjectionActor extends Actor
     final Profile.ProfileState state = projectable.object();
     final ProfileData data = ProfileData.from(state);
 
-    switch (projectable.becauseOf()) {
+    switch (projectable.becauseOf()[0]) {
     case "Profile:new": {
       store.write(state.id, data, 1, writeInterest, control.confirmerFor(projectable));
       break;
