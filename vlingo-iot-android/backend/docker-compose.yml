@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  backend:
+    image: "adoptopenjdk/openjdk11"
+    command: "java -jar /app/backend-all.jar"
+    volumes:
+      - "./build/libs:/app"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    links:
+      - postgres:postgres.service
+
+  postgres:
+    image: "postgres:9.6.12"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: hike
+      POSTGRES_USER: hike
+      POSTGRES_DATABASE: hike
