@@ -1,0 +1,9 @@
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation("io.vlingo:vlingo-common:0.8.3")
+    implementation("io.vlingo:vlingo-actors:0.8.3")
+}
