@@ -17,7 +17,7 @@ import io.vlingo.symbio.store.common.jdbc.Configuration;
 import io.vlingo.symbio.store.common.jdbc.DatabaseType;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.JournalReader;
-import io.vlingo.symbio.store.journal.jdbc.postgres.PostgresJournalActor;
+import io.vlingo.symbio.store.journal.jdbc.JDBCJournalActor;
 
 public class Bootstrap {
     private static final String DB_URL = "jdbc:postgresql://[::1]:5432/";
@@ -44,7 +44,7 @@ public class Bootstrap {
         final World world = World.startWithDefaults("event-journal");
 
         final NoopEventJournalDispatcher journalDispatcher = new NoopEventJournalDispatcher();
-        Journal<String> journal = Journal.using(world.stage(), PostgresJournalActor.class, journalDispatcher, configuration);
+        Journal<String> journal = Journal.using(world.stage(), JDBCJournalActor.class, journalDispatcher, configuration);
 
         final Counter counter = world.actorFor(
                 Counter.class,
