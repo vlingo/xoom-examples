@@ -36,12 +36,12 @@ public class Bootstrap {
 
         final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
 
+
         final StateStore keyValueStateStore = world.stage().actorFor(StateStore.class,
                 InMemoryStateStoreActor.class,
                 createNoOpDispatcher());
 
         CartQueryProvider.using(world.stage(), statefulTypeRegistry, keyValueStateStore);
-
 
         ProjectionDispatcherProvider.using(world.stage());
 
@@ -63,14 +63,14 @@ public class Bootstrap {
                 .registerEntryAdapter(ProductQuantityChangeEvent.class, new EventAdapter<>(ProductQuantityChangeEvent.class))
                 .registerEntryAdapter(AllItemsRemovedEvent.class, new EventAdapter<>(AllItemsRemovedEvent.class));
 
-
-
         final CartResource cartResource = new CartResource(world);
         final OrderResource orderResource = new OrderResource(world);
-
+        final UserResource userResource = new UserResource(CartQueryProvider.instance().cartQuery);
         final Resources resources = Resources.are(
                 cartResource.routes(),
-                orderResource.routes());
+                orderResource.routes(),
+                userResource.routes());
+
         this.server = Server.startWith(world.stage(),
                 resources,
                 portNumber,

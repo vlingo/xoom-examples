@@ -4,22 +4,19 @@ public class CartUserSummaryData {
 
     public final String userId;
     public final String cartId;
-    public final String amount;
+    public final String numberOfItems;
 
-    public CartUserSummaryData(String userId, String cartId, String amount) {
+    public CartUserSummaryData(String userId, String cartId, String numberOfItems) {
         this.userId = userId;
         this.cartId = cartId;
-        this.amount = amount;
-    }
-
-    CartUserSummaryData(int cartId, int userId, float amount) {
-        this.cartId = Integer.toString(cartId);
-        this.userId = Integer.toString(userId);
-        this.amount = Float.toString(amount);
+        this.numberOfItems = numberOfItems;
     }
 
     public static CartUserSummaryData empty() {
-        // Should be emppty?
         return new CartUserSummaryData(null, null, null);
+    }
+
+    public static  CartUserSummaryData from(String userId, String cartId, String numberOfItems) {
+        return new CartUserSummaryData(userId, cartId, numberOfItems);
     }
 }
