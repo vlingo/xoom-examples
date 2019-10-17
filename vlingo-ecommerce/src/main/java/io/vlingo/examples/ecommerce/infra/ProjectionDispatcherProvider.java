@@ -10,7 +10,6 @@ package io.vlingo.examples.ecommerce.infra;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
-import io.vlingo.examples.ecommerce.model.CartUserSummaryData;
 import io.vlingo.lattice.model.projection.ProjectionDispatcher;
 import io.vlingo.lattice.model.projection.ProjectionDispatcher.ProjectToDescription;
 import io.vlingo.lattice.model.projection.TextProjectionDispatcherActor;
@@ -34,7 +33,7 @@ public class ProjectionDispatcherProvider {
     if (instance != null) return instance;
 
     final List<ProjectToDescription> descriptions =
-            Arrays.asList(new ProjectToDescription(CartProjectActor.class, "*"));
+            Arrays.asList(new ProjectToDescription(CartSummaryProjectionActor.class, "*"));
 
     final Protocols dispatcherProtocols =
             stage.actorFor(

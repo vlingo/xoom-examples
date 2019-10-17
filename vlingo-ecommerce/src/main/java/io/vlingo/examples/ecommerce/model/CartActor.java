@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class CartActor extends EventSourced implements Cart {
 
+    public static final int SNAPSHOT_ONE_EVERY_N_TIMES = 10;
     private State state;
 
     public CartActor(final String cartId) {
@@ -22,6 +23,15 @@ public class CartActor extends EventSourced implements Cart {
     @Override
     public String streamName() {
         return String.format("cartEvents:%s", state.cartId);
+    }
+
+    @Override
+    public String snapshot() {
+        if (nextVersion() % SNAPSHOT_ONE_EVERY_N_TIMES == 0) {
+            return this.state.toString();
+        } else {
+            return null;
+        }
     }
 
     static {
@@ -126,7 +136,7 @@ public class CartActor extends EventSourced implements Cart {
         int calcNewQuantityByProductId(ProductId productId, int quantityChange) {
             int quantity = basketProductsById.getOrDefault(productId, 0);
             int newQuantity = quantity + quantityChange;
-            return (newQuantity < 0) ?  0 : newQuantity;
+            return Math.max(newQuantity, 0);
         }
 
         private List<CartItem> getCartItems() {

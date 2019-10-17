@@ -11,6 +11,7 @@ import io.vlingo.actors.Stage;
 import io.vlingo.examples.ecommerce.model.CartQuery;
 import io.vlingo.examples.ecommerce.model.CartQueryActor;
 import io.vlingo.examples.ecommerce.model.CartUserSummaryData;
+import io.vlingo.examples.ecommerce.model.UserId;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
 import io.vlingo.symbio.EntryAdapterProvider;
@@ -30,14 +31,14 @@ public class CartQueryProvider {
   @SuppressWarnings("rawtypes")
   public static CartQueryProvider using(final Stage stage,
                                         final StatefulTypeRegistry registry,
-                                        final StateStore stateStoreProtocol) {
-    if (instance != null) return instance;
+                                        final StateStore stateStore) {
+    if (instance == null) {
+      registerStateAdapter(stage);
+      registerStatefulTypes(stateStore, registry);
+      final CartQuery queries = stage.actorFor(CartQuery.class, CartQueryActor.class, stateStore);
 
-    registerStateAdapter(stage);
-
-    final CartQuery queries = stage.actorFor(CartQuery.class, CartQueryActor.class, stateStoreProtocol);
-
-    instance = new CartQueryProvider(registry, stateStoreProtocol, queries);
+      instance = new CartQueryProvider(stateStore, queries);
+    }
 
     return instance;
   }
@@ -45,15 +46,20 @@ public class CartQueryProvider {
   private static void registerStateAdapter(Stage stage) {
     final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider(stage.world());
     stateAdapterProvider.registerAdapter(CartUserSummaryData.class, new CartStateAdapter());
+    stateAdapterProvider.registerAdapter(UserId.class, new UserIdStateAdapter() );
     new EntryAdapterProvider(stage.world()); // future?
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  private CartQueryProvider(final StatefulTypeRegistry registry, final StateStore store, final CartQuery queries) {
+  private static void registerStatefulTypes(StateStore stateStore, StatefulTypeRegistry registry) {
+    registry
+            .register(new Info(stateStore, CartUserSummaryData.class, CartUserSummaryData.class.getSimpleName()))
+            .register(new Info(stateStore, UserId.class, UserId.class.getSimpleName()));
+  }
+
+
+  private CartQueryProvider(final StateStore store, final CartQuery queries) {
     this.store = store;
     this.cartQuery = queries;
-
-    registry
-      .register(new Info(store, CartUserSummaryData.class, CartUserSummaryData.class.getSimpleName()));
   }
 }

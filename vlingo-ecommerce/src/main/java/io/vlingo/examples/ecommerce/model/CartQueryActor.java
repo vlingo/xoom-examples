@@ -24,6 +24,7 @@ public class CartQueryActor extends Actor implements CartQuery, StateStore.ReadR
     @Override
     public Completes<CartUserSummaryData> getCartSummaryForUser(int userId) {
         final CompletesEventually completesEventually = completesEventually();
+
         final BiConsumer<CartUserSummaryData,Integer> translator = (data, version) -> {
             if (data != null) {
                 completesEventually.with(data);

@@ -29,16 +29,14 @@ import static org.hamcrest.text.MatchesPattern.matchesPattern;
 
 public class OrderResourceShould {
 
-    private static final AtomicInteger portNumber = new AtomicInteger(8081);
-
-    private int orderPortNumber = portNumber.getAndIncrement();
+    private static final AtomicInteger portNumber = new AtomicInteger(8080);
+    private int orderPortNumber;
     private final Object lock = new Object();
 
     @Before
     public void setUp() {
+        orderPortNumber = portNumber.getAndIncrement();
         Bootstrap.instance(orderPortNumber);
-        // This should not be needed; see https://github.com/vlingo/vlingo-http/issues/26
-        RestAssured.defaultParser = Parser.JSON;
         Boolean startUpSuccess = Bootstrap.instance().serverStartup().await(100);
         assertThat(startUpSuccess, is(equalTo(true)));
     }
