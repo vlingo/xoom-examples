@@ -1,9 +1,7 @@
 package io.vlingo.examples.ecommerce;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.mapper.ObjectMapperType;
-import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.vlingo.actors.testkit.TestUntil;
@@ -44,7 +42,7 @@ public class OrderResourceShould {
     @After
     public void cleanUp() {
         // Shutdown is not reliable yet; see https://github.com/vlingo/vlingo-http/issues/25
-        Bootstrap.instance().stop();
+        Bootstrap.instance().stopAndCleanup();
     }
 
     private RequestSpecification baseGiven() {

@@ -27,6 +27,6 @@ public class UserResource {
 
     private Completes<ObjectResponse<CartUserSummaryData>> queryCartSummary(String userId) {
        return cartQuery.getCartSummaryForUser(Integer.parseInt(userId))
-               .andThen( data ->ObjectResponse.of(Response.Status.Ok, data));
+               .andThenTo( data -> Completes.withSuccess(ObjectResponse.of(Response.Status.Ok, data)));
     }
 }

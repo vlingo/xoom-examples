@@ -42,7 +42,6 @@ public class Bootstrap {
                 createNoOpDispatcher());
 
         CartQueryProvider.using(world.stage(), statefulTypeRegistry, keyValueStateStore);
-
         ProjectionDispatcherProvider.using(world.stage());
 
         final Journal<String> journal = Journal.using(world.stage(),
@@ -104,6 +103,7 @@ public class Bootstrap {
         }
         return instance;
     }
+
     static Bootstrap instance() {
       return instance(8081);
     }
@@ -119,8 +119,12 @@ public class Bootstrap {
         return server.startUp();
     }
 
-    void stop() {
+    void stopAndCleanup() {
         Bootstrap.instance().server.stop();
+
+        CartQueryProvider.deleteInstance();
+        ProjectionDispatcherProvider.deleteInstance();
+
         instance = null;
     }
 
