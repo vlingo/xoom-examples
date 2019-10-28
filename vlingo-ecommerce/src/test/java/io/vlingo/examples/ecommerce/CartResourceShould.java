@@ -92,6 +92,20 @@ public class CartResourceShould {
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .body(is(equalTo(expectedResponse)));
+
+        cartUrl = createCart();
+
+        summaryUrl = String.format("/user/%d/cartSummary", userIdForCart);
+        cartId = getCartId(cartUrl);
+
+        expectedResponse = String.format("{\"userId\":\"100\",\"cartId\":\"%s\",\"numberOfItems\":\"0\"}", cartId);
+        baseGiven()
+                .when()
+                .get(summaryUrl)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_OK)
+                .body(is(equalTo(expectedResponse)));
     }
 
     @Test

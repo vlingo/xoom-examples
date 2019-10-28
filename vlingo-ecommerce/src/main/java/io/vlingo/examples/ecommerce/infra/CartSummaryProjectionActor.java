@@ -52,6 +52,7 @@ public class CartSummaryProjectionActor extends Actor
     this.productQuantityChangedAdapter = new EventAdapter<>(CartEvents.ProductQuantityChangeEvent.class);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void projectWith(final Projectable projectable, final ProjectionControl control) {
     Collection<Entry<?>> entries = projectable.entries();
@@ -59,11 +60,31 @@ public class CartSummaryProjectionActor extends Actor
 
       if (entry.type().equals(CartEvents.CreatedForUser.class.getTypeName())) {
         CartEvents.CreatedForUser event = createdEventAdapter.fromEntry((BaseEntry.TextEntry) entry);
-        CartUserSummaryData summaryData = new CartUserSummaryData(event.userId.getId(),
-                                                                  event.cartId,
-                                                                  "0");
-        Confirmer confirmer = control.confirmerFor(projectable);
-        store.write(summaryData.userId, summaryData, INITIAL_STATE_VERSION, writeInterest, confirmer);
+
+        final BiConsumer<CartUserSummaryData, Integer> updater = (previousValue, previousVersion) -> {
+          int nextVersion = (previousVersion == -1) ? INITIAL_STATE_VERSION : previousVersion + 1;
+
+          updateWith(previousValue,
+                     (previous) -> new CartUserSummaryData(event.userId.getId(), event.cartId, "0"),
+                     nextVersion,
+                     control.confirmerFor(projectable));
+        };
+
+        ReadResultInterest acceptOnDoesNotExistReadInterest = new ReadResultInterest() {
+          @Override
+          public <S> void readResultedIn(Outcome<StorageException, Result> outcome, String id, S state, int stateVersion, Metadata metadata, Object object) {
+            outcome.andThen(result -> {
+              ((BiConsumer<S, Integer>) object).accept(state, stateVersion);
+              return result;
+            }).otherwise(cause -> {
+              ((BiConsumer<S, Integer>) object).accept(null, -1);
+              logger().info("Query state not read for update because: " + cause.getMessage(), cause);
+              return cause.result;
+            });
+          }
+        };
+
+        store.read(event.userId.getId(), CartUserSummaryData.class, acceptOnDoesNotExistReadInterest, updater);
       }
 
       else if (entry.type().equals(CartEvents.AllItemsRemovedEvent.class.getTypeName())) {
