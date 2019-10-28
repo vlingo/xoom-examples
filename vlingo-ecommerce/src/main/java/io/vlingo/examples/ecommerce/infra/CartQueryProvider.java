@@ -43,6 +43,11 @@ public class CartQueryProvider {
     return instance;
   }
 
+  public static void deleteInstance() {
+      instance = null;
+  }
+
+
   private static void registerStateAdapter(Stage stage) {
     final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider(stage.world());
     stateAdapterProvider.registerAdapter(CartUserSummaryData.class, new CartStateAdapter());

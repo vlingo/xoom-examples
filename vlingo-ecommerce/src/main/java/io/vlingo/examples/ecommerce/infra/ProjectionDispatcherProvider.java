@@ -16,6 +16,7 @@ import io.vlingo.lattice.model.projection.TextProjectionDispatcherActor;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("rawtypes")
@@ -30,26 +31,32 @@ public class ProjectionDispatcherProvider {
   }
 
   public static ProjectionDispatcherProvider using(final Stage stage) {
-    if (instance != null) return instance;
 
-    final List<ProjectToDescription> descriptions =
-            Arrays.asList(new ProjectToDescription(CartSummaryProjectionActor.class, "*"));
+    if (instance == null) {
+      final List<ProjectToDescription> descriptions =
+              Collections.singletonList(new ProjectToDescription(CartSummaryProjectionActor.class, "*"));
 
-    final Protocols dispatcherProtocols =
-            stage.actorFor(
-                    new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class },
-                    Definition.has(TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
+      final Protocols dispatcherProtocols =
+              stage.actorFor(
+                      new Class<?>[]{Dispatcher.class, ProjectionDispatcher.class},
+                      Definition.has(TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
 
-    final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
-    final Dispatcher storeDispatcher = dispatchers._1;
-    final ProjectionDispatcher projectionDispatcher = dispatchers._2;
+      final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
+      final Dispatcher storeDispatcher = dispatchers._1;
+      final ProjectionDispatcher projectionDispatcher = dispatchers._2;
 
-    instance = new ProjectionDispatcherProvider(storeDispatcher, projectionDispatcher);
+      instance = new ProjectionDispatcherProvider(storeDispatcher, projectionDispatcher);
+    }
     return instance;
+  }
+
+  public static void deleteInstance() {
+    instance = null;
   }
 
   private ProjectionDispatcherProvider(final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {
     this.storeDispatcher = storeDispatcher;
     this.projectionDispatcher = projectionDispatcher;
   }
+
 }

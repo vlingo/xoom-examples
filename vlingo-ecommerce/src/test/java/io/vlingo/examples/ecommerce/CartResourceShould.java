@@ -1,8 +1,6 @@
 package io.vlingo.examples.ecommerce;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
@@ -37,7 +35,7 @@ public class CartResourceShould {
     @After
     public void cleanUp() {
         // Shutdown is not reliable yet; see https://github.com/vlingo/vlingo-http/issues/25
-        Bootstrap.instance().stop();
+        Bootstrap.instance().stopAndCleanup();
     }
 
     private String getCartId(final String cartUrl) {
@@ -47,7 +45,7 @@ public class CartResourceShould {
 
 
     RequestSpecification baseGiven() {
-        return given()
+        return given().log().uri()
                 .port(cartPortNumber)
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON);
