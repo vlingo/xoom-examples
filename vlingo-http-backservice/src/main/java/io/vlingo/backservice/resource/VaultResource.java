@@ -9,9 +9,9 @@ package io.vlingo.backservice.resource;
 
 import static io.vlingo.http.Response.Status.Ok;
 
-import io.vlingo.auth.model.crypto.SCryptHasher;
 import io.vlingo.backservice.infra.persistence.EventJournal;
 import io.vlingo.backservice.resource.model.PrivateTokenGernerated;
+import io.vlingo.common.crypto.SCryptHasher;
 import io.vlingo.http.RequestHeader;
 import io.vlingo.http.Response;
 import io.vlingo.http.ResponseHeader;
