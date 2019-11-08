@@ -8,8 +8,9 @@
 package com.saasovation.agilepm.model.product
 
 import io.vlingo.actors.Stage
+import io.vlingo.lattice.model.DomainEvent
 
-public class ProductEntity : Product, Sourced<io.vlingo.lattice.model.DomainEvent> {
+public class ProductEntity : Product, Sourced<DomainEvent> {
   var State state
 
   fun changeProductOwner(val productOwner: ProductOwner): Completes<State> {
