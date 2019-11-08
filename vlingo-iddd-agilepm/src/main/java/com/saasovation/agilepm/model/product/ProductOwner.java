@@ -13,10 +13,14 @@ public class ProductOwner {
   public final String id;
   public final Tenant tenant;
   
+  public static ProductOwner fromExisting(String tenantId, final String id) {
+    return new ProductOwner(Tenant.fromExisting(tenantId), id);
+  }
+  
   public static ProductOwner with(final Tenant tenant, final String id) {
     return new ProductOwner(tenant, id);
   }
-  
+
   public ProductOwner(final Tenant tenant, final String id) {
     assert(tenant != null);
     assert(id != null);
