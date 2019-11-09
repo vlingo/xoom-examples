@@ -9,23 +9,21 @@ package com.saasovation.agilepm.infra;
 
 import com.saasovation.agilepm.infra.dispatch.ExchangeDispatcher;
 import com.saasovation.agilepm.infra.exchange.ExchangeBootstrap;
-import com.saasovation.agilepm.model.Tenant;
-import com.saasovation.agilepm.model.product.Product;
+import com.saasovation.agilepm.infra.resource.ProductResource;
 import com.saasovation.agilepm.model.product.ProductEntity;
-import com.saasovation.agilepm.model.product.ProductId;
-import com.saasovation.agilepm.model.product.ProductOwner;
-import io.vlingo.actors.*;
-import io.vlingo.common.identity.IdentityGeneratorType;
+import io.vlingo.actors.World;
+import io.vlingo.http.resource.Configuration;
+import io.vlingo.http.resource.Resources;
+import io.vlingo.http.resource.Server;
 import io.vlingo.lattice.exchange.Exchange;
-import io.vlingo.lattice.grid.GridAddressFactory;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
 public class Bootstrap {
-    private final Journal<String> journal;
-    private final SourcedTypeRegistry registry;
+    private static Bootstrap instance;
     private final World world;
+    private final Server server;
 
     @SuppressWarnings("unchecked")
     private Bootstrap() throws Exception {
@@ -35,30 +33,54 @@ public class Bootstrap {
 
         final ExchangeDispatcher exchangeDispatcher = new ExchangeDispatcher(exchange);
 
-        this.journal = world.actorFor(Journal.class, InMemoryJournalActor.class, exchangeDispatcher);
+        Journal<String> journal = world.actorFor(Journal.class, InMemoryJournalActor.class, exchangeDispatcher);
 
-        registry = new SourcedTypeRegistry(world);
+        SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
 
-        final SourcedTypeRegistry.Info info = new SourcedTypeRegistry.Info(this.journal, ProductEntity.class, ProductEntity.class.getSimpleName());
+        final SourcedTypeRegistry.Info info = new SourcedTypeRegistry.Info(journal, ProductEntity.class, ProductEntity.class.getSimpleName());
         registry.register(info);
 
-        //Do simple operation
-        final Tenant tenant = Tenant.with("testTenant");
+        final ProductResource productResource = new ProductResource(world);
+        final Resources resources = Resources.are(productResource.routes());
 
-        final Stage stage = world.stage();
-        final AddressFactory addressFactory = new GridAddressFactory(IdentityGeneratorType.RANDOM);
+        this.server = Server.startWith(world.stage(),
+                resources,
+                8080,
+                Configuration.Sizing.define(),
+                Configuration.Timing.define());
 
-        final ProductId productId = ProductId.unique();
-        final Address productAddress = addressFactory.from(productId.id);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (instance != null) {
+                instance.server.stop();
 
-        final Product product = stage.actorFor(Product.class, Definition.has(ProductEntity.class, Definition.parameters(tenant, productId)), productAddress);
-        product.define(ProductOwner.with(tenant, "ProductOwner"), "test product", "test description", true);
-
-        Thread.sleep(1000);
+                System.out.println("\n");
+                System.out.println("=======================");
+                System.out.println("Stopping agilepm-service.");
+                System.out.println("=======================");
+                pause();
+            }
+        }));
     }
 
-
     public static void main(String[] args) throws Exception {
-        new Bootstrap();
+        System.out.println("=======================");
+        System.out.println("service: agilepm-service.");
+        System.out.println("=======================");
+        Bootstrap.instance();
+    }
+
+    static Bootstrap instance() throws Exception {
+        if (instance == null) {
+            instance = new Bootstrap();
+        }
+        return instance;
+    }
+
+    private void pause() {
+        try {
+            Thread.sleep(1000L);
+        } catch (Exception e) {
+            // ignore
+        }
     }
 }
