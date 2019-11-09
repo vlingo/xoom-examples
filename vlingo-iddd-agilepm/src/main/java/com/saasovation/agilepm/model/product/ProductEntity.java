@@ -16,6 +16,8 @@ public class ProductEntity extends EventSourced implements Product {
 
     static {
         EventSourced.registerConsumer(ProductEntity.class, ProductDefined.class, ProductEntity::applyProductDefined);
+        EventSourced.registerConsumer(ProductEntity.class, ProductDiscussionAttached.class, ProductEntity::applyProductDiscussionAttached);
+        EventSourced.registerConsumer(ProductEntity.class, ProductDiscussionRequested.class, ProductEntity::applyProductDiscussionRequested);
     }
 
     public ProductEntity(final Tenant tenant, final ProductId productId) {
@@ -29,7 +31,7 @@ public class ProductEntity extends EventSourced implements Product {
     }
 
     public void attachDiscussion(final String discussionId) {
-        if (state.hasDiscussion && !state.discussionId.equals(discussionId)) {
+        if (state.hasDiscussion && (state.discussionId == null || !state.discussionId.equals(discussionId))) {
             apply(ProductDiscussionAttached.with(state.tenant, state.productId, discussionId));
         }
     }
@@ -49,12 +51,16 @@ public class ProductEntity extends EventSourced implements Product {
     public void define(final ProductOwner productOwner, final String name, final String description, final boolean hasDiscussion) {
         if (state.productOwner == null) {
             apply(ProductDefined.with(state.tenant, state.productId, productOwner, name, description, hasDiscussion));
+
+            if (hasDiscussion) {
+                apply(ProductDiscussionRequested.with(state.tenant, state.productId, productOwner, name, description));
+            }
         }
     }
 
     public void requestDiscussion() {
         if (!state.hasDiscussion) {
-            apply(ProductDiscussionRequested.with(state.tenant, state.productId));
+            apply(ProductDiscussionRequested.with(state.tenant, state.productId, state.productOwner, state.name, state.description));
         }
     }
 
@@ -69,5 +75,15 @@ public class ProductEntity extends EventSourced implements Product {
                 ProductId.fromExisting(e.productId),
                 ProductOwner.fromExisting(e.tenantId, e.productOwnerId),
                 e.name, e.description, e.hasDiscussion);
+    }
+
+    private void applyProductDiscussionRequested(final ProductDiscussionRequested e) {
+        logger().info("Product discussion requested");
+        state = state.withDiscussionRequested();
+    }
+
+    private void applyProductDiscussionAttached(final ProductDiscussionAttached e) {
+        logger().info("Product discussion attached");
+        state = state.withDiscussion(e.discussionId);
     }
 }

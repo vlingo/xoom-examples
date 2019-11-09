@@ -12,9 +12,10 @@ import com.saasovation.collaboration.model.Creator;
 import com.saasovation.collaboration.model.Moderator;
 import com.saasovation.collaboration.model.Tenant;
 import com.saasovation.collaboration.model.forum.Forum.ForumDescription;
-
 import io.vlingo.actors.World;
 import io.vlingo.common.Tuple2;
+
+import java.util.UUID;
 
 public class Fixtures {
   public Tuple2<DiscussionId, Discussion> discussionPair;
@@ -26,8 +27,9 @@ public class Fixtures {
 
   public Tuple2<DiscussionId, Discussion> discussionFixture(final World world) {
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), forumDescriptionFixture());
-    
-    discussionPair = forumPair._2.discussFor(Author.unique(), "By Way of Discussion").await();
+    final String ownerId = UUID.randomUUID().toString();
+
+    discussionPair = forumPair._2.discussFor(Author.unique(), "By Way of Discussion", ownerId).await();
 
     return discussionPair;
   }

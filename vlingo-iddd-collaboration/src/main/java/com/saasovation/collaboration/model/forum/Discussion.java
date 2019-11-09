@@ -17,7 +17,7 @@ public interface Discussion {
   void close();
   Completes<Tuple2<PostId,Post>> postFor(final Author author, final String subject, final String bodyText);
   void reopen();
-  void startWith(final Author author, final String topic);
+  void startWith(final Author author, final String topic, final String ownerId);
   void topicTo(final String topic);
 
   public final class State {
