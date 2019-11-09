@@ -30,7 +30,7 @@ public interface Forum {
   void assign(final Moderator moderator);
   void close();
   void describeAs(final String description);
-  Completes<Tuple2<DiscussionId, Discussion>> discussFor(final Author author, final String topic);
+  Completes<Tuple2<DiscussionId, Discussion>> discussFor(final Author author, final String topic, final String ownerId);
   void reopen();
   void startWith(final Creator creator, final Moderator moderator, final String topic, final String description, final String exclusiveOwner);
   void topicIs(final String topic);

@@ -8,15 +8,18 @@
 package com.saasovation.agilepm.model;
 
 public class Tenant {
-  public final String id;
-  
-  public static Tenant with(final String id) {
-    return new Tenant(id);
-  }
-  
-  public Tenant(final String id) {
-    assert(id != null);
-    
-    this.id = id;
-  }
+    public final String id;
+
+    public static Tenant fromExisting(final String referencedId) {
+        return new Tenant(referencedId);
+    }
+
+    public static Tenant with(final String id) {
+        return new Tenant(id);
+    }
+
+    public Tenant(final String id) {
+        assert (id != null);
+        this.id = id;
+    }
 }

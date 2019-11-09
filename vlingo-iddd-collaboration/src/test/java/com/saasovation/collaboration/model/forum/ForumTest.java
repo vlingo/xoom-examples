@@ -7,13 +7,6 @@
 
 package com.saasovation.collaboration.model.forum;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.UUID;
-
-import org.junit.Test;
-
 import com.saasovation.collaboration.model.Author;
 import com.saasovation.collaboration.model.EntityTest;
 import com.saasovation.collaboration.model.Moderator;
@@ -26,9 +19,14 @@ import com.saasovation.collaboration.model.forum.Events.ForumReopened;
 import com.saasovation.collaboration.model.forum.Events.ForumStarted;
 import com.saasovation.collaboration.model.forum.Events.ForumTopicChanged;
 import com.saasovation.collaboration.model.forum.Forum.ForumDescription;
-
 import io.vlingo.common.Tuple2;
 import io.vlingo.symbio.EntryAdapterProvider;
+import org.junit.Test;
+
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ForumTest extends EntityTest {
   private Fixtures fixtures = new Fixtures();
@@ -140,7 +138,8 @@ public class ForumTest extends EntityTest {
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
     final Author author = Author.unique();
     final String topic = "At Topic That Is of Great Interest";
-    forumPair._2.discussFor(author, topic)
+    final String ownerId = UUID.randomUUID().toString();
+    forumPair._2.discussFor(author, topic, ownerId)
       .andThenConsume(discussionPair -> {
         assertNotNull(discussionPair);
         assertNotNull(discussionPair._1);
