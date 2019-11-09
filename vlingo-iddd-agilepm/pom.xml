@@ -100,5 +100,16 @@
       <artifactId>vlingo-lattice</artifactId>
       <version>0.9.1-RC2</version>
     </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-lattice-exchange-camel</artifactId>
+      <version>0.9.1-RC2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-rabbitmq</artifactId>
+      <version>3.0.0-RC2</version>
+      <!-- use the same version as your Camel core version -->
+    </dependency>
   </dependencies>
 </project>
