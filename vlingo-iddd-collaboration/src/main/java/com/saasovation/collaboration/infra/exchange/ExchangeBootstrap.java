@@ -34,18 +34,7 @@ public class ExchangeBootstrap {
 
     producerTemplate.start();
     consumerTemplate.start();
-
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      producerTemplate.stop();
-      consumerTemplate.stop();
-      camelContext.stop();
-
-      System.out.println("\n");
-      System.out.println("=======================");
-      System.out.println("Stopping camel exchange.");
-      System.out.println("=======================");
-    }));
-
+    
     final String exchangeUri = "rabbitmq:agile-iddd-product?hostname=localhost&portNumber=5672";
 
     final CamelExchange camelExchange = new CamelExchange(camelContext, "agilepm-exchange", exchangeUri);
@@ -55,6 +44,17 @@ public class ExchangeBootstrap {
                                     new DiscussionStartedAdapter(camelContext), DiscussionStarted.class, DiscussionStarted.class, Exchange.class))
                  .register(Covey.of(sender, new ProductDiscussionRequestedEventReceiver(stage),
                                     new ProductDiscussionRequestedEventAdapter(camelContext), ProductDiscussionRequested.class, ProductDiscussionRequested.class, Exchange.class));
+
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      producerTemplate.stop();
+      consumerTemplate.stop();
+      camelExchange.close();
+
+      System.out.println("\n");
+      System.out.println("=======================");
+      System.out.println("Stopping camel exchange.");
+      System.out.println("=======================");
+    }));
 
     return camelExchange;
   }

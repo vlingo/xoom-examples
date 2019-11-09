@@ -25,7 +25,7 @@ public class ExchangeBootstrap {
         stage = world.stage();
     }
 
-    public CamelExchange initExchange() throws Exception {
+    public io.vlingo.lattice.exchange.Exchange initExchange() throws Exception {
         DefaultCamelContext camelContext = new DefaultCamelContext(new DefaultRegistry());
         camelContext.start();
 
@@ -35,22 +35,12 @@ public class ExchangeBootstrap {
         producerTemplate.start();
         consumerTemplate.start();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            producerTemplate.stop();
-            consumerTemplate.stop();
-            camelContext.stop();
-
-            System.out.println("\n");
-            System.out.println("=======================");
-            System.out.println("Stopping camel exchange.");
-            System.out.println("=======================");
-        }));
 
         final String exchangeUri = "rabbitmq:agile-iddd-product?hostname=localhost&portNumber=5672";
 
-        final CamelExchange camelExchange = new CamelExchange(camelContext, "agilepm-exchange", exchangeUri);
+        final io.vlingo.lattice.exchange.Exchange camelExchange = new CamelExchange(camelContext, "agilepm-exchange", exchangeUri);
         final ExchangeSender<Exchange> sender = ExchangeSenders.sendingTo(exchangeUri, camelContext);
-        
+
         camelExchange.register(Covey.of(sender,
                 new NoOpReceiver<>(),
                 new ProductDiscussionRequestedEventAdapter(camelContext),
@@ -61,11 +51,22 @@ public class ExchangeBootstrap {
 
         camelExchange.register(Covey.of(sender,
                 new DiscussionStartedReceiver(this.stage),
-                new DiscussionStartedAdapter(),
+                new DiscussionStartedAdapter(camelContext),
                 DiscussionStarted.class,
                 DiscussionStarted.class,
                 Exchange.class
         ));
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            producerTemplate.stop();
+            consumerTemplate.stop();
+            camelExchange.close();
+
+            System.out.println("\n");
+            System.out.println("=======================");
+            System.out.println("Stopping camel exchange.");
+            System.out.println("=======================");
+        }));
 
         return camelExchange;
     }
