@@ -48,9 +48,9 @@ public class DiscussionEntity extends EventSourced implements Discussion {
   }
 
   @Override
-  public void startWith(final Author author, final String topic) {
+  public void startWith(final Author author, final String topic, final String ownerId) {
     if (state.author == null) {
-      apply(DiscussionStarted.with(state.tenant, state.forumId, state.discussionId, author, topic));
+      apply(DiscussionStarted.with(state.tenant, state.forumId, state.discussionId, author, topic, ownerId));
     }
   }
 

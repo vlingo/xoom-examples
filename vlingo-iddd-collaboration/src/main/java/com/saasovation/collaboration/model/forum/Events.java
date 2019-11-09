@@ -133,17 +133,21 @@ public class Events {
     public final String discussionId;
     public final String authorId;
     public final String topic;
+    public final String ownerId;
 
-    public static DiscussionStarted with(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final Author author, final String topic) {
-      return new DiscussionStarted(tenant, forumId, discussionId, author, topic);
+    public static DiscussionStarted with(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId,
+                                         final Author author, final String topic, final String ownerId) {
+      return new DiscussionStarted(tenant, forumId, discussionId, author, topic, ownerId);
     }
 
-    public DiscussionStarted(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final Author author, final String topic) {
+    public DiscussionStarted(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId,
+                             final Author author, final String topic, final String ownerId) {
       this.tenantId = tenant.value;
       this.forumId = forumId.value;
       this.discussionId = discussionId.value;
       this.authorId = author.value;
       this.topic = topic;
+      this.ownerId = ownerId;
     }
   }
 
