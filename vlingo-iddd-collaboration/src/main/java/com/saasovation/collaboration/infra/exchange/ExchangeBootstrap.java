@@ -7,9 +7,9 @@ import com.saasovation.collaboration.infra.exchange.product.receivers.ProductDis
 import com.saasovation.collaboration.model.forum.Events.DiscussionStarted;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
-import io.vlingo.lattice.exchange.Covey;
 import io.vlingo.lattice.exchange.ExchangeSender;
 import io.vlingo.lattice.exchange.camel.CamelExchange;
+import io.vlingo.lattice.exchange.camel.CoveyFactory;
 import io.vlingo.lattice.exchange.camel.sender.ExchangeSenders;
 import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultCamelContext;
@@ -40,10 +40,10 @@ public class ExchangeBootstrap {
     final CamelExchange camelExchange = new CamelExchange(camelContext, "agilepm-exchange", exchangeUri);
     final ExchangeSender<Exchange> sender = ExchangeSenders.sendingTo(exchangeUri, camelContext);
 
-    camelExchange.register(Covey.of(sender, new NoOpReceiver<>(),
-                                    new DiscussionStartedAdapter(camelContext), DiscussionStarted.class, DiscussionStarted.class, Exchange.class))
-                 .register(Covey.of(sender, new ProductDiscussionRequestedEventReceiver(stage),
-                                    new ProductDiscussionRequestedEventAdapter(camelContext), ProductDiscussionRequested.class, ProductDiscussionRequested.class, Exchange.class));
+    camelExchange.register(CoveyFactory.build(sender, new NoOpReceiver<>(),
+                                        new DiscussionStartedAdapter(camelContext), DiscussionStarted.class, DiscussionStarted.class))
+                 .register(CoveyFactory.build(sender, new ProductDiscussionRequestedEventReceiver(stage),
+                                    new ProductDiscussionRequestedEventAdapter(camelContext), ProductDiscussionRequested.class, ProductDiscussionRequested.class));
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       producerTemplate.stop();
