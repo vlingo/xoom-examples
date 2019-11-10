@@ -18,6 +18,7 @@ import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
 public class Bootstrap {
 
+  @SuppressWarnings("rawtypes")
   private Bootstrap() throws Exception {
     final World world = World.startWithDefaults("agile-collaboration");
 
@@ -32,5 +33,4 @@ public class Bootstrap {
   public static void main(String[] args) throws Exception {
     new Bootstrap();
   }
-
 }
