@@ -25,7 +25,7 @@ public class Bootstrap {
     private final World world;
     private final Server server;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private Bootstrap() throws Exception {
         world = World.startWithDefaults("agilepm");
 
