@@ -25,4 +25,10 @@ public class OrderCreatedEventAdapter implements EntryAdapter<OrderEvents.Create
         final String serialization = JsonSerialization.serialized(source);
         return new BaseEntry.TextEntry(id, OrderEvents.Created.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final Created source, final int version, final String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new BaseEntry.TextEntry(id, OrderEvents.Created.class, 1, serialization, version, metadata);
+    }
 }

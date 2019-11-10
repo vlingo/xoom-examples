@@ -25,4 +25,10 @@ public class CartAllItemsRemoveEventAdapter implements EntryAdapter<CartEvents.A
         final String serialization = JsonSerialization.serialized(source);
         return new BaseEntry.TextEntry(id, CartEvents.AllItemsRemovedEvent.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final AllItemsRemovedEvent source, final int version, final String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new BaseEntry.TextEntry(id, CartEvents.AllItemsRemovedEvent.class, 1, serialization, version, metadata);
+    }
 }

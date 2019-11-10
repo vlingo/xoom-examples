@@ -25,4 +25,10 @@ public class CartProductQuantityChangedEventAdapter implements EntryAdapter<Cart
         final String serialization = JsonSerialization.serialized(source);
         return new BaseEntry.TextEntry(id, CartEvents.ProductQuantityChangeEvent.class, 1, serialization, Metadata.nullMetadata());
     }
+
+    @Override
+    public TextEntry toEntry(final ProductQuantityChangeEvent source, final int version, final String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new BaseEntry.TextEntry(id, ProductQuantityChangeEvent.class, 1, serialization, version, metadata);
+    }
 }
