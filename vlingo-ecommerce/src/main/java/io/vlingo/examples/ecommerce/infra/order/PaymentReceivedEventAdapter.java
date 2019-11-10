@@ -3,6 +3,7 @@ package io.vlingo.examples.ecommerce.infra.order;
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.examples.ecommerce.model.OrderEvents;
 import io.vlingo.symbio.BaseEntry;
+import io.vlingo.symbio.BaseEntry.TextEntry;
 import io.vlingo.symbio.EntryAdapter;
 import io.vlingo.symbio.Metadata;
 
@@ -22,5 +23,11 @@ public class PaymentReceivedEventAdapter implements EntryAdapter<OrderEvents.Pay
     public BaseEntry.TextEntry toEntry(final OrderEvents.PaymentReceived source, final String id, final Metadata metadata) {
         final String serialization = JsonSerialization.serialized(source);
         return new BaseEntry.TextEntry(id, OrderEvents.PaymentReceived.class, 1, serialization, metadata);
+    }
+
+    @Override
+    public TextEntry toEntry(final OrderEvents.PaymentReceived source, final int version, final String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new BaseEntry.TextEntry(id, OrderEvents.PaymentReceived.class, 1, serialization, version, metadata);
     }
 }
