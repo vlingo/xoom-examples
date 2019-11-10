@@ -25,6 +25,7 @@ public class ExchangeBootstrap {
     stage = world.stage();
   }
 
+  @SuppressWarnings("resource")
   public io.vlingo.lattice.exchange.Exchange initExchange() throws Exception {
     DefaultCamelContext camelContext = new DefaultCamelContext(new DefaultRegistry());
     camelContext.start();
