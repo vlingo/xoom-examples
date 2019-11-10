@@ -30,4 +30,10 @@ public class CounterDecreasedAdapter implements EntryAdapter<CounterDecreased,Te
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, CounterIncreased.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final CounterDecreased source, final int version, final String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, CounterIncreased.class, 1, serialization, version, metadata);
+    }
 }
