@@ -148,7 +148,6 @@
       <artifactId>vlingo-lattice</artifactId>
       <version>0.9.1-RC2</version>
     </dependency>
-
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice-exchange-camel</artifactId>
@@ -158,9 +157,7 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-rabbitmq</artifactId>
       <version>3.0.0-RC2</version>
-      <!-- use the same version as your Camel core version -->
     </dependency>
-
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
