@@ -1,0 +1,12 @@
+POST http://localhost:8080/product
+Content-Type: application/json
+
+{
+  "tenantId": "tenant_id_1",
+  "ownerId": "owner_id_1",
+  "name": "product_name",
+  "description": "product_description",
+  "hasDiscussion": true
+}
+
+###
