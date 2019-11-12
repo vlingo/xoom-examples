@@ -4,7 +4,7 @@
 
 ```
 mvn clean package        
-mvn exec:java -Dexec.classpathScope="test"
+mvn exec:java
 ```
 
 ## Client requests with curl
