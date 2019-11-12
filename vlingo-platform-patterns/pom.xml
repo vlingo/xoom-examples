@@ -32,12 +32,12 @@
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-common</artifactId>
+      <artifactId>vlingo-actors</artifactId>
       <version>0.9.1-RC2</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-actors</artifactId>
+      <artifactId>vlingo-http</artifactId>
       <version>0.9.1-RC2</version>
     </dependency>
     <dependency>
