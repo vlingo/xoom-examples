@@ -8,7 +8,14 @@
 package com.saasovation.agilepm.model.product;
 
 import com.saasovation.agilepm.model.Tenant;
-import com.saasovation.agilepm.model.product.Events.*;
+import com.saasovation.agilepm.model.product.Events.ProductDefined;
+import com.saasovation.agilepm.model.product.Events.ProductDescriptionChanged;
+import com.saasovation.agilepm.model.product.Events.ProductDiscussionAttached;
+import com.saasovation.agilepm.model.product.Events.ProductDiscussionRequested;
+import com.saasovation.agilepm.model.product.Events.ProductNameChanged;
+import com.saasovation.agilepm.model.product.Events.ProductOwnerAssigned;
+
+import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
 public class ProductEntity extends EventSourced implements Product {
@@ -36,10 +43,11 @@ public class ProductEntity extends EventSourced implements Product {
         }
     }
 
-    public void changeDescription(final String description) {
+    public Completes<String> changeDescription(final String description) {
         if (!state.description.equals(description)) {
-            apply(ProductDescriptionChanged.with(state.tenant, state.productId, description));
+            apply(ProductDescriptionChanged.with(state.tenant, state.productId, description), () -> description);
         }
+        return completes().with(description);
     }
 
     public void changeName(final String name) {
@@ -48,13 +56,16 @@ public class ProductEntity extends EventSourced implements Product {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void define(final ProductOwner productOwner, final String name, final String description, final boolean hasDiscussion) {
         if (state.productOwner == null) {
+          if (hasDiscussion) {
+            logger().debug("apply(): Product id:" + state.productId.id);
+            apply(asList(ProductDefined.with(state.tenant, state.productId, productOwner, name, description, hasDiscussion),
+                         ProductDiscussionRequested.with(state.tenant, state.productId, productOwner, name, description)));
+          } else {
             apply(ProductDefined.with(state.tenant, state.productId, productOwner, name, description, hasDiscussion));
-
-            if (hasDiscussion) {
-                apply(ProductDiscussionRequested.with(state.tenant, state.productId, productOwner, name, description));
-            }
+          }
         }
     }
 
@@ -62,6 +73,11 @@ public class ProductEntity extends EventSourced implements Product {
         if (!state.hasDiscussion) {
             apply(ProductDiscussionRequested.with(state.tenant, state.productId, state.productOwner, state.name, state.description));
         }
+    }
+
+    @Override
+    public Completes<State> query() {
+      return completes().with(state);
     }
 
     @Override
