@@ -8,7 +8,11 @@
 package com.saasovation.agilepm.model.product;
 
 import com.saasovation.agilepm.model.Tenant;
+
+import io.vlingo.actors.Address;
+import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
+import io.vlingo.common.Completes;
 import io.vlingo.common.Tuple2;
 
 public interface Product {
@@ -26,8 +30,10 @@ public interface Product {
         assert (name != null);
         assert (description != null);
 
-        final ProductId productId = ProductId.unique();
-        final Product product = stage.actorFor(Product.class, ProductEntity.class, tenant, productId);
+        Address address = stage.addressFactory().unique();
+        final ProductId productId = ProductId.fromExisting(address.idString());
+        final Definition definition = Definition.has(ProductEntity.class, Definition.parameters(tenant, productId), productId.id);
+        final Product product = stage.actorFor(Product.class, definition);
         product.define(productOwner, name, description, hasDiscussion);
         return Tuple2.from(productId, product);
     }
@@ -36,13 +42,15 @@ public interface Product {
 
     void attachDiscussion(final String discussionId);
 
-    void changeDescription(final String description);
+    Completes<String> changeDescription(final String description);
 
     void changeName(final String name);
 
     void define(final ProductOwner productOwner, final String name, final String description, final boolean hasDiscussion);
 
     void requestDiscussion();
+    
+    Completes<State> query();
 
     public static class State {
         public final String description;

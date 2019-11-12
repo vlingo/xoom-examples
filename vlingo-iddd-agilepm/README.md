@@ -14,7 +14,7 @@ Don't forget to also start `vlingo-iddd-collaboration` server
 ### Product
 #### Create
 ```
-curl -X POST http://localhost:8080/product \
+curl -X POST http://localhost:8080/products \
 -H "Content-Type: application/json" \
 --data-binary @- << EOF
         {
