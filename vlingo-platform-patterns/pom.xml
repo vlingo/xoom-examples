@@ -32,12 +32,12 @@
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-common</artifactId>
+      <artifactId>vlingo-actors</artifactId>
       <version>0.9.1-RC2</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-actors</artifactId>
+      <artifactId>vlingo-http</artifactId>
       <version>0.9.1-RC2</version>
     </dependency>
     <dependency>
@@ -54,6 +54,21 @@
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>io.vlingo.rest.Bootstrap</mainClass>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>

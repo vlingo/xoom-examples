@@ -36,36 +36,34 @@ import com.saasovation.collaboration.model.forum.Events.PostedToDiscussion;
 import com.saasovation.collaboration.model.forum.Forum;
 import com.saasovation.collaboration.model.forum.ForumEntity;
 import com.saasovation.collaboration.model.forum.PostEntity;
-
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 import io.vlingo.symbio.store.journal.Journal;
 
 public class SourcedRegistration {
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public static <T> void registerAllWith(final SourcedTypeRegistry registry, final Journal<T> journal) {
-    registry
-      .register(new Info(journal, ForumEntity.class, ForumEntity.class.getSimpleName()))
-      .register(new Info(journal, DiscussionEntity.class, DiscussionEntity.class.getSimpleName()))
-      .register(new Info(journal, PostEntity.class, PostEntity.class.getSimpleName()));
+  public static void registerAllWith(final SourcedTypeRegistry registry, final Journal journal) {
+    registry.register(new Info(journal, ForumEntity.class, ForumEntity.class.getSimpleName()))
+            .register(new Info(journal, DiscussionEntity.class, DiscussionEntity.class.getSimpleName()))
+            .register(new Info(journal, PostEntity.class, PostEntity.class.getSimpleName()));
 
     registry.info(ForumEntity.class)
-      .registerEntryAdapter(ForumStarted.class, new ForumStartedAdapter())
-      .registerEntryAdapter(ForumModeratorAssigned.class, new ForumModeratorAssignedAdapter())
-      .registerEntryAdapter(ForumClosed.class, new ForumClosedAdapter())
-      .registerEntryAdapter(ForumDescribed.class, new ForumDescribedAdapter())
-      .registerEntryAdapter(ForumReopened.class, new ForumReopenedAdapter())
-      .registerEntryAdapter(ForumTopicChanged.class, new ForumTopicChangedAdapter())
-      .registerStateAdapter(Forum.State.class, new ForumStateAdapter());
+            .registerEntryAdapter(ForumStarted.class, new ForumStartedAdapter())
+            .registerEntryAdapter(ForumModeratorAssigned.class, new ForumModeratorAssignedAdapter())
+            .registerEntryAdapter(ForumClosed.class, new ForumClosedAdapter())
+            .registerEntryAdapter(ForumDescribed.class, new ForumDescribedAdapter())
+            .registerEntryAdapter(ForumReopened.class, new ForumReopenedAdapter())
+            .registerEntryAdapter(ForumTopicChanged.class, new ForumTopicChangedAdapter())
+            .registerStateAdapter(Forum.State.class, new ForumStateAdapter());
 
     registry.info(DiscussionEntity.class)
-      .registerEntryAdapter(DiscussionStarted.class, new DiscussionStartedAdapter())
-      .registerEntryAdapter(DiscussionClosed.class, new DiscussionClosedAdapter())
-      .registerEntryAdapter(DiscussionReopened.class, new DiscussionReopenedAdapter())
-      .registerEntryAdapter(DiscussionTopicChanged.class, new DiscussionTopicChangedAdapter());
+            .registerEntryAdapter(DiscussionStarted.class, new DiscussionStartedAdapter())
+            .registerEntryAdapter(DiscussionClosed.class, new DiscussionClosedAdapter())
+            .registerEntryAdapter(DiscussionReopened.class, new DiscussionReopenedAdapter())
+            .registerEntryAdapter(DiscussionTopicChanged.class, new DiscussionTopicChangedAdapter());
 
     registry.info(PostEntity.class)
-      .registerEntryAdapter(PostedToDiscussion.class, new PostedToDiscussionAdapter())
-      .registerEntryAdapter(PostModerated.class, new PostModeratedAdapter());
+            .registerEntryAdapter(PostedToDiscussion.class, new PostedToDiscussionAdapter())
+            .registerEntryAdapter(PostModerated.class, new PostModeratedAdapter());
   }
 }

@@ -47,6 +47,12 @@ public class EntryAdapters {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, ForumStarted.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final ForumStarted source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, ForumStarted.class, 1, serialization, version, metadata);
+    }
   }
 
   public static final class ForumModeratorAssignedAdapter implements EntryAdapter<ForumModeratorAssigned,TextEntry> {
@@ -65,6 +71,12 @@ public class EntryAdapters {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, ForumModeratorAssigned.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final ForumModeratorAssigned source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, ForumModeratorAssigned.class, 1, serialization, version, metadata);
+    }
   }
 
   public static final class ForumClosedAdapter implements EntryAdapter<ForumClosed,TextEntry> {
@@ -82,6 +94,12 @@ public class EntryAdapters {
     public TextEntry toEntry(final ForumClosed source, final String id, final Metadata metadata) {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, ForumClosed.class, 1, serialization, metadata);
+    }
+
+    @Override
+    public TextEntry toEntry(final ForumClosed source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, ForumClosed.class, 1, serialization, version, metadata);
     }
   }
 
@@ -102,6 +120,12 @@ public class EntryAdapters {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, ForumDescribed.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final ForumDescribed source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, ForumDescribed.class, 1, serialization, version, metadata);
+    }
   }
 
   public static final class ForumReopenedAdapter implements EntryAdapter<ForumReopened,TextEntry> {
@@ -120,6 +144,12 @@ public class EntryAdapters {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, ForumReopened.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final ForumReopened source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, ForumReopened.class, 1, serialization, version, metadata);
+    }
   }
 
   public static final class ForumTopicChangedAdapter implements EntryAdapter<ForumTopicChanged,TextEntry> {
@@ -137,6 +167,12 @@ public class EntryAdapters {
     public TextEntry toEntry(final ForumTopicChanged source, final String id, final Metadata metadata) {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, ForumTopicChanged.class, 1, serialization, metadata);
+    }
+
+    @Override
+    public TextEntry toEntry(final ForumTopicChanged source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, ForumTopicChanged.class, 1, serialization, version, metadata);
     }
   }
 
@@ -159,6 +195,12 @@ public class EntryAdapters {
     public TextEntry toEntry(final DiscussionStarted source, final String id, final Metadata metadata) {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, DiscussionStarted.class, 1, serialization, metadata);
+    }
+
+    @Override
+    public TextEntry toEntry(final DiscussionStarted source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, DiscussionStarted.class, 1, serialization, version, metadata);
     }
   }
 
@@ -183,6 +225,12 @@ public class EntryAdapters {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, DiscussionClosed.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final DiscussionClosed source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, DiscussionClosed.class, 1, serialization, version, metadata);
+    }
   }
 
   public static final class DiscussionReopenedAdapter implements EntryAdapter<DiscussionReopened,TextEntry> {
@@ -201,6 +249,12 @@ public class EntryAdapters {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, DiscussionReopened.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final DiscussionReopened source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, DiscussionReopened.class, 1, serialization, version, metadata);
+    }
   }
 
   public static final class DiscussionTopicChangedAdapter implements EntryAdapter<DiscussionTopicChanged,TextEntry> {
@@ -218,6 +272,12 @@ public class EntryAdapters {
     public TextEntry toEntry(final DiscussionTopicChanged source, final String id, final Metadata metadata) {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, DiscussionTopicChanged.class, 1, serialization, metadata);
+    }
+
+    @Override
+    public TextEntry toEntry(final DiscussionTopicChanged source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, DiscussionTopicChanged.class, 1, serialization, version, metadata);
     }
   }
 
@@ -241,6 +301,12 @@ public class EntryAdapters {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, PostedToDiscussion.class, 1, serialization, metadata);
     }
+
+    @Override
+    public TextEntry toEntry(final PostedToDiscussion source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, PostedToDiscussion.class, 1, serialization, version, metadata);
+    }
   }
 
   public static final class PostModeratedAdapter implements EntryAdapter<PostModerated,TextEntry> {
@@ -258,6 +324,12 @@ public class EntryAdapters {
     public TextEntry toEntry(final PostModerated source, final String id, final Metadata metadata) {
       final String serialization = JsonSerialization.serialized(source);
       return new TextEntry(id, PostModerated.class, 1, serialization, metadata);
+    }
+
+    @Override
+    public TextEntry toEntry(final PostModerated source, final int version, String id, final Metadata metadata) {
+      final String serialization = JsonSerialization.serialized(source);
+      return new TextEntry(id, PostModerated.class, 1, serialization, version, metadata);
     }
   }
 }
