@@ -12,13 +12,12 @@ import java.util.stream.Collectors;
 
 public class CartActor extends EventSourced implements Cart {
 
-    public static final int SNAPSHOT_ONE_EVERY_N_TIMES = 10;
+    private static final int SNAPSHOT_ONE_EVERY_N_TIMES = 10;
     private State state;
 
     public CartActor(final String cartId) {
         this.state = State.create(cartId);
     }
-
 
     @Override
     public String streamName() {

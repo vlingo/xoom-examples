@@ -62,7 +62,10 @@ public class Bootstrap {
                 .registerEntryAdapter(ProductQuantityChangeEvent.class, new EventAdapter<>(ProductQuantityChangeEvent.class))
                 .registerEntryAdapter(AllItemsRemovedEvent.class, new EventAdapter<>(AllItemsRemovedEvent.class));
 
-        final CartResource cartResource = new CartResource(world);
+        final CartResource cartResource = new CartResource(world.stage(),
+                                                           world.addressFactory(),
+                                                           CartQueryProvider.instance().cartQuery);
+
         final OrderResource orderResource = new OrderResource(world);
         final UserResource userResource = new UserResource(CartQueryProvider.instance().cartQuery);
         final Resources resources = Resources.are(

@@ -21,12 +21,12 @@ public class UserResource {
 
         return resource("User resource fluent api",
                         get("/user/{userId}/cartSummary")
-                                .param(String.class)
+                                .param(Integer.class)
                                 .handle(this::queryCartSummary));
     }
 
-    private Completes<ObjectResponse<CartUserSummaryData>> queryCartSummary(String userId) {
-       return cartQuery.getCartSummaryForUser(Integer.parseInt(userId))
+    private Completes<ObjectResponse<CartUserSummaryData>> queryCartSummary(Integer userId) {
+       return cartQuery.getCartSummaryForUser(new UserId(userId))
                .andThenTo( data -> Completes.withSuccess(ObjectResponse.of(Response.Status.Ok, data)));
     }
 }

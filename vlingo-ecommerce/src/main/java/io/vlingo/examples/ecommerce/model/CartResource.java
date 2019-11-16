@@ -2,7 +2,9 @@ package io.vlingo.examples.ecommerce.model;
 
 import io.vlingo.actors.*;
 import io.vlingo.common.Completes;
+import io.vlingo.examples.ecommerce.infra.CartQueryProvider;
 import io.vlingo.examples.ecommerce.model.Cart.CartItem;
+import io.vlingo.http.Response;
 import io.vlingo.http.ResponseHeader;
 import io.vlingo.http.resource.ObjectResponse;
 import io.vlingo.http.resource.Resource;
@@ -15,13 +17,16 @@ import static io.vlingo.http.ResponseHeader.*;
 import static io.vlingo.http.resource.ResourceBuilder.*;
 
 public class CartResource {
-    public static final String         ROOT_URL = "/cart";
-    private final       AddressFactory addressFactory;
-    private final       Stage          stage;
+    public static final String ROOT_URL = "/cart";
 
-    public CartResource(final World world) {
-        this.addressFactory = world.addressFactory();
-        this.stage = world.stage();
+    private final AddressFactory addressFactory;
+    private final Stage stage;
+    private final CartQuery cartQuery;
+
+    public CartResource(final Stage stage, final AddressFactory addressFactory, CartQuery cartQuery) {
+        this.addressFactory = addressFactory;
+        this.stage = stage;
+        this.cartQuery = cartQuery;
     }
 
     public Completes<ObjectResponse<String>> create(final UserId userId) {
