@@ -4,5 +4,5 @@ import io.vlingo.common.Completes;
 
 public interface CartQuery {
 
-    Completes<CartUserSummaryData> getCartSummaryForUser(int userId);
+    Completes<CartUserSummaryData> getCartSummaryForUser(UserId userId);
 }

@@ -22,7 +22,7 @@ public class CartQueryActor extends Actor implements CartQuery, StateStore.ReadR
     }
 
     @Override
-    public Completes<CartUserSummaryData> getCartSummaryForUser(int userId) {
+    public Completes<CartUserSummaryData> getCartSummaryForUser(UserId userId) {
         final CompletesEventually completesEventually = completesEventually();
 
         final BiConsumer<CartUserSummaryData,Integer> translator = (data, version) -> {
@@ -32,8 +32,8 @@ public class CartQueryActor extends Actor implements CartQuery, StateStore.ReadR
                 completesEventually.with(CartUserSummaryData.empty());
             }
         };
-        store.read(Integer.toString(userId), CartUserSummaryData.class, interest, translator);
-        return completes(); // return completes associated to finalization
+        store.read(Integer.toString(userId.id), CartUserSummaryData.class, interest, translator);
+        return completes();
     }
 
     @Override

@@ -34,8 +34,8 @@ public class EventAdapter<T extends Source<?>> implements EntryAdapter<T, TextEn
     }
 
     @Override
-    public TextEntry toEntry(T object, String id, Metadata metadata) {
+    public TextEntry toEntry(T object, int version, String id, Metadata metadata) {
         final String serialization = JsonSerialization.serialized(object);
-        return new TextEntry(id, type, eventVersion, serialization, Metadata.nullMetadata());
+        return new TextEntry(id, type, eventVersion, serialization, version, Metadata.nullMetadata());
     }
 }

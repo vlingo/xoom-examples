@@ -44,14 +44,14 @@ public class CartResourceShould {
 
 
 
-    RequestSpecification baseGiven() {
+    protected RequestSpecification baseGiven() {
         return given().log().uri()
                 .port(cartPortNumber)
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON);
     }
 
-    String createCart() {
+    protected String createCart() {
         Response response =
                 baseGiven()
                         .when()
