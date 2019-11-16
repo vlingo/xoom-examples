@@ -51,10 +51,10 @@ public class ForumEntity extends EventSourced implements Forum {
   }
 
   @Override
-  public Completes<Tuple2<DiscussionId, Discussion>> discussFor(final Author author, final String topic) {
+  public Completes<Tuple2<DiscussionId, Discussion>> discussFor(final Author author, final String topic, final String ownerId) {
     final DiscussionId discussionId = DiscussionId.unique();
     final Discussion discussion = stage().actorFor(Discussion.class, DiscussionEntity.class, state.tenant, state.forumId, discussionId);
-    discussion.startWith(author, topic);
+    discussion.startWith(author, topic, ownerId);
     return completes().with(Tuple2.from(discussionId, discussion));
   }
 

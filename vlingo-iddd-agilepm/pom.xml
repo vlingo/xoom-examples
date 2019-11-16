@@ -15,7 +15,9 @@
   </licenses>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <kotlin.version>1.3.10</kotlin.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <kotlin.version>1.3.31</kotlin.version>
     <kotlin.code.style>official</kotlin.code.style>
     <junit.version>4.12</junit.version>
   </properties>
@@ -97,6 +99,16 @@
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
       <version>0.9.1-RC2</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-lattice-exchange-camel</artifactId>
+      <version>0.9.1-RC2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-rabbitmq</artifactId>
+      <version>3.0.0-RC2</version>
     </dependency>
   </dependencies>
 </project>

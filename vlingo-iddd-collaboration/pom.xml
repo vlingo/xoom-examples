@@ -149,6 +149,16 @@
       <version>0.9.1-RC2</version>
     </dependency>
     <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-lattice-exchange-camel</artifactId>
+      <version>0.9.1-RC2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-rabbitmq</artifactId>
+      <version>3.0.0-RC2</version>
+    </dependency>
+    <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>${kotlin.version}</version>
