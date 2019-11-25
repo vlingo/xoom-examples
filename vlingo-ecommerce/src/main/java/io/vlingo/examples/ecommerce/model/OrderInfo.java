@@ -17,11 +17,11 @@ public class OrderInfo {
     public final OrderStatusEnum orderState;
 
     public static OrderInfo empty(String orderId) {
-        return new OrderInfo(orderId, new ArrayList<>(), OrderStatusEnum.notPaid);
+        return new OrderInfo(orderId, new ArrayList<>(), OrderStatusEnum.unknown);
     }
 
     public enum OrderStatusEnum {
-        notPaid, paid, shipped
+        unknown, notPaid, paid, shipped
     }
 
 }

@@ -3,6 +3,7 @@ package io.vlingo.examples.ecommerce.model;
 import io.vlingo.actors.*;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
+import io.vlingo.http.resource.ObjectResponse;
 import io.vlingo.http.resource.Resource;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class OrderResource {
         this.stage = world.stage();
     }
 
-    private Completes<Response> create(final OrderCreateRequest request) {
+    private Completes<ObjectResponse<String>> create(final OrderCreateRequest request) {
         final Address orderAddress = addressFactory.uniquePrefixedWith("order-");
         Map<ProductId, Integer> quantityByProductId = new HashMap<>();
         request.quantityByIdOfProduct.forEach((key, value) -> quantityByProductId.put(new ProductId(key), value));
@@ -37,25 +38,25 @@ public class OrderResource {
 
         orderActor.initOrderForUserProducts(request.userId, quantityByProductId);
         return Completes.withSuccess(
-                Response.of(Created,
+                ObjectResponse.of(Created,
                         headers(of(Location, urlLocation(orderAddress.idString()))),
                         ""));
     }
 
-    private Completes<Response> postPayment(String orderId, PaymentId paymentId) {
+    private Completes<ObjectResponse<String>> postPayment(String orderId, PaymentId paymentId) {
         return stage.actorOf(Order.class, addressFactory.from(orderId))
                     .andThenConsume(actor -> {
                         actor.paymentComplete(paymentId);
                     })
-                    .andThen(actor -> Response.of(Ok, ""))
-                    .otherwise(noOrder -> Response.of(NotFound, urlLocation(orderId)));
+                    .andThen(actor -> ObjectResponse.of(Ok, ""))
+                    .otherwise(noOrder -> ObjectResponse.of(NotFound, ""));
     }
 
-    private Completes<Response> queryOrder(String orderId) {
+    private Completes<ObjectResponse<OrderInfo>> queryOrder(String orderId) {
         return stage.actorOf(Order.class, addressFactory.from(orderId))
                     .andThenTo(Order::query)
-                    .andThenTo(orderInfo -> Completes.withSuccess(Response.of(Ok, serialized(orderInfo))))
-                    .otherwise(noOrder -> Response.of(NotFound, urlLocation(orderId)));
+                    .andThenTo(orderInfo -> Completes.withSuccess(ObjectResponse.of(Ok, orderInfo)))
+                    .otherwise(noOrder -> ObjectResponse.of(NotFound, OrderInfo.empty(orderId)));
     }
 
     private String urlLocation(final String orderId) {
