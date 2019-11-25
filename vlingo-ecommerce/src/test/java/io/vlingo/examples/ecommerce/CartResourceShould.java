@@ -1,8 +1,6 @@
 package io.vlingo.examples.ecommerce;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
@@ -22,16 +20,14 @@ import static org.hamcrest.text.MatchesPattern.matchesPattern;
 
 public class CartResourceShould {
 
-    private static final AtomicInteger portNumber = new AtomicInteger(9091);
-
-    private int cartPortNumber = portNumber.getAndIncrement();
+    private static final AtomicInteger portNumber = new AtomicInteger(9090);
+    private final int userIdForCart = 100;
+    private int cartPortNumber;
 
     @Before
     public void setUp() {
+        cartPortNumber = portNumber.getAndIncrement();
         Bootstrap.instance(cartPortNumber);
-
-        // This should not be needed; see https://github.com/vlingo/vlingo-http/issues/26
-        RestAssured.defaultParser = Parser.JSON;
         Boolean startUpSuccess = Bootstrap.instance().serverStartup().await(100);
         assertThat(startUpSuccess, is(equalTo(true)));
     }
@@ -39,22 +35,27 @@ public class CartResourceShould {
     @After
     public void cleanUp() {
         // Shutdown is not reliable yet; see https://github.com/vlingo/vlingo-http/issues/25
-        Bootstrap.instance().stop();
+        Bootstrap.instance().stopAndCleanup();
+    }
+
+    private String getCartId(final String cartUrl) {
+        return cartUrl.split("/")[2];
     }
 
 
-    RequestSpecification baseGiven() {
-        return given()
+
+    protected RequestSpecification baseGiven() {
+        return given().log().uri()
                 .port(cartPortNumber)
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON);
     }
 
-    String createCart() {
+    protected String createCart() {
         Response response =
                 baseGiven()
                         .when()
-                        .body("{id: 100}")
+                        .body(String.format("{id: %d}", userIdForCart))
                         .post("/cart")
                         .then()
                         .assertThat()
@@ -77,10 +78,41 @@ public class CartResourceShould {
     }
 
     @Test
+    public void userCartSummary_created() throws InterruptedException {
+        String cartUrl = createCart();
+
+        String summaryUrl = String.format("/user/%d/cartSummary", userIdForCart);
+        String cartId = getCartId(cartUrl);
+
+        String expectedResponse = String.format("{\"userId\":\"100\",\"cartId\":\"%s\",\"numberOfItems\":\"0\"}", cartId);
+        baseGiven()
+                .when()
+                .get(summaryUrl)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_OK)
+                .body(is(equalTo(expectedResponse)));
+
+        cartUrl = createCart();
+
+        summaryUrl = String.format("/user/%d/cartSummary", userIdForCart);
+        cartId = getCartId(cartUrl);
+
+        expectedResponse = String.format("{\"userId\":\"100\",\"cartId\":\"%s\",\"numberOfItems\":\"0\"}", cartId);
+        baseGiven()
+                .when()
+                .get(summaryUrl)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_OK)
+                .body(is(equalTo(expectedResponse)));
+    }
+
+    @Test
     public void cartAddsProduct_whenProductIsAdded() throws IOException {
 
         String cartUrl = createCart();
-
+        
         baseGiven()
                 .when()
                 .body("{operation: \"add\"}")
