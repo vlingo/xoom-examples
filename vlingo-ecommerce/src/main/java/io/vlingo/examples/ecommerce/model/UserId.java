@@ -27,4 +27,8 @@ public class UserId {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    public String getId() {
+        return Integer.toString(id);
+    }
 }
