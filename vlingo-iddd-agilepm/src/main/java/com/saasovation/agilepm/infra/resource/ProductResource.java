@@ -54,7 +54,7 @@ public class ProductResource {
                         .handle(this::query));
     }
 
-    private Completes<Response> defineWith(final ProductDefinition productDefinition) {
+    public Completes<Response> defineWith(final ProductDefinition productDefinition) {
         try {
           final Tuple2<ProductId, Product> product =
                   Product.defineWith(
@@ -72,14 +72,14 @@ public class ProductResource {
         }
     }
 
-    private Completes<Response> changeDescription(String tenantId, String productId, String description) {
+    public Completes<Response> changeDescription(String tenantId, String productId, String description) {
       return stage.actorOf(Product.class, addressFactory.from(productId))
               .andThenTo(product -> product.changeDescription(description))
-              .andThenTo(product -> Completes.withSuccess(Response.of(Ok))
+              .andThenTo(completedDescription -> Completes.withSuccess(Response.of(Ok))
               .otherwise(noProduct -> Response.of(NotFound, productId)));
     }
 
-    private Completes<Response> query(String productId) {
+    public Completes<Response> query(String productId) {
       stage.world().defaultLogger().debug("GET Product: " + productId);
       return stage.actorOf(Product.class, addressFactory.from(productId))
               .andThenTo(product -> product.query())
