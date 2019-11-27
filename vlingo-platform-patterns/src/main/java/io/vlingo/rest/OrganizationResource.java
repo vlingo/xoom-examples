@@ -51,7 +51,7 @@ public class OrganizationResource {
    */
   public Completes<Response> defineOrganization() {
     final String id = id();
-    final String uri = "/Organizations/" + id;
+    final String uri = "/organizations/" + id;
     
     world.defaultLogger().debug(getClass().getSimpleName() + ": startOrganization(): " + uri);
     
@@ -62,6 +62,14 @@ public class OrganizationResource {
     return Completes.withSuccess(Response.of(Ok, name));
   }
   
+  public Completes<Response> enableOrganization(String organizationId) {
+    return Completes.withSuccess(Response.of(Ok, "enabled"));
+  }
+
+  public Completes<Response> disableOrganization(String organizationId) {
+    return Completes.withSuccess(Response.of(Ok, "disabled"));
+  }
+
   /**
    * Answer the {@code Resource} of REST method handlers.
    * @return {@code Resource<?>}
@@ -76,7 +84,13 @@ public class OrganizationResource {
             patch("/organizations/{organizationId}/name")
                     .param(String.class)
                     .body(String.class)
-                    .handle(this::renameOrganization));
+                    .handle(this::renameOrganization),
+            patch("/organizations/{organizationId}/enable")
+                    .param(String.class)
+                    .handle(this::enableOrganization),
+            patch("/organizations/{organizationId}/disable")
+                    .param(String.class)
+                    .handle(this::disableOrganization));
   }
 
   private String id() {
