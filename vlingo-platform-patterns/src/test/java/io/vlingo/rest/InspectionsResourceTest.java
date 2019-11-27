@@ -44,7 +44,7 @@ public class InspectionsResourceTest {
   private ClientRequestResponseChannel client;
   private ResponseChannelConsumer consumer;
   private Progress progress;
-  private InspectionsResource resource;
+  private OrganizationResource resource;
   private Server server;
   private int serverPort;
   private World world;
@@ -84,7 +84,7 @@ public class InspectionsResourceTest {
   public void setUp() throws Exception {
     world = World.startWithDefaults("InspectionsResourceTest");
     
-    resource = new InspectionsResource(world);
+    resource = new OrganizationResource(world);
     
     serverPort = baseServerPort.getAndIncrement();
     
