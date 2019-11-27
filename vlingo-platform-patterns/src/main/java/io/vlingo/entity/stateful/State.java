@@ -15,7 +15,8 @@ public class State implements OrganizationState {
   public final Id organizationId;
   private String name;
   private String description;
-  
+  private final boolean enabled;
+
   public static State from(final Id organizationId) {
     return new State(organizationId);
   }
@@ -23,6 +24,19 @@ public class State implements OrganizationState {
   @Override
   public String id() {
     return organizationId.value;
+  }
+
+  @Override
+  public boolean enabled() {
+    return enabled;
+  }
+
+  public State enable() {
+    return new State(organizationId, name, description, true);
+  }
+
+  public State disable() {
+    return new State(organizationId, name, description, false);
   }
 
   @Override
@@ -36,20 +50,21 @@ public class State implements OrganizationState {
   }
 
   State withDescription(final String description) {
-    return new State(organizationId, name, description);
+    return new State(organizationId, name, description, enabled);
   }
 
   State withName(final String name) {
-    return new State(organizationId, name, description);
+    return new State(organizationId, name, description, enabled);
   }
 
   private State(final Id organizationId) {
-    this(organizationId, "", "");
+    this(organizationId, "", "", false);
   }
 
-  private State(final Id organizationId, final String name, final String description) {
+  private State(final Id organizationId, final String name, final String description, final boolean enabled) {
     this.organizationId = organizationId;
     this.name = name;
     this.description = description;
+    this.enabled = enabled;
   }
 }

@@ -13,6 +13,7 @@ import static io.vlingo.http.ResponseHeader.Location;
 import static io.vlingo.http.ResponseHeader.headers;
 import static io.vlingo.http.ResponseHeader.of;
 import static io.vlingo.http.resource.ResourceBuilder.get;
+import static io.vlingo.http.resource.ResourceBuilder.patch;
 import static io.vlingo.http.resource.ResourceBuilder.post;
 import static io.vlingo.http.resource.ResourceBuilder.resource;
 
@@ -57,17 +58,25 @@ public class OrganizationResource {
     return Completes.withSuccess(Response.of(Created, headers(of(Location, uri)), id));
   }
   
+  public Completes<Response> renameOrganization(String organizationId, String name) {
+    return Completes.withSuccess(Response.of(Ok, name));
+  }
+  
   /**
    * Answer the {@code Resource} of REST method handlers.
    * @return {@code Resource<?>}
    */
   public Resource<?> routes() {
     return resource("Organization Resource Fluent API",
-            post("/Organizations")
+            post("/organizations")
                     .handle(this::defineOrganization),
-            get("/Organizations/{OrganizationId}")
+            get("/organizations/{organizationId}")
                     .param(String.class)
-                    .handle(this::queryOrganization));
+                    .handle(this::queryOrganization),
+            patch("/organizations/{organizationId}/name")
+                    .param(String.class)
+                    .body(String.class)
+                    .handle(this::renameOrganization));
   }
 
   private String id() {

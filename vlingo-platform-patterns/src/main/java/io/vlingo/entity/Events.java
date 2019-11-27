@@ -41,6 +41,30 @@ public final class Events {
     }
   }
 
+  public static final class OrganizationEnabled extends DomainEvent {
+    public final String id;
+
+    public static OrganizationEnabled with(final Id id) {
+      return new OrganizationEnabled(id);
+    }
+
+    public OrganizationEnabled(final Id id) {
+      this.id = id.value;
+    }
+  }
+
+  public static final class OrganizationDisabled extends DomainEvent {
+    public final String id;
+
+    public static OrganizationDisabled with(final Id id) {
+      return new OrganizationDisabled(id);
+    }
+
+    public OrganizationDisabled(final Id id) {
+      this.id = id.value;
+    }
+  }
+
   public static final class OrganizationRenamed extends DomainEvent {
     public final String Id;
     public final String name;
