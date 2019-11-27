@@ -17,7 +17,7 @@ import io.vlingo.http.resource.Configuration.Timing;
 public class Bootstrap {
   private static Bootstrap bootstrap;
   
-  private final InspectionsResource resource;
+  private final OrganizationResource resource;
   private final Server server;
   private final World world;
 
@@ -32,7 +32,7 @@ public class Bootstrap {
     
     world = World.startWithDefaults("InspectionsResourceTest");
     
-    resource = new InspectionsResource(world);
+    resource = new OrganizationResource(world);
     
     server =
             Server.startWith(

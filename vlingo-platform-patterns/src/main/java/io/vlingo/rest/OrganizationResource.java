@@ -26,33 +26,33 @@ import io.vlingo.http.resource.Resource;
 /**
  * Example of vlingo/http Fluent API mappings.
  */
-public class InspectionsResource {
+public class OrganizationResource {
   private final World world;
   
-  public InspectionsResource(final World world) {
+  public OrganizationResource(final World world) {
     this.world = world;
   }
 
   /**
-   * Answer the eventual {@code Response} to the GET query of a given inspection.
-   * @param inspectionId the String id of the inspection to query
+   * Answer the eventual {@code Response} to the GET query of a given Organization.
+   * @param OrganizationId the String id of the Organization to query
    * @return {@code Completes<Response>}
    */
-  public Completes<Response> queryInspection(final String inspectionId) {
-    world.defaultLogger().debug(getClass().getSimpleName() + ": queryInspection(\"" + inspectionId + "\")");
+  public Completes<Response> queryOrganization(final String OrganizationId) {
+    world.defaultLogger().debug(getClass().getSimpleName() + ": queryOrganization(\"" + OrganizationId + "\")");
     
-    return Completes.withSuccess(Response.of(Ok, inspectionId));
+    return Completes.withSuccess(Response.of(Ok, OrganizationId));
   }
 
   /**
-   * Answer the eventual {@code Response} of starting a new inspection..
+   * Answer the eventual {@code Response} of defining a new Organization.
    * @return {@code Completes<Response>}
    */
-  public Completes<Response> startInspection() {
+  public Completes<Response> defineOrganization() {
     final String id = id();
-    final String uri = "/inspections/" + id;
+    final String uri = "/Organizations/" + id;
     
-    world.defaultLogger().debug(getClass().getSimpleName() + ": startInspection(): " + uri);
+    world.defaultLogger().debug(getClass().getSimpleName() + ": startOrganization(): " + uri);
     
     return Completes.withSuccess(Response.of(Created, headers(of(Location, uri)), id));
   }
@@ -62,12 +62,12 @@ public class InspectionsResource {
    * @return {@code Resource<?>}
    */
   public Resource<?> routes() {
-    return resource("Product resource fluent api",
-            post("/inspections")
-                    .handle(this::startInspection),
-            get("/inspections/{inspectionId}")
+    return resource("Organization Resource Fluent API",
+            post("/Organizations")
+                    .handle(this::defineOrganization),
+            get("/Organizations/{OrganizationId}")
                     .param(String.class)
-                    .handle(this::queryInspection));
+                    .handle(this::queryOrganization));
   }
 
   private String id() {
