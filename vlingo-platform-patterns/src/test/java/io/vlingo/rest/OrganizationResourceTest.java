@@ -78,6 +78,13 @@ public class OrganizationResourceTest {
 
     Assert.assertEquals(2, progress.consumeCount.get());
     Assert.assertEquals(id, queryResponse.entity.content());
+    
+    client.requestWith(toByteBuffer(patchRequest(id, "NEWNAME")));
+    
+    final Response patchResponse = pollClient();
+
+    Assert.assertEquals(3, progress.consumeCount.get());
+    Assert.assertEquals("NEWNAME", patchResponse.entity.content());
   }
 
   @Before
@@ -112,7 +119,11 @@ public class OrganizationResourceTest {
   }
   
   private String getRequest(final String id) {
-    return "GET /Organizations/" + id + " HTTP/1.1\nHost: vlingo.io\n\n";
+    return "GET /organizations/" + id + " HTTP/1.1\nHost: vlingo.io\n\n";
+  }
+  
+  private String patchRequest(final String id, final String name) {
+    return "PATCH /organizations/" + id + "/name HTTP/1.1\nHost: vlingo.io\nContent-Length: " + name.length() + "\n\n" + name;
   }
 
   private Response pollClient() {
@@ -128,7 +139,7 @@ public class OrganizationResourceTest {
   }
   
   private String postRequest() {
-    return "POST /Organizations HTTP/1.1\nHost: vlingo.io\n\n";
+    return "POST /organizations HTTP/1.1\nHost: vlingo.io\n\n";
   }
 
   private String resourceId(final Response response) {
