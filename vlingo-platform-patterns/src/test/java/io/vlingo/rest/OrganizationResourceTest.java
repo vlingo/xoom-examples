@@ -37,7 +37,7 @@ import io.vlingo.wire.node.Address;
 import io.vlingo.wire.node.AddressType;
 import io.vlingo.wire.node.Host;
 
-public class InspectionsResourceTest {
+public class OrganizationResourceTest {
   private static final AtomicInteger baseServerPort = new AtomicInteger(18080);
 
   private final ByteBuffer buffer = ByteBufferAllocator.allocate(1024);
@@ -51,13 +51,13 @@ public class InspectionsResourceTest {
   
   @Test
   public void testThatResouceAnswers() {
-    final Response startResponse = resource.startInspection().await();
+    final Response startResponse = resource.defineOrganization().await();
     Assert.assertNotNull(startResponse);
     final String id = resourceId(startResponse);
     Assert.assertNotNull(id);
     Assert.assertFalse(startResponse.entity.content().isEmpty());
     
-    final Response queryResponse = resource.queryInspection(id).await();
+    final Response queryResponse = resource.queryOrganization(id).await();
     Assert.assertNotNull(queryResponse);
     Assert.assertEquals(id, queryResponse.entity.content());
   }
@@ -82,7 +82,7 @@ public class InspectionsResourceTest {
 
   @Before
   public void setUp() throws Exception {
-    world = World.startWithDefaults("InspectionsResourceTest");
+    world = World.startWithDefaults("OrganizationsResourceTest");
     
     resource = new OrganizationResource(world);
     
@@ -112,7 +112,7 @@ public class InspectionsResourceTest {
   }
   
   private String getRequest(final String id) {
-    return "GET /inspections/" + id + " HTTP/1.1\nHost: vlingo.io\n\n";
+    return "GET /Organizations/" + id + " HTTP/1.1\nHost: vlingo.io\n\n";
   }
 
   private Response pollClient() {
@@ -128,7 +128,7 @@ public class InspectionsResourceTest {
   }
   
   private String postRequest() {
-    return "POST /inspections HTTP/1.1\nHost: vlingo.io\n\n";
+    return "POST /Organizations HTTP/1.1\nHost: vlingo.io\n\n";
   }
 
   private String resourceId(final Response response) {
