@@ -10,6 +10,8 @@ package io.vlingo.entity.sourced;
 import io.vlingo.common.Completes;
 import io.vlingo.entity.Events.OrganizationDefined;
 import io.vlingo.entity.Events.OrganizationDescribed;
+import io.vlingo.entity.Events.OrganizationDisabled;
+import io.vlingo.entity.Events.OrganizationEnabled;
 import io.vlingo.entity.Events.OrganizationRenamed;
 import io.vlingo.entity.Id;
 import io.vlingo.entity.Organization;
@@ -33,6 +35,16 @@ public class OrganizationEntity extends EventSourced implements Organization {
   }
 
   @Override
+  public Completes<OrganizationState> enable() {
+    return apply(new OrganizationEnabled(this.state.organizationId), () -> state);
+  }
+
+  @Override
+  public Completes<OrganizationState> disable() {
+    return apply(new OrganizationDisabled(this.state.organizationId), () -> state);
+  }
+
+  @Override
   public Completes<OrganizationState> describeAs(final String description) {
     return apply(new OrganizationDescribed(state.organizationId, description), () -> state);
   }
@@ -49,12 +61,22 @@ public class OrganizationEntity extends EventSourced implements Organization {
 
   static {
     EventSourced.registerConsumer(OrganizationEntity.class, OrganizationDefined.class, OrganizationEntity::applyOrganizationDefined);
+    EventSourced.registerConsumer(OrganizationEntity.class, OrganizationEnabled.class, OrganizationEntity::applyOrganizationEnabled);
+    EventSourced.registerConsumer(OrganizationEntity.class, OrganizationDisabled.class, OrganizationEntity::applyOrganizationDisabled);
     EventSourced.registerConsumer(OrganizationEntity.class, OrganizationDescribed.class, OrganizationEntity::applyOrganizationDescribed);
     EventSourced.registerConsumer(OrganizationEntity.class, OrganizationRenamed.class, OrganizationEntity::applyOrganizationRenamed);
   }
 
   private void applyOrganizationDefined(final OrganizationDefined e) {
     state = state.withName(e.name).withDescription(e.description);
+  }
+
+  private void applyOrganizationEnabled(final OrganizationEnabled e) {
+    state = state.enable();
+  }
+
+  private void applyOrganizationDisabled(final OrganizationDisabled e) {
+    state = state.disable();
   }
 
   private void applyOrganizationDescribed(final OrganizationDescribed e) {

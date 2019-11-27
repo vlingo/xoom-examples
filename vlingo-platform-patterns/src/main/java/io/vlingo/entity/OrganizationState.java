@@ -9,6 +9,7 @@ package io.vlingo.entity;
 
 public interface OrganizationState {
   String id();
+  boolean enabled();
   String description();
   String name();
 }

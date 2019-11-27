@@ -20,6 +20,7 @@ public class State extends StateObject implements OrganizationState {
   public final Id organizationId;
   private String name;
   private String description;
+  private boolean enabled;
   
   public static State from(final Id organizationId) {
     return new State(organizationId);
@@ -43,6 +44,19 @@ public class State extends StateObject implements OrganizationState {
     this.description = description;
   }
 
+  @Override
+  public boolean enabled() {
+    return enabled;
+  }
+
+  public void enable() {
+    this.enabled = true;
+  }
+
+  public void disable() {
+    this.enabled = false;
+  }
+  
   @Override
   public String name() {
     return name;
@@ -81,7 +95,8 @@ public class State extends StateObject implements OrganizationState {
             " version=" + version() +
             " organizationId=" + organizationId.value +
             " name=" + name +
-            " description=" + description + "]";
+            " description=" + description +
+            " enabled=" + enabled + "]";
   }
 
   private State(final Id organizationId) {
@@ -93,5 +108,6 @@ public class State extends StateObject implements OrganizationState {
     this.organizationId = organizationId;
     this.name = name;
     this.description = description;
+    this.enabled = false;
   }
 }

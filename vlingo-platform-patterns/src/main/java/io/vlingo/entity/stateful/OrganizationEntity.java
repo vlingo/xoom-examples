@@ -8,12 +8,13 @@
 package io.vlingo.entity.stateful;
 
 import io.vlingo.common.Completes;
+import io.vlingo.entity.Events.OrganizationDefined;
+import io.vlingo.entity.Events.OrganizationDescribed;
+import io.vlingo.entity.Events.OrganizationEnabled;
+import io.vlingo.entity.Events.OrganizationRenamed;
 import io.vlingo.entity.Id;
 import io.vlingo.entity.Organization;
 import io.vlingo.entity.OrganizationState;
-import io.vlingo.entity.Events.OrganizationDefined;
-import io.vlingo.entity.Events.OrganizationDescribed;
-import io.vlingo.entity.Events.OrganizationRenamed;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
 public class OrganizationEntity extends StatefulEntity<State> implements Organization {
@@ -30,6 +31,16 @@ public class OrganizationEntity extends StatefulEntity<State> implements Organiz
   @Override
   public Completes<OrganizationState> defineWith(final String name, final String description) {
     return apply(state.withName(name).withDescription(description), new OrganizationDefined(this.state.organizationId, name, description), () -> state);
+  }
+
+  @Override
+  public Completes<OrganizationState> enable() {
+    return apply(state.enable(), new OrganizationEnabled(this.state.organizationId), () -> state);
+  }
+
+  @Override
+  public Completes<OrganizationState> disable() {
+    return apply(state.disable(), new OrganizationEnabled(this.state.organizationId), () -> state);
   }
 
   @Override

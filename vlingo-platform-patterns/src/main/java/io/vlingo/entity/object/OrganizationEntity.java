@@ -10,6 +10,8 @@ package io.vlingo.entity.object;
 import io.vlingo.common.Completes;
 import io.vlingo.entity.Events.OrganizationDefined;
 import io.vlingo.entity.Events.OrganizationDescribed;
+import io.vlingo.entity.Events.OrganizationDisabled;
+import io.vlingo.entity.Events.OrganizationEnabled;
 import io.vlingo.entity.Events.OrganizationRenamed;
 import io.vlingo.entity.Id;
 import io.vlingo.entity.Organization;
@@ -32,6 +34,18 @@ public class OrganizationEntity extends ObjectEntity<State> implements Organizat
     state.setName(name);
     state.setDescription(description);
     return apply(state, new OrganizationDefined(this.state.organizationId, name, description), () -> state);
+  }
+
+  @Override
+  public Completes<OrganizationState> enable() {
+    state.enable();
+    return apply(state, new OrganizationEnabled(this.state.organizationId), () -> state);
+  }
+
+  @Override
+  public Completes<OrganizationState> disable() {
+    state.disable();
+    return apply(state, new OrganizationDisabled(this.state.organizationId), () -> state);
   }
 
   @Override

@@ -61,4 +61,8 @@ public interface Organization {
   Completes<OrganizationState> describeAs(final String description);
 
   Completes<OrganizationState> renameTo(final String name);
+  
+  Completes<OrganizationState> enable();
+  
+  Completes<OrganizationState> disable();
 }
