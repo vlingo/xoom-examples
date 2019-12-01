@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-hike-backend</artifactId>
-  <version>0.9.2-RC3</version>
+  <version>0.9.3-RC4</version>
   <name>vlingo-hike-backend</name>
   <description>IoT example.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -21,12 +21,12 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>0.9.2-RC3</version>
+      <version>0.9.3-RC4</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio</artifactId>
-      <version>0.9.2-RC3</version>
+      <version>0.9.3-RC4</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
