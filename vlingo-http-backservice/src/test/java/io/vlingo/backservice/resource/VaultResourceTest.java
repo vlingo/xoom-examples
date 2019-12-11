@@ -60,7 +60,7 @@ public class VaultResourceTest {
   public void setUp() throws Exception {
     world = World.startWithDefaults("test-vault");
 
-    actionGetPrivateToken = new Action(0, "GET", "/tokens/{publicToken}", "generatePrivateToken(String publicToken)", null, true);
+    actionGetPrivateToken = new Action(0, "GET", "/tokens/{publicToken}", "generatePrivateToken(String publicToken)", null);
     final List<Action> actions = Arrays.asList(actionGetPrivateToken);
 
     final Class<? extends ResourceHandler> resourceHandlerClass =
