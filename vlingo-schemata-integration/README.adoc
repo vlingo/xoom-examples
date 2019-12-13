@@ -1,0 +1,112 @@
+= Integration w/ vlingo/schemata
+
+`vlingo/schemata` allows for managing schemata for events and commands that
+to be consumed by other bounded contexts, thus implementing the published language pattern.
+
+`vlingo/schemata` can be run as standalone service and comes with a user interface that
+lets you define your scopes and contexts and manage schemata.
+
+In projects, you'll typically consume and/or publish schemata to be able to integrate
+with other bounded contexts in a type safe and versioned manner.
+
+This example contains of one project publishing schemata and another one
+consuming them.
+
+== Prerequisites
+
+To be able to follow along, you'll need:
+
+* JDK 8
+* Maven 3.3.x
+* A running instance of `vlingo/schemata`
+
+=== Set up vlingo/schemata
+
+* Clone https://github.com/vlingo/vlingo-schemata
+* Make sure your JDK is set to a 1.8 version in the shell you're building in footnote:[If you're juggling JDKs, https://sdkman.io/ might help you.]
+* Run `mvn package -Pfrontend` in the project root
+* Run `java -jar target/vlingo-schemata-<version>-jar-with-dependencies.jar dev`. This starts a schemata instance listening on port 9019 running on an embedded in memory database.
+* Open http://localhost:9019/. If you see something with `vlingo/schemata` in the the title bar, you're good to go.
+
+NOTE: To run against a persistent database, please have a look at https://github.com/vlingo/vlingo-schemata/
+
+=== Provision schemtata master data
+
+To be able to integrate your projects with the schema registry, you need to
+make your organization structure and available published languages known first.
+You can do this either via the HTTP API or the UI.
+
+==== Using the UI
+
+==== Using the API
+
+In case you are using IntellJ, you can just copy the snippets below and run
+them using IntellJ's HTTP client. Otherwise, deriving the `curl` footnote:[`PostMan`, `HTTPie`, `wget`, pick your flavor] calls from the
+snippets should be a simple exercise.
+
+TODO: Annotate http calls
+
+```
+### Create Organization
+POST http://localhost:9019/organizations
+Content-Type: application/json
+
+{
+  "organizationId": "",
+  "name": "Vlingox",
+  "description": "Vlingo Organization"
+}
+
+> {% client.global.set('orgId', response.body.organizationId) %}
+
+
+### Create Unit
+POST  http://localhost:9019/organizations/{{orgId}}/units
+Content-Type: application/json
+
+{
+  "organizationId": "{{orgId}}",
+  "unitId": "",
+  "name": "schemata",
+  "description": "Schemata Unit"
+}
+
+> {% client.global.set('unitId', response.body.unitId) %}
+
+### Create Context
+POST http://localhost:9019/organizations/{{orgId}}/units/{{unitId}}/contexts
+Content-Type: application/json
+
+{
+  "organizationId": "{{orgId}}",
+  "unitId": "{{unitId}}",
+  "contextId": "",
+  "namespace": "io.vlingo.schemata",
+  "description": "Schemata Context"
+}
+
+> {% client.global.set('contextId', response.body.contextId) %}
+
+### Create Schema
+POST http://localhost:9019/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas
+Content-Type: application/json
+
+{
+  "organizationId": "{{orgId}}",
+  "unitId": "{{unitId}}",
+  "contextId": "{{contextId}}",
+  "schemaId": "",
+  "category": "Event",
+  "name": "SchemaDefined",
+  "scope": "Public",
+  "description": "Fired whenever a new schema is defined."
+}
+
+> {% client.global.set('schemaId', response.body.schemaId) %}
+
+
+```
+
+== Run
+
+
