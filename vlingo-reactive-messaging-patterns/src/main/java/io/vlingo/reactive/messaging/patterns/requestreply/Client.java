@@ -25,7 +25,7 @@ public class Client extends Actor implements Consumer {
     logger().debug("Consumer received request-reply of: " + what);
     results.access.writeUsing("afterReplyReceivedCount", 1);
 
-    service.query("Query from Client-Consumer!").andThenConsume(result -> {
+    service.query("Query from Client-Consumer!").andFinallyConsume(result -> {
       logger().debug("Consumer received query-reply of: " + what);
       results.access.writeUsing("afterQueryPerformedCount", 1);
     });
