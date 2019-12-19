@@ -18,7 +18,8 @@ To be able to follow along, you'll need:
 
 * JDK 8
 * Maven 3.3.x
-* A running instance of `vlingo/schemata`
+* A running instance of `vlingo/schemata` (see <<Set up vlingo/schemata>>)
+* Some master data (see <<Provision schemata master data>>)
 
 === Set up vlingo/schemata
 
@@ -30,83 +31,88 @@ To be able to follow along, you'll need:
 
 NOTE: To run against a persistent database, please have a look at https://github.com/vlingo/vlingo-schemata/
 
-=== Provision schemtata master data
+TIP: We'll provide a working docker image soon, please bear with us and build schemata yourself in the meantime.
+
+=== Provision schemata master data
 
 To be able to integrate your projects with the schema registry, you need to
 make your organization structure and available published languages known first.
 You can do this either via the HTTP API or the UI.
 
+Schemata are structured in a hierarchical manner:
+`Organisation -> Units -> Contexts -> Schemas -> Schema Versions`.
+We'll push new schema versions using the maven plugin.
+Before running the build, you need to have at least one of each other entity prepared.
+
 ==== Using the UI
+
+From the navigation drawer to the left, open the editor for each of these entities and create one.
+The build assumes the following structure:
+
+* Organisation: `Vlingo`
+** Unit: `examples`
+***** Context Namepace: `io.vlingo.examples.schemata`
+****** Schema: `SchemaDefined`
+****** Schema: `SchemaPublished`
+
+.Create context using the UI
+image::doc/ui-context.png[]
+
+.The result should look like this
+image::doc/ui-browse.png[]
 
 ==== Using the API
 
-In case you are using IntellJ, you can just copy the snippets below and run
-them using IntellJ's HTTP client. Otherwise, deriving the `curl` footnote:[`PostMan`, `HTTPie`, `wget`, pick your flavor] calls from the
-snippets should be a simple exercise.
-
-TODO: Annotate http calls
-
-```
-### Create Organization
-POST http://localhost:9019/organizations
-Content-Type: application/json
-
-{
-  "organizationId": "",
-  "name": "Vlingox",
-  "description": "Vlingo Organization"
-}
-
-> {% client.global.set('orgId', response.body.organizationId) %}
-
-
-### Create Unit
-POST  http://localhost:9019/organizations/{{orgId}}/units
-Content-Type: application/json
-
-{
-  "organizationId": "{{orgId}}",
-  "unitId": "",
-  "name": "schemata",
-  "description": "Schemata Unit"
-}
-
-> {% client.global.set('unitId', response.body.unitId) %}
-
-### Create Context
-POST http://localhost:9019/organizations/{{orgId}}/units/{{unitId}}/contexts
-Content-Type: application/json
-
-{
-  "organizationId": "{{orgId}}",
-  "unitId": "{{unitId}}",
-  "contextId": "",
-  "namespace": "io.vlingo.schemata",
-  "description": "Schemata Context"
-}
-
-> {% client.global.set('contextId', response.body.contextId) %}
-
-### Create Schema
-POST http://localhost:9019/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas
-Content-Type: application/json
-
-{
-  "organizationId": "{{orgId}}",
-  "unitId": "{{unitId}}",
-  "contextId": "{{contextId}}",
-  "schemaId": "",
-  "category": "Event",
-  "name": "SchemaDefined",
-  "scope": "Public",
-  "description": "Fired whenever a new schema is defined."
-}
-
-> {% client.global.set('schemaId', response.body.schemaId) %}
-
-
-```
+In case you are using IntelliJ, you can just run the requests in `masterdata.http` directly.
+Otherwise, deriving the `curl` footnote:[`PostMan`, `HTTPie`, `wget`, pick your flavor.]
+calls from the snippets should be a simple exercise.
 
 == Run
 
+Now that we have the master data in place, we can publish some schemata from
+`vlingo-schemata-producer`. The schema sources live in `src/main/vlingo/schemata`
+in that project. To publish them, simply run `mvn install` in the project root.
+The build output should contain <<output-producer>>, the <<ui-schema-version>> should look like
+the screenshot below. You can also have a look at the generated code (`Specification -> Source`) and description using the
+and the generated description (`Description -> Preview`)
 
+
+Next, hop over to `vlingo-schemata-consumer` and open the test `SchemaDefinedTest`.
+You'll notice that it does not compile, as the schema class is missing.
+
+
+
+
+[[output-producer]]
+.producer build output
+[source]
+---
+[INFO] --- vlingo-build-plugins:0.9.3-RC4:push-schemata (default) @ vlingo-schemata-producer ---
+[INFO] vlingo/maven: Pushing project schemata to vlingo-schemata registry.
+[INFO] Pushing Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 to http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1.
+[INFO] Successfully pushed http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1
+[INFO] Setting source to SchemaPublished.vss for Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1
+[INFO] Pushing Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1 to http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1.
+[INFO] Successfully pushed http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1
+---
+
+[[ui-schema-version]]
+.schema version in the UI
+image::doc/ui-schema-version.png[]
+
+[[output-consumer]]
+.consumer build output
+[source]
+---
+[INFO] --- vlingo-build-plugins:0.9.3-RC4:pull-schemata (pullSchemata) @ vlingo-schemata-consumer ---
+[INFO] vlingo/maven: Pulling code generated from vlingo/schemata registry.
+[INFO] SchemataService{url=http://localhost:9019, clientOrganization='Vlingo', clientUnit='examples'}
+[INFO] Pulling Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 from http://localhost:9019/code/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1/java
+[INFO] Pulled Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1
+[INFO] Writing Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 to /Users/wwerner/Projects/vlingo/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/classes/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaDefined.java
+[INFO] Wrote /Users/wwerner/Projects/vlingo/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/classes/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaDefined.java
+[INFO] Pulling Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1 from http://localhost:9019/code/Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1/java
+[INFO] Pulled Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1
+[INFO] Writing Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1 to /Users/wwerner/Projects/vlingo/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/classes/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaPublished.java
+[INFO] Wrote /Users/wwerner/Projects/vlingo/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/classes/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaPublished.java
+---

@@ -1,0 +1,4 @@
+event SchemaPublished {
+    timestamp publishedOn
+    version publishedVersion
+}
