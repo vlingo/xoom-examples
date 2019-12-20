@@ -36,7 +36,7 @@
                 <clientOrganization>Vlingo</clientOrganization>
                 <clientUnit>examples</clientUnit>
               </schemataService>
-              <outputDirectory>${project.build.outputDirectory}/generated-sources/vlingo</outputDirectory>
+              <outputDirectory>${project.build.directory}/generated-sources/vlingo</outputDirectory>
               <schemata>
                 <schema>
                   <ref>Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1</ref>
