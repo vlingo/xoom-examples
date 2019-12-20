@@ -18,8 +18,16 @@ you can also interact with schemata as part of your build process.
 In projects, you'll typically consume and/or publish schemata to be able to integrate
 with other bounded contexts in a type safe and versioned manner.
 
-This example contains of one project publishing schemata and another one
-consuming them as part of their maven build.
+In this example, you'll see how to ...
+
+* ... build an run `vlingo/schemata`
+* ... manage schemata and schemata meta data using the UI and the HTTP API.
+* ... push schemata to the registry from maven builds and
+* ... consume schemata stored in the registry as part of the build.
+
+
+NOTE: This is the first iteration of the example. We're already working on updates showing
+version validation and the schemata lifecycle.
 
 == Prerequisites
 
@@ -72,8 +80,9 @@ image::doc/ui-browse.png[]
 
 ==== Using the API
 
-In case you are using IntelliJ, you can just run the requests in `masterdata.http` directly.
-Otherwise, deriving the `curl` footnote:[`PostMan`, `HTTPie`, `wget`, pick your flavor.]
+In case you are using IntelliJ, you can just run the requests in `masterdata.http` directly;
+`masterdata.sh` is a bash script doing the same footnote:[Requires `curl` and `jq`].
+Otherwise, deriving the `wget` footnote:[`PostMan`, `HTTPie`, `Insomnia`, `Invoke-WebRequest` pick your flavor.]
 calls from the snippets should be a simple exercise.
 
 == Run
@@ -95,7 +104,6 @@ The test relying on schemata sources will now compile and execute as expected.
 NOTE: This is just for illustration purposes. Typically, you'll rely on maven's default lifecycle binding
  and not call `generate-sources` explicitly. Simply running `mvn install` will determine
  that `vlingo-build-plugin` is bound to `generate-sources` and run it before.
-
 
 
 [[output-producer]]
