@@ -5,13 +5,15 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+import io.vlingo.examples.schemata.event.SchemaDefined;
+import io.vlingo.examples.schemata.event.SchemaPublished;
 import org.junit.Test;
 
-public class ExampleTest {
+public class SchemataUsageTest {
 
     @Test
-    public void testThatSchemaIsPulledAndCompiled() {
+    public void testThatSchemaIsPulledAndCompiledTest() {
         new SchemaDefined();
-        new SchemaPublished()
+        new SchemaPublished();
     }
 }

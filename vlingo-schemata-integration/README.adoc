@@ -1,16 +1,25 @@
 = Integration w/ vlingo/schemata
 
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
 `vlingo/schemata` allows for managing schemata for events and commands that
 to be consumed by other bounded contexts, thus implementing the published language pattern.
 
-`vlingo/schemata` can be run as standalone service and comes with a user interface that
-lets you define your scopes and contexts and manage schemata.
+`vlingo/schemata` can be run as standalone service and comes with a user interface
+and an HTTP API that lets you manage master data and schemata. Using `vlingo-build-plugins`,
+you can also interact with schemata as part of your build process.
 
 In projects, you'll typically consume and/or publish schemata to be able to integrate
 with other bounded contexts in a type safe and versioned manner.
 
 This example contains of one project publishing schemata and another one
-consuming them.
+consuming them as part of their maven build.
 
 == Prerequisites
 
@@ -77,9 +86,15 @@ the screenshot below. You can also have a look at the generated code (`Specifica
 and the generated description (`Description -> Preview`)
 
 
-Next, hop over to `vlingo-schemata-consumer` and open the test `SchemaDefinedTest`.
+Next, hop over to `vlingo-schemata-consumer` and open `SchemataUsageTest` in your IDE.
 You'll notice that it does not compile, as the schema class is missing.
+Now run `mvn generate-sources` and verify that the code generated from schemata is
+pulled and written to `target/generated-sources/vlingo` as shown in <<output-consumer>>.
+The test relying on schemata sources will now compile and execute as expected.
 
+NOTE: This is just for illustration purposes. Typically, you'll rely on maven's default lifecycle binding
+ and not call `generate-sources` explicitly. Simply running `mvn install` will determine
+ that `vlingo-build-plugin` is bound to `generate-sources` and run it before.
 
 
 
