@@ -43,7 +43,8 @@ To be able to follow along, you'll need:
 * Clone https://github.com/vlingo/vlingo-schemata
 * Make sure your JDK is set to a 1.8 version in the shell you're building in footnote:[If you're juggling JDKs, https://sdkman.io/ might help you.]
 * Run `mvn package -Pfrontend` in the project root
-* Run `java -jar target/vlingo-schemata-<version>-jar-with-dependencies.jar dev`. This starts a schemata instance listening on port 9019 running on an embedded in memory database.
+* Run `VLINGO_SCHEMATA_PORT=9019 java -jar target/vlingo-schemata-<version>-jar-with-dependencies.jar env`.
+This starts a schemata instance listening on port 9019 running on an embedded in memory database.
 * Open http://localhost:9019/. If you see something with `vlingo/schemata` in the the title bar, you're good to go.
 
 NOTE: To run against a persistent database, please have a look at https://github.com/vlingo/vlingo-schemata/
@@ -81,7 +82,7 @@ image::doc/ui-browse.png[]
 ==== Using the API
 
 In case you are using IntelliJ, you can just run the requests in `masterdata.http` directly;
-`masterdata.sh` is a bash script doing the same footnote:[Requires `curl` and `jq`].
+`masterdata.sh` is a bash script doing the same footnote:[Requires `curl` and `jq` on the path and `VLINGO_SCHEMATA_PORT` to be set].
 Otherwise, deriving the `wget` footnote:[`PostMan`, `HTTPie`, `Insomnia`, `Invoke-WebRequest` pick your flavor.]
 calls from the snippets should be a simple exercise.
 
