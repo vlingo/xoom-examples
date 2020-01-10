@@ -17,6 +17,7 @@ import io.vlingo.entity.MockDispatcher;
 import io.vlingo.entity.Organization;
 import io.vlingo.entity.OrganizationState;
 import io.vlingo.lattice.grid.Grid;
+import io.vlingo.lattice.grid.GridNodeBootstrap;
 import io.vlingo.lattice.model.object.ObjectTypeRegistry;
 import io.vlingo.lattice.model.object.ObjectTypeRegistry.Info;
 import io.vlingo.symbio.store.object.MapQueryExpression;
@@ -63,8 +64,9 @@ public class OrganizationEntityTest {
 
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public void setUp() {
-    grid = Grid.startWith("object-entity", "grid");
+  public void setUp() throws Exception {
+    GridNodeBootstrap.reset();
+    grid = Grid.startWith("object-entity", "node1");
     objectStore = grid.actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
     registry = new ObjectTypeRegistry(grid.world());
 
