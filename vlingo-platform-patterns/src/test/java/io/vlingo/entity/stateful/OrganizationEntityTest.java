@@ -17,6 +17,7 @@ import io.vlingo.entity.MockDispatcher;
 import io.vlingo.entity.Organization;
 import io.vlingo.entity.OrganizationState;
 import io.vlingo.lattice.grid.Grid;
+import io.vlingo.lattice.grid.GridNodeBootstrap;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
 import io.vlingo.symbio.store.state.StateStore;
@@ -61,8 +62,9 @@ public class OrganizationEntityTest {
 
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public void setUp() {
-    grid = Grid.startWith("stateful-entity", "grid");
+  public void setUp() throws Exception {
+    GridNodeBootstrap.reset();
+    grid = Grid.startWith("stateful-entity", "node1");
     stateStore = grid.actorFor(StateStore.class, InMemoryStateStoreActor.class, new MockDispatcher());
     registry = new StatefulTypeRegistry(grid.world());
 
