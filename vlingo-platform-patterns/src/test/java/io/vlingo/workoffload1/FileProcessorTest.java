@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Random;
 import java.util.UUID;
 
 import org.junit.After;
@@ -27,6 +28,8 @@ import io.vlingo.common.Scheduled;
 import io.vlingo.common.Tuple2;
 
 public class FileProcessorTest {
+  private static Random random = new Random();
+
   private Tuple2<File,String> dataFile;
   private Stage fileCheckerStage;
   private World world;
@@ -35,7 +38,7 @@ public class FileProcessorTest {
   public void testThatNonChangingFileIsStable() {
     final int retries = 2;
 
-    System.out.println("testThatChangingFileExhaustsAttempts: may require " + retries + " seconds.");
+    System.out.println("testThatNonChangingFileIsStable: may require " + retries + " seconds.");
 
     final FileProcessor processor = FileProcessor.using(world.stage(), Duration.ofSeconds(1), retries);
 
@@ -80,7 +83,7 @@ public class FileProcessorTest {
   public void testThatNonExistingFileFails() {
     final int retries = 2;
 
-    System.out.println("testThatMissingFileFails: may require " + retries + " seconds.");
+    System.out.println("testThatNonExistingFileFails: may require " + retries + " seconds.");
 
     final FileProcessor processor = FileProcessor.using(fileCheckerStage, Duration.ofSeconds(1), retries);
 
@@ -103,7 +106,7 @@ public class FileProcessorTest {
   }
 
   private Tuple2<File,String> generateFile() throws Exception {
-    final String prefix = "data" + System.nanoTime();
+    final String prefix = "data" + random.nextLong();
     final String suffix = ".dat";
 
     final File file = File.createTempFile(prefix, suffix);
