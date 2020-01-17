@@ -12,8 +12,8 @@ endif::[]
 to be consumed by other bounded contexts, thus implementing the published language pattern.
 
 `vlingo/schemata` can be run as standalone service and comes with a user interface
-and an HTTP API that lets you manage master data and schemata. Using `vlingo-build-plugins`,
-you can also interact with schemata as part of your build process.
+and an HTTP API that lets you manage master data, schemata and generate source code.
+Using `vlingo-build-plugins`, you can also interact with schemata as part of your build process.
 
 In projects, you'll typically consume and/or publish schemata to be able to integrate
 with other bounded contexts in a type safe and versioned manner.
@@ -24,10 +24,6 @@ In this example, you'll see how to ...
 * ... manage schemata and schemata meta data using the UI and the HTTP API.
 * ... push schemata to the registry from maven builds and
 * ... consume schemata stored in the registry as part of the build.
-
-
-NOTE: This is the first iteration of the example. We're already working on updates showing
-version validation and the schemata lifecycle.
 
 == Prerequisites
 
@@ -82,7 +78,7 @@ image::doc/ui-browse.png[]
 ==== Using the API
 
 In case you are using IntelliJ, you can just run the requests in `masterdata.http` directly;
-`masterdata.sh` is a bash script doing the same footnote:[Requires `curl` and `jq` on the path and `VLINGO_SCHEMATA_PORT` to be set].
+`masterdata.sh` is a bash script doing the same footnote:[Requires `curl` and `jq` on the path and `VLINGO_SCHEMATA_PORT` to be set, e.g. `VLINGO_SCHEMATA_PORT=9019 ./masterdata.sh].
 Otherwise, deriving the `wget` footnote:[`PostMan`, `HTTPie`, `Insomnia`, `Invoke-WebRequest` pick your flavor.]
 calls from the snippets should be a simple exercise.
 
@@ -91,8 +87,8 @@ calls from the snippets should be a simple exercise.
 Now that we have the master data in place, we can publish some schemata from
 `vlingo-schemata-producer`. The schema sources live in `src/main/vlingo/schemata`
 in that project. To publish them, simply run `mvn install` in the project root.
-The build output should contain <<output-producer>>, the <<ui-schema-version>> should look like
-the screenshot below. You can also have a look at the generated code (`Specification -> Source`) and description using the
+The build output should contain <<output-producer>>, the UI should display the created schemata as shown in <<ui-schema-version>>.
+You can also have a look at the generated code (`Specification -> Source`) and description using the
 and the generated description (`Description -> Preview`)
 
 
@@ -100,11 +96,26 @@ Next, hop over to `vlingo-schemata-consumer` and open `SchemataUsageTest` in you
 You'll notice that it does not compile, as the schema class is missing.
 Now run `mvn generate-sources` and verify that the code generated from schemata is
 pulled and written to `target/generated-sources/vlingo` as shown in <<output-consumer>>.
-The test relying on schemata sources will now compile and execute as expected.
+The test relying on schemata sources will now compile and execute as expected,
+verify this by running `mvn test`.
 
 NOTE: This is just for illustration purposes. Typically, you'll rely on maven's default lifecycle binding
  and not call `generate-sources` explicitly. Simply running `mvn install` will determine
- that `vlingo-build-plugin` is bound to `generate-sources` and run it before.
+ that `vlingo-build-plugin` is bound to `generate-sources` and run it before compilation.
+
+
+Note that in the build output, you see two warning messages indicating that the status of the schemata
+used is `Draft`. You can go through the schemas lifecycle using the UI as highlighted in <<ui-schema-version-lifecycle>>.
+Alternatively, you can change the status using the API by `PATCH` ing `http://localhost:9019/organizations/<orgId>/units/<unitId>/contexts/<contextId>/schemas/<schemaId>/versions/<schemaVersionId>/status`.
+
+Now, publish one of the schemata and re-run the consumer build. You'll notice the warning no longer shows up.
+Then deprecate the schema, and re-build again. You'll see a warning again.
+After setting the state to removed, your consumer build will fail, see <<output-consumer-removed-schema>>. Try that as well.
+
+
+NOTE: We're currently implementing semantic validation as well, so pushing incompatible changes
+under a version that claims to be compatible will fail, providing a safety net for publishers not
+to accidentally break consumer contracts. Stay tuned.
 
 
 [[output-producer]]
@@ -128,15 +139,41 @@ image::doc/ui-schema-version.png[]
 .consumer build output
 [source]
 ---
-[INFO] --- vlingo-build-plugins:0.9.3-RC4:pull-schemata (pullSchemata) @ vlingo-schemata-consumer ---
+[INFO] --- vlingo-build-plugins:1.0.0:pull-schemata (pullSchemata) @ vlingo-schemata-consumer ---
 [INFO] vlingo/maven: Pulling code generated from vlingo/schemata registry.
 [INFO] SchemataService{url=http://localhost:9019, clientOrganization='Vlingo', clientUnit='examples'}
+[INFO] Retrieving version data for Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 from http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1/status
+[WARNING] Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 status is 'Draft': don't use in production builds
 [INFO] Pulling Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 from http://localhost:9019/code/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1/java
 [INFO] Pulled Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1
-[INFO] Writing Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 to /Users/wwerner/Projects/vlingo/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/classes/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaDefined.java
-[INFO] Wrote /Users/wwerner/Projects/vlingo/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/classes/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaDefined.java
+[INFO] Writing Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 to /private/tmp/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaDefined.java
+[INFO] Wrote /private/tmp/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaDefined.java
+[INFO] Retrieving version data for Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1 from http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1/status
+[WARNING] Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1 status is 'Draft': don't use in production builds
 [INFO] Pulling Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1 from http://localhost:9019/code/Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1/java
 [INFO] Pulled Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1
-[INFO] Writing Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1 to /Users/wwerner/Projects/vlingo/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/classes/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaPublished.java
-[INFO] Wrote /Users/wwerner/Projects/vlingo/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/classes/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaPublished.java
+[INFO] Writing Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1 to /private/tmp/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaPublished.java
+[INFO] Wrote /private/tmp/vlingo-examples/vlingo-schemata-integration/vlingo-schemata-consumer/target/generated-sources/vlingo/io/vlingo/examples/schemata/event/SchemaPublished.java
+---
+
+[[ui-schema-version-lifecycle]]
+.schema version lifecycle
+image::doc/ui-lifecycle.png[]
+
+[[output-consumer-removed-schema]]
+.consumer using a removed schema version
+[source]
+---
+[INFO] --- vlingo-build-plugins:1.0.0:pull-schemata (pullSchemata) @ vlingo-schemata-consumer ---
+[INFO] vlingo/maven: Pulling code generated from vlingo/schemata registry.
+[INFO] SchemataService{url=http://localhost:9019, clientOrganization='Vlingo', clientUnit='examples'}
+[INFO] Retrieving version data for Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 from http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1/status
+[ERROR] Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 status is 'Removed' and may no longer be used
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.773 s
+[INFO] Finished at: 2020-01-17T09:54:30+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal io.vlingo:vlingo-build-plugins:1.0.0:pull-schemata (pullSchemata) on project vlingo-schemata-consumer: Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 has reached the end of its life cycle -> [Help 1]
 ---
