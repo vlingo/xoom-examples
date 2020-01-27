@@ -10,7 +10,7 @@ Start a console/command window so you can build the `vlingo-http-backservice` an
 ```
 $ mvn clean package
 ...
-$ java -jar target/vlingo-http-backservice-<version>-jar-with-dependencies.jar
+$ java -jar target/vlingo-http-backservice-withdeps.jar
 ```
 
 
@@ -19,7 +19,7 @@ Following that, in a separate console/command window, build the `vlingo-http-fro
 ```
 $ mvn clean package
 ...
-$ java -jar target/vlingo-http-frontservice-<version>-jar-with-dependencies.jar
+$ java -jar target/vlingo-http-frontservice-withdeps.jar
 ```
 
 The following is a sample `curl` command (or use Postman) that can be used to create a user on the `vlingo-http-frontservice` and start the process of retrieving the user's private token.
