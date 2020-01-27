@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-benchmarks</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <name>vlingo-benchmarks</name>
   <description>Benchmarks on platform components.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0</version>
     </dependency>
   </dependencies>
   <build>
