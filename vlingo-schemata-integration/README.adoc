@@ -106,6 +106,41 @@ NOTE: This is just for illustration purposes. Typically, you'll rely on maven's 
  and not call `generate-sources` explicitly. Simply running `mvn install` will determine
  that `vlingo-build-plugin` is bound to `generate-sources` and run it before.
 
+`vlingo/schemata` also provides a safety net to prevent you from publishing incompatible versions by
+accident, so you won't break consumers of your published versions.
+To emulate this, open the `SchemaDefined.vss` specification and make some incompatible changes, e.g. by changing
+a type, reordering some fields and changing field names:
+
+.incompatible update to `SchemaDefined` see `src/main/vlingo/schemata/SchemaDefined`
+```
+event SchemaDefined {
+    long occurredOn
+    version v
+    type t
+}
+```
+
+In the producer project's pom, reference the updated file as a new patch version:
+```
+<schema>
+  <ref>Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.2</ref> <1>
+  <src>SchemaDefined2.vss</src> <2>
+  <previousVersion>0.0.1</previousVersion> <3>
+</schema>
+```
+<1> updated reference to new version
+<2> use updated specification; this would normally be the same file
+<3> specify the version the update is applied to
+
+You'll notice that the build fails and presents you with a list of changes you have made.
+Now you can either change the update to make it compatible or update the version to the next
+major version `1.0.0`.
+
+So, by using the schema registry you not only have a way to integrate multiple bounded contexts
+but are - as a consumer - safe from inadvertent upstream incompatibilities and, - as a publisher -
+safe from accidentally pushing such updates.
+
+
 
 [[output-producer]]
 .producer build output
