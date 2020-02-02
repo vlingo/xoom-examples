@@ -132,6 +132,13 @@ In the producer project's pom, reference the updated file as a new patch version
 <2> use updated specification; this would normally be the same file
 <3> specify the version the update is applied to
 
+You'll notice that the build fails and presents you with a list of changes you have made.
+Now you can either change the update to make it compatible or update the version to the next
+major version `1.0.0`.
+
+So, by using the schema registry you not only have a way to integrate multiple bounded contexts
+but are - as a consumer - safe from inadvertent upstream incompatibilities and, - as a publisher -
+safe from accidentally pushing such updates.
 
 
 
