@@ -42,6 +42,14 @@
                   <src>SchemaDefined.vss</src>
                   <previousVersion>0.0.0</previousVersion>
                 </schema>
+                <!-- Incompatible update to SchemaDefined v0.0.1 -->
+                <!--
+                <schema>
+                  <ref>Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.2</ref>
+                  <src>SchemaDefined2.vss</src>
+                  <previousVersion>0.0.1</previousVersion>
+                </schema>
+                -->
                 <schema>
                   <ref>Vlingo:examples:io.vlingo.examples.schemata:SchemaPublished:0.0.1</ref>
                 </schema>
