@@ -120,7 +120,9 @@ event SchemaDefined {
 }
 ```
 
-In the producer project's pom, reference the updated file as a new patch version:
+In the producer project's pom, remove the second schema from the list of
+schemas to push and reference the updated file as a new patch version.
+
 ```
 <schema>
   <ref>Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.2</ref> <1>
