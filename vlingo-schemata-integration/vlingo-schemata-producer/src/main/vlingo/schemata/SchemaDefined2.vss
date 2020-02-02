@@ -1,0 +1,5 @@
+event SchemaDefined {
+    long occurredOn
+    version v
+    type t
+}
