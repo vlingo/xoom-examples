@@ -1,20 +1,11 @@
 package com.saasovation.agilepm.infra.resource;
 
-import static io.vlingo.http.Response.Status.Created;
-import static io.vlingo.http.Response.Status.InternalServerError;
-import static io.vlingo.http.Response.Status.NotFound;
-import static io.vlingo.http.Response.Status.Ok;
-import static io.vlingo.http.resource.ResourceBuilder.get;
-import static io.vlingo.http.resource.ResourceBuilder.patch;
-import static io.vlingo.http.resource.ResourceBuilder.post;
-import static io.vlingo.http.resource.ResourceBuilder.resource;
-
 import com.saasovation.agilepm.model.Tenant;
 import com.saasovation.agilepm.model.product.Product;
 import com.saasovation.agilepm.model.product.ProductId;
 import com.saasovation.agilepm.model.product.ProductOwner;
-
 import io.vlingo.actors.AddressFactory;
+import io.vlingo.actors.GridAddressFactory;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
@@ -23,7 +14,9 @@ import io.vlingo.common.identity.IdentityGeneratorType;
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.Resource;
-import io.vlingo.lattice.grid.GridAddressFactory;
+
+import static io.vlingo.http.Response.Status.*;
+import static io.vlingo.http.resource.ResourceBuilder.*;
 
 public class ProductResource {
 
