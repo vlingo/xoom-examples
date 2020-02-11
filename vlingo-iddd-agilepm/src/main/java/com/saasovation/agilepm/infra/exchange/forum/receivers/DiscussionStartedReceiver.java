@@ -3,10 +3,10 @@ package com.saasovation.agilepm.infra.exchange.forum.receivers;
 import com.saasovation.agilepm.infra.exchange.forum.model.DiscussionStarted;
 import com.saasovation.agilepm.model.product.Product;
 import io.vlingo.actors.AddressFactory;
+import io.vlingo.actors.GridAddressFactory;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.identity.IdentityGeneratorType;
 import io.vlingo.lattice.exchange.ExchangeReceiver;
-import io.vlingo.lattice.grid.GridAddressFactory;
 
 public class DiscussionStartedReceiver implements ExchangeReceiver<DiscussionStarted> {
     private final Stage stage;
