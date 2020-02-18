@@ -18,17 +18,8 @@ public class PongerActor extends Actor implements Ponger {
 
   @Override
   public void pong(final Pinger pinger) {
-    // Many times the ping-pong will complete before
-    // the logger actor has an opportunity to process
-    // and output all its log messages. Thus, the
-    // System.out.println("pong") is used to ensure
-    // visibility. If you'd like to see the logger
-    // work you may uncomment the following line.
-    //
-    // logger().debug("pong");
-    
-    System.out.println("pong");
-    
+    logger().debug("pong");
+
     pinger.ping(self);
   }
 }

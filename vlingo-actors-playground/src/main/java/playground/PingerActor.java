@@ -24,17 +24,9 @@ public class PingerActor extends Actor implements Pinger {
   @Override
   public void ping(final Ponger ponger) {
     ++count;
-    // Many times the ping-pong will complete before
-    // the logger actor has an opportunity to process
-    // and output all its log messages. Thus, the
-    // System.out.println("pong") is used to ensure
-    // visibility. If you'd like to see the logger
-    // work you may uncomment the following line.
-    //
-    // logger().debug("ping " + count);
-    
-    System.out.println("ping");
-    
+  
+    logger().debug("ping " + count);
+  
     if (count >= 10) {
       self.stop();
       ponger.stop();
