@@ -1,15 +1,21 @@
 package io.vlingo.examples.ecommerce;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
-import io.vlingo.examples.ecommerce.infra.EventAdapter;
-import io.vlingo.examples.ecommerce.infra.MockJournalDispatcher;
 import io.vlingo.examples.ecommerce.infra.CartQueryProvider;
+import io.vlingo.examples.ecommerce.infra.EventAdapter;
 import io.vlingo.examples.ecommerce.infra.ProjectionDispatcherProvider;
-import io.vlingo.examples.ecommerce.model.*;
+import io.vlingo.examples.ecommerce.model.CartActor;
 import io.vlingo.examples.ecommerce.model.CartEvents.AllItemsRemovedEvent;
 import io.vlingo.examples.ecommerce.model.CartEvents.CreatedForUser;
 import io.vlingo.examples.ecommerce.model.CartEvents.ProductQuantityChangeEvent;
+import io.vlingo.examples.ecommerce.model.CartResource;
+import io.vlingo.examples.ecommerce.model.OrderActor;
+import io.vlingo.examples.ecommerce.model.OrderEvents;
+import io.vlingo.examples.ecommerce.model.OrderResource;
+import io.vlingo.examples.ecommerce.model.UserResource;
 import io.vlingo.http.resource.Configuration;
 import io.vlingo.http.resource.Resources;
 import io.vlingo.http.resource.Server;
@@ -23,7 +29,6 @@ import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.inmemory.InMemoryStateStoreActor;
-import org.jetbrains.annotations.NotNull;
 
 public class Bootstrap {
     private static Bootstrap instance;
@@ -93,6 +98,7 @@ public class Bootstrap {
     }
 
     @NotNull
+    @SuppressWarnings("rawtypes")
     private Dispatcher createNoOpDispatcher() {
         return new Dispatcher() {
                 public void controlWith(final DispatcherControl control) { }
