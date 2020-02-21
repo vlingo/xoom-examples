@@ -60,4 +60,9 @@ public class ProfileEntity extends StatefulEntity<Profile.ProfileState> implemen
   public Class<ProfileState> stateType() {
     return ProfileState.class;
   }
+
+  @Override
+  public void applyRelocationSnapshot(String snapshot) {
+    state(ProfileState.of(state.id));
+  }
 }

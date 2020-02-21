@@ -44,6 +44,12 @@ public class PostEntity extends EventSourced implements Post {
     return streamNameFrom(":", state.tenant.value, state.postId.value);
   }
 
+  @Override
+  public void applyRelocationSnapshot(String snapshot) {
+    String[] tenantAndPostId = streamNameSegmentsFrom(":", snapshot);
+    state = State.of(tenantAndPostId[0], tenantAndPostId[1]);
+  }
+
   static {
     EventSourced.registerConsumer(PostEntity.class, PostedToDiscussion.class, PostEntity::applyPostedToDiscussion);
     EventSourced.registerConsumer(PostEntity.class, PostModerated.class, PostEntity::applyPostModerated);

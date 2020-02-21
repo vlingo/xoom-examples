@@ -66,6 +66,12 @@ public class DiscussionEntity extends EventSourced implements Discussion {
     return streamNameFrom(":", state.tenant.value, state.discussionId.value);
   }
 
+  @Override
+  public void applyRelocationSnapshot(String snapshot) {
+    String[] tenantAndDiscussionId = streamNameSegmentsFrom(":", snapshot);
+    state = State.of(tenantAndDiscussionId[0], tenantAndDiscussionId[1]);
+  }
+
   static {
     EventSourced.registerConsumer(DiscussionEntity.class, DiscussionStarted.class, DiscussionEntity::applyDiscussionStarted);
     EventSourced.registerConsumer(DiscussionEntity.class, DiscussionClosed.class, DiscussionEntity::applyDiscussionClosed);
