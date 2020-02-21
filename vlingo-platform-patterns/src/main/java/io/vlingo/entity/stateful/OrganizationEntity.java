@@ -67,4 +67,9 @@ public class OrganizationEntity extends StatefulEntity<State> implements Organiz
   protected Class<State> stateType() {
     return State.class;
   }
+
+  @Override
+  public void applyRelocationSnapshot(String snapshot) {
+    state(State.of(snapshot));
+  }
 }

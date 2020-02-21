@@ -21,7 +21,11 @@ public class State extends StateObject implements OrganizationState {
   private String name;
   private String description;
   private boolean enabled;
-  
+
+  public static State from(final long id) {
+    return State.from(id, 0, null, null, null);
+  }
+
   public static State from(final Id organizationId) {
     return new State(organizationId);
   }

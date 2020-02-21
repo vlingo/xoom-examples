@@ -53,6 +53,11 @@ public interface Product {
     Completes<State> query();
 
     public static class State {
+
+        public static State of(String tenantId, String productId) {
+          return new State(Tenant.fromExisting(tenantId), ProductId.fromExisting(productId), null, null, null, false, null);
+        }
+
         public final String description;
         public final String discussionId;
         public final boolean hasDiscussion;
@@ -82,6 +87,7 @@ public interface Product {
         State(final Tenant tenant, final ProductId productId, final ProductOwner productOwner, final String name, final String description, final boolean hasDiscussion) {
             this(tenant, productId, productOwner, name, description, hasDiscussion, null);
         }
+
 
         State withDescription(final String description) {
             return new State(tenant, productId, productOwner, name, description, hasDiscussion, discussionId);

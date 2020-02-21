@@ -77,6 +77,12 @@ public class OrderActor extends EventSourced implements Order {
         return String.format("orderEvents:%s", state.orderId);
     }
 
+    @Override
+    public void applyRelocationSnapshot(String snapshot) {
+        String[] constAndorderId = streamNameSegmentsFrom(":", snapshot);
+        state = State.init(constAndorderId[1]);
+    }
+
     static class State {
         final String                    orderId;
         final UserId                    userId;

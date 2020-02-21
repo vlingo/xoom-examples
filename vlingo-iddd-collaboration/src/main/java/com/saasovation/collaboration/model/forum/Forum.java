@@ -90,6 +90,10 @@ public interface Forum {
       this.open = open;
     }
 
+    public static State of(String tenantId, String forumId) {
+      return new State(Tenant.fromExisting(tenantId), ForumId.fromExisting(forumId));
+    }
+
     @Override
     public String toString() {
       return "[" + tenant + " " + forumId + " " + moderator + " topic=\"" + topic + "\" description=\" " + description + " exclusiveOwner=" + exclusiveOwner + " open=" + open + "]";

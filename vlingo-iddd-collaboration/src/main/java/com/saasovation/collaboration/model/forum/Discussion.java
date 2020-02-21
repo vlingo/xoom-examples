@@ -21,6 +21,11 @@ public interface Discussion {
   void topicTo(final String topic);
 
   public final class State {
+
+    public static State of(String tenantId, String discussionId) {
+      return new State(Tenant.fromExisting(tenantId), null, DiscussionId.fromExisting(discussionId));
+    }
+
     public final Tenant tenant;
     public final ForumId forumId;
     public final DiscussionId discussionId;
