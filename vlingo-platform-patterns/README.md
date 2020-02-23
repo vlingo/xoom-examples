@@ -89,7 +89,7 @@ curl --request DELETE http://localhost:9090/admin/server/8082
 curl --request DELETE http://localhost:9090/admin/server/8083
 curl --request GET http://localhost:9090/admin
 
-curl --request DELETE http://localhost:9090/admin
+curl --request DELETE http://localhost:9090/admin/world
 # application stops
 
 ```
