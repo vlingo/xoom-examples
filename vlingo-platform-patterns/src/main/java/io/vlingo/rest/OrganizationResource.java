@@ -27,11 +27,29 @@ import io.vlingo.http.resource.Resource;
 /**
  * Example of vlingo/http Fluent API mappings.
  */
-public class OrganizationResource {
+class OrganizationResource {
   private final World world;
-  
-  public OrganizationResource(final World world) {
+  private final int port;
+
+  OrganizationResource(final World world, int port) {
     this.world = world;
+    this.port = port;
+  }
+
+  OrganizationResource(final World world) {
+    this(world,-1);
+  }
+
+
+  /**
+   * Answer the eventual {@code Response} of defining a new Organization.
+   * @return {@code Completes<Response>}
+   */
+  public Completes<Response> info() {
+
+    world.defaultLogger().debug(getClass().getSimpleName() + ": info(): " + port);
+
+    return Completes.withSuccess(Response.of(Ok, String.format("port=%s\n",port)));
   }
 
   /**
@@ -57,7 +75,7 @@ public class OrganizationResource {
     
     return Completes.withSuccess(Response.of(Created, headers(of(Location, uri)), id));
   }
-  
+
   public Completes<Response> renameOrganization(String organizationId, String name) {
     return Completes.withSuccess(Response.of(Ok, name));
   }
@@ -76,6 +94,8 @@ public class OrganizationResource {
    */
   public Resource<?> routes() {
     return resource("Organization Resource Fluent API",
+            get("/info")
+                    .handle(this::info),
             post("/organizations")
                     .handle(this::defineOrganization),
             get("/organizations/{organizationId}")
