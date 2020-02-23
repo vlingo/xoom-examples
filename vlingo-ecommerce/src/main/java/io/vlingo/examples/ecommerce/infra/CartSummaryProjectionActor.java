@@ -76,7 +76,7 @@ public class CartSummaryProjectionActor extends Actor implements Projection {
 
     BiConsumer<CartUserSummaryData, Integer> updater = (prevObject, prevVersion) -> {
       int version = (prevVersion < 0) ? INITIAL_STATE_VERSION : prevVersion+1;
-      store.write(nextData.userId, nextData, version, genericReadWriteInterest);
+      store.write(nextData.userId, nextData, version, genericReadWriteInterest, control.confirmerFor(projectable));
     };
 
     store.read(nextData.userId, CartUserSummaryData.class, genericReadWriteInterest, updater);

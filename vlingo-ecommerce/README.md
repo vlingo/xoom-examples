@@ -1,14 +1,24 @@
 
 # E-commerce Example 
 
-This example illustrates the use of event-sourced actors using e-commerce concepts.  The implementation is conceptual- there
-is no authorization/authentication, etc.
-
+This example illustrates the use of event-sourced actors using e-commerce concepts.  This is an example implementation with 
+nominal dependencies and some limitations:
+* Persistence: 
+  *  in-memory persistence stores are used
+* Tests: 
+  * End-to-end tests have been written, but not unit or more specific integration tests
+* Setup code
+  * The Bootstrap code that sets up the environment is a singleton, it is not designed to run multiple times
+  
 # API
 
-* See CartResource
-* See OrderResource
-
+* CartResource
+  * See CartResource.java:63
+  * This module defines the paths, methods and arguments for interacting with the Cart actor
+* OrderResource
+  * See OrderResource.java:66
+  * This module defines the paths, methods and arguments for interacting with the Order actor
+  
 # Build and tests
 
     mvn clean verify -pl vlingo-ecommerce
@@ -20,4 +30,4 @@ is no authorization/authentication, etc.
 
 # Issues
 * Separate command from query; create a query actor for supporting the views into the orders, carts
-* README (done)
+  * The cart summary illustrates how this could replace querying the actor
