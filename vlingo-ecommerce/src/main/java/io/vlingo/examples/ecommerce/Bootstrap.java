@@ -1,5 +1,7 @@
 package io.vlingo.examples.ecommerce;
 
+import java.util.Arrays;
+
 import org.jetbrains.annotations.NotNull;
 
 import io.vlingo.actors.World;
@@ -44,7 +46,7 @@ public class Bootstrap {
 
         final StateStore keyValueStateStore = world.stage().actorFor(StateStore.class,
                 InMemoryStateStoreActor.class,
-                createNoOpDispatcher());
+                Arrays.asList(createNoOpDispatcher()));
 
         CartQueryProvider.using(world.stage(), statefulTypeRegistry, keyValueStateStore);
         ProjectionDispatcherProvider.using(world.stage());
