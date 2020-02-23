@@ -7,6 +7,8 @@
 
 package io.vlingo.frontservice.infra.persistence;
 
+import java.util.Arrays;
+
 import io.vlingo.actors.Stage;
 import io.vlingo.frontservice.data.ProfileData;
 import io.vlingo.frontservice.data.UserData;
@@ -44,7 +46,7 @@ public class QueryModelStoreProvider {
       public void dispatch(Dispatchable d) { }
     };
 
-    final StateStore store = stage.actorFor(StateStore.class, InMemoryStateStoreActor.class, noop);
+    final StateStore store = stage.actorFor(StateStore.class, InMemoryStateStoreActor.class, Arrays.asList(noop));
 
     final Queries queries = stage.actorFor(Queries.class, QueriesActor.class, store);
 

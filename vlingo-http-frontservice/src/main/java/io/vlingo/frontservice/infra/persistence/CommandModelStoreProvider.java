@@ -7,6 +7,8 @@
 
 package io.vlingo.frontservice.infra.persistence;
 
+import java.util.Arrays;
+
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
@@ -49,7 +51,7 @@ public class CommandModelStoreProvider {
     final Protocols storeProtocols =
             stage.actorFor(
                     new Class<?>[] { StateStore.class, DispatcherControl.class },
-                    Definition.has(InMemoryStateStoreActor.class, Definition.parameters(dispatcher)));
+                    Definition.has(InMemoryStateStoreActor.class, Definition.parameters(Arrays.asList(dispatcher))));
 
     final Protocols.Two<StateStore, DispatcherControl> storeWithControl = Protocols.two(storeProtocols);
 
