@@ -37,7 +37,11 @@ class AdminResource {
 
   /**
    * Demonstrate that terminate the world will stop the actors - also the web server.
-   * @return {@code Completes<Response>}
+   *
+   * The client will get "(52) Empty reply from server" because world is
+   * terminated and terminates the {@link io.vlingo.http.resource.Dispatcher} before
+   * dispatcher has returned response to client.
+   *
    */
   public Completes<Response> terminateWorld() {
     world.terminate();
@@ -91,7 +95,7 @@ class AdminResource {
     return resource("Admin services Resource API",
             get("/admin")
                     .handle(this::serverInfo),
-            delete("/admin")
+            delete("/admin/world")
                     .handle(this::terminateWorld),
             post("/admin/gc")
                     .handle(this::gc),
