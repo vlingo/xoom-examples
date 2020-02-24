@@ -7,8 +7,12 @@
 
 package io.vlingo.backservice.infra;
 
+import io.vlingo.actors.ActorInstantiator;
+import io.vlingo.actors.ActorInstantiatorRegistry;
 import io.vlingo.actors.World;
 import io.vlingo.backservice.infra.persistence.EventJournal;
+import io.vlingo.backservice.resource.TokensSseFeedActor;
+import io.vlingo.backservice.resource.TokensSseFeedInstantiator;
 import io.vlingo.http.resource.Server;
 
 public class Bootstrap {
@@ -25,7 +29,11 @@ public class Bootstrap {
 
   private Bootstrap() {
     this.world = World.startWithDefaults("backservice");
+    
+    TokensSseFeedActor.registerInstantiator();
+    
     this.server = Server.startWith(world.stage());
+    
     EventJournal.startWith(this.world.stage());
 
     Runtime.getRuntime().addShutdownHook(new Thread() {
