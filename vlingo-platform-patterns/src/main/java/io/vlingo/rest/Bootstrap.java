@@ -75,8 +75,7 @@ class Bootstrap {
     /**
      * This server demonstrate the ability to open a port that only performs admin
      */
-    @SuppressWarnings("UnusedReturnValue")
-    private Server produceAdminServerAndAddToCache(World world, @SuppressWarnings("SameParameterValue") int port) {
+    private Server produceAdminServerAndAddToCache(World world, int port) {
       final AdminResource resource = new AdminResource(world,this);
 
       final Server server;
@@ -99,7 +98,6 @@ class Bootstrap {
      * @param port - port number must be different for each instance
      */
 
-    @SuppressWarnings("UnusedReturnValue")
     Server produceOrganizationServerAndAddToCache(World world, int port) {
       final OrganizationResource resource = new OrganizationResource(world,port);
 
