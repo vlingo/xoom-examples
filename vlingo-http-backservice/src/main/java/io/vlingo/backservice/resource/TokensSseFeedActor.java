@@ -7,7 +7,14 @@
 
 package io.vlingo.backservice.resource;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import io.vlingo.actors.Actor;
+import io.vlingo.actors.ActorInstantiatorRegistry;
 import io.vlingo.backservice.infra.persistence.EventJournal;
 import io.vlingo.backservice.infra.persistence.EventJournal.Sink;
 import io.vlingo.backservice.resource.model.PrivateTokenGernerated;
@@ -15,13 +22,11 @@ import io.vlingo.http.resource.sse.SseEvent;
 import io.vlingo.http.resource.sse.SseFeed;
 import io.vlingo.http.resource.sse.SseSubscriber;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
+  static {
+    ActorInstantiatorRegistry.register(TokensSseFeedActor.class, new TokensSseFeedInstantiator());
+  }
+  
   private final String EventType = PrivateTokenGernerated.class.getSimpleName();
   private final int RetryThreshold = 3000;
 
@@ -33,6 +38,10 @@ public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
   private final Map<String,SseSubscriber> pending;
   private final Sink sink;
   private final String streamName;
+
+  public static void registerInstantiator() {
+    ActorInstantiatorRegistry.register(TokensSseFeedActor.class, new TokensSseFeedInstantiator());
+  }
 
   public TokensSseFeedActor(final String streamName, final int feedPayload, final String feedDefaultId) {
     this.streamName = streamName;
@@ -82,7 +91,12 @@ public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
   //=====================================
 
   private int defaultId(final String feedDefaultId, final int defaultDefaultId) {
-    final int maybeDefaultId = Integer.parseInt(feedDefaultId);
+    final int maybeDefaultId;
+    try {
+      maybeDefaultId = Integer.parseInt(feedDefaultId);
+    } catch (Exception e) {
+      return defaultDefaultId;
+    }
     return maybeDefaultId <= 0 ? defaultDefaultId : maybeDefaultId;
   }
 
