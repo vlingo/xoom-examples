@@ -12,7 +12,7 @@ import java.util.Map;
 import io.vlingo.entity.Id;
 import io.vlingo.entity.OrganizationState;
 import io.vlingo.symbio.store.object.StateObject;
-import io.vlingo.symbio.store.object.MapQueryExpression.FluentMap;
+import io.vlingo.symbio.store.MapQueryExpression.FluentMap;
 
 public class State extends StateObject implements OrganizationState {
   private static final long serialVersionUID = 1L;
