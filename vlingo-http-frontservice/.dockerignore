@@ -53,7 +53,6 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 ### Maven template
-target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -79,7 +78,6 @@ buildNumber.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear

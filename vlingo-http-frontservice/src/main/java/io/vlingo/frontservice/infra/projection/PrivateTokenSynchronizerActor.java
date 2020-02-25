@@ -38,6 +38,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
 
   private static final String DataAttributesSeparator = "\n";
   private static final String IdentitiesSeparator = ":";
+  private static final String BACKSERVICE_HOST = System.getenv("BACKSERVICE_HOST");
 
   private final AddressFactory addressFactory;
   private Client client;
@@ -68,7 +69,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
             Request
               .has(GET)
               .and(URI.create("/tokens/" + state.security.publicToken))
-              .and(host("localhost"))
+              .and(host(BACKSERVICE_HOST))
               .and(RequestHeader.of(RequestHeader.XCorrelationID, correlationId)))
           .andThenConsume(response -> {
         	 tokenRequestClient.close();
@@ -87,7 +88,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
     try {
       final Client client = Client.using(Configuration.defaultedKeepAliveExceptFor(
               stage(),
-              Address.from(Host.of(System.getProperty("BACKSERVICE_HOST", "localhost")), 8082, AddressType.NONE),
+              Address.from(Host.of(BACKSERVICE_HOST), 8082, AddressType.NONE),
               new ResponseConsumer() {
                 @Override
                 public void consume(final Response response) {
@@ -108,7 +109,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
             Request
               .has(GET)
               .and(URI.create("/vaultstreams/tokens"))
-              .and(host("localhost"))
+              .and(host(BACKSERVICE_HOST))
               .and(RequestHeader.accept("text/event-stream"))
               .and(RequestHeader.correlationId(getClass().getSimpleName() + "-tokens")))
             .andThenConsume(response -> {

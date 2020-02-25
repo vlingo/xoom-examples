@@ -17,6 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <exec.mainClass>io.vlingo.frontservice.infra.Bootstrap</exec.mainClass>
   </properties>
   <build>
     <plugins>
@@ -32,7 +33,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>io.vlingo.frontservice.infra.Bootstrap</mainClass>
+          <mainClass>${exec.mainClass}</mainClass>
         </configuration>
       </plugin>
       <plugin>
@@ -53,7 +54,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>io.vlingo.frontservice.infra.Bootstrap</mainClass>
+              <mainClass>${exec.mainClass}</mainClass>
               <classpathPrefix>dependency-jars/</classpathPrefix>
             </manifest>
           </archive>
