@@ -28,7 +28,6 @@ public class CartQueryProvider {
     return instance;
   }
 
-  @SuppressWarnings("rawtypes")
   public static CartQueryProvider using(final Stage stage,
                                         final StatefulTypeRegistry registry,
                                         final StateStore stateStore) {
