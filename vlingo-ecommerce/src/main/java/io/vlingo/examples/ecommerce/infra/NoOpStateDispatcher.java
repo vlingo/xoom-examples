@@ -4,6 +4,7 @@ import io.vlingo.symbio.store.dispatch.Dispatchable;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.symbio.store.dispatch.DispatcherControl;
 
+@SuppressWarnings("rawtypes")
 public class NoOpStateDispatcher implements Dispatcher {
 
     @Override
