@@ -25,6 +25,7 @@ public class CartActor extends EventSourced implements Cart {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public String snapshot() {
         if (nextVersion() % SNAPSHOT_ONE_EVERY_N_TIMES == 0) {
             return this.state.toString();

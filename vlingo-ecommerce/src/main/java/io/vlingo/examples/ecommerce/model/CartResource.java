@@ -1,26 +1,36 @@
 package io.vlingo.examples.ecommerce.model;
 
-import io.vlingo.actors.*;
-import io.vlingo.common.Completes;
-import io.vlingo.examples.ecommerce.infra.CartQueryProvider;
-import io.vlingo.examples.ecommerce.model.Cart.CartItem;
-import io.vlingo.http.Response;
-import io.vlingo.http.ResponseHeader;
-import io.vlingo.http.resource.ObjectResponse;
-import io.vlingo.http.resource.Resource;
+import static io.vlingo.http.Response.Status.Created;
+import static io.vlingo.http.Response.Status.NotFound;
+import static io.vlingo.http.Response.Status.Ok;
+import static io.vlingo.http.ResponseHeader.Location;
+import static io.vlingo.http.ResponseHeader.headers;
+import static io.vlingo.http.ResponseHeader.of;
+import static io.vlingo.http.resource.ResourceBuilder.get;
+import static io.vlingo.http.resource.ResourceBuilder.patch;
+import static io.vlingo.http.resource.ResourceBuilder.post;
+import static io.vlingo.http.resource.ResourceBuilder.resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.vlingo.http.Response.Status.*;
-import static io.vlingo.http.ResponseHeader.*;
-import static io.vlingo.http.resource.ResourceBuilder.*;
+import io.vlingo.actors.Address;
+import io.vlingo.actors.AddressFactory;
+import io.vlingo.actors.Definition;
+import io.vlingo.actors.Stage;
+import io.vlingo.common.Completes;
+import io.vlingo.examples.ecommerce.model.Cart.CartItem;
+import io.vlingo.http.Header.Headers;
+import io.vlingo.http.ResponseHeader;
+import io.vlingo.http.resource.ObjectResponse;
+import io.vlingo.http.resource.Resource;
 
 public class CartResource {
     public static final String ROOT_URL = "/cart";
 
     private final AddressFactory addressFactory;
     private final Stage stage;
+    @SuppressWarnings("unused")
     private final CartQuery cartQuery;
 
     public CartResource(final Stage stage, final AddressFactory addressFactory, CartQuery cartQuery) {

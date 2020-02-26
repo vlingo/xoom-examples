@@ -1,18 +1,26 @@
 package io.vlingo.examples.ecommerce.model;
 
-import io.vlingo.actors.*;
-import io.vlingo.common.Completes;
-import io.vlingo.http.Response;
-import io.vlingo.http.resource.ObjectResponse;
-import io.vlingo.http.resource.Resource;
+import static io.vlingo.http.Response.Status.Created;
+import static io.vlingo.http.Response.Status.NotFound;
+import static io.vlingo.http.Response.Status.Ok;
+import static io.vlingo.http.ResponseHeader.Location;
+import static io.vlingo.http.ResponseHeader.headers;
+import static io.vlingo.http.ResponseHeader.of;
+import static io.vlingo.http.resource.ResourceBuilder.get;
+import static io.vlingo.http.resource.ResourceBuilder.post;
+import static io.vlingo.http.resource.ResourceBuilder.resource;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.vlingo.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.http.Response.Status.*;
-import static io.vlingo.http.ResponseHeader.*;
-import static io.vlingo.http.resource.ResourceBuilder.*;
+import io.vlingo.actors.Address;
+import io.vlingo.actors.AddressFactory;
+import io.vlingo.actors.Definition;
+import io.vlingo.actors.Stage;
+import io.vlingo.actors.World;
+import io.vlingo.common.Completes;
+import io.vlingo.http.resource.ObjectResponse;
+import io.vlingo.http.resource.Resource;
 
 public class OrderResource {
     private static final String ROOT_URL = "/order";
