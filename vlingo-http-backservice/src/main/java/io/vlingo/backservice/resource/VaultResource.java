@@ -21,6 +21,10 @@ public class VaultResource extends ResourceHandler {
   public VaultResource() {
   }
 
+  /**
+   * Name of this method must be provided in src/main/resources/vlingo-http.properties as key=resource.name.vault
+   * @param publicToken must be provided in curl --request GET /tokens/{publicToken}
+   */
   public void generatePrivateToken(final String publicToken) {
     final String id = context().request().headerValueOr(RequestHeader.XCorrelationID, "");
     logger().debug("GEN TOKEN FOR: " + publicToken + " WITH ID: " + id);
