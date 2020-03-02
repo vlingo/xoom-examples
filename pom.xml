@@ -72,6 +72,7 @@
     <module>vlingo-iddd-collaboration</module>
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-simgui-mediator</module>
-    <module>vlingo-platform-patterns</module>
+    <module>vlingo-platform-patterns</module>    
+    <module>vlingo-xoom-examples</module>
   </modules>
 </project>
