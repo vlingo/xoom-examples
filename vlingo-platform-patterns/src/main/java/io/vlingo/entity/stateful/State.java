@@ -17,6 +17,10 @@ public class State implements OrganizationState {
   private String description;
   private final boolean enabled;
 
+  public static State of(final String organizationId) {
+    return new State(Id.from(organizationId));
+  }
+
   public static State from(final Id organizationId) {
     return new State(organizationId);
   }

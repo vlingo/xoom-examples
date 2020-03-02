@@ -8,11 +8,7 @@
 package io.vlingo.entity.object;
 
 import io.vlingo.common.Completes;
-import io.vlingo.entity.Events.OrganizationDefined;
-import io.vlingo.entity.Events.OrganizationDescribed;
-import io.vlingo.entity.Events.OrganizationDisabled;
-import io.vlingo.entity.Events.OrganizationEnabled;
-import io.vlingo.entity.Events.OrganizationRenamed;
+import io.vlingo.entity.Events.*;
 import io.vlingo.entity.Id;
 import io.vlingo.entity.Organization;
 import io.vlingo.entity.OrganizationState;
@@ -78,5 +74,10 @@ public class OrganizationEntity extends ObjectEntity<State> implements Organizat
   @Override
   protected Class<State> stateObjectType() {
     return State.class;
+  }
+
+  @Override
+  public void applyRelocationSnapshot(String snapshot) {
+    stateObject(State.from(Long.parseLong(snapshot)));
   }
 }
