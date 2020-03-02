@@ -1,0 +1,70 @@
+version: "3"
+
+services:
+  order-service:
+    image: "dambrosio/vlingo-order-service:latest"
+    container_name: vlingo-order-service
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_PORT=8080
+      - ORDER_SERVICE_DATABASE_URL=jdbc:postgresql://vlingo-order-service-database:5432/postgres
+      - MESSAGING_URI=amqp://messaging:5672
+    depends_on:
+      - order-database
+      - messaging
+    networks:
+      - microservice
+
+  stock-service:
+    image: "dambrosio/vlingo-stock-service:latest"
+    container_name: vlingo-stock-service
+    expose:
+      - "8082"
+    ports:
+      - "8082:8082"
+    environment:
+      - SERVER_PORT=8082
+      - STOCK_SERVICE_DATABASE_URL=jdbc:postgresql://vlingo-stock-service-database:5432/postgres
+      - MESSAGING_URI=amqp://messaging:5672
+    depends_on:
+      - order-service
+      - stock-database
+    networks:
+      - microservice
+    restart: always
+
+  order-database:
+    image: "postgres:9.6"
+    container_name: vlingo-order-service-database
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - microservice
+    ports:
+      - 5432:5432
+
+  stock-database:
+    image: "postgres:9.6"
+    container_name: vlingo-stock-service-database
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - microservice
+    ports:
+      - 5433:5432
+
+  messaging:
+    image: rabbitmq:3.7.11-management
+    container_name: vlingo-messaging
+    networks:
+      - microservice
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+networks:
+  microservice:
+    driver: bridge
