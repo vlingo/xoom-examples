@@ -93,6 +93,12 @@ public class ForumEntity extends EventSourced implements Forum {
     return streamNameFrom(":", state.tenant.value, state.forumId.value);
   }
 
+  @Override
+  public void applyRelocationSnapshot(String snapshot) {
+    String[] tenantAndForumId = streamNameSegmentsFrom(":", snapshot);
+    state = State.of(tenantAndForumId[0], tenantAndForumId[1]);
+  }
+
   static {
     EventSourced.registerConsumer(ForumEntity.class, ForumStarted.class, ForumEntity::applyForumStarted);
     EventSourced.registerConsumer(ForumEntity.class, ForumModeratorAssigned.class, ForumEntity::applyForumModeratorAssigned);

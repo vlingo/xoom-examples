@@ -59,6 +59,11 @@ public class OrganizationEntity extends EventSourced implements Organization {
     return state.organizationId.value;
   }
 
+  @Override
+  public void applyRelocationSnapshot(String snapshot) {
+    state = State.from(Id.from(snapshot));
+  }
+
   static {
     EventSourced.registerConsumer(OrganizationEntity.class, OrganizationDefined.class, OrganizationEntity::applyOrganizationDefined);
     EventSourced.registerConsumer(OrganizationEntity.class, OrganizationEnabled.class, OrganizationEntity::applyOrganizationEnabled);

@@ -48,6 +48,10 @@ public interface Post {
       this.moderator = moderator;
     }
 
+    public static State of(String tenantId, String postId) {
+      return new State(Tenant.fromExisting(tenantId), null, null, PostId.fromExisting(postId));
+    }
+
     State withModeratedContent(final Moderator moderator, final String subject, final String bodyText) {
       return new State(tenant, forumId, discussionId, postId, author, moderator, subject, bodyText);
     }

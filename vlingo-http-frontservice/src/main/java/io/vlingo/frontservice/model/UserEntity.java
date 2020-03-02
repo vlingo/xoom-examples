@@ -69,4 +69,9 @@ public class UserEntity extends StatefulEntity<User.UserState> implements User {
     }
     return Tuple3.from(state, Collections.emptyList(), "User:new");
   }
+
+  @Override
+  public void applyRelocationSnapshot(String snapshot) {
+    state(UserState.of(snapshot));
+  }
 }
