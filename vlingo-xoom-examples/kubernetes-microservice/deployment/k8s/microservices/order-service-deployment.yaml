@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: order-service
+  template:
+    metadata:
+      labels:
+        name: order-service
+    spec:
+      containers:
+      - env:
+        - name: SERVER_PORT
+          value: "8080"
+        - name: ORDER_SERVICE_DATABASE_URL
+          value: "jdbc:postgresql://order-database-service:5432/postgres"
+        - name: MESSAGING_URI
+          value: "amqp://guest:guest@rabbitmq-service:5672"
+        image: dambrosio/vlingo-order-service:latest
+        name: order-service
+        ports:
+        - containerPort: 8080
+      restartPolicy: Always

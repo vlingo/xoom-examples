@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  event-sourcing-example:
+    image: "vlingo/event-sourcing-example:latest"
+    ports:
+      - 8080:8080
+    links:
+      - postgres
+    environment:
+      - DATASOURCES_DEFAULT_URL=jdbc:postgresql://postgres:5432/
+    networks:
+      - microservice
+  postgres:
+    image: "postgres:11.5-alpine"
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=theSecretPassword
+    networks:
+      - microservice
+networks:
+  microservice:

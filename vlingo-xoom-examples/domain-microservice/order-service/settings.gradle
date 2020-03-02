@@ -1,0 +1,2 @@
+includeBuild "account-service"
+includeBuild "order-service"

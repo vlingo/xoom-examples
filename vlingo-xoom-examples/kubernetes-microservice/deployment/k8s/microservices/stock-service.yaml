@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-service
+spec:
+  ports:
+    - port: 8081
+  selector:
+    app: stock-service
+  type: LoadBalancer
