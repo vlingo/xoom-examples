@@ -10,7 +10,7 @@
     <parent>
         <groupId>io.vlingo</groupId>
         <artifactId>vlingo-xoom-examples</artifactId>
-        <version>1.0.0-RC1</version>
+        <version>1.2.1</version>
     </parent>
 
     <properties>

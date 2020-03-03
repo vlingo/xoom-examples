@@ -2,12 +2,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>heroku-microservice</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.2.1</version>
 
   <parent>
     <groupId>io.vlingo</groupId>
     <artifactId>vlingo-xoom-examples</artifactId>
-    <version>1.0.0-RC1</version>
+    <version>1.2.1</version>
   </parent>
 
   <properties>
