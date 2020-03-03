@@ -10,20 +10,16 @@ http-backend is a "large" backend system that the client makes reactive http com
 can send a public token and get a pivate token back.
 This is done by send+listen for response via [SSE](https://en.wikipedia.org/wiki/Server-sent_events). 
 
-### vaultstreams listening - and keep listening
+## Listening to vaultstreams - and keep listening
 
 * start listening to service http://localhost:8082/vaultstreams/tokens - and keep listening
+* `curl .. &` - set request into background
 
 ```
 # vaultstreams listening - and keep listening
 curl --request GET \
     --header "X-Correlation-ID:PrivateTokenSynchronizerActor-tokens" --header "Accept:text/event-stream" \
-    http://localhost:8082/vaultstreams/tokens
-
-# stop listening - note id=1
-curl --request DELETE \
-    --header "X-Correlation-ID:PrivateTokenSynchronizerActor-tokens" --header "Accept:text/event-stream" \
-    http://localhost:8082/vaultstreams/tokens/1
+    http://localhost:8082/vaultstreams/tokens &
 
 ```
 
@@ -39,7 +35,7 @@ data: $s0$e0801$8esMZDbUbnKB6pjgMRWH8A==$fcb1brZpgrt3W3AYos4Zd6bmPWiWNWYdO0vebC4
 ```  
 
 
-### GeneratePrivateToken
+## GeneratePrivateToken
 
 * GeneratePrivateToken is asked to service by http://localhost:8082/tokens/{publicToken}
 * The correlation Id is SSE back the `vaultstream`
@@ -47,10 +43,22 @@ data: $s0$e0801$8esMZDbUbnKB6pjgMRWH8A==$fcb1brZpgrt3W3AYos4Zd6bmPWiWNWYdO0vebC4
 ```
 curl --request GET \
     --header 'X-Correlation-ID:444:001' \
-    'http://localhost:8082/tokens/jfhf90r8re978er88e,ndf!--88dh*'
+    'http://localhost:8082/tokens/jfhf90r8re978er88e,ndf!--88dh*' &
 
 ```
 
+## Stop vaultstreams listening
+
+* stop listening by using the same resource + 'id' as the listening was started with
+
+```
+
+# stop listening - note id=1
+curl --request DELETE \
+    --header "X-Correlation-ID:PrivateTokenSynchronizerActor-tokens" --header "Accept:text/event-stream" \
+    http://localhost:8082/vaultstreams/tokens/1
+
+```
 
 
 ## Usage of server components
