@@ -2,12 +2,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>heroku-microservice</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.6-SNAPSHOT</version>
 
   <parent>
     <groupId>io.vlingo</groupId>
     <artifactId>vlingo-xoom-examples</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.6-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -104,7 +104,7 @@
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>${exec.mainClass}</mainClass>
                 </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                 <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
                   <resource>.SF</resource>
                 </transformer>
@@ -127,7 +127,7 @@
           <executable>java</executable>
           <arguments>
             <argument>-classpath</argument>
-            <classpath/>
+            <classpath />
             <argument>-noverify</argument>
             <argument>-XX:TieredStopAtLevel=1</argument>
             <argument>-Dcom.sun.management.jmxremote</argument>

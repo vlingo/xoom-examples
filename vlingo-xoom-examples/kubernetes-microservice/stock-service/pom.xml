@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>stock-service</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.6-SNAPSHOT</version>
 
   <parent>
     <groupId>io.vlingo</groupId>
     <artifactId>kubernetes-microservice</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.6-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -125,7 +125,7 @@
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>${exec.mainClass}</mainClass>
                 </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                 <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
                   <resource>.SF</resource>
                 </transformer>
@@ -148,7 +148,7 @@
           <executable>java</executable>
           <arguments>
             <argument>-classpath</argument>
-            <classpath/>
+            <classpath />
             <argument>-noverify</argument>
             <argument>-XX:TieredStopAtLevel=1</argument>
             <argument>-Dcom.sun.management.jmxremote</argument>
