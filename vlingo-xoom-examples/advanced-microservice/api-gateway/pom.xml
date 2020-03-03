@@ -10,7 +10,7 @@
     </parent>
     <groupId>io.vlingo</groupId>
     <artifactId>api-gateway</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.2.1</version>
     <name>demo</name>
     <description>Demo project for Spring Boot</description>
 
