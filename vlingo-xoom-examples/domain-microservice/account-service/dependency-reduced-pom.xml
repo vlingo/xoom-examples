@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>domain-microservice</artifactId>
+    <artifactId>vlingo-xoom-examples</artifactId>
     <groupId>io.vlingo</groupId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>1.2.6-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>account-service</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.2.6-SNAPSHOT</version>
   <build>
     <pluginManagement>
       <plugins>
@@ -194,15 +194,14 @@
     </dependencies>
   </dependencyManagement>
   <properties>
-    <micronaut.version>1.2.6</micronaut.version>
-    <maven.compiler.target>${jdk.version}</maven.compiler.target>
-    <exec.mainClass>io.examples.AccountApplication</exec.mainClass>
-    <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-    <maven.compiler.source>${jdk.version}</maven.compiler.source>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jdk.version>1.8</jdk.version>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+    <jdk.version>1.8</jdk.version>
+    <exec.mainClass>io.examples.AccountApplication</exec.mainClass>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>${jdk.version}</maven.compiler.source>
+    <maven.compiler.target>${jdk.version}</maven.compiler.target>
+    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
   </properties>
 </project>
 
