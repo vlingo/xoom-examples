@@ -41,6 +41,10 @@ public interface User {
   public static final class UserState {
     private static final AtomicInteger NextId = new AtomicInteger(0);
 
+    public static UserState of(String id) {
+      return new UserState(id, null, null, null);
+    }
+
     public final String id;
     public final Name name;
     public final Contact contact;

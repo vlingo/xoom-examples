@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "messaging.serviceAccountName" . }}
+  labels:
+    {{- include "messaging.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+  selector:
+    {{- include "messaging.selectorLabels" . | nindent 4 }}

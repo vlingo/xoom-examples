@@ -82,7 +82,13 @@ public class ProductEntity extends EventSourced implements Product {
 
     @Override
     protected String streamName() {
-        return state.tenant.id + ":" + state.productId.id;
+        return streamNameFrom(":", state.tenant.id, state.productId.id);
+    }
+
+    @Override
+    public void applyRelocationSnapshot(String snapshot) {
+        String[] tenantAndProductId = streamNameSegmentsFrom(":", snapshot);
+        state = State.of(tenantAndProductId[0], tenantAndProductId[1]);
     }
 
     private void applyProductDefined(final ProductDefined e) {

@@ -1,0 +1,93 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.hibernate:hibernate-gradle-plugin:5.4.3.Final"
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+    }
+}
+
+plugins {
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "net.ltgt.apt-eclipse" version "0.21"
+}
+
+apply plugin: 'java'
+apply plugin: 'org.hibernate.orm'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'io.examples'
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url "https://jcenter.bintray.com" }
+    mavenLocal()
+}
+
+configurations {
+    developmentOnly
+}
+
+dependencies {
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-validation"
+    annotationProcessor 'io.micronaut.data:micronaut-data-processor:1.0.0.M4'
+
+    implementation "io.micronaut:micronaut-http-client"
+    implementation "io.micronaut:micronaut-management"
+    implementation "io.micronaut:micronaut-inject"
+    implementation "io.micronaut:micronaut-validation"
+    implementation "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut:micronaut-discovery-client"
+    implementation "javax.annotation:javax.annotation-api"
+    implementation "io.vlingo:vlingo-xoom-server:$xoomVersion"
+
+    compile 'io.micronaut.data:micronaut-data-hibernate-jpa:1.0.0.M4'
+
+    runtime "io.micronaut.configuration:micronaut-jdbc-hikari"
+    runtime "ch.qos.logback:logback-classic:1.2.3"
+    runtime "com.h2database:h2"
+
+    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "io.micronaut.test:micronaut-test-junit5"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+}
+
+test.classpath += configurations.developmentOnly
+
+mainClassName = "io.examples.AccountApplication"
+applicationName = "$projectName"
+
+// use JUnit 5 platform
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+run.classpath += configurations.developmentOnly
+run.jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    options.compilerArgs.add('-parameters')
+}
+
+apply plugin: 'com.palantir.docker'
+
+docker {
+    copySpec.from(tasks.shadowJar.outputs).into("dependency")
+    dockerfile project.file('Dockerfile')
+    name "vlingo/${property("projectName")}:domain-microservice"
+}

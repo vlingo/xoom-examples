@@ -23,6 +23,11 @@ public interface Profile {
   }
 
   public static final class ProfileState {
+
+    public static ProfileState of(String id) {
+      return new ProfileState(id, null, null, null);
+    }
+
     public final String id;
     public final String linkedInAccount;
     public final String twitterAccount;
