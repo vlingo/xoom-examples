@@ -10,7 +10,7 @@ package io.vlingo.backservice.resource;
 import static io.vlingo.http.Response.Status.Ok;
 
 import io.vlingo.backservice.infra.persistence.EventJournal;
-import io.vlingo.backservice.resource.model.PrivateTokenGernerated;
+import io.vlingo.backservice.resource.model.PrivateTokenGenerated;
 import io.vlingo.common.crypto.SCryptHasher;
 import io.vlingo.http.RequestHeader;
 import io.vlingo.http.Response;
@@ -31,6 +31,6 @@ public class VaultResource extends ResourceHandler {
     completes().with(Response.of(Ok).include(ResponseHeader.of(ResponseHeader.XCorrelationID, id)));
     final SCryptHasher hasher = new SCryptHasher(16384, 8, 1);
     final String privateToken = hasher.hash(publicToken);
-    EventJournal.provider().instance().append(new PrivateTokenGernerated(id, privateToken));
+    EventJournal.provider().instance().append(new PrivateTokenGenerated(id, privateToken));
   }
 }
