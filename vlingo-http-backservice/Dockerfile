@@ -1,14 +1,4 @@
-FROM maven:alpine as build
-
-RUN mkdir /application
-WORKDIR /application
-COPY pom.xml .
-RUN mvn install
-COPY . .
-RUN mvn package
-
-FROM openjdk:alpine
-COPY --from=build /application/target/*.jar ./
-
+FROM adoptopenjdk/openjdk11-openj9:jdk-11.0.1.13-alpine-slim
+COPY target/vlingo-http-backservice-withdeps.jar http-backservice.jar
 EXPOSE 8082
-CMD ["java", "-jar", "vlingo-http-backservice-0.2.0-jar-with-dependencies.jar"]
+CMD java -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar http-backservice.jar

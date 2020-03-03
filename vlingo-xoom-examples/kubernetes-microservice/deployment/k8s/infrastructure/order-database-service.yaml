@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: order-postgres
+  name: order-database-service
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: order-app
+    component: order-postgres

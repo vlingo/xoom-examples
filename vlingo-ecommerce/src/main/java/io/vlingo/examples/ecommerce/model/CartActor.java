@@ -25,6 +25,11 @@ public class CartActor extends EventSourced implements Cart {
     }
 
     @Override
+    public void applyRelocationSnapshot(String snapshot) {
+        state = State.create(snapshot.substring(snapshot.indexOf(':')));
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public String snapshot() {
         if (nextVersion() % SNAPSHOT_ONE_EVERY_N_TIMES == 0) {
