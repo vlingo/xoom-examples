@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.examples</groupId>
     <artifactId>account-service</artifactId>
-    <version>1.2.6-SNAPSHOT</version>
+    <version>1.2.6</version>
 
     <parent>
         <groupId>io.vlingo</groupId>
-        <artifactId>vlingo-xoom-examples</artifactId>
-        <version>1.2.6-SNAPSHOT</version>
+        <artifactId>domain-microservice</artifactId>
+        <version>1.2.6</version>
     </parent>
 
     <properties>

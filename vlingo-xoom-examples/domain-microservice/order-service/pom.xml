@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.examples</groupId>
-    <artifactId>domain-order-service</artifactId>
-    <version>1.2.6-SNAPSHOT</version>
+    <artifactId>order-service</artifactId>
+    <version>1.2.6</version>
 
     <parent>
         <groupId>io.vlingo</groupId>
-        <artifactId>vlingo-xoom-examples</artifactId>
-        <version>1.2.6-SNAPSHOT</version>
+        <artifactId>domain-microservice</artifactId>
+        <version>1.2.6</version>
     </parent>
 
     <properties>
