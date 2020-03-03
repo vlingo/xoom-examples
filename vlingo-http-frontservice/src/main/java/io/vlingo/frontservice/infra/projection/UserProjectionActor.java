@@ -48,14 +48,14 @@ public class UserProjectionActor extends Actor
 
     switch (projectable.becauseOf()[0]) {
       case "User:new": {
-        store.write(state.id, current, 1, writeInterest, control.confirmerFor(projectable));
+        store.write(state.id, current, 1, writeInterest, ProjectionControl.confirmerFor(projectable, control));
         break;
       }
       case "User:contact": {
         final Consumer<UserData> updater = previous -> {
           updateWith(previous, current, state.version,
             (writeData) -> UserData.from(writeData.id, writeData.nameData, current.contactData, writeData.publicSecurityToken),
-            control.confirmerFor(projectable)
+            ProjectionControl.confirmerFor(projectable, control)
           );
         };
         store.read(current.id, UserData.class, readInterest, updater);
@@ -65,7 +65,7 @@ public class UserProjectionActor extends Actor
         final Consumer<UserData> updater = previous -> {
           updateWith(previous, current, state.version,
             (writeData) -> UserData.from(writeData.id, current.nameData, writeData.contactData, writeData.publicSecurityToken),
-            control.confirmerFor(projectable)
+            ProjectionControl.confirmerFor(projectable, control)
           );
         };
         store.read(current.id, UserData.class, readInterest, updater);

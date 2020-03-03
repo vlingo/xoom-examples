@@ -63,8 +63,8 @@ public class OrganizationEntityTest {
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
-    GridNodeBootstrap.reset();
-    grid = Grid.start("stateful-entity", "node1");
+    GridNodeBootstrap.boot("node1");
+    grid = Grid.startWith("stateful-entity", "node1");
     stateStore = grid.actorFor(StateStore.class, InMemoryStateStoreActor.class, new MockDispatcher());
     registry = new StatefulTypeRegistry(grid.world());
 

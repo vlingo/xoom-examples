@@ -49,7 +49,7 @@ public class ProfileProjectionActor extends Actor
 
     switch (projectable.becauseOf()[0]) {
     case "Profile:new": {
-      store.write(state.id, data, 1, writeInterest, control.confirmerFor(projectable));
+      store.write(state.id, data, 1, writeInterest, ProjectionControl.confirmerFor(projectable, control));
       break;
     }
     case "Profile:twitter":

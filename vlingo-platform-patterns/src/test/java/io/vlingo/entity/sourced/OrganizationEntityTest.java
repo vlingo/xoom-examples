@@ -63,8 +63,8 @@ public class OrganizationEntityTest {
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
-    GridNodeBootstrap.reset();
-    grid = Grid.start("sourced-entity", "node1");
+    GridNodeBootstrap.boot("node1");
+    grid = Grid.startWith("sourced-entity", "node1");
     journal = grid.actorFor(Journal.class, InMemoryJournalActor.class, new MockDispatcher());
     registry = new SourcedTypeRegistry(grid.world());
 
