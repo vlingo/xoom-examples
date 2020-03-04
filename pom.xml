@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-examples</artifactId>
-  <version>1.2.6</version>
+  <version>1.2.7</version>
   <packaging>pom</packaging>
   <name>vlingo-examples</name>
   <url>http://maven.apache.org</url>
@@ -12,13 +12,11 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <kotlin.version>1.3.31</kotlin.version>
   </properties>
-
   <scm>
     <connection>scm:git:git://github.com/vlingo/vlingo-examples.git</connection>
     <developerConnection>scm:git:ssh://github.com/vlingo/vlingo-examples.git</developerConnection>
     <url>scm:git:ssh://github.com/vlingo/vlingo-examples.git</url>
   </scm>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -79,7 +77,7 @@
     <module>vlingo-iddd-collaboration</module>
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-simgui-mediator</module>
-    <module>vlingo-platform-patterns</module>    
+    <module>vlingo-platform-patterns</module>
     <module>vlingo-xoom-examples</module>
   </modules>
 </project>

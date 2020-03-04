@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-platform-patterns</artifactId>
-  <version>1.2.6</version>
+  <version>1.2.7</version>
   <name>vlingo-platform-patterns</name>
   <description>Example of common patterns when using the vlingo/platform.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
