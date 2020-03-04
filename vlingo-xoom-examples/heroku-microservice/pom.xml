@@ -1,15 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>heroku-microservice</artifactId>
-  <version>1.2.6</version>
-
   <parent>
     <groupId>io.vlingo</groupId>
     <artifactId>vlingo-xoom-examples</artifactId>
-    <version>1.2.6</version>
+    <version>1.2.7</version>
   </parent>
-
   <properties>
     <micronaut.version>1.2.10</micronaut.version>
     <jdk.version>1.8</jdk.version>
@@ -42,7 +39,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom-server</artifactId>
-      <version>${vlingo.xoom.version}</version>
+      <version>1.2.7</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -104,7 +101,7 @@
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>${exec.mainClass}</mainClass>
                 </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
                   <resource>.SF</resource>
                 </transformer>
@@ -127,7 +124,7 @@
           <executable>java</executable>
           <arguments>
             <argument>-classpath</argument>
-            <classpath />
+            <classpath/>
             <argument>-noverify</argument>
             <argument>-XX:TieredStopAtLevel=1</argument>
             <argument>-Dcom.sun.management.jmxremote</argument>
@@ -171,16 +168,16 @@
               <arg>-parameters</arg>
             </compilerArgs>
             <annotationProcessorPaths>
-                  <path>
-                    <groupId>io.micronaut</groupId>
-                    <artifactId>micronaut-inject-java</artifactId>
-                    <version>1.2.10</version>
-                  </path>
-                  <path>
-                    <groupId>io.micronaut</groupId>
-                    <artifactId>micronaut-validation</artifactId>
-                    <version>1.2.10</version>
-                  </path>
+              <path>
+                <groupId>io.micronaut</groupId>
+                <artifactId>micronaut-inject-java</artifactId>
+                <version>1.2.10</version>
+              </path>
+              <path>
+                <groupId>io.micronaut</groupId>
+                <artifactId>micronaut-validation</artifactId>
+                <version>1.2.10</version>
+              </path>
             </annotationProcessorPaths>
           </configuration>
           <executions>
