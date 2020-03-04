@@ -68,8 +68,8 @@
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-xoom-data-jpa</artifactId>
-      <version>1.2.0</version>
+      <artifactId>vlingo-xoom-data</artifactId>
+      <version>1.2.7</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
