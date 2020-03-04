@@ -18,3 +18,4 @@ build/
 out/
 /.recommenders/
 *.jtl
+**/.~lock.*
