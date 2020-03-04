@@ -38,7 +38,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
 
   private static final String DataAttributesSeparator = "\n";
   private static final String IdentitiesSeparator = ":";
-  private static final String BACKSERVICE_HOST = System.getenv("BACKSERVICE_HOST");
+  private static final String BACKSERVICE_HOST = System.getenv("BACKSERVICE_HOST")!=null?System.getenv("BACKSERVICE_HOST"):"localhost";
 
   private final AddressFactory addressFactory;
   private Client client;

@@ -28,10 +28,10 @@ public class EventJournalActor extends Actor implements EventJournal {
   @Override
   public void streamTo(final Sink sink, final Object referencing, final int startId, final int limit) {
     final int lowestId = startId - 1;
-    final int highestId = lowestId + limit - 1;
+    final int highestId = Math.max(1,lowestId + limit - 1); // We must be willing to send at least one
     final List<Object> substream = new ArrayList<>(limit);
     final int totalEvents = events.size();
-    for (int index = lowestId; index <= highestId && index < totalEvents; ++index) {
+    for (int index = lowestId; index <= highestId && (index < totalEvents); ++index) {
       logger().debug("STREAMING: " + index);
       substream.add(events.get(index));
     }
