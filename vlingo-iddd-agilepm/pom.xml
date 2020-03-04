@@ -13,6 +13,7 @@
       <url>https://mozilla.org/MPL/2.0/</url>
     </license>
   </licenses>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -21,6 +22,14 @@
     <kotlin.code.style>official</kotlin.code.style>
     <junit.version>4.12</junit.version>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>jcenter.bintray.com</id>
+      <url>https://jcenter.bintray.com</url>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>

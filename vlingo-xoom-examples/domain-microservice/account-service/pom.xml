@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.vlingo</groupId>
     <artifactId>domain-microservice</artifactId>
-    <version>1.2.6</version>
+    <version>1.2.7</version>
   </parent>
   <properties>
     <jdk.version>1.8</jdk.version>
