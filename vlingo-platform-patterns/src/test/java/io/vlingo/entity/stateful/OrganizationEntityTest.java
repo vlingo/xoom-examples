@@ -8,6 +8,7 @@
 package io.vlingo.entity.stateful;
 
 import io.vlingo.actors.Grid;
+import io.vlingo.cluster.model.Properties;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -63,8 +64,8 @@ public class OrganizationEntityTest {
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
-    GridNodeBootstrap.boot("node1");
-    grid = Grid.startWith("stateful-entity", "node1");
+    GridNodeBootstrap.boot("node1", Properties.open());
+    grid = Grid.start("stateful-entity", "node1");
     stateStore = grid.actorFor(StateStore.class, InMemoryStateStoreActor.class, new MockDispatcher());
     registry = new StatefulTypeRegistry(grid.world());
 
