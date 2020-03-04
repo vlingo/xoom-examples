@@ -106,6 +106,10 @@ See: [http-server](docs/http-backend.pdf) - for sequence diagram to get a little
 
 ### Example Improvements
 
+The example gives a good understanding of SSE. 
+
+It is an early example. Therefore there there are room for improvement. 
+
 * The definition of Server is relative specific coded. Might need a refactoring - so the statements that 
 defines `Server` should specify the resources that is used a little more explicitly.
 
