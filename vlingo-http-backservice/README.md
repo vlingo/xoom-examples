@@ -81,7 +81,7 @@ As you might notice - the `curl` command does not return. This is because the se
   }
 
 ```
-The **.return()** in the above code makes the client continue and read the stream repeatably.
+The **.repeat()** in the above code makes the client continue and read the stream repeatably.
 
 
 ## SseStreamResourceDispatcher got no context.completes()
