@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-hike-backend</artifactId>
-  <version>1.2.6</version>
+  <version>1.2.7</version>
   <name>vlingo-hike-backend</name>
   <description>IoT example.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
