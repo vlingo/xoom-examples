@@ -7,12 +7,21 @@
 
 package io.vlingo.backservice.resource.model;
 
-public class PrivateTokenGernerated {
+public class PrivateTokenGenerated {
   public final String id;
   public final String hash;
 
-  public PrivateTokenGernerated(final String id, final String hash) {
+  public PrivateTokenGenerated(final String id, final String hash) {
     this.id = id;
     this.hash = hash;
+  }
+
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder("PrivateTokenGenerated{");
+    sb.append("id='").append(id).append('\'');
+    sb.append(", hash='").append(hash).append('\'');
+    sb.append('}');
+    return sb.toString();
   }
 }

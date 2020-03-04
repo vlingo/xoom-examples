@@ -17,7 +17,7 @@ import io.vlingo.actors.Actor;
 import io.vlingo.actors.ActorInstantiatorRegistry;
 import io.vlingo.backservice.infra.persistence.EventJournal;
 import io.vlingo.backservice.infra.persistence.EventJournal.Sink;
-import io.vlingo.backservice.resource.model.PrivateTokenGernerated;
+import io.vlingo.backservice.resource.model.PrivateTokenGenerated;
 import io.vlingo.http.resource.sse.SseEvent;
 import io.vlingo.http.resource.sse.SseFeed;
 import io.vlingo.http.resource.sse.SseSubscriber;
@@ -27,7 +27,7 @@ public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
     ActorInstantiatorRegistry.register(TokensSseFeedActor.class, new TokensSseFeedInstantiator());
   }
   
-  private final String EventType = PrivateTokenGernerated.class.getSimpleName();
+  private final String EventType = PrivateTokenGenerated.class.getSimpleName();
   private final int RetryThreshold = 3000;
 
   private final SseEvent.Builder builder;
@@ -59,10 +59,15 @@ public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
   // SseFeed
   //=====================================
 
+  /**
+   * Send feed to all subscribers given as argument
+   * @param subscribers known subscribers
+   */
   @Override
   public void to(final Collection<SseSubscriber> subscribers) {
     for (final SseSubscriber subscriber : subscribers) {
       final SseSubscriber presentSubscriber = pending.putIfAbsent(subscriber.id(), subscriber);
+//      System.out.println(String.format("to actor=%s time=%s subscriber=%s",address(), System.currentTimeMillis(),subscriber));
       if (presentSubscriber == null) {
         final boolean fresh = subscriber.currentEventId().isEmpty();
         final int startId = fresh ? defaultId : Integer.parseInt(subscriber.currentEventId());
@@ -80,7 +85,9 @@ public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
     final SseSubscriber subscriber = (SseSubscriber) referencing;
     final boolean fresh = subscriber.currentEventId().isEmpty();
     final int retry = fresh ? RetryThreshold : SseEvent.NoRetry;
-    if (!events.isEmpty()) logger().debug("SENDING " + events.size() + " MESSAGES FOR " + subscriber.correlationId());
+    if (!events.isEmpty()) {
+      logger().debug("SENDING " + events.size() + " MESSAGES FOR " + subscriber.correlationId());
+    }
     subscriber.client().send(subStream(events, startId, retry));
     subscriber.currentEventId(String.valueOf(startId + events.size()));
     pending.remove(subscriber.id());
@@ -104,7 +111,7 @@ public class TokensSseFeedActor extends Actor implements SseFeed, Sink {
     int currentId = startId;
     final List<SseEvent> substream = new ArrayList<>(events.size());
     for (final Object eventObject : events) {
-      final PrivateTokenGernerated event = (PrivateTokenGernerated) eventObject;
+      final PrivateTokenGenerated event = (PrivateTokenGenerated) eventObject;
       substream.add(builder.clear().event(EventType).id(currentId++).data(event.id).data(event.hash).retry(retry).toEvent());
     }
     return substream;
