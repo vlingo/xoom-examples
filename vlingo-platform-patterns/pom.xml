@@ -12,14 +12,12 @@
       <url>https://mozilla.org/MPL/2.0/</url>
     </license>
   </licenses>
-
   <repositories>
     <repository>
       <id>jcenter.bintray.com</id>
       <url>https://jcenter.bintray.com</url>
     </repository>
   </repositories>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
