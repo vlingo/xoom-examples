@@ -19,14 +19,12 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <exec.mainClass>io.vlingo.frontservice.infra.Bootstrap</exec.mainClass>
   </properties>
-
   <repositories>
     <repository>
       <id>jcenter.bintray.com</id>
       <url>https://jcenter.bintray.com</url>
     </repository>
   </repositories>
-
   <build>
     <plugins>
       <plugin>

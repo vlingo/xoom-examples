@@ -4,7 +4,6 @@
   <artifactId>vlingo-xoom-advanced-microservice</artifactId>
   <packaging>pom</packaging>
   <version>1.2.7</version>
-
   <properties>
     <vlingo.platform.version>1.2.7</vlingo.platform.version>
     <vlingo.xoom.version>1.2.7</vlingo.xoom.version>
@@ -14,7 +13,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
-
   <modules>
     <module>api-gateway</module>
     <module>discovery-service</module>
