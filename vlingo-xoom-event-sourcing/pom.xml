@@ -1,10 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>io.examples</groupId>
   <artifactId>vlingo-xoom-event-sourcing</artifactId>
   <version>1.2.7</version>
-
   <properties>
     <jdk.version>1.8</jdk.version>
     <vlingo.platform.version>1.2.7</vlingo.platform.version>
@@ -18,14 +16,12 @@
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
   </properties>
-
   <repositories>
     <repository>
       <id>jcenter.bintray.com</id>
       <url>https://jcenter.bintray.com</url>
     </repository>
   </repositories>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
