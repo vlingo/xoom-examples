@@ -47,14 +47,12 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <repositories>
     <repository>
       <id>jcenter.bintray.com</id>
       <url>https://jcenter.bintray.com</url>
     </repository>
   </repositories>
-
   <build>
     <plugins>
       <plugin>

@@ -66,6 +66,7 @@
       </plugin>
     </plugins>
   </build>
+
   <modules>
     <module>vlingo-actors-playground</module>
     <module>vlingo-auth-authservice</module>
@@ -78,6 +79,13 @@
     <module>vlingo-reactive-messaging-patterns</module>
     <module>vlingo-simgui-mediator</module>
     <module>vlingo-platform-patterns</module>
-    <module>vlingo-xoom-examples</module>
+    <module>vlingo-xoom-advanced-microservice</module>
+    <module>vlingo-xoom-basic-microservice</module>
+    <module>vlingo-xoom-domain-microservice</module>
+    <module>vlingo-xoom-event-sourcing</module>
+    <module>vlingo-xoom-heroku-microservice</module>
+    <module>vlingo-xoom-kubernetes-microservice</module>
+    <module>vlingo-xoom-starter-template</module>
   </modules>
+
 </project>
