@@ -7,20 +7,18 @@
 
 package io.vlingo.entity.sourced;
 
-import io.vlingo.actors.Grid;
-import io.vlingo.cluster.model.Properties;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import io.vlingo.actors.Address;
+import io.vlingo.actors.Grid;
 import io.vlingo.entity.MockDispatcher;
 import io.vlingo.entity.Organization;
 import io.vlingo.entity.OrganizationState;
-import io.vlingo.lattice.grid.GridNodeBootstrap;
-import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
+import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
@@ -64,8 +62,7 @@ public class OrganizationEntityTest {
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
-    GridNodeBootstrap.boot("node1", Properties.open());
-    grid = Grid.start("sourced-entity", "node1");
+    grid = Grid.start("sourced-entity-test", "node1");
     journal = grid.actorFor(Journal.class, InMemoryJournalActor.class, new MockDispatcher());
     registry = new SourcedTypeRegistry(grid.world());
 
