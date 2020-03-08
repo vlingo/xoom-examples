@@ -108,6 +108,10 @@ public class Bootstrap {
             };
     }
 
+    public static Bootstrap forTest(final int portNumber) {
+    	return new Bootstrap(portNumber);
+    }
+    
     static Bootstrap instance(final int portNumber) {
         if (instance == null) {
             instance = new Bootstrap(portNumber);
@@ -131,7 +135,9 @@ public class Bootstrap {
     }
 
     void stopAndCleanup() {
-        Bootstrap.instance().server.stop();
+    	if (instance != null) {
+    		Bootstrap.instance.server.stop();
+    	}
 
         CartQueryProvider.deleteInstance();
         ProjectionDispatcherProvider.deleteInstance();
