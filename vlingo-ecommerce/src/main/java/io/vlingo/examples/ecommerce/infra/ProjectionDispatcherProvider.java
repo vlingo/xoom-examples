@@ -7,12 +7,15 @@
 
 package io.vlingo.examples.ecommerce.infra;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
+import io.vlingo.examples.ecommerce.model.CartEvents.AllItemsRemovedEvent;
+import io.vlingo.examples.ecommerce.model.CartEvents.CreatedForUser;
+import io.vlingo.examples.ecommerce.model.CartEvents.ProductQuantityChangeEvent;
 import io.vlingo.lattice.model.projection.ProjectionDispatcher;
 import io.vlingo.lattice.model.projection.ProjectionDispatcher.ProjectToDescription;
 import io.vlingo.lattice.model.projection.TextProjectionDispatcherActor;
@@ -33,7 +36,12 @@ public class ProjectionDispatcherProvider {
 
     if (instance == null) {
       final List<ProjectToDescription> descriptions =
-              Collections.singletonList(new ProjectToDescription(CartSummaryProjectionActor.class, "*"));
+              Arrays.asList(
+            		  new ProjectToDescription(
+            				  CartSummaryProjectionActor.class,
+            				  CreatedForUser.class.getName(),
+            				  ProductQuantityChangeEvent.class.getName(),
+            				  AllItemsRemovedEvent.class.getName()));
 
       final Protocols dispatcherProtocols =
               stage.actorFor(
