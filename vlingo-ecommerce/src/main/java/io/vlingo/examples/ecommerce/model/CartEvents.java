@@ -1,10 +1,12 @@
 package io.vlingo.examples.ecommerce.model;
 
-import io.vlingo.lattice.model.DomainEvent;
+import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
 public class CartEvents {
 
-    public static class CreatedForUser extends DomainEvent {
+    public static class CreatedForUser extends IdentifiedDomainEvent {
+        public final String cartId;
+        public final UserId userId;
 
         public CreatedForUser(String cartId, UserId userId) {
             super(1);
@@ -12,16 +14,23 @@ public class CartEvents {
             this.userId = userId;
         }
 
-        public final String cartId;
-        public final UserId userId;
-
         public static CreatedForUser forUser(String shoppingCartId, UserId userId) {
             return new CreatedForUser(shoppingCartId, userId);
         }
+
+		@Override
+		public String identity() {
+			return userId.getId();
+		}
     }
 
 
-    public static class ProductQuantityChangeEvent extends DomainEvent {
+    public static class ProductQuantityChangeEvent extends IdentifiedDomainEvent {
+        public final String cartId;
+        public final ProductId productId;
+        public final int quantityChange;
+        public final int newQuantity;
+        public final UserId userId;
 
         public ProductQuantityChangeEvent(String cartId, UserId userId, ProductId productId, int quantityChange,
                                           int newQuantity) {
@@ -38,14 +47,13 @@ public class CartEvents {
             return new ProductQuantityChangeEvent(cartId, userId, productId, quantityChange, newQuantity);
         }
 
-        public final String cartId;
-        public final ProductId productId;
-        public final int quantityChange;
-        public final int newQuantity;
-        public final UserId userId;
+		@Override
+		public String identity() {
+			return userId.getId();
+		}
     }
 
-    public static class AllItemsRemovedEvent extends DomainEvent {
+    public static class AllItemsRemovedEvent extends IdentifiedDomainEvent {
         public final String cartId;
         public final UserId userId;
 
@@ -59,5 +67,10 @@ public class CartEvents {
         public static AllItemsRemovedEvent with(String cartId, UserId userId) {
             return new AllItemsRemovedEvent(cartId, userId);
         }
+
+		@Override
+		public String identity() {
+			return userId.getId();
+		}
     }
 }
