@@ -26,23 +26,25 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
 
 public class OrderResourceShould {
-
     private static final AtomicInteger portNumber = new AtomicInteger(8080);
+    
+    private Bootstrap bootstrap;
+    
     private int orderPortNumber;
     private final Object lock = new Object();
 
     @Before
     public void setUp() {
         orderPortNumber = portNumber.getAndIncrement();
-        Bootstrap.instance(orderPortNumber);
-        Boolean startUpSuccess = Bootstrap.instance().serverStartup().await(100);
+        bootstrap = Bootstrap.forTest(orderPortNumber);
+        Boolean startUpSuccess = bootstrap.serverStartup().await(100);
         assertThat(startUpSuccess, is(equalTo(true)));
     }
 
     @After
     public void cleanUp() {
         // Shutdown is not reliable yet; see https://github.com/vlingo/vlingo-http/issues/25
-        Bootstrap.instance().stopAndCleanup();
+    	bootstrap.stopAndCleanup();
     }
 
     private RequestSpecification baseGiven() {
