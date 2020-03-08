@@ -16,7 +16,16 @@ public class CartUserSummaryData {
         return new CartUserSummaryData(null, null, null);
     }
 
+    public static CartUserSummaryData identitiedBy(String userId) {
+        return new CartUserSummaryData(userId, null, null);
+    }
+
     public static  CartUserSummaryData from(String userId, String cartId, String numberOfItems) {
         return new CartUserSummaryData(userId, cartId, numberOfItems);
     }
+
+	@Override
+	public String toString() {
+		return "CartUserSummaryData [userId=" + userId + ", cartId=" + cartId + ", numberOfItems=" + numberOfItems + "]";
+	}
 }
