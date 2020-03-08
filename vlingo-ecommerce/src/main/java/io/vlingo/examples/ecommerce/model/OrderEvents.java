@@ -1,12 +1,14 @@
 package io.vlingo.examples.ecommerce.model;
 
-import io.vlingo.lattice.model.DomainEvent;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.*;
+import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
 public interface OrderEvents {
 
-    class Created extends DomainEvent  {
+    class Created extends IdentifiedDomainEvent  {
 
         public final String orderId;
         public final UserId userId;
@@ -21,9 +23,14 @@ public interface OrderEvents {
         static Created with(String orderId, UserId userId, Map<ProductId, Integer> productQuanityById) {
             return new Created(orderId, userId, productQuanityById);
         }
+
+		@Override
+		public String identity() {
+			return orderId;
+		}
     }
 
-    class PaymentReceived extends DomainEvent  {
+    class PaymentReceived extends IdentifiedDomainEvent  {
 
         public final String orderId;
         public final PaymentId paymentId;
@@ -39,9 +46,14 @@ public interface OrderEvents {
             return new PaymentReceived(orderId, paymentId, newState);
         }
 
+
+		@Override
+		public String identity() {
+			return orderId;
+		}
     }
 
-    class OrderShipped extends DomainEvent {
+    class OrderShipped extends IdentifiedDomainEvent {
         public final String orderId;
         public final OrderInfo.OrderStatusEnum newState;
 
@@ -53,5 +65,10 @@ public interface OrderEvents {
         static OrderShipped with(String orderId, OrderInfo.OrderStatusEnum newState) {
             return new OrderShipped(orderId, newState);
         }
+
+		@Override
+		public String identity() {
+			return orderId;
+		}
     }
 }
