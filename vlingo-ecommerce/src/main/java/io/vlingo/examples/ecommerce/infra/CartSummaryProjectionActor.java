@@ -7,78 +7,90 @@
 
 package io.vlingo.examples.ecommerce.infra;
 
-import io.vlingo.actors.Actor;
+import java.util.ArrayList;
+import java.util.List;
+
+import io.vlingo.examples.ecommerce.model.CartEvents.AllItemsRemovedEvent;
+import io.vlingo.examples.ecommerce.model.CartEvents.CreatedForUser;
+import io.vlingo.examples.ecommerce.model.CartEvents.ProductQuantityChangeEvent;
 import io.vlingo.examples.ecommerce.model.CartUserSummaryData;
+import io.vlingo.lattice.model.DomainEvent;
+import io.vlingo.lattice.model.IdentifiedDomainEvent;
 import io.vlingo.lattice.model.projection.Projectable;
-import io.vlingo.lattice.model.projection.Projection;
-import io.vlingo.lattice.model.projection.ProjectionControl;
-import io.vlingo.symbio.BaseEntry;
+import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Entry;
-import io.vlingo.symbio.store.state.StateStore;
-
-import java.util.Optional;
-import java.util.function.BiConsumer;
-
-import static io.vlingo.examples.ecommerce.model.CartEvents.*;
 
 
-public class CartSummaryProjectionActor extends Actor implements Projection {
-
-  private static final int INITIAL_STATE_VERSION = 1;
-  private final StateStore store;
-  private EventAdapter<CreatedForUser> createdEventAdapter;
-  private EventAdapter<AllItemsRemovedEvent> allItemsRemovedAdapter;
-  private EventAdapter<ProductQuantityChangeEvent> productQuantityChangedAdapter;
-  private GenericReadWriteInterest genericReadWriteInterest;
+public class CartSummaryProjectionActor extends StateStoreProjectionActor<CartUserSummaryData> {
+  private static final CartUserSummaryData Empty = CartUserSummaryData.empty();
+  
+  private String dataId;
+  private final List<IdentifiedDomainEvent> events;
 
   public CartSummaryProjectionActor() {
-    this.store = CartQueryProvider.instance().store;
-    this.genericReadWriteInterest = new GenericReadWriteInterest(logger());
-    this.createdEventAdapter = new EventAdapter<>(CreatedForUser.class);
-    this.allItemsRemovedAdapter = new EventAdapter<>(AllItemsRemovedEvent.class);
-    this.productQuantityChangedAdapter = new EventAdapter<>(ProductQuantityChangeEvent.class);
-  }
-
-  protected boolean matchesTypeName(Entry<?> entry, Class<?> clazz) {
-    return entry.type().equals(clazz.getTypeName());
-  }
-
-  protected CartUserSummaryData createDataFromEvent(Entry<?> entry) {
-
-    if (matchesTypeName(entry, CreatedForUser.class)) {
-      CreatedForUser event = createdEventAdapter.fromEntry((BaseEntry.TextEntry) entry);
-      return new CartUserSummaryData(event.userId.getId(), event.cartId, "0");
-
-    } else if (matchesTypeName(entry, AllItemsRemovedEvent.class)) {
-      AllItemsRemovedEvent event = allItemsRemovedAdapter.fromEntry((BaseEntry.TextEntry) entry);
-      return new CartUserSummaryData(event.userId.getId(), event.cartId, "0");
-
-    } else if (matchesTypeName(entry, ProductQuantityChangeEvent.class)) {
-      final ProductQuantityChangeEvent event = productQuantityChangedAdapter.fromEntry((BaseEntry.TextEntry) entry);
-      return CartUserSummaryData.from(event.userId.getId(),
-                                      event.cartId,
-                                      Integer.toString(event.newQuantity));
-    } else {
-      throw new IllegalArgumentException("Unknown event type: " + entry.type());
-    }
-
+    super(CartQueryProvider.instance().store);
+    
+    this.events = new ArrayList<>(2);
   }
 
   @Override
-  public void projectWith(final Projectable projectable, final ProjectionControl control) {
-    Optional<Entry<?>> optionalEntry = projectable.entries().stream().findFirst();
-    if (!optionalEntry.isPresent()) {
-      control.confirmProjected(projectable.projectionId());
-      return;
+  protected CartUserSummaryData currentDataFor(final Projectable projectable) {
+	return Empty;
+  }
+
+  @Override
+  protected String dataIdFor(final Projectable projectable) {
+    dataId = events.get(0).identity();
+    return dataId;
+  }
+
+  @Override
+  protected CartUserSummaryData merge(
+		  final CartUserSummaryData previousData,
+		  final int previousVersion,
+		  final CartUserSummaryData currentData,
+		  final int currentVersion) {
+
+    if (previousVersion == currentVersion) return currentData;
+
+    for (final DomainEvent event : events) {
+      switch (match(event)) {
+      case CreatedForUser:
+        final CreatedForUser created = typed(event);
+        return CartUserSummaryData.from(created.userId.getId(), created.cartId, "0");
+
+      case AllItemsRemovedEvent:
+        final AllItemsRemovedEvent removed = typed(event);
+        return CartUserSummaryData.from(removed.userId.getId(), removed.cartId, "0");
+
+      case ProductQuantityChangeEvent:
+        final ProductQuantityChangeEvent changed = typed(event);
+        final String quantity = Integer.toString(changed.newQuantity);
+        return CartUserSummaryData.from(changed.userId.getId(), changed.cartId, quantity);
+
+      case Unmatched:
+        logger().warn("Event of type " + event.typeName() + " was not matched.");
+        break;
+      }
     }
-    final Entry<?> entry = optionalEntry.get();
-    final CartUserSummaryData nextData = createDataFromEvent(entry);
 
-    BiConsumer<CartUserSummaryData, Integer> updater = (prevObject, prevVersion) -> {
-      int version = (prevVersion < 0) ? INITIAL_STATE_VERSION : prevVersion+1;
-      store.write(nextData.userId, nextData, version, genericReadWriteInterest, ProjectionControl.confirmerFor(projectable, control));
-    };
+    return previousData;
+  }
 
-    store.read(nextData.userId, CartUserSummaryData.class, genericReadWriteInterest, updater);
+  @Override
+  protected void prepareForMergeWith(final Projectable projectable) {
+    events.clear();
+
+    for (Entry <?> entry : projectable.entries()) {
+      events.add(entryAdapter().anyTypeFromEntry(entry));
+    }
+  }
+
+  private CartUserSummaryDataProjectableType match(final DomainEvent event) {
+    try {
+      return CartUserSummaryDataProjectableType.valueOf(event.typeName());
+    } catch (Exception e) {
+      return CartUserSummaryDataProjectableType.Unmatched;
+    }
   }
 }
