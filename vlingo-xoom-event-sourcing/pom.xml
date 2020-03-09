@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>vlingo-xoom-event-sourcing</artifactId>
-  <version>1.2.7</version>
+  <version>1.2.8</version>
   <properties>
     <jdk.version>1.8</jdk.version>
     <vlingo.platform.version>1.2.7</vlingo.platform.version>
@@ -63,13 +63,13 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom-server</artifactId>
-      <version>1.2.7</version>
+      <version>1.2.8</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom-data</artifactId>
-      <version>1.2.7</version>
+      <version>1.2.8</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
