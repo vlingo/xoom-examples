@@ -26,7 +26,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
 
 public class OrderResourceShould {
-    private static final AtomicInteger portNumber = new AtomicInteger(8080);
+    private static final AtomicInteger portNumber = new AtomicInteger(18080);
     
     private Bootstrap bootstrap;
     
