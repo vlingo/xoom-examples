@@ -1,50 +1,23 @@
+// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package io.vlingo.examples.ecommerce.model;
 
-import io.vlingo.actors.Actor;
-import io.vlingo.actors.CompletesEventually;
 import io.vlingo.common.Completes;
-import io.vlingo.common.Outcome;
-import io.vlingo.symbio.Metadata;
-import io.vlingo.symbio.store.Result;
-import io.vlingo.symbio.store.StorageException;
+import io.vlingo.lattice.query.StateStoreQueryActor;
 import io.vlingo.symbio.store.state.StateStore;
 
-import java.util.function.BiConsumer;
-
-public class CartQueryActor extends Actor implements CartQuery, StateStore.ReadResultInterest {
-
-    private final StateStore.ReadResultInterest interest;
-    private final StateStore store;
-
+public class CartQueryActor extends StateStoreQueryActor implements CartQuery {
     public CartQueryActor(final StateStore store) {
-        this.store = store;
-        this.interest = selfAs(StateStore.ReadResultInterest.class);
+        super(store);
     }
 
     @Override
     public Completes<CartUserSummaryData> getCartSummaryForUser(UserId userId) {
-        final CompletesEventually completesEventually = completesEventually();
-
-        final BiConsumer<CartUserSummaryData,Integer> translator = (data, version) -> {
-            if (data != null) {
-                completesEventually.with(data);
-            } else {
-                completesEventually.with(CartUserSummaryData.empty());
-            }
-        };
-        store.read(Integer.toString(userId.id), CartUserSummaryData.class, interest, translator);
-        return completes();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <S> void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final Metadata metadata, final Object object) {
-        outcome.andThen(result -> {
-            ((BiConsumer<S,Integer>) object).accept(state, stateVersion);
-            return result;
-        }).otherwise(cause -> {
-            ((BiConsumer<S,Integer>) object).accept(null, -1);
-            return cause.result;
-        });
+        return queryStateFor(userId.getId(), CartUserSummaryData.class);
     }
 }
