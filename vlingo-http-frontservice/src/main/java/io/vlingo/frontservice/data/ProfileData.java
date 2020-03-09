@@ -22,9 +22,13 @@ public class ProfileData {
   public static ProfileData from(final Profile.ProfileState profile) {
     return new ProfileData(profile.id, profile.twitterAccount, profile.linkedInAccount, profile.website);
   }
-
+  
+  public static ProfileData from(final String id, final String twitterAccount, final String linkedInAccount, final String website) {
+    return new ProfileData(id, twitterAccount, linkedInAccount, website);
+  }
+  
   public ProfileData(final String id, final String twitterAccount, final String linkedInAccount, final String website) {
-	this.id = id;
+    this.id = id;
     this.twitterAccount = twitterAccount;
     this.linkedInAccount = linkedInAccount;
     this.website = website;
