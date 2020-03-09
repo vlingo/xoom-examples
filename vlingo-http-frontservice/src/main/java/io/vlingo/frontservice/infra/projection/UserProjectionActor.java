@@ -7,100 +7,47 @@
 
 package io.vlingo.frontservice.infra.projection;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import io.vlingo.actors.Actor;
-import io.vlingo.common.Outcome;
 import io.vlingo.frontservice.data.UserData;
 import io.vlingo.frontservice.infra.persistence.QueryModelStoreProvider;
 import io.vlingo.frontservice.model.User;
 import io.vlingo.lattice.model.projection.Projectable;
-import io.vlingo.lattice.model.projection.Projection;
-import io.vlingo.lattice.model.projection.ProjectionControl;
-import io.vlingo.lattice.model.projection.ProjectionControl.Confirmer;
-import io.vlingo.symbio.Metadata;
-import io.vlingo.symbio.Source;
-import io.vlingo.symbio.store.Result;
-import io.vlingo.symbio.store.StorageException;
-import io.vlingo.symbio.store.state.StateStore;
-import io.vlingo.symbio.store.state.StateStore.ReadResultInterest;
-import io.vlingo.symbio.store.state.StateStore.WriteResultInterest;
+import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 
-public class UserProjectionActor extends Actor
-    implements Projection, ReadResultInterest, WriteResultInterest {
-
-  private final ReadResultInterest readInterest;
-  private final WriteResultInterest writeInterest;
-  private final StateStore store;
-
+public class UserProjectionActor extends StateStoreProjectionActor<UserData> {
+  private String becauseOf;
+  
   public UserProjectionActor() {
-    this.store = QueryModelStoreProvider.instance().store;
-    this.readInterest = selfAs(ReadResultInterest.class);
-    this.writeInterest = selfAs(WriteResultInterest.class);
+    super(QueryModelStoreProvider.instance().store);
   }
 
   @Override
-  public void projectWith(final Projectable projectable, final ProjectionControl control) {
+  protected UserData currentDataFor(final Projectable projectable) {
+    becauseOf = projectable.becauseOf()[0];
+    
     final User.UserState state = projectable.object();
     final UserData current = UserData.from(state);
+    
+    return current;
+  }
 
-    switch (projectable.becauseOf()[0]) {
-      case "User:new": {
-        store.write(state.id, current, 1, writeInterest, ProjectionControl.confirmerFor(projectable, control));
-        break;
-      }
-      case "User:contact": {
-        final Consumer<UserData> updater = previous -> {
-          updateWith(previous, current, state.version,
-            (writeData) -> UserData.from(writeData.id, writeData.nameData, current.contactData, writeData.publicSecurityToken),
-            ProjectionControl.confirmerFor(projectable, control)
-          );
-        };
-        store.read(current.id, UserData.class, readInterest, updater);
-        break;
-      }
-      case "User:name": {
-        final Consumer<UserData> updater = previous -> {
-          updateWith(previous, current, state.version,
-            (writeData) -> UserData.from(writeData.id, current.nameData, writeData.contactData, writeData.publicSecurityToken),
-            ProjectionControl.confirmerFor(projectable, control)
-          );
-        };
-        store.read(current.id, UserData.class, readInterest, updater);
-        break;
-      }
+  @Override
+  protected UserData merge(final UserData previousData, final int previousVersion, final UserData currentData, final int currentVersion) {
+    UserData merged;
+    
+    switch (becauseOf) {
+    case "User:new":
+      merged = currentData;
+      break;
+    case "User:contact":
+      merged = UserData.from(previousData.id, previousData.nameData, currentData.contactData, previousData.publicSecurityToken);
+      break;
+    case "User:name":
+      merged = UserData.from(previousData.id, currentData.nameData, previousData.contactData, previousData.publicSecurityToken);
+      break;
+    default:
+      merged = currentData;
     }
-  }
 
-  @Override
-  @SuppressWarnings("unchecked")
-  public <S> void readResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final Metadata metadata, final Object object) {
-    outcome.andThen(result -> {
-      ((Consumer<S>) object).accept(state);
-      return result;
-    }).otherwise(cause -> {
-      // log but don't retry, allowing re-delivery of Projectable
-      logger().info("Query state not read for update because: " + cause.getMessage(), cause);
-      return cause.result;
-    });
-  }
-
-  @Override
-  public <S,C> void writeResultedIn(final Outcome<StorageException, Result> outcome, final String id, final S state, final int stateVersion, final List<Source<C>> sources, final Object object) {
-    outcome.andThen(result -> {
-      ((Confirmer) object).confirm();
-      return result;
-    }).otherwise(cause -> {
-      // log but don't retry, allowing re-delivery of Projectable
-      logger().info("Query state not written for update because: " + cause.getMessage(), cause);
-      return cause.result;
-    });
-  }
-
-  private void updateWith(final UserData previous, final UserData current, final int version, final Function<UserData,UserData> updater, final Confirmer confirmer) {
-    final UserData data = updater.apply(previous);
-    store.write(data.id, data, version, writeInterest, confirmer);
+    return merged;
   }
 }
