@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>account-service</artifactId>
-  <version>1.2.7</version>
+  <version>1.2.8</version>
   <parent>
     <groupId>io.vlingo</groupId>
     <artifactId>vlingo-xoom-domain-microservice</artifactId>
@@ -70,7 +70,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom-server</artifactId>
-      <version>1.2.7</version>
+      <version>1.2.8</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

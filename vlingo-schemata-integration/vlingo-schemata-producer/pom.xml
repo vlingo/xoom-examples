@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-schemata-producer</artifactId>
-  <version>1.2.7</version>
+  <version>1.2.8</version>
   <name>vlingo-schemata-producer</name>
   <description>Example of a project pushing schemas to  vlingo/schemata.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>

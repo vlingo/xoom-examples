@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>order-service</artifactId>
-  <version>1.2.7</version>
+  <version>1.2.8</version>
   <parent>
     <groupId>io.examples</groupId>
     <artifactId>vlingo-xoom-kubernetes-microservice</artifactId>
@@ -44,7 +44,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom-server</artifactId>
-      <version>1.2.7</version>
+      <version>1.2.8</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

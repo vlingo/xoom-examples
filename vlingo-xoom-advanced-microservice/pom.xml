@@ -3,7 +3,7 @@
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-xoom-advanced-microservice</artifactId>
   <packaging>pom</packaging>
-  <version>1.2.7</version>
+  <version>1.2.8</version>
   <properties>
     <vlingo.platform.version>1.2.7</vlingo.platform.version>
     <vlingo.xoom.version>1.2.7</vlingo.xoom.version>
