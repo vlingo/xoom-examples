@@ -14,31 +14,44 @@ import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 
 public class ProfileProjectionActor extends StateStoreProjectionActor<ProfileData> {
+  private String becauseOf;
+
   public ProfileProjectionActor() {
     super(QueryModelStoreProvider.instance().store);
   }
 
   @Override
   protected ProfileData currentDataFor(final Projectable projectable) {
+    becauseOf = projectable.becauseOf()[0];
+    
     final Profile.ProfileState state = projectable.object();
     final ProfileData data = ProfileData.from(state);
-
-// TODO: for you to complete the implementation
-//    switch (projectable.becauseOf()[0]) {
-//    case "Profile:new":
-//      data = ProfileData.from(state);
-//      break;
-//    case "Profile:twitter":
-//    case "Profile:linkedIn":
-//    case "Profile:website":
-//      break;
-//    }
     
     return data;
   }
 
   @Override
   protected ProfileData merge(final ProfileData previousData, final int previousVersion, final ProfileData currentData, final int currentVersion) {
-    return currentData;
+    ProfileData merged;
+    
+    switch (becauseOf) {
+    case "Profile:new":
+      merged = currentData;
+      break;
+    case "Profile:twitter":
+      merged = ProfileData.from(previousData.id, currentData.twitterAccount, previousData.linkedInAccount, previousData.website);
+      break;
+    case "Profile:linkedIn":
+      merged = ProfileData.from(previousData.id, previousData.twitterAccount, currentData.linkedInAccount, previousData.website);
+      break;
+    case "Profile:website":
+      merged = ProfileData.from(previousData.id, previousData.twitterAccount, previousData.linkedInAccount, currentData.website);
+      break;
+    default:
+      merged = currentData;
+      break;
+    }
+    
+    return merged;
   }
 }
