@@ -13,7 +13,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import io.vlingo.actors.Address;
+import io.vlingo.actors.Configuration;
 import io.vlingo.actors.Grid;
+import io.vlingo.entity.ClusterProperties;
 import io.vlingo.entity.MockDispatcher;
 import io.vlingo.entity.Organization;
 import io.vlingo.entity.OrganizationState;
@@ -62,7 +64,7 @@ public class OrganizationEntityTest {
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
-    grid = Grid.start("sourced-entity-test", "node1");
+    grid = Grid.start("sourced-entity-test", Configuration.define(), ClusterProperties.oneNode(), "node1");
     journal = grid.actorFor(Journal.class, InMemoryJournalActor.class, new MockDispatcher());
     registry = new SourcedTypeRegistry(grid.world());
 

@@ -15,7 +15,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import io.vlingo.actors.Address;
+import io.vlingo.actors.Configuration;
 import io.vlingo.actors.Grid;
+import io.vlingo.entity.ClusterProperties;
 import io.vlingo.entity.MockDispatcher;
 import io.vlingo.entity.Organization;
 import io.vlingo.entity.OrganizationState;
@@ -64,7 +66,7 @@ public class OrganizationEntityTest {
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
-    grid = Grid.start("stateful-entity-test", "node1");
+    grid = Grid.start("stateful-entity-test", Configuration.define(), ClusterProperties.oneNode(), "node1");
     stateStore = grid.actorFor(StateStore.class, InMemoryStateStoreActor.class, Arrays.asList(new MockDispatcher()));
     registry = new StatefulTypeRegistry(grid.world());
 
