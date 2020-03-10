@@ -19,6 +19,7 @@ public class UserEntity extends StatefulEntity<User.UserState> implements User {
   private User.UserState state;
 
   public UserEntity(final User.UserState state) {
+    super(state.id);
     this.state = state;
   }
 
@@ -48,11 +49,6 @@ public class UserEntity extends StatefulEntity<User.UserState> implements User {
   //=====================================
 
   @Override
-  protected String id() {
-    return state.id;
-  }
-
-  @Override
   protected void state(final UserState state) {
     this.state = state;
   }
@@ -68,10 +64,5 @@ public class UserEntity extends StatefulEntity<User.UserState> implements User {
       return null;
     }
     return Tuple3.from(state, Collections.emptyList(), "User:new");
-  }
-
-  @Override
-  public void applyRelocationSnapshot(String snapshot) {
-    state(UserState.of(snapshot));
   }
 }
