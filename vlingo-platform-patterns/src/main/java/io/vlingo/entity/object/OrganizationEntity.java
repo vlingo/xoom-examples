@@ -18,10 +18,12 @@ public class OrganizationEntity extends ObjectEntity<State> implements Organizat
   private State state;
 
   public OrganizationEntity(final Id organizationId) {
+    super(organizationId.value);
     this.state = State.from(organizationId);
   }
 
   public OrganizationEntity() {
+    super(null);
     this.state = null;
   }
 
@@ -56,7 +58,6 @@ public class OrganizationEntity extends ObjectEntity<State> implements Organizat
     return apply(state, new OrganizationRenamed(state.organizationId, name), () -> state);
   }
 
-  @Override
   protected String id() {
     return String.valueOf(state.persistenceId());
   }
@@ -76,8 +77,4 @@ public class OrganizationEntity extends ObjectEntity<State> implements Organizat
     return State.class;
   }
 
-  @Override
-  public void applyRelocationSnapshot(String snapshot) {
-    stateObject(State.from(Long.parseLong(snapshot)));
-  }
 }

@@ -8,13 +8,7 @@
 package com.saasovation.agilepm.model.product;
 
 import com.saasovation.agilepm.model.Tenant;
-import com.saasovation.agilepm.model.product.Events.ProductDefined;
-import com.saasovation.agilepm.model.product.Events.ProductDescriptionChanged;
-import com.saasovation.agilepm.model.product.Events.ProductDiscussionAttached;
-import com.saasovation.agilepm.model.product.Events.ProductDiscussionRequested;
-import com.saasovation.agilepm.model.product.Events.ProductNameChanged;
-import com.saasovation.agilepm.model.product.Events.ProductOwnerAssigned;
-
+import com.saasovation.agilepm.model.product.Events.*;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
@@ -28,6 +22,7 @@ public class ProductEntity extends EventSourced implements Product {
     }
 
     public ProductEntity(final Tenant tenant, final ProductId productId) {
+        super(productId.id);
         this.state = State.inital(tenant, productId);
     }
 
@@ -78,17 +73,6 @@ public class ProductEntity extends EventSourced implements Product {
     @Override
     public Completes<State> query() {
       return completes().with(state);
-    }
-
-    @Override
-    protected String streamName() {
-        return streamNameFrom(":", state.tenant.id, state.productId.id);
-    }
-
-    @Override
-    public void applyRelocationSnapshot(String snapshot) {
-        String[] tenantAndProductId = streamNameSegmentsFrom(":", snapshot);
-        state = State.of(tenantAndProductId[0], tenantAndProductId[1]);
     }
 
     private void applyProductDefined(final ProductDefined e) {

@@ -22,6 +22,7 @@ public class DiscussionEntity extends EventSourced implements Discussion {
   private State state;
 
   public DiscussionEntity(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId) {
+    super(discussionId.value);
     state = new State(tenant, forumId, discussionId);
   }
 
@@ -59,17 +60,6 @@ public class DiscussionEntity extends EventSourced implements Discussion {
     if (!state.topic.equals(topic)) {
       apply(DiscussionTopicChanged.with(state.tenant, state.forumId, state.discussionId, topic));
     }
-  }
-
-  @Override
-  protected String streamName() {
-    return streamNameFrom(":", state.tenant.value, state.discussionId.value);
-  }
-
-  @Override
-  public void applyRelocationSnapshot(String snapshot) {
-    String[] tenantAndDiscussionId = streamNameSegmentsFrom(":", snapshot);
-    state = State.of(tenantAndDiscussionId[0], tenantAndDiscussionId[1]);
   }
 
   static {
