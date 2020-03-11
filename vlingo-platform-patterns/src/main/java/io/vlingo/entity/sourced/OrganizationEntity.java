@@ -22,10 +22,12 @@ public class OrganizationEntity extends EventSourced implements Organization {
   private State state;
 
   public OrganizationEntity(final Id organizationId) {
+    super(organizationId.value);
     this.state = State.from(organizationId);
   }
 
   public OrganizationEntity() {
+    super(null);
     this.state = null;
   }
 
@@ -52,16 +54,6 @@ public class OrganizationEntity extends EventSourced implements Organization {
   @Override
   public Completes<OrganizationState> renameTo(final String name) {
     return apply(new OrganizationRenamed(state.organizationId, name), () -> state);
-  }
-
-  @Override
-  protected String streamName() {
-    return state.organizationId.value;
-  }
-
-  @Override
-  public void applyRelocationSnapshot(String snapshot) {
-    state = State.from(Id.from(snapshot));
   }
 
   static {

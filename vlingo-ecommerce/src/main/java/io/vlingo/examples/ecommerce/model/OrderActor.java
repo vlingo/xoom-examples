@@ -30,6 +30,7 @@ public class OrderActor extends EventSourced implements Order {
 
     public OrderActor(
             String orderId) {
+        super(orderId);
         this.state =  State.init(orderId);
     }
 
@@ -70,17 +71,6 @@ public class OrderActor extends EventSourced implements Order {
     @Override
     public Completes<OrderInfo> query() {
         return completes().with(state.createOrderInfo());
-    }
-
-    @Override
-    protected String streamName() {
-        return String.format("orderEvents:%s", state.orderId);
-    }
-
-    @Override
-    public void applyRelocationSnapshot(String snapshot) {
-        String[] constAndorderId = streamNameSegmentsFrom(":", snapshot);
-        state = State.init(constAndorderId[1]);
     }
 
     static class State {

@@ -12,13 +12,13 @@ import com.saasovation.collaboration.model.Moderator;
 import com.saasovation.collaboration.model.Tenant;
 import com.saasovation.collaboration.model.forum.Events.PostModerated;
 import com.saasovation.collaboration.model.forum.Events.PostedToDiscussion;
-
 import io.vlingo.lattice.model.sourcing.EventSourced;
 
 public class PostEntity extends EventSourced implements Post {
   private State state;
 
   public PostEntity(final Tenant tenant, final ForumId forumId, final DiscussionId discussionId, final PostId postId) {
+    super(postId.toString());
     state = new State(tenant, forumId, discussionId, postId);
   }
 
@@ -37,17 +37,6 @@ public class PostEntity extends EventSourced implements Post {
     if (state.author == null) {
       apply(PostedToDiscussion.with(state.tenant, state.forumId, state.discussionId, state.postId, author, subject, bodyText));
     }
-  }
-
-  @Override
-  protected String streamName() {
-    return streamNameFrom(":", state.tenant.value, state.postId.value);
-  }
-
-  @Override
-  public void applyRelocationSnapshot(String snapshot) {
-    String[] tenantAndPostId = streamNameSegmentsFrom(":", snapshot);
-    state = State.of(tenantAndPostId[0], tenantAndPostId[1]);
   }
 
   static {
