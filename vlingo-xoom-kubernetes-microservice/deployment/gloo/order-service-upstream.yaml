@@ -1,0 +1,49 @@
+apiVersion: gloo.solo.io/v1
+kind: Upstream
+metadata:
+  creationTimestamp: null
+  generation: 2
+  labels:
+    app.kubernetes.io/instance: vos-01
+    app.kubernetes.io/name: vlingo-order-service
+    discovered_by: kubernetesplugin
+    name: vlingo-order-service-0.1.0
+  name: default-order-service-8080
+  namespace: gloo-system
+  resourceVersion: "1553792"
+spec:
+  discoveryMetadata: {}
+  kube:
+    selector:
+      app.kubernetes.io/instance: vos-01
+      app.kubernetes.io/name: vlingo-order-service
+    serviceName: order-service
+    serviceNamespace: default
+    servicePort: 8080
+    serviceSpec:
+      rest:
+        transformations:
+          createOrder:
+            body:
+              text: '{"productId": {{ default(productId, 0) }},"quantity": "{{ default(quantity, 10)}}","siteName":
+                    "{{ default(siteName, "LA")}}"}'
+            headers:
+              :method:
+                text: POST
+              :path:
+                text: /v1/orders
+              content-type:
+                text: application/json
+          retrieveOrder:
+            headers:
+              :method:
+                text: GET
+              :path:
+                text: /v1/orders
+              content-length:
+                text: "54"
+              content-type: {}
+              transfer-encoding: {}
+status:
+  reported_by: gloo
+  state: 1
