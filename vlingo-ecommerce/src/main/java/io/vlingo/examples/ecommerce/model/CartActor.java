@@ -16,17 +16,8 @@ public class CartActor extends EventSourced implements Cart {
     private State state;
 
     public CartActor(final String cartId) {
+        super(cartId);
         this.state = State.create(cartId);
-    }
-
-    @Override
-    public String streamName() {
-        return String.format("cartEvents:%s", state.cartId);
-    }
-
-    @Override
-    public void applyRelocationSnapshot(String snapshot) {
-        state = State.create(snapshot.substring(snapshot.indexOf(':')));
     }
 
     @Override

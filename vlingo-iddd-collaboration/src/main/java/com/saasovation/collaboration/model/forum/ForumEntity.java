@@ -11,13 +11,7 @@ import com.saasovation.collaboration.model.Author;
 import com.saasovation.collaboration.model.Creator;
 import com.saasovation.collaboration.model.Moderator;
 import com.saasovation.collaboration.model.Tenant;
-import com.saasovation.collaboration.model.forum.Events.ForumClosed;
-import com.saasovation.collaboration.model.forum.Events.ForumDescribed;
-import com.saasovation.collaboration.model.forum.Events.ForumModeratorAssigned;
-import com.saasovation.collaboration.model.forum.Events.ForumReopened;
-import com.saasovation.collaboration.model.forum.Events.ForumStarted;
-import com.saasovation.collaboration.model.forum.Events.ForumTopicChanged;
-
+import com.saasovation.collaboration.model.forum.Events.*;
 import io.vlingo.common.Completes;
 import io.vlingo.common.Tuple2;
 import io.vlingo.lattice.model.sourcing.EventSourced;
@@ -26,6 +20,7 @@ public class ForumEntity extends EventSourced implements Forum {
   private State state;
 
   public ForumEntity(final Tenant tenant, final ForumId forumId) {
+    super(forumId.value);
     state = new State(tenant, forumId);
   }
 
@@ -86,17 +81,6 @@ public class ForumEntity extends EventSourced implements Forum {
       return state;
     }
     return null;
-  }
-
-  @Override
-  protected String streamName() {
-    return streamNameFrom(":", state.tenant.value, state.forumId.value);
-  }
-
-  @Override
-  public void applyRelocationSnapshot(String snapshot) {
-    String[] tenantAndForumId = streamNameSegmentsFrom(":", snapshot);
-    state = State.of(tenantAndForumId[0], tenantAndForumId[1]);
   }
 
   static {
