@@ -249,7 +249,7 @@ Let's add routes for both microservices so Gloo can handle requests mapping the 
 	  --dest-name default-stock-service-8081 \
 	  --prefix-rewrite /v1/stocks
 	  
-If _the Virtual Service_ status is accepted, Gateway API was successfully configured.
+If _Virtual Service_ status is accepted, Gateway API was successfully configured.
 
 	+-----------------+--------------+---------+------+----------+-----------------+----------------------------------+
 	| VIRTUAL SERVICE | DISPLAY NAME | DOMAINS | SSL  |  STATUS  | LISTENERPLUGINS |                 ROUTES           |
