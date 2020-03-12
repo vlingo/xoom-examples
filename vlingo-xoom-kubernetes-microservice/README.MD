@@ -210,7 +210,7 @@ Ensure the PODs are healthy and running
 
     $ ./kubectl get pods
 
-## Gateway API
+## API Gateway
 
 Taking advantage of Gloo's API Gateway, we're able to expose REST resources having a single entry point to our microservices. The following Gateway setup is made solely through (Gloo command line tool)[https://docs.solo.io/gloo/latest/installation/gateway/kubernetes/#install-command-line-tool-cli], so ensure it is installed.
 
