@@ -11,6 +11,9 @@ spec:
   type: ClusterIP
   ports:
     - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
   selector:
     app.kubernetes.io/name: vlingo-order-service
     app.kubernetes.io/instance: vos-01
@@ -49,3 +52,4 @@ spec:
           name: vlingo-order-service
           ports:
             - containerPort: 8080
+              name: http
