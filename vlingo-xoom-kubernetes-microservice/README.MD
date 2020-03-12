@@ -212,13 +212,13 @@ Ensure the PODs are healthy and running
 
 ## API Gateway
 
-Taking advantage of Gloo's API Gateway, we're able to expose REST resources having a single entry point to our microservices. The following Gateway setup is made solely through (Gloo command line tool)[https://docs.solo.io/gloo/latest/installation/gateway/kubernetes/#install-command-line-tool-cli], so ensure it is installed.
+Taking advantage of Gloo's API Gateway, we're able to expose REST resources having a single entry point to our microservices. The following Gateway setup is made solely through [Gloo command line tool](https://docs.solo.io/gloo/latest/installation/gateway/kubernetes/#install-command-line-tool-cli), so ensure it is installed.
 
 To install the API Gateway on Kubernetes, run the following command:
 
     $ ./glooctl install gateway
 
-In the previous section, the kubernetes services were already started, so Gloo will detect them and automatically generate (upstreams)[https://docs.solo.io/gloo/latest/gloo_routing/hello_world/#verify-the-upstream-for-the-pet-store-application]. Whereas the expected status is _accepted_, check it out:
+In the previous section, the kubernetes services were already started, so Gloo will detect them and automatically generate [upstreams](https://docs.solo.io/gloo/latest/gloo_routing/hello_world/#verify-the-upstream-for-the-pet-store-application). Whereas the expected status is _accepted_, check it out:
 
     $ ./glooctl get upstreams
     
