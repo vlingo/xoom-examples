@@ -14,6 +14,7 @@ public class ProfileEntity extends StatefulEntity<Profile.ProfileState> implemen
   private Profile.ProfileState state;
 
   public ProfileEntity(final Profile.ProfileState state) {
+    super(state.id);
     this.state = state;
   }
 
@@ -47,11 +48,6 @@ public class ProfileEntity extends StatefulEntity<Profile.ProfileState> implemen
   //=====================================
 
   @Override
-  public String id() {
-    return state.id;
-  }
-
-  @Override
   public void state(final ProfileState state) {
     this.state = state;
   }
@@ -59,10 +55,5 @@ public class ProfileEntity extends StatefulEntity<Profile.ProfileState> implemen
   @Override
   public Class<ProfileState> stateType() {
     return ProfileState.class;
-  }
-
-  @Override
-  public void applyRelocationSnapshot(String snapshot) {
-    state(ProfileState.of(state.id));
   }
 }
