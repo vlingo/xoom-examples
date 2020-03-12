@@ -1,6 +1,6 @@
 # Kubernetes Microservice
 
-In this example application, you'll be introduced to how deploy `vlingo-xoom` + `micronaut` microservices using `Docker`, `Kubernetes` and `Helm Chart`.
+In this example application, you'll be introduced to how deploy `vlingo-xoom` + `micronaut` microservices on a `Kubernetes` cluster, exposing them through `Gloo's` API Gateway and using `Helm Chart` to install infrastructure resources.  
 
 ## Project Structure
 
@@ -210,27 +210,80 @@ Ensure the PODs are healthy and running
 
     $ ./kubectl get pods
 
+## Gateway API
+
+Taking advantage of Gloo's API Gateway, we're able to expose REST resources having a single entry point to our microservices. The following Gateway setup is made solely through (Gloo command line tool)[https://docs.solo.io/gloo/latest/installation/gateway/kubernetes/#install-command-line-tool-cli], so ensure it is installed.
+
+To install the API Gateway on Kubernetes, run the following command:
+
+    $ ./glooctl install gateway
+
+In the previous section, the kubernetes services were already started, so Gloo will detect them and automatically generate (upstreams)[https://docs.solo.io/gloo/latest/gloo_routing/hello_world/#verify-the-upstream-for-the-pet-store-application]. Whereas the expected status is _accepted_, check it out:
+
+    $ ./glooctl get upstreams
+    
+   	+---------------------------------------------+------------+----------+--------------------------------+
+	|                  UPSTREAM                   |    TYPE    |  STATUS  |            DETAILS             |
+	+---------------------------------------------+------------+----------+--------------------------------+
+	| default-kubernetes-443                      | Kubernetes | Accepted | svc name:      kubernetes      |
+	|                                             |            |          | svc namespace: default         |
+	|                                             |            |          | port:          443             |
+	|                                             |            |          |                                |
+	| default-order-service-8080                  | Kubernetes | Accepted | svc name:      order-service   |
+	|                                             |            |          | svc namespace: default         |
+	|                                             |            |          | port:          8080            |
+	|                                             |            |          |                                |
+	| default-stock-service-8081                  | Kubernetes | Accepted | svc name:      stock-service   |
+	|                                             |            |          | svc namespace: default         |
+	|                                             |            |          | port:          8081            |
+
+Let's add routes for both microservices so Gloo can handle requests mapping the resource path and upstreams.
+
+    $ ./glooctl add route \
+	  --path-exact /orders \
+	  --dest-name default-order-service-8080 \
+	  --prefix-rewrite /v1/orders
+
+    $ ./glooctl add route \
+	  --path-exact /stocks \
+	  --dest-name default-stock-service-8081 \
+	  --prefix-rewrite /v1/stocks
+	  
+If _the Virtual Service_ status is accepted, Gateway API was successfully configured.
+
+	+-----------------+--------------+---------+------+----------+-----------------+----------------------------------+
+	| VIRTUAL SERVICE | DISPLAY NAME | DOMAINS | SSL  |  STATUS  | LISTENERPLUGINS |                 ROUTES           |
+	+-----------------+--------------+---------+------+----------+-----------------+----------------------------------+
+	| default         |              | *       | none | Accepted |                 | /stocks ->                       |
+	|                 |              |         |      |          |                 | gloo-system.default-stock-service|
+	|		  |		 |         |      |          |                 | -8081				  |
+	|                 |              |         |      |          |                 | (upstream)                       |
+	|                 |              |         |      |          |                 | /orders ->                       |
+	|                 |              |         |      |          |                 | gloo-system.default-order-service|	   |                 |              |         |      |          |                 | -8080			     |
+	|                 |              |         |      |          |                 | (upstream)                       | 
+	+-----------------+--------------+---------+------+----------+-----------------+----------------------------------+
+
 
 ## Client Usage Examples
  
-Now that the single node cluster is running, you can execute the following `curl` commands to interact with the REST API.
+Now that all components are running, you can execute the following `curl` commands to interact with the REST API.
  
 ### Rest API
 
-Kubernetes dynamically allocates an IP Address as the microservice endpoint host. It can be found describing the K8s service through `kubectl` in the `Endpoints` section:
+Rest operations are exposed on Gloo's API Gateway. Therefore, in each request, it's recommended to use a _glooctl_ command in order to resolve the Gloo proxy host transparently. 
 
-    $ ./kubectl describe service [microservice-name]
+    glooctl proxy url
 
-Being aware which is the endpoint, first, it's needed to open a stock on Rest API.
+First, it's needed to open a stock on Rest API.
 
-    curl -X POST http://{stock-endpoint}/v1/stocks -H "Content-Type: application/json" -d \
+    curl -X POST $(glooctl proxy url)/stocks -H "Content-Type: application/json" -d \
     '{
 	    "locationName": "LA"
      }' -i
 
 Then, load the stock in same location for a specific item:
 
-    curl -X PUT http://{stock-endpoint}/v1/stocks -H "Content-Type: application/json" -d \
+    curl -X PUT $(glooctl proxy url)/stocks -H "Content-Type: application/json" -d \
     '{
         "locationName": "LA",
         "itemId": 2, //Any item id is acceptable
@@ -239,11 +292,11 @@ Then, load the stock in same location for a specific item:
 
 It is possible to check the available quantity by the stock location:
 
-    curl -X GET http://{stock-endpoint}/v1/stocks?locationName=LA" 
+    curl -X GET $(glooctl proxy url)/stocks?locationName=LA
 
 To conclude, an Order can be registered considering the location with available items:
 
-    curl -X POST http://{order-endpoint}/v1/orders -H "Content-Type: application/json" -d \
+    curl -X POST $(glooctl proxy url)/orders -H "Content-Type: application/json" -d \
     '{
         "productId": 1,
         "quantity": 10,
@@ -252,7 +305,7 @@ To conclude, an Order can be registered considering the location with available 
 
 A domain event is sent to `Stock` context and the available quantity is updated. The result is shown by searching here:
 
-    curl -X GET http://{stock-endpoint}/v1/stocks?locationName=LA" 
+    curl -X GET $(glooctl proxy url)/stocks?locationName=LA
 
 Find more information about using `vlingo-xoom` with `Docker`, `Kubernetes` and `Helm Chart` [here](https://docs.vlingo.io/containerization);
 
