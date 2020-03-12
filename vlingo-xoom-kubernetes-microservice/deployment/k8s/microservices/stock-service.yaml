@@ -11,6 +11,9 @@ spec:
   type: ClusterIP
   ports:
     - port: 8081
+      targetPort: 8081
+      protocol: TCP
+      name: http
   selector:
     app.kubernetes.io/name: vlingo-stock-service
     app.kubernetes.io/instance: vss-01
@@ -49,4 +52,5 @@ spec:
           name: vlingo-stock-service
           ports:
             - containerPort: 8081
+              name: http
 
