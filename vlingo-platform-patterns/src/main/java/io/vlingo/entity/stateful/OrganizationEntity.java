@@ -21,11 +21,8 @@ public class OrganizationEntity extends StatefulEntity<State> implements Organiz
   private State state;
 
   public OrganizationEntity(final Id organizationId) {
+    super(organizationId.value);
     this.state = State.from(organizationId);
-  }
-
-  public OrganizationEntity() {
-    this.state = null;
   }
 
   @Override
@@ -54,11 +51,6 @@ public class OrganizationEntity extends StatefulEntity<State> implements Organiz
   }
 
   @Override
-  protected String id() {
-    return state.organizationId.value;
-  }
-
-  @Override
   protected void state(final State state) {
     this.state = state;
   }
@@ -66,10 +58,5 @@ public class OrganizationEntity extends StatefulEntity<State> implements Organiz
   @Override
   protected Class<State> stateType() {
     return State.class;
-  }
-
-  @Override
-  public void applyRelocationSnapshot(String snapshot) {
-    state(State.of(snapshot));
   }
 }
