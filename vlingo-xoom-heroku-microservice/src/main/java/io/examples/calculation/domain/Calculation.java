@@ -1,59 +1,41 @@
+// Copyright © 2012-2018 Vaughn Vernon. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package io.examples.calculation.domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import io.vlingo.actors.Address;
+import io.vlingo.actors.Definition;
+import io.vlingo.actors.Stage;
+import io.vlingo.common.Completes;
 
-/**
- * The {@code Calculation} has been modeled to serve a basic mathematical domain,
- * being able to calculate the following operations:
- *
- * <li>{@link Operation#ADDITION}</li>
- * <li>{@link Operation#SUBTRACTION}</li>
- * <li>{@link Operation#MULTIPLICATION}</li>
- *
- * @author Danilo Ambrosio
- */
-public class Calculation {
+import java.util.UUID;
 
-    private final Integer result;
-    private final Operation operation;
-    private final List<Integer> operands = new ArrayList<>();
+public interface Calculation {
 
-    public static Calculation of(final Operation operation,
-                                 final Integer anOperand,
-                                 final Integer anotherOperand) {
-        return new Calculation(operation, anOperand, anotherOperand);
+    static String generateName() {
+        return "O:"+ UUID.randomUUID().toString();
     }
 
-    private Calculation(final Operation operation,
-                        final Integer anOperand,
-                        final Integer anotherOperand) {
-        this.operation = operation;
-        this.operands.addAll(Arrays.asList(anOperand, anotherOperand));
-        this.result = operation.perform(this);
+    static Completes<CalculationState> calculate(final Stage stage,
+                                                 final Operation operation,
+                                                 final Integer anOperand,
+                                                 final Integer anotherOperand)  {
+        final Address address =
+                stage.addressFactory().uniqueWith(generateName());
+
+        final CalculationId id = CalculationId.from(address.idString());
+
+        final Definition definition =
+                Definition.has(CalculationEntity.class, Definition.parameters(id), address.name());
+
+        final Calculation calculation = stage.actorFor(Calculation.class, definition, address);
+
+        return calculation.calculate(operation, anOperand, anotherOperand);
     }
 
-    public boolean isApplicable(final Operation operation,
-                                final Integer anOperand,
-                                final Integer anotherOperand) {
-        return this.operation.equals(operation) &&
-                this.operands.containsAll(Arrays.asList(anOperand, anotherOperand));
-    }
-
-    protected Integer sum() {
-        return this.operands.stream().reduce(0, Math::addExact);
-    }
-
-    protected Integer multiply() {
-        return this.operands.stream().reduce(1, Math::multiplyExact);
-    }
-
-    protected Integer subtract() {
-        return this.operands.stream().reduce(0, (a, b) -> Math.abs(a - b));
-    }
-
-    public Integer result() {
-        return result;
-    }
+    Completes<CalculationState> calculate(final Operation operation, final Integer anOperand, final Integer anotherOperand);
 }

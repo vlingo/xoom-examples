@@ -3,15 +3,16 @@ package io.examples.calculation.endpoint;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.examples.CalculationApplication;
 import io.examples.calculation.domain.Operation;
-import io.micronaut.test.annotation.MicronautTest;
+import io.examples.infrastructure.Bootstrap;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -27,7 +28,6 @@ import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@MicronautTest(application = CalculationApplication.class)
 public class CalculationEndPointTests {
 
     private static final String API_VERSION = "v1";
@@ -63,6 +63,8 @@ public class CalculationEndPointTests {
         final String payload = createCalculationPayload("subtraction", 1017, 980);
         final HttpPost request = new HttpPost(HOST + API_VERSION + "/calculations");
         request.setEntity(new StringEntity(payload, APPLICATION_JSON));
+
+        setUp();
 
         final HttpResponse response =
                 HttpClientBuilder.create().build().execute(request);
@@ -140,6 +142,16 @@ public class CalculationEndPointTests {
         return StreamSupport.stream(nodes, false)
                 .map(node -> Operation.valueOf(node.asText()))
                 .collect(Collectors.toList());
+    }
+
+    @BeforeEach
+    public void setUp() {
+        Bootstrap.boot();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        Bootstrap.instance().stopAndCleanup();
     }
 
 }

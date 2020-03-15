@@ -4,16 +4,14 @@
   <artifactId>vlingo-xoom-heroku-microservice</artifactId>
   <version>1.2.8</version>
   <properties>
-    <micronaut.version>1.2.10</micronaut.version>
     <jdk.version>1.8</jdk.version>
-    <vlingo.platform.version>1.2.7</vlingo.platform.version>
-    <vlingo.xoom.version>1.2.7</vlingo.xoom.version>
-    <micronaut.version>1.2.7</micronaut.version>
+    <micronaut.version>1.2.10</micronaut.version>
+    <vlingo.platform.version>1.2.8</vlingo.platform.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <exec.mainClass>io.examples.CalculationApplication</exec.mainClass>
+    <exec.mainClass>io.examples.infrastructure.Bootstrap</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
   </properties>
@@ -38,7 +36,13 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom-server</artifactId>
-      <version>1.2.8</version>
+      <version>${vlingo.platform.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-lattice</artifactId>
+      <version>${vlingo.platform.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
