@@ -1,4 +1,4 @@
-package io.examples.calculation.application;
+package io.examples.calculation.endpoint;
 
 public class ExecuteCalculation {
 

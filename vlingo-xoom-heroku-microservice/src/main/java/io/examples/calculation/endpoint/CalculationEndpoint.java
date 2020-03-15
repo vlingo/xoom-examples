@@ -1,6 +1,5 @@
 package io.examples.calculation.endpoint;
 
-import io.examples.calculation.application.ExecuteCalculation;
 import io.examples.calculation.endpoint.v1.CalculationResource;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;

@@ -194,14 +194,13 @@
   </dependencyManagement>
   <properties>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.platform.version>1.2.7</vlingo.platform.version>
-    <vlingo.xoom.version>1.2.7</vlingo.xoom.version>
-    <micronaut.version>1.2.7</micronaut.version>
+    <vlingo.platform.version>1.2.8</vlingo.platform.version>
+    <micronaut.version>1.2.10</micronaut.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <exec.mainClass>io.examples.CalculationApplication</exec.mainClass>
+    <exec.mainClass>io.examples.infrastructure.Bootstrap</exec.mainClass>
     <jdk.version>1.8</jdk.version>
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
   </properties>
