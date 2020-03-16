@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.function.Consumer;
 
 @Singleton
-public class OrganizationService {
+public class itOrganizationService {
 
     private final OrganizationRepository organizationRepository;
     private final StepFlowService stepFlowService;
