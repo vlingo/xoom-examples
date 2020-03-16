@@ -5,17 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.examples.calculation.domain.Operation;
 import io.examples.infrastructure.Bootstrap;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
+import io.vlingo.http.Body;
+import io.vlingo.http.Request;
+import io.vlingo.http.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
@@ -23,34 +21,38 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-import static io.micronaut.http.HttpStatus.OK;
-import static org.apache.http.entity.ContentType.APPLICATION_JSON;
+import static io.vlingo.http.Method.GET;
+import static io.vlingo.http.Method.POST;
+import static io.vlingo.http.RequestHeader.host;
+import static io.vlingo.http.Response.Status.Ok;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CalculationEndPointTests {
 
-    private static final String API_VERSION = "v1";
-    private static final String HOST = "http://localhost:8080/";
     private static final ObjectMapper MAPPER = new ObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private static final String HOST = "localhost";
+    private static final int PORT = 8080;
 
     @Test
-    public void testAddition() throws IOException {
+    public void testAddition() throws Exception {
         final String payload = createCalculationPayload("addition", 22, 23);
-        final HttpPost request = new HttpPost(HOST + API_VERSION + "/calculations");
-        request.setEntity(new StringEntity(payload, APPLICATION_JSON));
+        final TestHttpClient client = TestHttpClient.instance(HOST, PORT);
 
-        final HttpResponse response =
-                HttpClientBuilder.create().build().execute(request);
+        final Request request =
+                Request.has(POST)
+                        .and(URI.create("/v1/calculations"))
+                        .and(host(HOST))
+                        .and(Body.from(payload));
 
-        final JsonNode calculationJson =
-                retrieveCalculationJson(response);
+        final Response response = client.requestWith(request).await();
+        final JsonNode calculationJson = asJson(response);
 
         final List<Integer> operands =
                 StreamSupport.stream(calculationJson.get("operands").spliterator(), false)
                         .map(JsonNode::intValue).collect(Collectors.toList());
 
-        assertEquals(OK.getCode(), response.getStatusLine().getStatusCode());
+        assertEquals(Ok, response.status);
         assertEquals("ADDITION", calculationJson.get("operation").asText());
         assertEquals(45, calculationJson.get("result").intValue());
         assertEquals(2, operands.size());
@@ -59,24 +61,24 @@ public class CalculationEndPointTests {
     }
 
     @Test
-    public void testSubtraction() throws IOException {
+    public void testSubtraction() throws Exception {
         final String payload = createCalculationPayload("subtraction", 1017, 980);
-        final HttpPost request = new HttpPost(HOST + API_VERSION + "/calculations");
-        request.setEntity(new StringEntity(payload, APPLICATION_JSON));
+        final TestHttpClient client = TestHttpClient.instance(HOST, PORT);
 
-        setUp();
+        final Request request =
+                Request.has(POST)
+                        .and(URI.create("/v1/calculations"))
+                        .and(host(HOST))
+                        .and(Body.from(payload));
 
-        final HttpResponse response =
-                HttpClientBuilder.create().build().execute(request);
-
-        final JsonNode calculationJson =
-                retrieveCalculationJson(response);
+        final Response response = client.requestWith(request).await();
+        final JsonNode calculationJson = asJson(response);
 
         final List<Integer> operands =
                 StreamSupport.stream(calculationJson.get("operands").spliterator(), false)
                         .map(JsonNode::intValue).collect(Collectors.toList());
 
-        assertEquals(OK.getCode(), response.getStatusLine().getStatusCode());
+        assertEquals(Ok, response.status);
         assertEquals("SUBTRACTION", calculationJson.get("operation").asText());
         assertEquals(37, calculationJson.get("result").intValue());
         assertEquals(2, operands.size());
@@ -85,22 +87,26 @@ public class CalculationEndPointTests {
     }
 
     @Test
-    public void testMultiplication() throws IOException {
+    public void testMultiplication() throws Exception {
         final String payload = createCalculationPayload("multiplication", 4, 55);
-        final HttpPost request = new HttpPost(HOST + API_VERSION + "/calculations");
-        request.setEntity(new StringEntity(payload, APPLICATION_JSON));
+        final TestHttpClient client = TestHttpClient.instance(HOST, PORT);
 
-        final HttpResponse response =
-                HttpClientBuilder.create().build().execute(request);
+        final Request request =
+                Request.has(POST)
+                        .and(URI.create("/v1/calculations"))
+                        .and(host(HOST))
+                        .and(Body.from(payload));
+
+        final Response response = client.requestWith(request).await();
 
         final JsonNode calculationJson =
-                retrieveCalculationJson(response);
+                asJson(response);
 
         final List<Integer> operands =
                 StreamSupport.stream(calculationJson.get("operands").spliterator(), false)
                         .map(JsonNode::intValue).collect(Collectors.toList());
 
-        assertEquals(OK.getCode(), response.getStatusLine().getStatusCode());
+        assertEquals(Ok, response.status);
         assertEquals("MULTIPLICATION", calculationJson.get("operation").asText());
         assertEquals(220, calculationJson.get("result").intValue());
         assertEquals(2, operands.size());
@@ -109,17 +115,20 @@ public class CalculationEndPointTests {
     }
 
     @Test
-    public void testOperationsRetrieval() throws IOException {
-        final HttpGet request =
-                new HttpGet(HOST + API_VERSION + "/calculations/operations");
+    public void testOperationsRetrieval() throws Exception {
+        final TestHttpClient client = TestHttpClient.instance(HOST, PORT);
 
-        final HttpResponse response =
-                HttpClientBuilder.create().build().execute(request);
+        final Request request =
+                Request.has(GET)
+                        .and(URI.create("/v1/calculations/operations"))
+                        .and(host(HOST));
+
+        final Response response = client.requestWith(request).await();
 
         final List<Operation> operations =
-                retrieveOperationsFromJson(response);
+                deserializeOperations(response);
 
-        assertEquals(OK.getCode(), response.getStatusLine().getStatusCode());
+        assertEquals(Ok, response.status);
         assertTrue(operations.containsAll(Arrays.asList(Operation.values())));
     }
 
@@ -133,12 +142,12 @@ public class CalculationEndPointTests {
         return node.toString();
     }
 
-    private static JsonNode retrieveCalculationJson(final HttpResponse response) throws IOException {
-        return MAPPER.readTree(EntityUtils.toString(response.getEntity()));
+    private JsonNode asJson(final Response response) throws IOException {
+        return MAPPER.readTree(response.entity.content());
     }
 
-    private static List<Operation> retrieveOperationsFromJson(final HttpResponse response) throws IOException {
-        final Spliterator<JsonNode> nodes = MAPPER.readTree(EntityUtils.toString(response.getEntity())).spliterator();
+    private static List<Operation> deserializeOperations(final Response response) throws IOException {
+        final Spliterator<JsonNode> nodes = MAPPER.readTree(response.entity.content()).spliterator();
         return StreamSupport.stream(nodes, false)
                 .map(node -> Operation.valueOf(node.asText()))
                 .collect(Collectors.toList());
@@ -150,8 +159,9 @@ public class CalculationEndPointTests {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
         Bootstrap.instance().stopAndCleanup();
+        TestHttpClient.instance(HOST, PORT).close();
     }
 
 }
