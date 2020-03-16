@@ -212,7 +212,9 @@ Ensure the PODs are healthy and running
 
 ## API Gateway
 
-Taking advantage of Gloo's API Gateway, we're able to expose REST resources having a single entry point to our microservices. The following Gateway setup is made solely through [Gloo command line tool](https://docs.solo.io/gloo/latest/installation/gateway/kubernetes/#install-command-line-tool-cli), so ensure it is installed.
+Taking advantage of [Gloo's API Gateway](https://docs.solo.io/gloo/latest/), we're able to expose REST resources having a single entry point to our microservices. Gloo builds on [Envoy Proxy](https://www.envoyproxy.io), a popular service proxy, to add API-level capabilities like transformations, rate limiting, and authentication/authorization and is built to be Kubernetes native (uses CRDs, no extra databases, etc).
+
+The following Gateway setup is made solely through [Gloo command line tool](https://docs.solo.io/gloo/latest/installation/gateway/kubernetes/#install-command-line-tool-cli), so ensure it is installed.
 
 To install the API Gateway on Kubernetes, run the following command:
 
@@ -263,6 +265,7 @@ If _Virtual Service_ status is accepted, Gateway API was successfully configured
 	|                 |              |         |      |          |                 | (upstream)                       | 
 	+-----------------+--------------+---------+------+----------+-----------------+----------------------------------+
 
+In this example, we are using the `glooctl` cli tool, but all of this could be done with just `kubectl` and Gloo Custom Resources as well. `glooctl` simplifies and improves the experience with the API Gateway.
 
 ## Client Usage Examples
  
