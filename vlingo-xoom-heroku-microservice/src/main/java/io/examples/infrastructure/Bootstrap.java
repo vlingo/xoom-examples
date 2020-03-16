@@ -9,6 +9,7 @@
 package io.examples.infrastructure;
 
 import io.examples.calculation.domain.CalculationState;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.runtime.Micronaut;
 import io.vlingo.actors.World;
 import io.vlingo.http.resource.Server;
@@ -36,12 +37,18 @@ public class Bootstrap {
 
     public static Bootstrap instance() {
         if (instance == null) {
+            final ApplicationContext applicationContext = run();
+
             final VlingoServer vlingoServer =
-                    Micronaut.run(Bootstrap.class).getBean(VlingoServer.class);
+                    applicationContext.getBean(VlingoServer.class);
 
             instance = new Bootstrap(vlingoServer);
         }
         return instance;
+    }
+
+    private static ApplicationContext run() {
+        return Micronaut.run(Bootstrap.class);
     }
 
     private Bootstrap(final VlingoServer vlingoServer) {
@@ -64,6 +71,10 @@ public class Bootstrap {
         world.terminate();
         server.stop();
         pause();
+    }
+
+    public World world() {
+        return world;
     }
 
     private void pause() {

@@ -11,6 +11,7 @@ import io.vlingo.actors.Address;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
+import io.vlingo.symbio.store.state.StateStore;
 
 import java.util.UUID;
 
@@ -24,6 +25,7 @@ public interface Calculation {
                                                  final Operation operation,
                                                  final Integer anOperand,
                                                  final Integer anotherOperand)  {
+
         final Address address =
                 stage.addressFactory().uniqueWith(generateName());
 
