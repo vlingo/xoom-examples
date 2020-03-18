@@ -1,8 +1,14 @@
 package io.examples.calculation.domain;
 
+import io.examples.infrastructure.CalculationQueryProvider;
 import io.vlingo.actors.Stage;
+import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestWorld;
+import io.vlingo.common.Outcome;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
+import io.vlingo.symbio.Source;
+import io.vlingo.symbio.store.Result;
+import io.vlingo.symbio.store.StorageException;
 import io.vlingo.symbio.store.state.StateStore;
 import io.vlingo.symbio.store.state.inmemory.InMemoryStateStoreActor;
 import org.junit.jupiter.api.AfterEach;
@@ -11,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.List;
 
 public class CalculationTests {
 
@@ -40,14 +47,18 @@ public class CalculationTests {
 
     @BeforeEach
     public void setUp() {
-        final TestWorld testWorld = TestWorld.start("calculation-test");
+        final World world = TestWorld.start("calculation-test").world();
 
-        final StatefulTypeRegistry registry = new StatefulTypeRegistry(testWorld.world());
+        final StatefulTypeRegistry registry = new StatefulTypeRegistry(world);
 
         final StateStore stateStore =
-                testWorld.world().stage().actorFor(StateStore.class, InMemoryStateStoreActor.class, Collections.emptyList());
+                world.stage().actorFor(StateStore.class, InMemoryStateStoreActor.class, Collections.emptyList());
+
+        CalculationQueryProvider.using(world.stage(), stateStore);
 
         registry.register(new StatefulTypeRegistry.Info(stateStore, CalculationState.class, "StateStore"));
+
+        stateStore.write("0", null, 0, noOpResultInterest());
     }
 
     private Stage stage() {
@@ -59,4 +70,12 @@ public class CalculationTests {
         TestWorld.Instance.get().world().terminate();
     }
 
+    private StateStore.WriteResultInterest noOpResultInterest() {
+        return  new StateStore.WriteResultInterest() {
+            @Override
+            public <S, C> void writeResultedIn(Outcome<StorageException, Result> outcome, String s, S s1, int i, List<Source<C>> list, Object o) {
+
+            }
+        };
+    }
 }

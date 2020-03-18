@@ -13,20 +13,20 @@ The following tree structure is from the project's `./src/main/java` directory. 
         └── examples
             ├── CalculationApplication.java
             └── calculation
-                ├── application
-                │   ├── CalculationApplicationService.java (Business Logic)
-                │   └── ExecuteCalculation.java (Command)
                 ├── domain
-                │   ├── Calculation.java (Aggregate)
-                │   └── Operation.java (Value Object)
-                ├── repository
-                │   ├── CalculationRepository.java 
-                │   └── InMemoryCalculationRepository.java
-                └── endpoint
-                    ├── CalculationEndpoint.java (Anti-corruption Layer)
-                    └── v1
-                        └── CalculationResource.java
-
+                │   ├── Calculation.java (Aggregate Protocol)
+                │   ├── CalculationEntity.java (Aggregate / Entity)
+                │   ├── CalculationId.java
+                │   ├── CalculationState.java
+                │   └── Operation.java (Value)            
+                ├── endpoint
+                │   ├── CalculationEndpoint.java (Anti-corruption Layer)
+                │   └── v1
+                │       └── CalculationResource.java
+                └── infrastructure
+                    ├── ApplicationRegistry.java 
+                    ├── Bootstrap.java 
+                    └── InMemoryCalculationRepository.java
 
 In addition to the tree structure above, you will find `./src/main/tests` for unit tests and `./src/main/java/resources/application.yml` for externalized configuration.
 
