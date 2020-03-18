@@ -61,6 +61,8 @@ public class Bootstrap {
         new StatefulTypeRegistry(world)
                 .register(new Info(stateStore, CalculationState.class, "StateStore"));
 
+        CalculationQueryProvider.using(world.stage(), stateStore);
+
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             stopAndCleanup();
         }));

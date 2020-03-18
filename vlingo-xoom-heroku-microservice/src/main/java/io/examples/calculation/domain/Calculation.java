@@ -7,11 +7,11 @@
 
 package io.examples.calculation.domain;
 
+import io.examples.infrastructure.CalculationQueryProvider;
 import io.vlingo.actors.Address;
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
-import io.vlingo.symbio.store.state.StateStore;
 
 import java.util.UUID;
 
@@ -26,17 +26,25 @@ public interface Calculation {
                                                  final Integer anOperand,
                                                  final Integer anotherOperand)  {
 
-        final Address address =
-                stage.addressFactory().uniqueWith(generateName());
+       return CalculationQueryProvider.instance().queries
+               .calculationOf(operation, anOperand, anotherOperand)
+               .andThen(existingCalculation -> {
+                    if(existingCalculation.isPresent()) {
+                        return Completes.withSuccess(existingCalculation);
+                    }
 
-        final CalculationId id = CalculationId.from(address.idString());
+                    final Address address =
+                            stage.addressFactory().uniqueWith(generateName());
 
-        final Definition definition =
-                Definition.has(CalculationEntity.class, Definition.parameters(id), address.name());
+                    final CalculationId id = CalculationId.from(address.idString());
 
-        final Calculation calculation = stage.actorFor(Calculation.class, definition, address);
+                    final Definition definition =
+                            Definition.has(CalculationEntity.class, Definition.parameters(id), address.name());
 
-        return calculation.calculate(operation, anOperand, anotherOperand);
+                    final Calculation calculation = stage.actorFor(Calculation.class, definition, address);
+
+                    return calculation.calculate(operation, anOperand, anotherOperand);
+                }).andFinally();
     }
 
     Completes<CalculationState> calculate(final Operation operation, final Integer anOperand, final Integer anotherOperand);
