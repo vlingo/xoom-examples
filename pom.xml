@@ -71,7 +71,7 @@
     <module>vlingo-auth-authservice</module>
     <module>vlingo-ecommerce</module>
     <module>vlingo-eventjournal</module>
-    <modele>vlingo-distributed-ping-pong</module>
+    <module>vlingo-distributed-ping-pong</module>
     <module>vlingo-http-backservice</module>
     <module>vlingo-http-frontservice</module>
     <module>vlingo-iddd-agilepm</module>
