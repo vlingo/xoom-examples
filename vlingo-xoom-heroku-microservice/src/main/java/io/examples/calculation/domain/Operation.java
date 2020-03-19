@@ -4,19 +4,19 @@ import java.util.function.Function;
 
 /**
  * The {@code Operation} specifies the supported mathematical
- * operations on {@link Calculation}.
+ * operations on {@link CalculationEntity}.
  *
  * @author Danilo Ambrosio
  */
 public enum Operation {
 
-    ADDITION(Calculation::sum),
-    SUBTRACTION(Calculation::subtract),
-    MULTIPLICATION(Calculation::multiply);
+    ADDITION(CalculationState::sum),
+    SUBTRACTION(CalculationState::subtract),
+    MULTIPLICATION(CalculationState::multiply);
 
-    private final Function<Calculation, Integer> function;
+    private final Function<CalculationState, Integer> function;
 
-    Operation(final Function<Calculation, Integer> function) {
+    Operation(final Function<CalculationState, Integer> function) {
         this.function = function;
     }
 
@@ -24,7 +24,7 @@ public enum Operation {
         return valueOf(operationName.toUpperCase());
     }
 
-    public Integer perform(final Calculation calculation) {
-        return this.function.apply(calculation);
+    public Integer perform(final CalculationState calculationState) {
+        return this.function.apply(calculationState);
     }
 }
