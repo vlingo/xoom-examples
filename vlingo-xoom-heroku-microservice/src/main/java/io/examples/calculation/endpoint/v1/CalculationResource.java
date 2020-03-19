@@ -1,8 +1,12 @@
 package io.examples.calculation.endpoint.v1;
 
-import io.examples.calculation.application.CalculationApplicationService;
-import io.examples.calculation.application.ExecuteCalculation;
+import io.examples.calculation.domain.Calculation;
+import io.examples.calculation.domain.CalculationState;
+import io.examples.calculation.domain.Operation;
 import io.examples.calculation.endpoint.CalculationEndpoint;
+import io.examples.calculation.endpoint.ExecuteCalculation;
+import io.examples.infrastructure.ApplicationRegistry;
+import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.RequestHandler;
@@ -14,8 +18,8 @@ import static io.vlingo.http.Response.Status.Ok;
 
 /**
  * This {@code CalculationResource} exposes a REST API that maps resource HTTP request-response handlers to operations
- * contained in the {@link CalculationApplicationService}. This {@link Endpoint} implementation forms an anti-corruption layer between
- * consuming services and this microservice's {@link CalculationApplicationService} API.
+ * contained in the {@link Calculation}. This {@link Endpoint} implementation forms an anti-corruption layer between
+ * consuming services and this microservice.
  * <p>
  * This resource is a versioned API definition that implements the {@link CalculationEndpoint}. To fork versions, create a
  * separate implementation of the {@link CalculationEndpoint} in a separate package and change the getRequestHandlers
@@ -28,20 +32,29 @@ import static io.vlingo.http.Response.Status.Ok;
 public class CalculationResource implements CalculationEndpoint {
 
     private static final String ENDPOINT_VERSION = "1.1";
-    private final CalculationApplicationService calculationApplicationService;
 
-    public CalculationResource(final CalculationApplicationService calculationApplicationService) {
-        this.calculationApplicationService = calculationApplicationService;
+    private final ApplicationRegistry applicationRegistry;
+
+    public CalculationResource(final ApplicationRegistry applicationRegistry) {
+        this.applicationRegistry = applicationRegistry;
     }
 
     @Override
     public Completes<Response> calculate(final ExecuteCalculation executeCalculation) {
-        return response(Ok, calculationApplicationService.calculate(executeCalculation));
+        final World world = applicationRegistry.retrieveWorld();
+
+        final Operation operation = Operation.withName(executeCalculation.operationName());
+
+        final Completes<CalculationState> state =
+                Calculation.calculate(world.stage(), operation, executeCalculation.firstOperand(),
+                        executeCalculation.secondOperand());
+
+        return response(Ok, state);
     }
 
     @Override
     public Completes<Response> retrieveSupportedOperations() {
-        return response(Ok, calculationApplicationService.retrieveSupportedOperations());
+        return response(Ok, Completes.withSuccess(Operation.values()));
     }
 
     public RequestHandler[] getHandlers() {
