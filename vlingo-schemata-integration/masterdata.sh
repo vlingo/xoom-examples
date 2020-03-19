@@ -4,7 +4,15 @@
 # VLINGO_SCHEMATA_PORT being set.
 
 ORG_ID=$(curl -s -d '{ "organizationId": "", "name": "Vlingo", "description": "Vlingo Organization" }' -H 'Content-Type: application/json' -X POST http://localhost:${VLINGO_SCHEMATA_PORT}/organizations | jq -r '.organizationId')
+echo Created organization ${ORG_ID}
+
 UNIT_ID=$(curl -s -d '{ "organizationId": "'${ORG_ID}'", "unitId": "", "name": "examples", "description": "Examples for vlingo/schemata" }' -X POST -H 'Content-Type: application/json' http://localhost:${VLINGO_SCHEMATA_PORT}/organizations/${ORG_ID}/units | jq -r '.unitId')
+echo Created unit ${UNIT_ID}
+
 CONTEXT_ID=$(curl -s -X POST -H 'Content-Type: application/json' -d '{ "organizationId": "'${ORG_ID}'", "unitId": "'${UNIT_ID}'", "contextId": "", "namespace": "io.vlingo.examples.schemata", "description": "Bounded context for vlingo/schemata examples" }' http://localhost:${VLINGO_SCHEMATA_PORT}/organizations/${ORG_ID}/units/${UNIT_ID}/contexts | jq -r '.contextId')
-curl -s -X POST -H 'Content-Type: application/json' -d '{ "organizationId": "'${ORG_ID}'", "unitId": "'${UNIT_ID}'", "contextId": "'${CONTEXT_ID}'", "schemaId": "", "category": "Event", "name": "SchemaDefined", "scope": "Public", "description": "Fired whenever a new schema is defined." }' http://localhost:${VLINGO_SCHEMATA_PORT}/organizations/${ORG_ID}/units/${UNIT_ID}/contexts/${CONTEXT_ID}/schemas
-curl -s -X POST -H 'Content-Type: application/json' -d '{ "organizationId": "'${ORG_ID}'", "unitId": "'${UNIT_ID}'", "contextId": "'${CONTEXT_ID}'", "schemaId": "", "category": "Event", "name": "SchemaPublished", "scope": "Public", "description": "Fired whenever a schema version is published." }' http://localhost:${VLINGO_SCHEMATA_PORT}/organizations/${ORG_ID}/units/${UNIT_ID}/contexts/${CONTEXT_ID}/schemas
+echo Created context ${CONTEXT_ID}
+
+curl -s -X POST -H 'Content-Type: application/json' -d '{ "organizationId": "'${ORG_ID}'", "unitId": "'${UNIT_ID}'", "contextId": "'${CONTEXT_ID}'", "schemaId": "", "category": "Event", "name": "SchemaDefined", "scope": "Public", "description": "Fired whenever a new schema is defined." }' http://localhost:${VLINGO_SCHEMATA_PORT}/organizations/${ORG_ID}/units/${UNIT_ID}/contexts/${CONTEXT_ID}/schemas | jq
+curl -s -X POST -H 'Content-Type: application/json' -d '{ "organizationId": "'${ORG_ID}'", "unitId": "'${UNIT_ID}'", "contextId": "'${CONTEXT_ID}'", "schemaId": "", "category": "Event", "name": "SchemaPublished", "scope": "Public", "description": "Fired whenever a schema version is published." }' http://localhost:${VLINGO_SCHEMATA_PORT}/organizations/${ORG_ID}/units/${UNIT_ID}/contexts/${CONTEXT_ID}/schemas | jq
+echo Created schemata.
+echo Done.
