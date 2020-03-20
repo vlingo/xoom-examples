@@ -14,14 +14,13 @@ import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.symbio.store.dispatch.DispatcherControl;
 
 public class MockDispatcher implements Dispatcher<Dispatchable<Entry<?>, State<?>>> {
+
   @Override
   public void controlWith(final DispatcherControl control) {
-
-    System.out.println(control);
   }
 
   @Override
   public void dispatch(final Dispatchable<Entry<?>, State<?>> dispatchable) {
-    System.out.println(dispatchable);
   }
+
 }
