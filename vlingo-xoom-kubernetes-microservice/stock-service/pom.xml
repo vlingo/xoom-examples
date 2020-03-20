@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>stock-service</artifactId>
-  <version>1.2.8</version>
+  <version>1.2.9</version>
   <parent>
     <groupId>io.examples</groupId>
     <artifactId>vlingo-xoom-kubernetes-microservice</artifactId>
@@ -14,7 +14,7 @@
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <exec.mainClass>io.examples.infrastructure.Bootstrap</exec.mainClass>
+    <exec.mainClass>io.examples.StockApplication</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
   </properties>
@@ -44,13 +44,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom-server</artifactId>
-      <version>${vlingo.platform.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-lattice</artifactId>
-      <version>${vlingo.platform.version}</version>
+      <version>1.2.9</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
