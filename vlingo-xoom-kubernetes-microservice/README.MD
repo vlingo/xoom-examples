@@ -42,9 +42,9 @@ This project contains two microservices: Order and Stock. The following tree str
     └── io
         └── examples
             └── infrastructure
-            |   └── messaging
-            |       ├── ChanelPoolListener.java (JMS Configuration)
-            |       └── DomainEventListener.java
+            │   └── messaging
+            │       ├── ChanelPoolListener.java (JMS Configuration)
+            │       └── DomainEventListener.java
             ├── StockApplication.java
             └── stock
                 ├── application
@@ -52,19 +52,18 @@ This project contains two microservices: Order and Stock. The following tree str
                 │   ├── OpenStock.java (Command)
                 │   ├── StockApplicationServices.java (Business Logic)
                 │   └── UnloadItem.java (Command)
-                ├── data
-                │   └── Identity.java (Command)
                 ├── domain
                 │   ├── ItemId.java 
-                |   ├── Location.java (Value Object)
-                |   ├── Stock.java (Aggregate Entity)
+                │   ├── Location.java (Value Object)
+                │   ├── Stock.java (Aggregate Entity)
                 │   └── StorageUnit.java (Value Object)
-                ├── repository
-                │   └── StockRepository.java
                 └── endpoint
                     ├── StockEndpoint.java (Anti-corruption Layer)
                     └── v1
-                        └── StockResource.java
+                        ├── AddItems.java (Command)
+                        ├── OpenStock.java (Command)
+                        ├── StockResource.java
+                        └── UnloadItem.java (Command)
 
 In addition to the tree structure above, in both microservices, you will find `./src/main/tests` for unit tests and `./src/main/java/resources/application.yml` for externalized configuration. In root, the `deployment` folder contains all YAML files related to Kubernetes and Helm Chart.  
 
