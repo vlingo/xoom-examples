@@ -44,7 +44,13 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom-server</artifactId>
-      <version>1.2.9</version>
+      <version>${vlingo.platform.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-lattice</artifactId>
+      <version>${vlingo.platform.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
