@@ -22,8 +22,6 @@ import io.vlingo.symbio.store.object.StateObjectMapper;
 import io.vlingo.symbio.store.object.inmemory.InMemoryObjectStoreActor;
 import io.vlingo.xoom.VlingoServer;
 
-import static java.util.Collections.emptyList;
-
 public class Bootstrap {
 
     private static Bootstrap instance;
