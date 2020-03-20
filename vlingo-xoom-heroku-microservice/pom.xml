@@ -6,7 +6,7 @@
   <properties>
     <jdk.version>1.8</jdk.version>
     <micronaut.version>1.2.10</micronaut.version>
-    <vlingo.platform.version>1.2.8</vlingo.platform.version>
+    <vlingo.platform.version>1.2.9</vlingo.platform.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
