@@ -7,11 +7,13 @@
 
 package io.examples.calculation.domain;
 
+import io.vlingo.symbio.store.object.StateObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CalculationState {
+public class CalculationState extends StateObject {
 
     private final CalculationId id;
     private Integer result;
@@ -47,6 +49,10 @@ public class CalculationState {
                                 final Integer anotherOperand) {
         return this.operation.equals(operation) &&
                 this.operands.containsAll(Arrays.asList(anOperand, anotherOperand));
+    }
+
+    public CalculationId id() {
+        return id;
     }
 
     public Integer result() {

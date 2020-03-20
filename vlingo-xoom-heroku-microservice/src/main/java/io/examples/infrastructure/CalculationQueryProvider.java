@@ -10,16 +10,16 @@ package io.examples.infrastructure;
 
 import io.examples.calculation.domain.CalculationQueriesActor;
 import io.vlingo.actors.Stage;
-import io.vlingo.symbio.store.state.StateStore;
+import io.vlingo.symbio.store.object.ObjectStore;
 
 public class CalculationQueryProvider {
 
-    public final CalculationQueries queries;
+    private final CalculationQueries queries;
     private static CalculationQueryProvider instance;
 
-    public static CalculationQueryProvider using(final Stage stage, final StateStore stateStore) {
+    public static CalculationQueryProvider using(final Stage stage, final ObjectStore objectStore) {
         if(instance == null) {
-            instance = new CalculationQueryProvider(stage, stateStore);
+            instance = new CalculationQueryProvider(stage, objectStore);
         }
         return instance;
     }
@@ -28,8 +28,16 @@ public class CalculationQueryProvider {
         return instance;
     }
 
-    private CalculationQueryProvider(final Stage stage, final StateStore stateStore) {
-        this.queries = stage.actorFor(CalculationQueries.class, CalculationQueriesActor.class, stateStore);
+    public static void reset() {
+        instance = null;
+    }
+
+    private CalculationQueryProvider(final Stage stage, final ObjectStore objectStore) {
+        this.queries = stage.actorFor(CalculationQueries.class, CalculationQueriesActor.class, objectStore);
+    }
+
+    public CalculationQueries queries() {
+        return queries;
     }
 
 }

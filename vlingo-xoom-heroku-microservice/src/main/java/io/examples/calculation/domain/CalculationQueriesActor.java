@@ -9,55 +9,30 @@
 package io.examples.calculation.domain;
 
 import io.examples.infrastructure.CalculationQueries;
-import io.vlingo.actors.Actor;
 import io.vlingo.common.Completes;
-import io.vlingo.reactivestreams.Sink;
-import io.vlingo.reactivestreams.Stream;
-import io.vlingo.symbio.Entry;
-import io.vlingo.symbio.store.state.StateStore;
+import io.vlingo.lattice.query.StateObjectQueryActor;
+import io.vlingo.symbio.store.MapQueryExpression;
+import io.vlingo.symbio.store.QueryExpression;
+import io.vlingo.symbio.store.object.ObjectStore;
+import io.vlingo.symbio.store.object.ObjectStoreReader;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.text.html.Option;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.IntStream;
 
-public class CalculationQueriesActor extends Actor implements CalculationQueries {
+public class CalculationQueriesActor extends StateObjectQueryActor implements CalculationQueries {
 
-    private final StateStore stateStore;
-
-    public CalculationQueriesActor(final StateStore stateStore) {
-        this.stateStore = stateStore;
+    public CalculationQueriesActor(final ObjectStore objectStore) {
+        super(objectStore);
     }
 
     @Override
-    public Completes<List<CalculationState>> allCalculations() {
-        final List<CalculationState> results = new ArrayList<>();
+    public Completes<Set<CalculationState>> allCalculations() {
+        final QueryExpression queryExpression =
+                MapQueryExpression.using(CalculationState.class, "findAll");
 
-        final Sink<CalculationState> sink =
-                Sink.consumeWith(state -> results.add(state));
-
-        return stateStore.entryReader("states")
-                .andFinallyConsume(reader -> {
-                    reader.size().andThenConsume(size -> {
-                        IntStream.range(0, size.intValue()).forEach(index -> {
-
-                        });
-                    });
-                })
-                .andThenTo(stream -> Completes.withSuccess(results))
-                .andFinally();
+        return this.queryAll(Set.class, queryExpression, states -> (Set) states);
     }
 
-    @Override
-    public Completes<Optional<CalculationState>> calculationOf(final Operation operation,
-                                                               final Integer anOperand,
-                                                               final Integer anotherOperand) {
-        final Predicate<CalculationState> applicabilityFilter =
-                state -> state.isApplicable(operation, anOperand, anotherOperand);
-
-        return allCalculations().andThenTo(calculations -> {
-            return Completes.withFailure(calculations.stream().filter(applicabilityFilter).findFirst());
-        });
-    }
 }

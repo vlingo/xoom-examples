@@ -13,39 +13,35 @@ import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 
+import java.util.Set;
 import java.util.UUID;
 
 public interface Calculation {
 
     static String generateName() {
-        return "O:"+ UUID.randomUUID().toString();
+        return "O:" + UUID.randomUUID().toString();
     }
 
     static Completes<CalculationState> calculate(final Stage stage,
                                                  final Operation operation,
                                                  final Integer anOperand,
-                                                 final Integer anotherOperand)  {
+                                                 final Integer anotherOperand) {
 
-       return CalculationQueryProvider.instance().queries
-               .calculationOf(operation, anOperand, anotherOperand)
-               .andThen(existingCalculation -> {
-                    if(existingCalculation.isPresent()) {
-                        return Completes.withSuccess(existingCalculation);
-                    }
+        final Completes<Set<CalculationState>> calculations =
+                CalculationQueryProvider.instance().queries().allCalculations();
 
-                    final Address address =
-                            stage.addressFactory().uniqueWith(generateName());
+        return calculations.andThenTo(existingCalculations -> {
+            final Address address =
+                    stage.addressFactory().uniqueWith(generateName());
 
-                    final CalculationId id = CalculationId.from(address.idString());
+            final Definition definition =
+                    Definition.has(CalculationEntity.class, Definition.parameters(CalculationId.from(address.idString())));
 
-                    final Definition definition =
-                            Definition.has(CalculationEntity.class, Definition.parameters(id), address.name());
+            final Calculation calculation = stage.actorFor(Calculation.class, definition, address);
 
-                    final Calculation calculation = stage.actorFor(Calculation.class, definition, address);
-
-                    return calculation.calculate(operation, anOperand, anotherOperand);
-                }).andFinally();
+            return calculation.calculate(operation, anOperand, anotherOperand, existingCalculations);
+        });
     }
 
-    Completes<CalculationState> calculate(final Operation operation, final Integer anOperand, final Integer anotherOperand);
+    Completes<CalculationState> calculate(final Operation operation, final Integer anOperand, final Integer anotherOperand, final Set<CalculationState> existingCalculations);
 }
