@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-simgui-mediator</artifactId>
-  <version>1.2.8</version>
+  <version>1.2.9</version>
   <name>vlingo-simgui-mediator</name>
   <description>Example of vlingo/actors in a simulated GUI.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>1.2.8</version>
+      <version>1.2.9</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
