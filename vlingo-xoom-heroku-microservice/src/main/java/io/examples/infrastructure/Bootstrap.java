@@ -8,15 +8,18 @@
 
 package io.examples.infrastructure;
 
+import io.examples.calculation.domain.Calculation;
 import io.examples.calculation.domain.CalculationState;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.runtime.Micronaut;
 import io.vlingo.actors.World;
 import io.vlingo.http.resource.Server;
-import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
-import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
-import io.vlingo.symbio.store.state.StateStore;
-import io.vlingo.symbio.store.state.inmemory.InMemoryStateStoreActor;
+import io.vlingo.lattice.model.object.ObjectTypeRegistry;
+import io.vlingo.lattice.model.object.ObjectTypeRegistry.Info;
+import io.vlingo.symbio.store.MapQueryExpression;
+import io.vlingo.symbio.store.object.ObjectStore;
+import io.vlingo.symbio.store.object.StateObjectMapper;
+import io.vlingo.symbio.store.object.inmemory.InMemoryObjectStoreActor;
 import io.vlingo.xoom.VlingoServer;
 
 import static java.util.Collections.emptyList;
@@ -55,13 +58,22 @@ public class Bootstrap {
         this.server = vlingoServer.getServer();
         this.world = vlingoServer.getVlingoScene().getWorld();
 
-        final StateStore stateStore =
-                world.stage().actorFor(StateStore.class, InMemoryStateStoreActor.class, emptyList());
+        final MapQueryExpression objectQuery =
+                MapQueryExpression.using(Calculation.class, "find", MapQueryExpression.map("id", "id"));
 
-        new StatefulTypeRegistry(world)
-                .register(new Info(stateStore, CalculationState.class, "StateStore"));
+        final ObjectStore objectStore =
+                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
 
-        CalculationQueryProvider.using(world.stage(), stateStore);
+        final StateObjectMapper stateObjectMapper =
+                StateObjectMapper.with(Calculation.class, new Object(), new Object());
+
+        final Info<CalculationState> info =
+                new Info(objectStore, CalculationState.class,
+                        "ObjectStore", objectQuery, stateObjectMapper);
+
+        new ObjectTypeRegistry(world).register(info);
+
+        CalculationQueryProvider.using(world.stage(), objectStore);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             stopAndCleanup();
@@ -72,6 +84,7 @@ public class Bootstrap {
         instance = null;
         world.terminate();
         server.stop();
+        CalculationQueryProvider.reset();
         pause();
     }
 

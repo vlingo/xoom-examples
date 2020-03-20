@@ -1,7 +1,12 @@
 package io.examples.calculation.domain;
 
 import io.vlingo.common.Completes;
+import io.vlingo.lattice.model.object.ObjectEntity;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
+
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * The {@code Calculation} serves a basic mathematical domain,
@@ -13,7 +18,7 @@ import io.vlingo.lattice.model.stateful.StatefulEntity;
  *
  * @author Danilo Ambrosio
  */
-public class CalculationEntity extends StatefulEntity<CalculationState> implements Calculation {
+public class CalculationEntity extends ObjectEntity<CalculationState> implements Calculation {
 
     private CalculationState state;
 
@@ -25,17 +30,40 @@ public class CalculationEntity extends StatefulEntity<CalculationState> implemen
     @Override
     public Completes<CalculationState> calculate(final Operation operation,
                                                  final Integer anOperand,
-                                                 final Integer anotherOperand) {
+                                                 final Integer anotherOperand,
+                                                 final Set<CalculationState> existingCalculations) {
+        final Optional<CalculationState> similar =
+                findSimilarCalculation(operation, anOperand, anotherOperand, existingCalculations);
+
+        if(similar.isPresent()) {
+            return this.answerFrom(Completes.withSuccess(similar.get()));
+        }
+
         return apply(state.calculate(operation, anOperand, anotherOperand), () -> state);
     }
 
     @Override
-    protected void state(final CalculationState state) {
-        this.state = state;
+    protected CalculationState stateObject() {
+        return state;
     }
 
     @Override
-    protected Class<CalculationState> stateType() {
+    protected void stateObject(final CalculationState calculationState) {
+        this.state = calculationState;
+    }
+
+    @Override
+    protected Class<CalculationState> stateObjectType() {
         return CalculationState.class;
+    }
+
+    private Optional<CalculationState> findSimilarCalculation(final Operation operation,
+                                                              final Integer anOperand,
+                                                              final Integer anotherOperand,
+                                                              final Set<CalculationState> existingCalculations) {
+        final Predicate<CalculationState> applicabilityFilter =
+                state -> state.isApplicable(operation, anOperand, anotherOperand);
+
+        return existingCalculations.stream().filter(applicabilityFilter).findFirst();
     }
 }

@@ -8,16 +8,12 @@
 package io.examples.infrastructure;
 
 import io.examples.calculation.domain.CalculationState;
-import io.examples.calculation.domain.Operation;
 import io.vlingo.common.Completes;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 public interface CalculationQueries {
 
-    Completes<List<CalculationState>> allCalculations();
-
-    Completes<Optional<CalculationState>> calculationOf(final Operation operation, final Integer anOperand, final Integer anotherOperand);
+    Completes<Set<CalculationState>> allCalculations();
 
 }

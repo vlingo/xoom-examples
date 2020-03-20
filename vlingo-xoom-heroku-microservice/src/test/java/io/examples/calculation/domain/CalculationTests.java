@@ -1,23 +1,19 @@
 package io.examples.calculation.domain;
 
 import io.examples.infrastructure.CalculationQueryProvider;
+import io.examples.infrastructure.MockDispatcher;
 import io.vlingo.actors.Stage;
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.TestWorld;
-import io.vlingo.common.Outcome;
-import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
-import io.vlingo.symbio.Source;
-import io.vlingo.symbio.store.Result;
-import io.vlingo.symbio.store.StorageException;
-import io.vlingo.symbio.store.state.StateStore;
-import io.vlingo.symbio.store.state.inmemory.InMemoryStateStoreActor;
+import io.vlingo.lattice.model.object.ObjectTypeRegistry;
+import io.vlingo.symbio.store.MapQueryExpression;
+import io.vlingo.symbio.store.object.ObjectStore;
+import io.vlingo.symbio.store.object.StateObjectMapper;
+import io.vlingo.symbio.store.object.inmemory.InMemoryObjectStoreActor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Collections;
-import java.util.List;
 
 public class CalculationTests {
 
@@ -28,6 +24,21 @@ public class CalculationTests {
 
         Assertions.assertEquals(4, state.result());
     }
+
+    @Test
+    public void testRepeatedAddition() {
+        final CalculationState firstState =
+                Calculation.calculate(stage(), Operation.ADDITION, 3, 2).await();
+
+        Assertions.assertEquals(5, firstState.result());
+
+        final CalculationState secondState =
+                Calculation.calculate(stage(), Operation.ADDITION, 2, 3).await();
+
+        Assertions.assertEquals(5, secondState.result());
+        Assertions.assertEquals(firstState.id().value, secondState.id().value);
+    }
+
 
     @Test
     public void testSubtraction() {
@@ -49,16 +60,22 @@ public class CalculationTests {
     public void setUp() {
         final World world = TestWorld.start("calculation-test").world();
 
-        final StatefulTypeRegistry registry = new StatefulTypeRegistry(world);
+        final MapQueryExpression objectQuery =
+                MapQueryExpression.using(Calculation.class, "find", MapQueryExpression.map("id", "id"));
 
-        final StateStore stateStore =
-                world.stage().actorFor(StateStore.class, InMemoryStateStoreActor.class, Collections.emptyList());
+        final ObjectStore objectStore =
+                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
 
-        CalculationQueryProvider.using(world.stage(), stateStore);
+        final StateObjectMapper stateObjectMapper =
+                StateObjectMapper.with(CalculationState.class, new Object(), new Object());
 
-        registry.register(new StatefulTypeRegistry.Info(stateStore, CalculationState.class, "StateStore"));
+        final ObjectTypeRegistry.Info<CalculationState> info =
+                new ObjectTypeRegistry.Info(objectStore, CalculationState.class,
+                        "ObjectStore", objectQuery, stateObjectMapper);
 
-        stateStore.write("0", null, 0, noOpResultInterest());
+        new ObjectTypeRegistry(world).register(info);
+
+        CalculationQueryProvider.using(world.stage(), objectStore);
     }
 
     private Stage stage() {
@@ -68,14 +85,16 @@ public class CalculationTests {
     @AfterEach
     public void tearDown() {
         TestWorld.Instance.get().world().terminate();
+        CalculationQueryProvider.reset();
+        pause();
     }
 
-    private StateStore.WriteResultInterest noOpResultInterest() {
-        return  new StateStore.WriteResultInterest() {
-            @Override
-            public <S, C> void writeResultedIn(Outcome<StorageException, Result> outcome, String s, S s1, int i, List<Source<C>> list, Object o) {
-
-            }
-        };
+    private void pause() {
+        try {
+            Thread.sleep(1000L);
+        } catch (Exception e) {
+            // ignore
+        }
     }
 }
+
