@@ -2,11 +2,13 @@ package io.examples.infrastructure.messaging;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.examples.stock.application.StockApplicationServices;
-import io.examples.stock.application.UnloadItem;
+import io.examples.infrastructure.ApplicationRegistry;
+import io.examples.stock.domain.ItemId;
+import io.examples.stock.domain.Location;
+import io.examples.stock.domain.Stock;
 import io.micronaut.configuration.rabbitmq.annotation.Queue;
 import io.micronaut.configuration.rabbitmq.annotation.RabbitListener;
-import io.vlingo.common.Completes;
+import io.vlingo.actors.World;
 
 import java.io.IOException;
 
@@ -19,24 +21,24 @@ import java.io.IOException;
 @RabbitListener
 public class DomainEventListener {
 
-    private final StockApplicationServices stockApplicationServices;
+    private final ApplicationRegistry applicationRegistry;
     private final ObjectMapper objectMapper;
 
-    public DomainEventListener(final StockApplicationServices stockApplicationServices,
+    public DomainEventListener(final ApplicationRegistry applicationRegistry,
                                final ObjectMapper objectMapper) {
-        this.stockApplicationServices = stockApplicationServices;
+        this.applicationRegistry = applicationRegistry;
         this.objectMapper = objectMapper;
     }
 
     @Queue("registered-order")
     public void handle(final byte[] data) throws IOException {
+        final World world = applicationRegistry.retrieveWorld();
         final JsonNode json = objectMapper.readTree(data);
-        final String location = json.get("site").asText();
-        final Long itemId = json.get("productId").get("id").asLong();
+        final Location location = Location.valueOf(json.get("site").asText());
+        final ItemId itemId = ItemId.of(json.get("productId").get("id").asLong());
         final Integer quantity = json.get("quantity").asInt();
 
-        Completes.withSuccess(stockApplicationServices)
-                .andThenConsume(service -> service.unloadItem(new UnloadItem(location, itemId, quantity)));
+        Stock.unload(world.stage(), location, itemId, quantity);
     }
 
 }

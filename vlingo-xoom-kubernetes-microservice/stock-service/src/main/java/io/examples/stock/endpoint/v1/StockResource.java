@@ -1,9 +1,12 @@
 package io.examples.stock.endpoint.v1;
 
-import io.examples.stock.application.AddItems;
-import io.examples.stock.application.OpenStock;
-import io.examples.stock.application.StockApplicationServices;
+import io.examples.infrastructure.ApplicationRegistry;
+import io.examples.infrastructure.StockQueryProvider;
+import io.examples.stock.domain.ItemId;
+import io.examples.stock.domain.Location;
+import io.examples.stock.domain.Stock;
 import io.examples.stock.endpoint.StockEndpoint;
+import io.vlingo.actors.World;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.RequestHandler;
@@ -15,8 +18,8 @@ import static io.vlingo.http.resource.ResourceBuilder.*;
 
 /**
  * This {@code CalculationResource} exposes a REST API that maps resource HTTP request-response handlers to operations
- * contained in the {@link StockApplicationServices}. This {@link Endpoint} implementation forms an anti-corruption layer between
- * consuming services and this microservice's {@link StockApplicationServices} API.
+ * contained in the {@link Stock}. This {@link Endpoint} implementation forms an anti-corruption layer between
+ * consuming services and this microservice's {@link Stock} API.
  * <p>
  * This resource is a versioned API definition that implements the {@link StockEndpoint}. To fork versions, create a
  * separate implementation of the {@link StockEndpoint} in a separate package and change the getRequestHandlers
@@ -30,25 +33,31 @@ public class StockResource implements StockEndpoint {
 
     private static String ENDPOINT_VERSION = "1.1";
 
-    private final StockApplicationServices stockApplicationServices;
+    private final ApplicationRegistry applicationRegistry;
 
-    public StockResource(final StockApplicationServices stockApplicationServices) {
-        this.stockApplicationServices = stockApplicationServices;
+    public StockResource(final ApplicationRegistry applicationRegistry) {
+        this.applicationRegistry = applicationRegistry;
     }
 
     @Override
     public Completes<Response> openStock(final OpenStock openStock) {
-        return response(Ok, stockApplicationServices.openStock(openStock));
+        final World world = applicationRegistry.retrieveWorld();
+        final Location location = Location.valueOf(openStock.locationName());
+        return response(Ok, Stock.openIn(world.stage(), location));
     }
 
     @Override
     public Completes<Response> loadStock(final AddItems addItems) {
-        return response(Ok, stockApplicationServices.loadStock(addItems));
+        final World world = applicationRegistry.retrieveWorld();
+        final ItemId itemId = ItemId.of(addItems.itemId());
+        final Location location = Location.valueOf(addItems.locationName());
+        return response(Ok, Stock.increaseAvailabilityFor(world.stage(), location, itemId, addItems.quantity()));
     }
 
     @Override
     public Completes<Response> findByLocation(final String locationName) {
-        return response(Ok, stockApplicationServices.findByLocation(locationName));
+        final Location location = Location.valueOf(locationName);
+        return response(Ok, StockQueryProvider.instance().queries().queryByLocation(location));
     }
 
     @Override

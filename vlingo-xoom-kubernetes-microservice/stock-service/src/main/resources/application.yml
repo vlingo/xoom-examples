@@ -2,22 +2,22 @@ micronaut:
   application:
     name: stock-service
 
-datasources:
-  default:
-    url: ${STOCK_SERVICE_DATABASE_URL}
-    driverClassName: org.postgresql.Driver
-    username: postgres
-    password: postgres
-    schema-generate: CREATE_DROP
-
-jpa:
-  default:
-    properties:
-      hibernate:
-        bytecode:
-          provider: none
-        hbm2ddl:
-          auto: update
+#datasources:
+#  default:
+#    url: ${STOCK_SERVICE_DATABASE_URL}
+#    driverClassName: org.postgresql.Driver
+#    username: postgres
+#    password: postgres
+#    schema-generate: CREATE_DROP
+#
+#jpa:
+#  default:
+#    properties:
+#      hibernate:
+#        bytecode:
+#          provider: none
+#        hbm2ddl:
+#          auto: update
 
 rabbitmq:
   uri: ${MESSAGING_URI}

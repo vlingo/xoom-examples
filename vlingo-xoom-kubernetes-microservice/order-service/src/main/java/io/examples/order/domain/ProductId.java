@@ -1,19 +1,10 @@
 package io.examples.order.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import java.util.Objects;
 
-@Embeddable
 public class ProductId {
 
-    @Column(name = "PRODUCT_ID")
     private final long id;
-
-    @SuppressWarnings("unused")
-    public ProductId() {
-        this(0l);
-    }
 
     public static ProductId of(final long id) {
         return new ProductId(id);

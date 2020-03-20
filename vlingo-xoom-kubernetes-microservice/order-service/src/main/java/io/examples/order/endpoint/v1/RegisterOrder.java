@@ -1,4 +1,4 @@
-package io.examples.order.application;
+package io.examples.order.endpoint.v1;
 
 public class RegisterOrder {
 

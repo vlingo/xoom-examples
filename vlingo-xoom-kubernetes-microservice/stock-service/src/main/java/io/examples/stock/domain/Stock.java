@@ -1,70 +1,56 @@
 package io.examples.stock.domain;
 
-import io.examples.stock.data.Identity;
+import io.examples.infrastructure.StockQueryProvider;
+import io.vlingo.actors.Address;
+import io.vlingo.actors.Definition;
+import io.vlingo.actors.Stage;
+import io.vlingo.common.Completes;
 
-import javax.persistence.*;
-import java.util.*;
+import java.util.UUID;
 
-/**
- * {@code Stock} is modeled as an Aggregate, responsible for
- * manage its own state, ensuring consistency and retaining all
- * information for upcoming queries.
- *
- * @author Danilo Ambrosio
- */
-@Entity
-@Table(name="VLG_STOCK")
-public class Stock extends Identity {
+public interface Stock {
 
-    @Enumerated
-    @Column(name = "LOCATION")
-    private final Location location;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    private final Set<StorageUnit> units = new HashSet<>();
-
-    public Stock() {
-        this(null, Collections.emptyList());
+    static String generateName() {
+        return "O:" + UUID.randomUUID().toString();
     }
 
-    private Stock(final Location location, final List<StorageUnit> units) {
-        this.location = location;
-        this.units.addAll(units);
+    Completes<StockState> openIn(final Location location);
+
+    Completes<StockState> increaseAvailabilityFor(final ItemId itemId, final Integer quantity);
+
+    Completes<StockState> unload(final ItemId itemId, final Integer quantity);
+
+    static Completes<StockState> openIn(final Stage stage, final Location location) {
+        final Address address =
+                stage.addressFactory().uniqueWith(generateName());
+
+        final StockId stockId = StockId.from(address.idString());
+
+        final Stock stock =
+                stage.actorFor(Stock.class,
+                        Definition.has(StockEntity.class, Definition.parameters(stockId)), address);
+
+        return stock.openIn(location);
     }
 
-    public static Stock openIn(final Location location) {
-        return new Stock(location, Collections.emptyList());
+    static Completes<StockState> increaseAvailabilityFor(final Stage stage, final Location location, final ItemId itemId, final Integer quantity) {
+        return StockQueryProvider.instance()
+                .queries().queryByLocation(location)
+                .andThenTo(state -> {
+                    final Address address = stage.addressFactory().from(state.stockId().value);
+                    return stage.actorOf(Stock.class, address);
+                })
+                .andThenTo(stock -> stock.increaseAvailabilityFor(itemId, quantity));
     }
 
-    public void unload(final ItemId itemId, final Integer quantity) {
-        final Optional<StorageUnit> storageUnit = unitHaving(itemId);
-        refreshUnitsWith(storageUnit.get().decreaseAvailability(quantity));
-    }
-
-    public void increaseAvailabilityFor(final ItemId itemId, final Integer quantity) {
-        final Optional<StorageUnit> storageUnit = unitHaving(itemId);
-        if(storageUnit.isPresent()) {
-            refreshUnitsWith(storageUnit.get().increaseAvailability(quantity));
-        } else {
-            units.add(new StorageUnit(itemId, quantity));
-        }
-    }
-
-    private void refreshUnitsWith(final StorageUnit updatedUnit) {
-        this.units.remove(updatedUnit);
-        this.units.add(updatedUnit);
-    }
-
-    private Optional<StorageUnit> unitHaving(final ItemId itemId) {
-        return units.stream().filter(unit -> unit.hasItem(itemId)).findFirst();
-    }
-
-    public int quantityFor(final ItemId itemId) {
-        return unitHaving(itemId).get().availableQuantity();
-    }
-
-    public Location getLocation() {
-        return location;
+    static Completes<StockState> unload(final Stage stage, final Location location, final ItemId itemId, final Integer quantity) {
+        return StockQueryProvider.instance()
+                .queries().queryByLocation(location)
+                .andThenTo(state -> {
+                    final Address address = stage.addressFactory().from(state.stockId().value);
+                    return stage.actorOf(Stock.class, address);
+                })
+                .andThenTo(stock -> stock.unload(itemId, quantity));
     }
 
 }
