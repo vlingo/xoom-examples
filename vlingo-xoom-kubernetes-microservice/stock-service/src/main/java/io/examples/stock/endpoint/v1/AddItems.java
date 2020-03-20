@@ -1,4 +1,4 @@
-package io.examples.stock.application;
+package io.examples.stock.endpoint.v1;
 
 public class AddItems {
 

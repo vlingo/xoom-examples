@@ -2,7 +2,7 @@ package io.examples.order.domain;
 
 /**
  * {@code OrderWasRegistered} is a {@link DomainEvent} that
- * happens every time a valid {@link Order} is registered.
+ * happens every time a valid {@link OrderEntity} is registered.
  *
  * @author Danilo Ambrosio
  */

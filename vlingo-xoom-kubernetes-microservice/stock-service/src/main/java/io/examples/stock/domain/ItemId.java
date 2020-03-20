@@ -1,13 +1,9 @@
 package io.examples.stock.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import java.util.Objects;
 
-@Embeddable
 public class ItemId {
 
-    @Column(name = "ITEM_ID")
     private final long id;
 
     public ItemId() {

@@ -1,7 +1,7 @@
 package io.examples.stock.domain;
 
 /**
- * {@code Location} describes where the {@link Stock}
+ * {@code Location} describes where the {@link StockEntity}
  * is placed.
  *
  * @author Danilo Ambrosio

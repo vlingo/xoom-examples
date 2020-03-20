@@ -1,8 +1,6 @@
 package io.examples.order.endpoint;
 
-import io.examples.order.application.RegisterOrder;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Produces;
+import io.examples.order.endpoint.v1.RegisterOrder;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.RequestHandler;

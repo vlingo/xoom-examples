@@ -1,7 +1,7 @@
 package io.examples.stock.endpoint;
 
-import io.examples.stock.application.AddItems;
-import io.examples.stock.application.OpenStock;
+import io.examples.stock.endpoint.v1.AddItems;
+import io.examples.stock.endpoint.v1.OpenStock;
 import io.vlingo.common.Completes;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.RequestHandler;
