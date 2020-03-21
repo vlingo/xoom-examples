@@ -3,11 +3,11 @@
   <parent>
     <artifactId>vlingo-xoom-kubernetes-microservice</artifactId>
     <groupId>io.examples</groupId>
-    <version>1.2.8</version>
+    <version>1.2.9</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>order-service</artifactId>
-  <version>1.2.8</version>
+  <version>1.2.9</version>
   <build>
     <pluginManagement>
       <plugins>
@@ -210,7 +210,7 @@
   <properties>
     <micronaut.version>1.2.10</micronaut.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
-    <exec.mainClass>io.examples.infrastructure.Bootstrap</exec.mainClass>
+    <exec.mainClass>io.examples.OrderApplication</exec.mainClass>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
