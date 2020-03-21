@@ -42,14 +42,10 @@ public class CalculationResource implements CalculationEndpoint {
     @Override
     public Completes<Response> calculate(final ExecuteCalculation executeCalculation) {
         final World world = applicationRegistry.retrieveWorld();
-
+        final Integer firstOperand = executeCalculation.firstOperand();
+        final Integer secondOperand = executeCalculation.secondOperand();
         final Operation operation = Operation.withName(executeCalculation.operationName());
-
-        final Completes<CalculationState> state =
-                Calculation.calculate(world.stage(), operation, executeCalculation.firstOperand(),
-                        executeCalculation.secondOperand());
-
-        return response(Ok, state);
+        return response(Ok, Calculation.calculate(world.stage(), operation, firstOperand, secondOperand));
     }
 
     @Override
