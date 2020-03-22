@@ -204,7 +204,7 @@
   <properties>
     <micronaut.version>1.2.10</micronaut.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
-    <exec.mainClass>io.examples.StockApplication</exec.mainClass>
+    <exec.mainClass>io.examples.infrastructure.Bootstrap</exec.mainClass>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
