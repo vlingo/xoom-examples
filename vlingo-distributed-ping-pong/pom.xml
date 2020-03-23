@@ -6,9 +6,8 @@
 
   <repositories>
     <repository>
-      <id>bintray-vlingo-vlingo-platform-java</id>
-      <name>vlingo-vlingo-platform-java</name>
-      <url>https://api.bintray.com/maven/vlingo/vlingo-platform-java/vlingo-lattice/;publish=1</url>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
     </repository>
   </repositories>
 
