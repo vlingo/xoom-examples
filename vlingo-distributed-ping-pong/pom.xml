@@ -3,11 +3,20 @@
   <groupId>io.vlingo</groupId>
   <artifactId>distributed-ping-pong</artifactId>
   <version>1.2.9</version>
+
+  <repositories>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
         <configuration>
           <source>8</source>
           <target>8</target>
@@ -31,6 +40,26 @@
     </plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-common</artifactId>
+      <version>1.2.9</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-actors</artifactId>
+      <version>1.2.9</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-symbio</artifactId>
+      <version>1.2.9</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-cluster</artifactId>
+      <version>1.2.9</version>
+    </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
