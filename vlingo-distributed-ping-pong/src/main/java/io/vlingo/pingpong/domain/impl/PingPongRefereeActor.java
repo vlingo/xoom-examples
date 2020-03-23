@@ -10,9 +10,16 @@ public class PingPongRefereeActor extends StatelessGridActor implements PingPong
 
   @Override
   public Completes<Pinger> whistle(String name) {
-    System.out.println(String.format("Whistling %s", name));
-    final Pinger pinger = childActorFor(Pinger.class,
-        Definition.has(PingerActor.class, Definition.NoParameters));
+    System.out.println(String.format("Referee %s whistling start from %s", address(), name));
+    final Pinger pinger;
+    try {
+      pinger = childActorFor(Pinger.class,
+          Definition.has(PingerActor.class, Definition.NoParameters));
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      throw e;
+    }
     return answerFrom(Completes.withSuccess(pinger));
   }
 }
