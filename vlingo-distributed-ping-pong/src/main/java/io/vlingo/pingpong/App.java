@@ -19,10 +19,7 @@ public class App {
         PingPongRefereeActor.class);
 
     pingPongReferee.whistle(nodeName)
-        .andThenConsume(pinger -> {
-          System.out.println("Staring game from " + nodeName);
-          pinger.ping(ponger, nodeName);
-        });
+        .andThenConsume(pinger -> pinger.ping(ponger, nodeName));
   }
 
   private static String parseNameFromArguments(String[] args) {
