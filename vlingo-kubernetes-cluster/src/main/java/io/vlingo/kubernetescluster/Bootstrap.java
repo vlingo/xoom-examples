@@ -13,22 +13,21 @@ import io.vlingo.cluster.model.Properties;
 
 public class Bootstrap {
 
-  public static void main(final String[] args) throws Exception {
-    final String nodeName = parseNodeName(args);
-    final World world = World.start("kubernetes-cluster");
-    NodeBootstrap.boot(world, new KubernetesClusterInstantiator(), Properties.instance, nodeName, false);
-  }
+    public static void main(final String[] args) throws Exception {
+        final String nodeName = parseNodeName(args);
+        final World world = World.start("kubernetes-cluster");
+        NodeBootstrap.boot(world, new KubernetesClusterInstantiator(), Properties.instance, nodeName, false);
+    }
 
-  private static String parseNodeName(final String[] args) {
-    if (args.length == 0) {
-      System.err.println("The node must be named with a command-line argument.");
-      System.exit(1);
+    private static String parseNodeName(final String[] args) {
+        if (args.length == 0) {
+            System.err.println("The node must be named with a command-line argument.");
+            System.exit(1);
+        } else if (args.length > 1) {
+            System.err.println("Too many arguments; provide node name only.");
+            System.exit(1);
+        }
+        return args[0];
     }
-    else if (args.length > 1) {
-      System.err.println("Too many arguments; provide node name only.");
-      System.exit(1);
-    }
-    return args[0];
-  }
 
 }
