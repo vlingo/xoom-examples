@@ -53,7 +53,7 @@ Whereas `Bootstrap` is the application main class, an executable JAR is required
 
 ## Deployment
 
-Every node will run within a Docker container. Therefore, the next step is to build a Docker image based on executable jar previously generated, tagging it as `latest` and pushing it to a Docker repository. The `vlingo-kubernetes-cluster` image is already published in a [public repository](https://hub.docker.com/repository/docker/dambrosio/vlingo-kubernetes-cluster), so the next commands is shown only for information purpose because the `vlingo-kubernetes-cluster` image is already published in a [public repository](https://hub.docker.com/repository/docker/dambrosio/vlingo-kubernetes-cluster). 
+Every node will run within a Docker container. Therefore, the next step is to build a Docker image based on executable jar previously generated, tagging it as `latest` and pushing it to a Docker repository. The `vlingo-kubernetes-cluster` image is already published in a [public repository](https://hub.docker.com/repository/docker/dambrosio/vlingo-kubernetes-cluster), so the next commands are shown only for information purpose because the `vlingo-kubernetes-cluster` image is already published in a [public repository](https://hub.docker.com/repository/docker/dambrosio/vlingo-kubernetes-cluster). 
 
 ```
     $ ./docker build .\ -t vlingo-kubernetes-cluster:latest
