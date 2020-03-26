@@ -2,4 +2,9 @@ event SchemaDefined {
     type eventType
     timestamp occurredOn
     version eventVersion
+
+    string foo = "bar"
+    string[] baz = {"qux","quux","corge"}
+
+    int i = 4242
 }
