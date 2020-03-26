@@ -2,4 +2,10 @@ event SchemaDefined {
     long occurredOn
     version v
     type t
+
+    string fooser = "bar"
+    string[] bazinga = {"qux","quux","corge"}
+
+    int i = 4242
 }
+
