@@ -6,11 +6,15 @@
 set -e
 
 fail () {
-  echo 'failed.'
+  MSG="${1:-failed}"
+  echo  >&2 "$MSG"
   exit 1
 }
 
-[ "$VLINGO_SCHEMATA_PORT" != "" ] || (echo 'Please set $VLINGO_SCHEMATA_PORT.' && fail)
+[ "$VLINGO_SCHEMATA_PORT" != "" ] || fail 'VLINGO_SCHEMATA_PORT not set'
+type curl >/dev/null 2>&1 || fail "'curl' is required but not installed."
+type jq >/dev/null 2>&1 || fail "'jq' is required but not installed."
+
 
 PORT=$VLINGO_SCHEMATA_PORT
 
