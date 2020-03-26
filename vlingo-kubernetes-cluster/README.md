@@ -53,7 +53,7 @@ Whereas `Bootstrap` is the application main class, an executable JAR is required
 
 ## Deployment
 
-Every node will run within a Docker container. Therefore, the next step is to build a Docker image based on executable jar previously generated, tagging it as `latest` and pushing it to a Docker repository. The `vlingo-kubernetes-cluster` image is already published in a [public repository](https://hub.docker.com/repository/docker/dambrosio/vlingo-kubernetes-cluster), so the next commands are shown only for information purpose because the `vlingo-kubernetes-cluster` image is already published in a [public repository](https://hub.docker.com/repository/docker/dambrosio/vlingo-kubernetes-cluster). 
+Every node will run within a Docker container. Therefore, the next step is to build a Docker image based on executable jar previously generated, tagging it as `latest` and pushing it to a Docker repository. The `vlingo-kubernetes-cluster` image is already published in a [public repository](https://hub.docker.com/repository/docker/dambrosio/vlingo-kubernetes-cluster), so the next commands are shown only for information purpose. 
 
 ```
     $ ./docker build .\ -t vlingo-kubernetes-cluster:latest
@@ -63,7 +63,7 @@ Every node will run within a Docker container. Therefore, the next step is to bu
 
 See more details about the image in the [Dockerfile](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-kubernetes-cluster/Dockerfile).   
 
-Now, the published Docker image, which holds the vlingo/cluster node, can be referenced in the Kubernetes deployment rules. Through the Kubernetes workload objects, there are multiple ways to make it and, in the current project, the choice is [Deployment Controller](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) executing three containers, one for each node, inside the same POD, so they can communicate each other at localhost using different ports. In `vlingo-cluster.yaml`, under `deployment` folder, the container is declared matching the invidual node configuration in `vlingo-cluster.properties`:
+Now, the published Docker image, which holds the vlingo/cluster node, can be referenced in the Kubernetes deployment rules. Through the Kubernetes workload objects, there are multiple ways to make it and, in the current project, the choice is [Deployment Controller](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) executing three containers, one for each node, inside the same POD. Thus, they can communicate each other at localhost using different ports. In `vlingo-cluster.yaml`, under `deployment` folder, the container is declared matching the invidual node configuration in `vlingo-cluster.properties`:
 
 ```
     ...
@@ -113,18 +113,18 @@ Check if the POD status is ok:
     $ ./kubectl get pods
 
     NAME                              READY   STATUS    RESTARTS   AGE
-    vlingo-cluster-5bfdf5c58c-zzb26   2/2     Running   0          18h    
+    vlingo-cluster-5bfdf5c58c-zzb26   3/3     Running   0          18h    
 ```
 
 ## Cluster Health, Quorum, and Leadership
 
-According to `vlingo-cluster` [docs](https://docs.vlingo.io/vlingo-cluster#resiliency-and-scale), if, at least, two nodes are running and communicating to each other, the cluster is healthy. In case of one node is live, the cluster is considered. That can be verified reading the Docker container logs for one of nodes. Find the `Container ID` with the `docker ps` command then read logs as following: 
+According to `vlingo-cluster` [docs](https://docs.vlingo.io/vlingo-cluster#resiliency-and-scale), if, at least, two nodes are running and communicating to each other, the cluster is healthy. In case of only one node is live, the cluster is considered unhealthy. That can be verified reading the Docker container logs. Find the `Container ID` with the `docker ps` command then read logs as following: 
 
 ```
     $ ./docker logs [container-id]
 ```    
 
-It takes a few seconds to each node join the cluster and, until at least two nodes are joined, the cluster is considered unhealthy. The snapshot below shows when the first node has joined the cluster:
+It's normal that cluster remains unhealthy for a while because it takes a few seconds to each node join the cluster. The snapshot below shows when the first node joined the cluster:
 
 ```
 15:30:11.095 [pool-2-thread-2] DEBUG io.vlingo.actors.Logger - io.vlingo.cluster.model.node.LocalLiveNodeActor - IDLE Id[1] JOIN: Join[Node[Id[2],Name[node2],Address[Host[localhost],9081,OP], Address[Host[localhost],8081,APP]]]
@@ -145,4 +145,4 @@ After two or three nodes are actually part of the cluster, it becomes healthy. F
 
 It's possible to watch more carefully how the cluster behaves in exceptional conditions by removing any node in `vlingo-cluster.yaml` (container section).  
 
-The `vlingo-cluster` [docs](https://docs.vlingo.io/vlingo-cluster) is highly recommended to adjust its capabilities to your needs.
+The `vlingo-cluster` [docs](https://docs.vlingo.io/vlingo-cluster) is worth to be read in order to adjust its capabilities to your needs.
