@@ -45,7 +45,7 @@ For a deeper understanding, see the `vlingo-cluster` configuration [guide](https
 
 ## Build
 
-Whereas `Bootstrap` is the application main class, an executable JAR is required to run the cluster node. The maven build will generate binary with the `manifest` file by means of plugins in [pom.xml](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-kubernetes-cluster/pom.xml) (note `maven-assembly-plugin` and `exec-maven-plugin` configuration). The project build is achieved by the following command: 
+Whereas `Bootstrap` is the application main class, an executable JAR is required to run the cluster node. The maven build will generate binary with the `manifest` file by means of plugins in [pom.xml](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-kubernetes-cluster/pom.xml) (note `maven-assembly-plugin` and `exec-maven-plugin` configuration). Build the project with the following command: 
 
 ```
     $ ./mvn clean package
