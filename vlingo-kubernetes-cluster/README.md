@@ -41,7 +41,7 @@ Those are the needed classes to run a `vlingo-cluster`. In addition, the `vlingo
 
 ```
 
-Find the full `vlingo-cluster` configuration guide [here](https://docs.vlingo.io/vlingo-cluster#using-the-vlingo-cluster).
+For a deeper understanding, see the `vlingo-cluster` configuration [guide](https://docs.vlingo.io/vlingo-cluster#using-the-vlingo-cluster).
 
 ## Build
 
