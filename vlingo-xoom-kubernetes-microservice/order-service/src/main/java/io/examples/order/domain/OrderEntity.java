@@ -21,6 +21,7 @@ public class OrderEntity extends ObjectEntity<OrderState> implements Order {
     public Completes<OrderState> register(final ProductId productId,
                                           final Integer quantity,
                                           final Site site) {
+        logger().warn("Registering order...");
         return apply(state.register(productId, quantity, site), () -> state);
     }
 
