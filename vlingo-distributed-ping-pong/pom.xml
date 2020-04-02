@@ -24,6 +24,7 @@
               <addClasspath>true</addClasspath>
               <mainClass>io.vlingo.pingpong.App</mainClass>
               <classpathPrefix>dependency-jars/</classpathPrefix>
+              <useUniqueVersions>false</useUniqueVersions>
             </manifest>
           </archive>
         </configuration>
@@ -78,7 +79,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>1.2.9</version>
+      <version>1.2.10-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
