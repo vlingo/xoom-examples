@@ -83,10 +83,8 @@ This microservice example demonstrates the following capabilities that are enabl
 
 - Dependency Injection and Compile-time Annotations
 - Externalized Twelve-factor Configuration ([12factor.net](https://12factor.net/config))
-- Repository-based Persistence with JPA/Hibernate
 - Embedded Client-Server HTTP Framework with Vlingo Xoom Server
-- Embedded In-Memory Database with H2
-- Unit Testing with Micronaut's HTTP Client
+
 
 ### Vlingo Xoom
  
