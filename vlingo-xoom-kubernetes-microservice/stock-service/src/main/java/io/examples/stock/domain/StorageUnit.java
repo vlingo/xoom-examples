@@ -1,16 +1,11 @@
 package io.examples.stock.domain;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Embeddable
-@Access(AccessType.FIELD)
 public class StorageUnit {
 
-    @Column(name = "ITEM_ID")
     private final long itemId;
 
-    @Column(name = "AVAILABLE_QUANTITY")
     private final Integer availableQuantity;
 
     public StorageUnit() {
