@@ -2,14 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-distributed-ping-pong</artifactId>
-  <version>1.2.9</version>
-
-  <repositories>
-    <repository>
-      <id>jcenter</id>
-      <url>https://jcenter.bintray.com/</url>
-    </repository>
-  </repositories>
+  <version>1.2.20-SNAPSHOT</version>
 
   <build>
     <plugins>
@@ -87,4 +80,22 @@
       <version>1.0.13</version>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>oss-jfrog-snapshot</id>
+      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>

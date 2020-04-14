@@ -2,11 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>vlingo-xoom-heroku-microservice</artifactId>
-  <version>1.2.9</version>
+  <version>1.2.20-SNAPSHOT</version>
   <properties>
     <jdk.version>1.8</jdk.version>
     <micronaut.version>1.2.10</micronaut.version>
-    <vlingo.platform.version>1.2.9</vlingo.platform.version>
+    <vlingo.platform.version>1.2.20-SNAPSHOT</vlingo.platform.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,12 +15,6 @@
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
   </properties>
-  <repositories>
-    <repository>
-      <id>jcenter.bintray.com</id>
-      <url>https://jcenter.bintray.com</url>
-    </repository>
-  </repositories>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -36,13 +30,13 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom-server</artifactId>
-      <version>1.2.9</version>
+      <version>1.2.20-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>1.2.9</version>
+      <version>1.2.20-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -211,4 +205,22 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <repositories>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>oss-jfrog-snapshot</id>
+      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>

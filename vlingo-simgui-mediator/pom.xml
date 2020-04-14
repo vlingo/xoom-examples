@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-simgui-mediator</artifactId>
-  <version>1.2.9</version>
+  <version>1.2.20-SNAPSHOT</version>
   <name>vlingo-simgui-mediator</name>
   <description>Example of vlingo/actors in a simulated GUI.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>1.2.9</version>
+      <version>1.2.20-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
@@ -47,12 +47,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <id>jcenter.bintray.com</id>
-      <url>https://jcenter.bintray.com</url>
-    </repository>
-  </repositories>
   <build>
     <plugins>
       <plugin>
@@ -107,4 +101,22 @@
       </plugin>
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>oss-jfrog-snapshot</id>
+      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>
