@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-distributed-ping-pong</artifactId>
-  <version>1.2.20-SNAPSHOT</version>
+  <version>1.2.21-SNAPSHOT</version>
 
   <build>
     <plugins>

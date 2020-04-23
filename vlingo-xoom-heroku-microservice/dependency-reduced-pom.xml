@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>vlingo-xoom-heroku-microservice</artifactId>
-  <version>1.2.20-SNAPSHOT</version>
+  <version>1.2.21-SNAPSHOT</version>
   <build>
     <pluginManagement>
       <plugins>
@@ -194,7 +194,7 @@
   </dependencyManagement>
   <properties>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.platform.version>1.2.20-SNAPSHOT</vlingo.platform.version>
+    <vlingo.platform.version>1.2.21-SNAPSHOT</vlingo.platform.version>
     <micronaut.version>1.2.10</micronaut.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
