@@ -1,0 +1,37 @@
+// Create a new cart
+POST http://localhost:8081/cart
+Content-Type: application/json
+
+{ "id" : {{userId}} }
+
+###
+
+// Add product1 from shopping cart
+PATCH http://localhost:8081//cart/{{cartId}}/{{productId1}}
+Content-Type: application/json
+
+{ "operation" :  "add"}
+
+###
+
+// Add product2 from shopping cart
+PATCH http://localhost:8081//cart/{{cartId}}/{{productId2}}
+Content-Type: application/json
+
+{ "operation" :  "add"}
+
+###
+
+
+// Query cart (uses StatefulEntity)
+GET http://localhost:8081/cart/{{cartId}}
+Accept: application/json
+
+###
+
+
+// Get cart summary (uses Projection)
+GET http://localhost:8081/user/{{userId}}/cartSummary
+Accept: application/json
+
+###

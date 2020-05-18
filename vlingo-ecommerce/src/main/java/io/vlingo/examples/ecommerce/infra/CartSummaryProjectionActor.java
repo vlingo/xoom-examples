@@ -53,20 +53,23 @@ public class CartSummaryProjectionActor extends StateStoreProjectionActor<CartUs
 
     if (previousVersion == currentVersion) return currentData;
 
+    CartUserSummaryData merged = previousData;
     for (final DomainEvent event : events) {
       switch (match(event)) {
       case CreatedForUser:
         final CreatedForUser created = typed(event);
-        return CartUserSummaryData.from(created.userId.getId(), created.cartId, "0");
+        merged = CartUserSummaryData.from(created.userId.getId(), created.cartId, 0);
+        break;
 
       case AllItemsRemovedEvent:
         final AllItemsRemovedEvent removed = typed(event);
-        return CartUserSummaryData.from(removed.userId.getId(), removed.cartId, "0");
+        merged = CartUserSummaryData.from(removed.userId.getId(), removed.cartId, 0);
+        break;
 
       case ProductQuantityChangeEvent:
         final ProductQuantityChangeEvent changed = typed(event);
-        final String quantity = Integer.toString(changed.newQuantity);
-        return CartUserSummaryData.from(changed.userId.getId(), changed.cartId, quantity);
+        merged = merged.mergeWith(changed.userId.getId(), changed.cartId, 1);
+        break;
 
       case Unmatched:
         logger().warn("Event of type " + event.typeName() + " was not matched.");
@@ -74,7 +77,7 @@ public class CartSummaryProjectionActor extends StateStoreProjectionActor<CartUs
       }
     }
 
-    return previousData;
+    return merged;
   }
 
   @Override
