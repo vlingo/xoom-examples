@@ -1,10 +1,10 @@
 package io.vlingo.pingpong.domain.impl;
 
-import io.vlingo.actors.StatelessGridActor;
+import io.vlingo.actors.Actor;
 import io.vlingo.pingpong.domain.Pinger;
 import io.vlingo.pingpong.domain.Ponger;
 
-public class PingerActor extends StatelessGridActor implements Pinger {
+public class PingerActor extends Actor implements Pinger {
 
   private Pinger self;
 
