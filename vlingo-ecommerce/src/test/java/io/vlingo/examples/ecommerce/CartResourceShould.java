@@ -86,7 +86,7 @@ public class CartResourceShould {
         String summaryUrl = String.format("/user/%d/cartSummary", userIdForCart);
         String cartId = getCartId(cartUrl);
 
-        String expectedResponse = String.format("{\"userId\":\"100\",\"cartId\":\"%s\",\"numberOfItems\":\"0\"}", cartId);
+        String expectedResponse = String.format("{\"userId\":\"100\",\"cartId\":\"%s\",\"numberOfItems\":0}", cartId);
         baseGiven()
                 .when()
                 .get(summaryUrl)
@@ -104,7 +104,7 @@ public class CartResourceShould {
         // summaryUrl = String.format("/user/%d/cartSummary", userIdForCart);
         // cartId = getCartId(cartUrl);
 
-        expectedResponse = String.format("{\"userId\":\"100\",\"cartId\":\"%s\",\"numberOfItems\":\"0\"}", cartId);
+        expectedResponse = String.format("{\"userId\":\"100\",\"cartId\":\"%s\",\"numberOfItems\":0}", cartId);
 
         baseGiven()
                 .when()
