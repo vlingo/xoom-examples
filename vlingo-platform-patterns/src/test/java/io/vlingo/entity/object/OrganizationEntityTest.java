@@ -67,6 +67,7 @@ public class OrganizationEntityTest {
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
     grid = Grid.start("object-entity-test", Configuration.define(), ClusterProperties.oneNode(), "node1");
+    grid.quorumAchieved();
     objectStore = grid.actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
     registry = new ObjectTypeRegistry(grid.world());
 
