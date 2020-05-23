@@ -1,12 +1,12 @@
 package io.vlingo.pingpong.domain.impl;
 
+import io.vlingo.actors.Actor;
 import io.vlingo.actors.Definition;
-import io.vlingo.actors.StatelessGridActor;
 import io.vlingo.common.Completes;
 import io.vlingo.pingpong.domain.PingPongReferee;
 import io.vlingo.pingpong.domain.Pinger;
 
-public class PingPongRefereeActor extends StatelessGridActor implements PingPongReferee {
+public class PingPongRefereeActor extends Actor implements PingPongReferee {
 
   @Override
   public Completes<Pinger> whistle(String name) {

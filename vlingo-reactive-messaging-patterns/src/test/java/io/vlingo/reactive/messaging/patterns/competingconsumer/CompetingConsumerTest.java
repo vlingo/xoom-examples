@@ -29,12 +29,12 @@ public class CompetingConsumerTest {
     final CompetingConsumerResults results = new CompetingConsumerResults();
     final WorkConsumer workConsumer =
             world.actorFor(WorkConsumer.class, WorkRouterActor.class, poolSize, results);
+    final AccessSafely access = results.afterCompleting(messagesToSend);
 
     for (int i = 0; i < messagesToSend; i++) {
       workConsumer.consumeWork(new WorkItem(i));
     }
 
-    final AccessSafely access = results.afterCompleting(messagesToSend);
     Assert.assertEquals(8, (int) access.readFrom("afterItemConsumedCount"));
   }
 }
