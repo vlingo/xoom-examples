@@ -67,6 +67,7 @@ public class OrganizationEntityTest {
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
     grid = Grid.start("stateful-entity-test", Configuration.define(), ClusterProperties.oneNode(), "node1");
+    grid.quorumAchieved();
     stateStore = grid.actorFor(StateStore.class, InMemoryStateStoreActor.class, Arrays.asList(new MockDispatcher()));
     registry = new StatefulTypeRegistry(grid.world());
 
