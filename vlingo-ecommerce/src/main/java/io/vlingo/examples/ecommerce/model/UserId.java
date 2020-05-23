@@ -19,8 +19,8 @@ public class UserId {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserId productId = (UserId) o;
-        return id == productId.id;
+        UserId userId = (UserId) o;
+        return id == userId.id;
     }
 
     @Override
