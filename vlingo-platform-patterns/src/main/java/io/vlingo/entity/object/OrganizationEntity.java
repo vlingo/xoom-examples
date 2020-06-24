@@ -58,10 +58,6 @@ public class OrganizationEntity extends ObjectEntity<State> implements Organizat
     return apply(state, new OrganizationRenamed(state.organizationId, name), () -> state);
   }
 
-  protected String id() {
-    return String.valueOf(state.persistenceId());
-  }
-
   @Override
   protected State stateObject() {
     return state;
