@@ -3,6 +3,10 @@
 This is an example service that manages users with profiles. This service collaborates with the
 `vlingo-http-backservice` to retrieve private tokens for the given user public token.
 
+![How the frontservice and back service work together.](./HTTP-SSE.png)
+
+How the frontservice and back service work together.
+
 You should run the `vlingo-http-backservice` first and then start the `vlingo-http-frontservice`.
 
 Start a console/command window so you can build the `vlingo-http-backservice` and start it by executing the built `jar`:
