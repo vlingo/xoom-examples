@@ -1,11 +1,15 @@
 # vlingo-http-frontservice
 
 This is an example service that manages users with profiles. This service collaborates with the
-`vlingo-http-backservice` to retrieve private tokens for the given user public token.
+`vlingo-http-backservice` to retrieve private tokens for the given user public token. When the
+private token has been generated, it is communicated from the `vlingo-http-backservice` to the
+`vlingo-http-frontservice` by means of _*Server-Sent Events (SSE)*._
+
 
 ![How the frontservice and back service work together.](./HTTP-SSE.png)
 
-How the frontservice and back service work together.
+   *_How the frontservice and back service work together._*
+
 
 You should run the `vlingo-http-backservice` first and then start the `vlingo-http-frontservice`.
 
