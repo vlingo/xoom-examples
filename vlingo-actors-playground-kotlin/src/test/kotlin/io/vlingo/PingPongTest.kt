@@ -11,14 +11,13 @@ class PingPongTest {
     fun testPlayPingPong() {
         val world:World = World.startWithDefaults("com.dfp")
         val until:TestUntil = TestUntil.happenings(1)
-        val pinger:Pinger = world.actorFor(Definition.has(PingerActor::class.java, Definition.parameters(until)), Pinger::class.java)
-        val ponger:Ponger = world.actorFor(Definition.has(PongerActor::class.java, Definition.NoParameters), Ponger::class.java)
+        val pinger:Pinger = world.actorFor(Pinger::class.java, PingerActor::class.java, until)
+        val ponger:Ponger = world.actorFor(Ponger::class.java, PongerActor::class.java)
 
         pinger.ping(ponger)
 
         until.completes()
 
         world.terminate()
-
     }
 }
