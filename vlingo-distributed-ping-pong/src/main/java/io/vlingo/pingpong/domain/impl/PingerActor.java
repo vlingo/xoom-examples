@@ -1,25 +1,22 @@
 package io.vlingo.pingpong.domain.impl;
 
 import io.vlingo.actors.Actor;
+import io.vlingo.pingpong.domain.Config;
 import io.vlingo.pingpong.domain.Pinger;
 import io.vlingo.pingpong.domain.Ponger;
 
 public class PingerActor extends Actor implements Pinger {
 
-  private Pinger self;
-
-  public PingerActor() {
-    self = selfAs(Pinger.class);
-  }
-
   @Override
-  public void ping(final Ponger ponger, String node) {
-    System.out.printf("Pinger::ping::%s::%s%n", node, address());
+  public void ping(final Ponger ponger, final String node) {
+    logger().info("... from " + node);
+
     try {
-      Thread.sleep(2000);
-      ponger.pong(self, node);
+      Thread.sleep(1_000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+
+    ponger.pong(Config.nodeName);
   }
 }
