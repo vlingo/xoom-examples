@@ -4,17 +4,20 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+
     <logger name="io.netty" level="error"/>
     <logger name="io.rsocket" level="error"/>
     <logger name="reactor" level="error"/>
-    <logger name="io.vlingo" level="error"/>
-    <logger name="io.vlingo.actors.GridMailbox" level="error"/>
-    <logger name="io.vlingo.lattice.grid.GridNode" level="error"/>
-    <logger name="io.vlingo.lattice.grid.application.GridApplicationMessageHandler" level="error"/>
-    <logger name="io.vlingo.lattice.grid.application.OutboundGridActorControl" level="error"/>
-    <logger name="io.vlingo.actors.GridMailbox" level="error"/>
+    <logger name="io.vlingo.wire" level="error"/>
+    <logger name="io.vlingo.lattice.grid" level="info"/>
+    <!--logger name="io.vlingo" level="error"/-->
+    <!--logger name="io.vlingo.actors.GridMailbox" level="error"/-->
+    <!--logger name="io.vlingo.lattice.grid.GridNode" level="error"/-->
+    <!--logger name="io.vlingo.lattice.grid.application.GridApplicationMessageHandler" level="error"/-->
+    <!--logger name="io.vlingo.lattice.grid.application.OutboundGridActorControl" level="error"/-->
+    <!--logger name="io.vlingo.actors.GridMailbox" level="error"/-->
 
-    <root level="error">
+    <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
