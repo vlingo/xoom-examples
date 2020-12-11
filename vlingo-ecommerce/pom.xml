@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-ecommerce</artifactId>
-  <version>1.2.21-SNAPSHOT</version>
+  <version>1.4.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>vlingo-ecommerce</name>
   <description>E-commerce demo.</description>
@@ -17,7 +17,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <vlingo.version>0.8.1</vlingo.version>
     <kotlin.version>1.3.31</kotlin.version>
   </properties>
   <dependencies>
@@ -36,25 +35,25 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>1.2.21-SNAPSHOT</version>
+      <version>1.4.1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio</artifactId>
-      <version>1.2.21-SNAPSHOT</version>
+      <version>1.4.1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>1.2.21-SNAPSHOT</version>
+      <version>1.4.1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>1.2.21-SNAPSHOT</version>
+      <version>1.4.1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
