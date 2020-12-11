@@ -2,10 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>vlingo-xoom-kubernetes-microservice</artifactId>
-  <version>1.2.21-SNAPSHOT</version>
+  <version>1.4.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
-    <vlingo.platform.version>1.2.21-SNAPSHOT</vlingo.platform.version>
     <micronaut.version>1.2.7</micronaut.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-examples</artifactId>
-  <version>1.2.21-SNAPSHOT</version>
+  <version>1.4.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>vlingo-examples</name>
   <url>http://maven.apache.org</url>
@@ -68,9 +68,13 @@
   </build>
   <modules>
     <module>vlingo-actors-playground</module>
+    <module>vlingo-actors-playground-kotlin</module>
     <module>vlingo-auth-authservice</module>
+    <module>vlingo-benchmarks</module>
+    <module>vlingo-calculate-pi</module>
     <module>vlingo-ecommerce</module>
     <module>vlingo-eventjournal</module>
+    <!--module>vlingo-hike-backend</module-->
     <module>vlingo-distributed-ping-pong</module>
     <module>vlingo-http-backservice</module>
     <module>vlingo-http-frontservice</module>
@@ -78,6 +82,7 @@
     <module>vlingo-iddd-collaboration</module>
     <module>vlingo-kubernetes-cluster</module>
     <module>vlingo-reactive-messaging-patterns</module>
+    <!--module>vlingo-schemata-integration</module-->
     <module>vlingo-simgui-mediator</module>
     <module>vlingo-platform-patterns</module>
     <module>vlingo-xoom-heroku-microservice</module>
