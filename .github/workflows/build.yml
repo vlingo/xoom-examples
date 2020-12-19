@@ -33,6 +33,7 @@ jobs:
         if: always() && github.ref == 'refs/heads/master'
         uses: rtCamp/action-slack-notify@v2
         env:
+          SLACK_COLOR: "${{ job.status == 'success' && 'good' || 'danger' }}"
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_CHANNEL: vlingo-ci
           SLACK_USERNAME: Bob the Builder
