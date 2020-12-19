@@ -35,7 +35,7 @@ jobs:
         env:
           SLACK_COLOR: "${{ job.status == 'success' && 'good' || 'danger' }}"
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_CHANNEL: vlingo-ci
+          SLACK_CHANNEL: ci-cd
           SLACK_USERNAME: Bob the Builder
           SLACK_ICON: 'https://vlingo.io/wp-content/uploads/cropped-vlingo-favicon-180x180.png'
           SLACK_FOOTER: '${{ github.repository }}'
