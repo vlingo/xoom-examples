@@ -30,7 +30,7 @@ jobs:
         run: mvn --batch-mode --update-snapshots clean test
 
       - name: Notify slack
-        if: always() && github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+        if: always() && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) && github.repository_owner == 'vlingo'
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_COLOR: "${{ job.status == 'success' && 'good' || 'danger' }}"
