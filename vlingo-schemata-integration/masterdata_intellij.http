@@ -1,6 +1,5 @@
 ### Create Organization
-# @name createOrganization
-POST http://localhost:9019/api/organizations HTTP/1.1
+POST http://localhost:9019/api/organizations
 Content-Type: application/json
 
 {
@@ -9,13 +8,11 @@ Content-Type: application/json
   "description": "Vlingo Organization"
 }
 
+> {% client.global.set('orgId', response.body.organizationId) %}
 
 
 ### Create Unit
-@orgId = {{createOrganization.response.body.$.organizationId}}
-
-# @name createUnit
-POST  http://localhost:9019/api/organizations/{{orgId}}/units HTTP/1.1
+POST  http://localhost:9019/api/organizations/{{orgId}}/units
 Content-Type: application/json
 
 {
@@ -25,13 +22,10 @@ Content-Type: application/json
   "description": "Examples for vlingo/schemata"
 }
 
-
+> {% client.global.set('unitId', response.body.unitId) %}
 
 ### Create Context
-@unitId = {{createUnit.response.body.$.unitId}}
-
-# @name createContext
-POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts HTTP/1.1
+POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts
 Content-Type: application/json
 
 {
@@ -42,12 +36,10 @@ Content-Type: application/json
   "description": "Bounded context for vlingo/schemata examples"
 }
 
+> {% client.global.set('contextId', response.body.contextId) %}
 
 ### Create SchemaDefined schema
-@contextId = {{createContext.response.body.$.contextId}}
-
-# @name createSchemaDefined
-POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas HTTP/1.1
+POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas
 Content-Type: application/json
 
 {
@@ -61,13 +53,10 @@ Content-Type: application/json
   "description": "Fired whenever a new schema is defined."
 }
 
+> {% client.global.set('schemaId', response.body.schemaId) %}
 
-
-### Create SchemaPublished schema
-@contextId = {{createContext.response.body.$.contextId}}
-
-# @name createSchemaPublished
-POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas HTTP/1.1
+### Create SchematPublished schema
+POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas
 Content-Type: application/json
 
 {
@@ -81,6 +70,6 @@ Content-Type: application/json
   "description": "Fired whenever a schema version is published."
 }
 
-
+> {% client.global.set('schemaId', response.body.schemaId) %}
 
 ###
