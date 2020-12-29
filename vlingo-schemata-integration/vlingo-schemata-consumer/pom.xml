@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-schemata-consumer</artifactId>
-  <version>1.4.3</version>
+  <version>1.4.4-SNAPSHOT</version>
   <name>vlingo-schemata-consumer</name>
   <description>Example of a project consuming schemas from vlingo/schemata.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -16,14 +16,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <vlingo.build.plugins.version>${project.version}</vlingo.build.plugins.version>
   </properties>
   <build>
     <plugins>
       <plugin>
         <groupId>io.vlingo</groupId>
         <artifactId>vlingo-build-plugins</artifactId>
-        <version>${vlingo.build.plugins.version}</version>
+        <version>${project.version}</version>
         <executions>
           <execution>
             <id>pullSchemata</id>
