@@ -1,0 +1,86 @@
+### Create Organization
+# @name createOrganization
+POST http://localhost:9019/api/organizations HTTP/1.1
+Content-Type: application/json
+
+{
+  "organizationId": "",
+  "name": "Vlingo",
+  "description": "Vlingo Organization"
+}
+
+
+
+### Create Unit
+@orgId = {{createOrganization.response.body.$.organizationId}}
+
+# @name createUnit
+POST  http://localhost:9019/api/organizations/{{orgId}}/units HTTP/1.1
+Content-Type: application/json
+
+{
+  "organizationId": "{{orgId}}",
+  "unitId": "",
+  "name": "examples",
+  "description": "Examples for vlingo/schemata"
+}
+
+
+
+### Create Context
+@unitId = {{createUnit.response.body.$.unitId}}
+
+# @name createContext
+POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts HTTP/1.1
+Content-Type: application/json
+
+{
+  "organizationId": "{{orgId}}",
+  "unitId": "{{unitId}}",
+  "contextId": "",
+  "namespace": "io.vlingo.examples.schemata",
+  "description": "Bounded context for vlingo/schemata examples"
+}
+
+
+### Create SchemaDefined schema
+@contextId = {{createContext.response.body.$.contextId}}
+
+# @name createSchemaDefined
+POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas HTTP/1.1
+Content-Type: application/json
+
+{
+  "organizationId": "{{orgId}}",
+  "unitId": "{{unitId}}",
+  "contextId": "{{contextId}}",
+  "schemaId": "",
+  "category": "Event",
+  "name": "SchemaDefined",
+  "scope": "Public",
+  "description": "Fired whenever a new schema is defined."
+}
+
+
+
+### Create SchemaPublished schema
+@contextId = {{createContext.response.body.$.contextId}}
+
+# @name createSchemaPublished
+POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas HTTP/1.1
+Content-Type: application/json
+
+{
+  "organizationId": "{{orgId}}",
+  "unitId": "{{unitId}}",
+  "contextId": "{{contextId}}",
+  "schemaId": "",
+  "category": "Event",
+  "name": "SchemaPublished",
+  "scope": "Public",
+  "description": "Fired whenever a schema version is published."
+}
+
+
+
+###
