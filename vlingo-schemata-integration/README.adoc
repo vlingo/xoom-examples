@@ -109,7 +109,7 @@ NOTE: This is just for illustration purposes. Typically, you'll rely on maven's 
 
 Note that in the build output, you see two warning messages indicating that the status of the schemata
 used is `Draft`. You can go through the schemas lifecycle using the UI as highlighted in <<ui-schema-version-lifecycle>>.
-Alternatively, you can change the status using the API by `PATCHing` against http://localhost:9019/organizations/<orgId>/units/<unitId>/contexts/<contextId>/schemas/<schemaId>/versions/<schemaVersionId>/status.
+Alternatively, you can change the status using the API by `PATCHing` against http://localhost:9019/api/organizations/<orgId>/units/<unitId>/contexts/<contextId>/schemas/<schemaId>/versions/<schemaVersionId>/status.
 
 Now, publish one of the schemata and re-run the consumer build. You'll notice the warning no longer shows up.
 Then deprecate the schema, and re-build again. You'll see a warning again.
