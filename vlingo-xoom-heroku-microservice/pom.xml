@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>vlingo-xoom-heroku-microservice</artifactId>
-  <version>1.4.1-SNAPSHOT</version>
+  <version>1.4.4-SNAPSHOT</version>
   <properties>
     <jdk.version>1.8</jdk.version>
     <micronaut.version>1.2.10</micronaut.version>
