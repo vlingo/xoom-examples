@@ -1,5 +1,5 @@
 ### Create Organization
-POST http://localhost:9019/organizations
+POST http://localhost:9019/api/organizations
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
 
 
 ### Create Unit
-POST  http://localhost:9019/organizations/{{orgId}}/units
+POST  http://localhost:9019/api/organizations/{{orgId}}/units
 Content-Type: application/json
 
 {
@@ -25,7 +25,7 @@ Content-Type: application/json
 > {% client.global.set('unitId', response.body.unitId) %}
 
 ### Create Context
-POST http://localhost:9019/organizations/{{orgId}}/units/{{unitId}}/contexts
+POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts
 Content-Type: application/json
 
 {
@@ -39,7 +39,7 @@ Content-Type: application/json
 > {% client.global.set('contextId', response.body.contextId) %}
 
 ### Create SchemaDefined schema
-POST http://localhost:9019/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas
+POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas
 Content-Type: application/json
 
 {
@@ -56,7 +56,7 @@ Content-Type: application/json
 > {% client.global.set('schemaId', response.body.schemaId) %}
 
 ### Create SchematPublished schema
-POST http://localhost:9019/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas
+POST http://localhost:9019/api/organizations/{{orgId}}/units/{{unitId}}/contexts/{{contextId}}/schemas
 Content-Type: application/json
 
 {
