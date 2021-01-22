@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vgo-airlines-inventory
+  labels:
+    name: vgo-airlines-inventory-0.1.0
+    app.kubernetes.io/name: vgo-airlines-inventory
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 18080
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: vgo-airlines-inventory
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vgo-airlines-inventory
+  labels:
+    name: vgo-airlines-inventory-0.1.0
+    app.kubernetes.io/name: vgo-airlines-inventory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vgo-airlines-inventory
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vgo-airlines-inventory
+    spec:
+      securityContext:
+        {}
+      containers:
+        - image: vgo-airlines-inventory
+          name: vgo-airlines-inventory
+          ports:
+            - containerPort: 18080
+              name: http
