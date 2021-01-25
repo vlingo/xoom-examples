@@ -29,7 +29,7 @@ public class AircraftProjectionActor extends StateStoreProjectionActor<AircraftD
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
         case AircraftConsigned:
-          return currentData;   // TODO: implement actual merge
+          return currentData;
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
           break;
