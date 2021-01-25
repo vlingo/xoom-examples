@@ -84,21 +84,6 @@
               </schemata>
             </configuration>
           </execution>
-          <execution>
-            <id>pullSchemata</id>
-            <goals>
-              <goal>pull-schemata</goal>
-            </goals>
-            <configuration>
-              <schemataService>
-                <url>http://localhost:9019</url>
-                <clientOrganization>Inform the client organization</clientOrganization>
-                <clientUnit>Inform the client unit</clientUnit>
-              </schemataService>
-              <schemata>
-              </schemata>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
