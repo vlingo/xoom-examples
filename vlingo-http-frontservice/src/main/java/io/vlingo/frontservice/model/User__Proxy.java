@@ -8,7 +8,6 @@
 package io.vlingo.frontservice.model;
 
 import io.vlingo.actors.*;
-import io.vlingo.common.BasicCompletes;
 import io.vlingo.common.Completes;
 import io.vlingo.common.SerializableConsumer;
 
@@ -38,7 +37,7 @@ public class User__Proxy implements User {
   public Completes<UserState> withContact(Contact arg0) {
     if (!actor.isStopped()) {
       final SerializableConsumer<User> consumer = (actor) -> actor.withContact(arg0);
-      final Completes<UserState> completes = new BasicCompletes<>(actor.scheduler());
+      final Completes<UserState> completes = Completes.using(actor.scheduler());
       mailbox.send(new LocalMessage<User>(actor, User.class, consumer, Returns.value(completes), withContactRepresentation2));
       return completes;
     } else {
@@ -49,7 +48,7 @@ public class User__Proxy implements User {
   public Completes<UserState> withName(Name arg0) {
     if (!actor.isStopped()) {
       final SerializableConsumer<User> consumer = (actor) -> actor.withName(arg0);
-      final Completes<UserState> completes = new BasicCompletes<>(actor.scheduler());
+      final Completes<UserState> completes = Completes.using(actor.scheduler());
       mailbox.send(new LocalMessage<User>(actor, User.class, consumer, Returns.value(completes), withNameRepresentation3));
       return completes;
     } else {
