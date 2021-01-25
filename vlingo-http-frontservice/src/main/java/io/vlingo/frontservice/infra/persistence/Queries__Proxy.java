@@ -1,7 +1,6 @@
 package io.vlingo.frontservice.infra.persistence;
 
 import io.vlingo.actors.*;
-import io.vlingo.common.BasicCompletes;
 import io.vlingo.common.Completes;
 import io.vlingo.common.SerializableConsumer;
 import io.vlingo.frontservice.data.ProfileData;
@@ -26,7 +25,7 @@ public class Queries__Proxy implements Queries {
   public Completes<ProfileData> profileOf(java.lang.String arg0) {
     if (!actor.isStopped()) {
       final SerializableConsumer<Queries> consumer = (actor) -> actor.profileOf(arg0);
-      final Completes<io.vlingo.frontservice.data.ProfileData> completes = new BasicCompletes<>(actor.scheduler());
+      final Completes<io.vlingo.frontservice.data.ProfileData> completes = Completes.using(actor.scheduler());
       mailbox.send(new LocalMessage<Queries>(actor, Queries.class, consumer, Returns.value(completes), profileOfRepresentation1));
       return completes;
     } else {
@@ -37,7 +36,7 @@ public class Queries__Proxy implements Queries {
   public Completes<UserData> userDataOf(java.lang.String arg0) {
     if (!actor.isStopped()) {
       final SerializableConsumer<Queries> consumer = (actor) -> actor.userDataOf(arg0);
-      final Completes<io.vlingo.frontservice.data.UserData> completes = new BasicCompletes<>(actor.scheduler());
+      final Completes<io.vlingo.frontservice.data.UserData> completes = Completes.using(actor.scheduler());
       mailbox.send(new LocalMessage<Queries>(actor, Queries.class, consumer, Returns.value(completes), userDataOfRepresentation2));
       return completes;
     } else {
@@ -48,7 +47,7 @@ public class Queries__Proxy implements Queries {
   public Completes<Collection<UserData>> usersData() {
     if (!actor.isStopped()) {
       final SerializableConsumer<Queries> consumer = (actor) -> actor.usersData();
-      final Completes<Collection<UserData>> completes = new BasicCompletes<>(actor.scheduler());
+      final Completes<Collection<UserData>> completes = Completes.using(actor.scheduler());
       mailbox.send(new LocalMessage<Queries>(actor, Queries.class, consumer, Returns.value(completes), usersDataRepresentation3));
       return completes;
     } else {
