@@ -27,7 +27,7 @@ public class AircraftResourceHandlers {
                     ManufacturerSpecification.of(data.manufacturerSpecification.manufacturer,
                             data.manufacturerSpecification.model, data.manufacturerSpecification.serialNumber);
 
-            final Carrier carrier = Carrier.of(data.carrier.name, CarrierType.valueOf(data.carrier.name));
+            final Carrier carrier = Carrier.of(data.carrier.name, CarrierType.valueOf(data.carrier.type));
 
             return Aircraft.consign($stage, registration, manufacturerSpecification, carrier);
           });
