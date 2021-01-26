@@ -28,21 +28,21 @@ public class ExchangeBootstrap {
     ExchangeSettings.load(Settings.properties());
 
     final ConnectionSettings vgoAirportsSettings =
-                ExchangeSettings.of("vgo-airports").mapToConnection();
+                ExchangeSettings.of("fleet-crew-exchange").mapToConnection();
 
-    final Exchange vgoAirports =
-                ExchangeFactory.fanOutInstance(vgoAirportsSettings, "vgo-airports", true);
+    final Exchange fleetCrewExchange =
+                ExchangeFactory.fanOutInstance(vgoAirportsSettings, "fleet-crew-exchange", true);
 
-    vgoAirports.register(Covey.of(
-        new MessageSender(vgoAirports.connection()),
-        new AircraftExchangeReceivers.FlightArrivedAtGate(stage),
-        new AircraftConsumerAdapter("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightArrivedAtGate:1.0.0"),
+    fleetCrewExchange.register(Covey.of(
+        new MessageSender(fleetCrewExchange.connection()),
+        new AircraftExchangeReceivers.FlightLanded(stage),
+        new AircraftConsumerAdapter("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.0"),
         AircraftData.class,
         String.class,
         Message.class));
 
-    vgoAirports.register(Covey.of(
-        new MessageSender(vgoAirports.connection()),
+    fleetCrewExchange.register(Covey.of(
+        new MessageSender(fleetCrewExchange.connection()),
         received -> {},
         new AircraftProducerAdapter(),
         IdentifiedDomainEvent.class,
@@ -50,7 +50,7 @@ public class ExchangeBootstrap {
         Message.class));
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        vgoAirports.close();
+        fleetCrewExchange.close();
 
         System.out.println("\n");
         System.out.println("==================");
@@ -58,7 +58,7 @@ public class ExchangeBootstrap {
         System.out.println("==================");
     }));
 
-    instance = new ExchangeBootstrap(vgoAirports);
+    instance = new ExchangeBootstrap(fleetCrewExchange);
 
     return instance;
   }

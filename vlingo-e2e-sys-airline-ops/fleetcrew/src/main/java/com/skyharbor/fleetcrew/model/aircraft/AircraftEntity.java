@@ -12,21 +12,40 @@ public final class AircraftEntity extends StatefulEntity<AircraftState> implemen
     this.state = AircraftState.identifiedBy(id);
   }
 
+  @Override
   public Completes<AircraftState> recordArrival(final String carrier, final String flightNumber, final String tailNumber, final String gate) {
     final AircraftState stateArg = state.recordArrival(carrier, flightNumber, tailNumber, gate);
     return apply(stateArg, new ArrivalRecorded(stateArg), () -> state);
   }
 
+  @Override
   public Completes<AircraftState> recordDeparture(final String carrier, final String flightNumber, final String tailNumber, final String gate) {
     final AircraftState stateArg = state.recordDeparture(carrier, flightNumber, tailNumber, gate);
     return apply(stateArg, new DepartureRecorded(stateArg), () -> state);
   }
 
+  @Override
   public Completes<AircraftState> planArrival(final String carrier, final String flightNumber, final String tailNumber) {
     final AircraftState stateArg = state.planArrival(carrier, flightNumber, tailNumber);
     return apply(stateArg, new ArrivalPlanned(stateArg), () -> state);
   }
 
+  @Override
+  public Completes<AircraftState> reassignGate(final String gate) {
+    final AircraftState stateArg = state.reassignGate(gate);
+    return apply(stateArg, new GateReassigned(stateArg), () -> state);
+  }
+
+  @Override
+  public Completes<AircraftState> recordLoaded(final String carrier) {
+    final AircraftState stateArg = state.recordLoaded(carrier);
+    return apply(stateArg, new AircraftLoaded(stateArg), () -> state);
+  }
+
+  public Completes<AircraftState> recordUnloaded(final String carrier) {
+    final AircraftState stateArg = state.recordUnloaded(carrier);
+    return apply(stateArg, new AircraftUnloaded(stateArg), () -> state);
+  }
   /*
    * Received when my current state has been applied and restored.
    *

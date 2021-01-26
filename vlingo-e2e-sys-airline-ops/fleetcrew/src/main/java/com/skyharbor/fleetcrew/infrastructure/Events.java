@@ -4,4 +4,7 @@ public enum Events {
   DepartureRecorded,
   ArrivalRecorded,
   ArrivalPlanned,
+  GateReassigned,
+  AircraftLoaded,
+  AircraftUnloaded
 }

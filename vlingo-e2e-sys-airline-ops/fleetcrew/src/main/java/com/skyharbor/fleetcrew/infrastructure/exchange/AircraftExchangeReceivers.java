@@ -10,11 +10,11 @@ import com.skyharbor.fleetcrew.model.aircraft.AircraftEntity;
 
 public class AircraftExchangeReceivers {
 
-  static class FlightArrivedAtGate implements ExchangeReceiver<AircraftData> {
+  static class FlightLanded implements ExchangeReceiver<AircraftData> {
 
     private final Stage stage;
 
-    public FlightArrivedAtGate(final Stage stage) {
+    public FlightLanded(final Stage stage) {
       this.stage = stage;
     }
 
