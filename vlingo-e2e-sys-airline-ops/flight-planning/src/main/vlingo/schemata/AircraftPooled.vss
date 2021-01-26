@@ -1,0 +1,5 @@
+event AircraftPooled {
+  version semanticVersion
+  string id
+  string aircraftId
+}

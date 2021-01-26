@@ -1,0 +1,6 @@
+event FlightRescheduled {
+  version semanticVersion
+  string id
+  string aircraftId
+  string schedule
+}
