@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class FlightData {
   public final String id;
-  public final AircraftData aircraft;
+  public final String aircraftId;
   public final ScheduleData schedule;
   public final boolean cancelled;
 
@@ -25,9 +25,7 @@ public class FlightData {
 
   private FlightData (final FlightState state) {
     this.id = state.id;
-    this.aircraft =
-            new AircraftData(state.aircraft.id, state.aircraft.model,
-                    state.aircraft.serialNumber, state.aircraft.tailNumber);
+    this.aircraftId = state.aircraftId.id;;
     this.schedule =
             new ScheduleData(
                     new DepartureData(

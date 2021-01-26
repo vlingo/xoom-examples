@@ -1,6 +1,6 @@
 package com.vgoairlines.flightplanning.infrastructure.exchange;
 
-import com.vgoairlines.flightplanning.model.flight.AircraftPooled;
+import com.vgoairlines.flightplanning.model.aircraft.AircraftPooled;
 import com.vgoairlines.flightplanning.model.flight.FlightCanceled;
 import com.vgoairlines.flightplanning.model.flight.FlightRescheduled;
 import com.vgoairlines.flightplanning.model.flight.FlightScheduled;

@@ -20,10 +20,6 @@ public interface FlightResource {
   @ResponseAdapter(handler = FlightResourceHandlers.ADAPT_STATE)
   Completes<Response> schedule(@Body final FlightData data);
 
-  @Route(method = PATCH, path = "/{id}/aircraft", handler = FlightResourceHandlers.POOL)
-  @ResponseAdapter(handler = FlightResourceHandlers.ADAPT_STATE)
-  Completes<Response> pool(@Id final String id, @Body final FlightData data);
-
   @Route(method = PATCH, path = "/{id}/schedule", handler = FlightResourceHandlers.RESCHEDULE)
   @ResponseAdapter(handler = FlightResourceHandlers.ADAPT_STATE)
   Completes<Response> reschedule(@Id final String id, @Body final FlightData data);

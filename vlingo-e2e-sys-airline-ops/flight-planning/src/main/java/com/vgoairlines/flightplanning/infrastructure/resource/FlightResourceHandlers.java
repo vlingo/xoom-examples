@@ -14,11 +14,10 @@ import java.util.Collection;
 public class FlightResourceHandlers {
 
   public static final int SCHEDULE = 0;
-  public static final int POOL = 1;
-  public static final int RESCHEDULE = 2;
-  public static final int CANCEL = 3;
-  public static final int FLIGHTS = 4;
-  public static final int ADAPT_STATE = 5;
+  public static final int RESCHEDULE = 1;
+  public static final int CANCEL = 2;
+  public static final int FLIGHTS = 3;
+  public static final int ADAPT_STATE = 4;
 
   public static final HandlerEntry<Three<Completes<FlightState>, Stage, FlightData>> SCHEDULE_HANDLER =
           HandlerEntry.of(SCHEDULE, ($stage, data) -> {
@@ -32,13 +31,8 @@ public class FlightResourceHandlers {
                     Schedule.with(Departure.on(departureAirport, data.schedule.departure.plannedFor),
                             Arrival.on(arrivalAirport, data.schedule.arrival.plannedFor));
 
-            return Flight.schedule($stage, schedule);
+            return Flight.schedule($stage, AircraftId.of(data.aircraftId), schedule);
           });
-
-  public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> POOL_HANDLER =
-          HandlerEntry.of(POOL, (flight, data) ->
-              flight.pool(Aircraft.of(data.aircraft.id, data.aircraft.model,
-                      data.aircraft.serialNumber, data.aircraft.tailNumber)));
 
   public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> RESCHEDULE_HANDLER =
           HandlerEntry.of(RESCHEDULE, (flight, data) -> {

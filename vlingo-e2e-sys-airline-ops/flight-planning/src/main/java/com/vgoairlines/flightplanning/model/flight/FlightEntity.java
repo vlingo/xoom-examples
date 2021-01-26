@@ -11,13 +11,8 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
     this.state = FlightState.identifiedBy(id);
   }
 
-  public Completes<FlightState> pool(final Aircraft aircraft) {
-    final FlightState stateArg = state.pool(aircraft);
-    return apply(stateArg, new AircraftPooled(stateArg), () -> state);
-  }
-
-  public Completes<FlightState> schedule(final Schedule schedule) {
-    final FlightState stateArg = state.schedule(schedule);
+  public Completes<FlightState> schedule(final AircraftId aircraftId, final Schedule schedule) {
+    final FlightState stateArg = state.schedule(aircraftId, schedule);
     return apply(stateArg, new FlightScheduled(stateArg), () -> state);
   }
 
