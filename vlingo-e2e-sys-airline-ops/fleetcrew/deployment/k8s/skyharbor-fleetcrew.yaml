@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skyharbor-fleetcrew
+  labels:
+    name: skyharbor-fleetcrew-0.1.0
+    app.kubernetes.io/name: skyharbor-fleetcrew
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 18080
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: skyharbor-fleetcrew
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skyharbor-fleetcrew
+  labels:
+    name: skyharbor-fleetcrew-0.1.0
+    app.kubernetes.io/name: skyharbor-fleetcrew
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: skyharbor-fleetcrew
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: skyharbor-fleetcrew
+    spec:
+      securityContext:
+        {}
+      containers:
+        - image: skyharbor-fleetcrew
+          name: skyharbor-fleetcrew
+          ports:
+            - containerPort: 18080
+              name: http

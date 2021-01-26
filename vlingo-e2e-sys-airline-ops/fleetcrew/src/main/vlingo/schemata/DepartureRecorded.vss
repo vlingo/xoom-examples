@@ -1,0 +1,6 @@
+event DepartureRecorded {
+  version semanticVersion
+  string id
+  string gate
+  string fleetAgent
+}
