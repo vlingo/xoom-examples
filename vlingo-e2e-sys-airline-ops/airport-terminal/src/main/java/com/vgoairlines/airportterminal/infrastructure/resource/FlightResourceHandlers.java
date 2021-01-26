@@ -39,7 +39,7 @@ public class FlightResourceHandlers {
           HandlerEntry.of(START_BOARDING, (flight, data) -> flight.startBoarding());
 
   public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> COMPLETE_BOARDING_HANDLER =
-          HandlerEntry.of(COMPLETE_BOARDING, (flight, data) -> flight.completeBoarding());
+          HandlerEntry.of(COMPLETE_BOARDING, (flight, data) -> flight.endBoarding());
 
   public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> DEPART_HANDLER =
           HandlerEntry.of(DEPART, (flight, data) -> flight.depart(data.schedule.departureStatus.actual));

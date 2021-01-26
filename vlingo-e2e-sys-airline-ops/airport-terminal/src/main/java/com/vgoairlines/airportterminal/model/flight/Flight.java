@@ -24,9 +24,11 @@ public interface Flight {
     return _flight.openGate(number, gateAssignment, equipment, schedule);
   }
 
+  Completes<FlightState> arrive(final LocalDateTime arrivedOn);
+
   Completes<FlightState> startBoarding();
 
-  Completes<FlightState> completeBoarding();
+  Completes<FlightState> endBoarding();
 
   Completes<FlightState> depart(final LocalDateTime departedOn);
 

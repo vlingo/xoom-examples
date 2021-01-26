@@ -34,9 +34,11 @@ public class FlightProjectionActor extends StateStoreProjectionActor<FlightData>
           return FlightData.empty();   // TODO: implement actual merge
         case GateOpened:
           return FlightData.empty();   // TODO: implement actual merge
+        case FlightArrived:
+          return FlightData.empty();   // TODO: implement actual merge
         case FlightDeparted:
           return FlightData.empty();   // TODO: implement actual merge
-        case BoardingCompleted:
+        case BoardingEnded:
           return FlightData.empty();   // TODO: implement actual merge
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");

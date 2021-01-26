@@ -13,11 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Stream;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 import com.vgoairlines.airportterminal.model.flight.GateOpened;
-import com.vgoairlines.airportterminal.model.flight.BoardingCompleted;
+import com.vgoairlines.airportterminal.model.flight.BoardingEnded;
 import com.vgoairlines.airportterminal.model.flight.BoardingStarted;
 import com.vgoairlines.airportterminal.model.flight.FlightDeparted;
 import com.vgoairlines.airportterminal.model.flight.GateClosed;
@@ -35,7 +34,7 @@ public class ExchangeDispatcher implements Dispatcher<Dispatchable<Entry<String>
     this.eventsByExchangeName.get("airport-terminal-exchange").add(GateClosed.class.getCanonicalName());
     this.eventsByExchangeName.get("airport-terminal-exchange").add(GateOpened.class.getCanonicalName());
     this.eventsByExchangeName.get("airport-terminal-exchange").add(FlightDeparted.class.getCanonicalName());
-    this.eventsByExchangeName.get("airport-terminal-exchange").add(BoardingCompleted.class.getCanonicalName());
+    this.eventsByExchangeName.get("airport-terminal-exchange").add(BoardingEnded.class.getCanonicalName());
     this.producerExchanges = Arrays.asList(producerExchanges);
   }
 
