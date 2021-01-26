@@ -5,7 +5,7 @@ import io.vlingo.symbio.store.object.StateObject;
 public final class FlightState extends StateObject {
 
   public final String id;
-  public final Aircraft aircraft;
+  public final AircraftId aircraftId;
   public final Schedule schedule;
   public final boolean cancelled;
 
@@ -13,31 +13,27 @@ public final class FlightState extends StateObject {
     return new FlightState(id, null, null);
   }
 
-  public FlightState (final String id, final Aircraft aircraft, final Schedule schedule) {
-    this(id, aircraft, schedule, false);
+  public FlightState (final String id, final AircraftId aircraftId, final Schedule schedule) {
+    this(id, aircraftId, schedule, false);
   }
 
-  public FlightState (final String id, final Aircraft aircraft, final Schedule schedule, final boolean cancelled) {
+  public FlightState (final String id, final AircraftId aircraftId, final Schedule schedule, final boolean cancelled) {
     this.id = id;
-    this.aircraft = aircraft;
+    this.aircraftId = aircraftId;
     this.schedule = schedule;
     this.cancelled = cancelled;
   }
 
-  public FlightState pool(final Aircraft aircraft) {
-    return new FlightState(this.id, aircraft, this.schedule);
-  }
-
-  public FlightState schedule(final Schedule schedule) {
-    return new FlightState(this.id, this.aircraft, schedule);
+  public FlightState schedule(final AircraftId aircraftId, final Schedule schedule) {
+    return new FlightState(this.id, aircraftId, schedule);
   }
 
   public FlightState reschedule(final Schedule schedule) {
-    return new FlightState(this.id, this.aircraft, schedule);
+    return new FlightState(this.id, this.aircraftId, schedule);
   }
 
   public FlightState cancel() {
-    return new FlightState(this.id, this.aircraft, this.schedule, true);
+    return new FlightState(this.id, this.aircraftId, this.schedule, true);
   }
 
 }

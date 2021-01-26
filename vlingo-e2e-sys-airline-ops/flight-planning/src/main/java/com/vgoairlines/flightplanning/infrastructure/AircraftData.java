@@ -7,6 +7,8 @@
 
 package com.vgoairlines.flightplanning.infrastructure;
 
+import com.vgoairlines.flightplanning.model.aircraft.AircraftState;
+
 public class AircraftData {
 
     public final String id;
@@ -14,13 +16,14 @@ public class AircraftData {
     public final String serialNumber;
     public final String tailNumber;
 
-    public AircraftData(final String id,
-                    final String model,
-                    final String serialNumber,
-                    final String tailNumber) {
-        this.id = id;
-        this.model = model;
-        this.serialNumber = serialNumber;
-        this.tailNumber = tailNumber;
+    public AircraftData(final AircraftState state) {
+        this.id = state.id;
+        this.model = state.model;
+        this.serialNumber = state.serialNumber;
+        this.tailNumber = state.tailNumber;
+    }
+
+    public static AircraftData from(final AircraftState state) {
+        return new AircraftData(state);
     }
 }
