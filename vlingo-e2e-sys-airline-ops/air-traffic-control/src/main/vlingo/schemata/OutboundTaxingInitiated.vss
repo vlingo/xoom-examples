@@ -1,0 +1,7 @@
+event OutboundTaxingInitiated {
+  version semanticVersion
+  string id
+  string number
+  string tailNumber
+  string equipment
+}

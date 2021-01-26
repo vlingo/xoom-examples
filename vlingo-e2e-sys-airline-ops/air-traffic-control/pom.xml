@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.skyharbor</groupId>
-  <artifactId>fleetcrew</artifactId>
+  <artifactId>air-traffic-control</artifactId>
   <version>1.0.0</version>
   <properties>
     <jdk.version>1.8</jdk.version>
@@ -10,7 +10,7 @@
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <exec.mainClass>com.skyharbor.fleetcrew.infrastructure.XoomInitializer</exec.mainClass>
+    <exec.mainClass>com.skyharbor.airtrafficcontrol.infrastructure.XoomInitializer</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
     <vlingo.xoom.version>1.4.4-SNAPSHOT</vlingo.xoom.version>
@@ -78,38 +78,55 @@
               </schemataService>
               <schemata>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.fleetcrew:ArrivalRecorded:0.0.1</ref>
-                  <src>ArrivalRecorded.vss</src>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightDepartedGate:0.0.1</ref>
+                  <src>FlightDepartedGate.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.fleetcrew:DepartureRecorded:0.0.1</ref>
-                  <src>DepartureRecorded.vss</src>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:OutboundTaxingInitiated:0.0.1</ref>
+                  <src>OutboundTaxingInitiated.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.fleetcrew:ArrivalPlanned:0.0.1</ref>
-                  <src>ArrivalPlanned.vss</src>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:EnteredFlightLine:0.0.1</ref>
+                  <src>EnteredFlightLine.vss</src>
+                </schema>
+                <schema>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForTakeOff:0.0.1</ref>
+                  <src>FlightClearedForTakeOff.vss</src>
+                </schema>
+                <schema>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightTookOff:0.0.1</ref>
+                  <src>FlightTookOff.vss</src>
+                </schema>
+                <schema>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForLanding:0.0.1</ref>
+                  <src>FlightClearedForLanding.vss</src>
+                </schema>
+                <schema>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:0.0.1</ref>
+                  <src>FlightLanded.vss</src>
+                </schema>
+                <schema>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:ControllerAuthorized:0.0.1</ref>
+                  <src>ControllerAuthorized.vss</src>
                 </schema>
               </schemata>
             </configuration>
           </execution>
-<!--          <execution>-->
-<!--            <id>pullSchemata</id>-->
-<!--            <goals>-->
-<!--              <goal>pull-schemata</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <schemataService>-->
-<!--                <url>http://localhost:9019</url>-->
-<!--                <clientOrganization>Inform the client organization</clientOrganization>-->
-<!--                <clientUnit>Inform the client unit</clientUnit>-->
-<!--              </schemataService>-->
-<!--              <schemata>-->
-<!--                <schema>-->
-<!--                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.0</ref>-->
-<!--                </schema>-->
-<!--              </schemata>-->
-<!--            </configuration>-->
-<!--          </execution>-->
+          <execution>
+            <id>pullSchemata</id>
+            <goals>
+              <goal>pull-schemata</goal>
+            </goals>
+            <configuration>
+              <schemataService>
+                <url>http://localhost:9019</url>
+                <clientOrganization>Inform the client organization</clientOrganization>
+                <clientUnit>Inform the client unit</clientUnit>
+              </schemataService>
+              <schemata>
+              </schemata>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
