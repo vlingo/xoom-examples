@@ -1,0 +1,13 @@
+event FlightDeparted {
+  version semanticVersion
+  string id
+  string number
+  string gateAssignmentNumber
+  string gateAssignmentTerminal
+  string equipmentCarrier
+  string equipmentTailNumber
+  string scheduleDeparture
+  string scheduleArrival
+  string delayedBy
+  string actual
+}

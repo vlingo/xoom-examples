@@ -1,0 +1,13 @@
+event GateClosed {
+  version semanticVersion
+  string id
+  string gateAssignmentNumber
+  string number
+  string gateAssignmentTerminal
+  string equipmentCarrier
+  string equipmentTailNumber
+  string scheduleDeparture
+  string scheduleArrival
+  string delayedBy
+  string actual
+}
