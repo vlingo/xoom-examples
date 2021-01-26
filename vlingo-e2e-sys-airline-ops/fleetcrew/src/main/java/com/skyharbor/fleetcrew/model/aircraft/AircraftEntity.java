@@ -47,6 +47,7 @@ public final class AircraftEntity extends StatefulEntity<AircraftState> implemen
     final AircraftState stateArg = state.recordUnloaded(carrier);
     return apply(stateArg, new CargoUnloaded(stateArg), () -> state);
   }
+
   /*
    * Received when my current state has been applied and restored.
    *
