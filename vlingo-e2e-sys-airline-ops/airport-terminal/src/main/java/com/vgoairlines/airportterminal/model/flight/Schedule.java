@@ -27,6 +27,10 @@ public class Schedule {
         this.departureStatus = departureStatus;
     }
 
+    public Schedule arrivedOn(final LocalDateTime scheduledArrival) {
+        return new Schedule(this.scheduledDeparture, scheduledArrival, this.departureStatus);
+    }
+
     public Schedule departedOn(final LocalDateTime actuallyDepartedOn) {
         return new Schedule(this.scheduledDeparture, this.scheduledArrival, DepartureStatus.from(this.scheduledDeparture, actuallyDepartedOn));
     }

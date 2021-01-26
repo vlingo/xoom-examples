@@ -4,7 +4,8 @@ public enum Events {
   BoardingStarted,
   GateClosed,
   GateOpened,
+  FlightArrived,
   FlightDeparted,
-  BoardingCompleted,
+  BoardingEnded,
   GateAgentRegistered,
 }

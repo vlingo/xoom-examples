@@ -1,7 +1,6 @@
 package com.vgoairlines.airportterminal.model.flight;
 
 import io.vlingo.common.Completes;
-
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
 import java.time.LocalDateTime;
@@ -14,6 +13,7 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
     this.state = FlightState.identifiedBy(id);
   }
 
+  @Override
   public Completes<FlightState> openGate(final String number,
                                          final GateAssignment gateAssignment,
                                          final Equipment equipment,
@@ -22,21 +22,31 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
     return apply(stateArg, new GateOpened(stateArg), () -> state);
   }
 
+  @Override
+  public Completes<FlightState> arrive(final LocalDateTime arrivedOn) {
+    final FlightState stateArg = state.arrive(state.schedule.arrivedOn(arrivedOn));
+    return apply(stateArg, new FlightArrived(stateArg), () -> state);
+  }
+
+  @Override
   public Completes<FlightState> startBoarding() {
     final FlightState stateArg = state.startBoarding();
     return apply(stateArg, new BoardingStarted(stateArg), () -> state);
   }
 
-  public Completes<FlightState> completeBoarding() {
-    final FlightState stateArg = state.completeBoarding();
-    return apply(stateArg, new BoardingCompleted(stateArg), () -> state);
+  @Override
+  public Completes<FlightState> endBoarding() {
+    final FlightState stateArg = state.endBoarding();
+    return apply(stateArg, new BoardingEnded(stateArg), () -> state);
   }
 
+  @Override
   public Completes<FlightState> depart(final LocalDateTime actual) {
     final FlightState stateArg = state.depart(state.schedule.departedOn(actual));
     return apply(stateArg, new FlightDeparted(stateArg), () -> state);
   }
 
+  @Override
   public Completes<FlightState> closeGate() {
     final FlightState stateArg = state.closeGate();
     return apply(stateArg, new GateClosed(stateArg), () -> state);
