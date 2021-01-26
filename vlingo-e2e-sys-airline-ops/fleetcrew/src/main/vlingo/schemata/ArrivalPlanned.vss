@@ -1,0 +1,7 @@
+event ArrivalPlanned {
+  version semanticVersion
+  string id
+  string carrier
+  string flightNumber
+  string tailNumber
+}

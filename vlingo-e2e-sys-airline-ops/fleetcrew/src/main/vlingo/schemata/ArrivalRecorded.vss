@@ -1,0 +1,5 @@
+event ArrivalRecorded {
+  version semanticVersion
+  string id
+  string gate
+}
