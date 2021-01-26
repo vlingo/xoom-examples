@@ -11,13 +11,13 @@ import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
 import java.util.UUID;
 
-public final class AircraftLoaded extends IdentifiedDomainEvent {
+public final class CargoLoaded extends IdentifiedDomainEvent {
 
   private final UUID eventId;
   public final String id;
   public final String carrier;
 
-  public AircraftLoaded(final AircraftState state) {
+  public CargoLoaded(final AircraftState state) {
     this.id = state.id;
     this.carrier = state.carrier;
     this.eventId = UUID.randomUUID();

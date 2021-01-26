@@ -13,7 +13,7 @@ import com.skyharbor.fleetcrew.infrastructure.AircraftData;
 
 @Persistence(basePackage = "com.skyharbor.fleetcrew", storageType = StorageType.STATE_STORE, cqrs = true)
 @Projections({
-  @Projection(actor = AircraftProjectionActor.class, becauseOf = {GateReassigned.class, AircraftLoaded.class, AircraftUnloaded.class,
+  @Projection(actor = AircraftProjectionActor.class, becauseOf = {GateReassigned.class, CargoLoaded.class, CargoUnloaded.class,
           DepartureRecorded.class, ArrivalRecorded.class, ArrivalPlanned.class})
 })
 @Adapters({

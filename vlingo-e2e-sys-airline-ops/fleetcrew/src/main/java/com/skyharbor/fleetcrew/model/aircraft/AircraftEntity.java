@@ -37,14 +37,15 @@ public final class AircraftEntity extends StatefulEntity<AircraftState> implemen
   }
 
   @Override
-  public Completes<AircraftState> recordLoaded(final String carrier) {
+  public Completes<AircraftState> loadCargo(final String carrier) {
     final AircraftState stateArg = state.recordLoaded(carrier);
-    return apply(stateArg, new AircraftLoaded(stateArg), () -> state);
+    return apply(stateArg, new CargoLoaded(stateArg), () -> state);
   }
 
-  public Completes<AircraftState> recordUnloaded(final String carrier) {
+  @Override
+  public Completes<AircraftState> unloadCargo(final String carrier) {
     final AircraftState stateArg = state.recordUnloaded(carrier);
-    return apply(stateArg, new AircraftUnloaded(stateArg), () -> state);
+    return apply(stateArg, new CargoUnloaded(stateArg), () -> state);
   }
   /*
    * Received when my current state has been applied and restored.

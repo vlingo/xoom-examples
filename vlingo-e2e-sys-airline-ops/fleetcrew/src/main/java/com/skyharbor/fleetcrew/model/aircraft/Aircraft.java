@@ -21,5 +21,7 @@ public interface Aircraft {
     return _aircraft.planArrival(carrier, flightNumber, tailNumber);
   }
 
-  Completes<AircraftState> recordLoaded(String carrier);
+  Completes<AircraftState> loadCargo(String carrier);
+
+  Completes<AircraftState> unloadCargo(String carrier);
 }
