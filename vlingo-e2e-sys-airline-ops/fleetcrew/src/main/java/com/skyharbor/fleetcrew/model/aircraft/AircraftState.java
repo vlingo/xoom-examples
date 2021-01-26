@@ -36,4 +36,15 @@ public final class AircraftState extends StateObject {
     return new AircraftState(this.id, carrier, flightNumber, tailNumber, this.gate, this.fleetAgent);
   }
 
+  public AircraftState reassignGate(final String gate) {
+    return new AircraftState(this.id, this.carrier, this.flightNumber, this.tailNumber, gate, this.fleetAgent);
+  }
+
+  public AircraftState recordLoaded(final String carrier) {
+    return new AircraftState(this.id, carrier, this.flightNumber, this.tailNumber, gate, this.fleetAgent);
+  }
+
+  public AircraftState recordUnloaded(final String carrier) {
+    return new AircraftState(this.id, carrier, this.flightNumber, this.tailNumber, gate, this.fleetAgent);
+  }
 }
