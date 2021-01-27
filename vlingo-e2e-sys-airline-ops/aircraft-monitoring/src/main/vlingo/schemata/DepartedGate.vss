@@ -1,0 +1,6 @@
+event DepartedGate {
+  version semanticVersion
+  string id
+  string aircraft
+  string actualDeparture
+}
