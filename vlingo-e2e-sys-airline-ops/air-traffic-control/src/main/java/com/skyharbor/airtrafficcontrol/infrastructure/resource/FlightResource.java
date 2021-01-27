@@ -17,7 +17,7 @@ import static io.vlingo.http.Method.*;
 @Model(protocol = Flight.class, actor = FlightEntity.class, data = FlightData.class)
 public interface FlightResource {
 
-  @Route(method = POST, path = "/", handler = FlightResourceHandlers.DEPART_GATE)
+  @Route(method = POST, handler = FlightResourceHandlers.DEPART_GATE)
   @ResponseAdapter(handler = FlightResourceHandlers.ADAPT_STATE)
   Completes<Response> departGate(@Body final FlightData data);
 
