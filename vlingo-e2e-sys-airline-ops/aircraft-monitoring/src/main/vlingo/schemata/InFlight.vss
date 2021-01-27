@@ -1,0 +1,8 @@
+event InFlight {
+  version semanticVersion
+  string id
+  string aircraft
+  string actualDeparture
+  string estimatedArrival
+  string actualArrival
+}

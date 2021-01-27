@@ -1,0 +1,9 @@
+event LocationReported {
+  version semanticVersion
+  string id
+  string aircraft
+  string location
+  string actualDeparture
+  string estimatedArrival
+  string actualArrival
+}

@@ -1,0 +1,6 @@
+event ArrivedAtGate {
+  version semanticVersion
+  string id
+  string estimatedArrival
+  string actualArrival
+}
