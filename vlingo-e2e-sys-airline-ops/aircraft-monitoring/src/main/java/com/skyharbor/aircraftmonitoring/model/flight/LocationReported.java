@@ -8,11 +8,11 @@ public final class LocationReported extends IdentifiedDomainEvent {
 
   private final UUID eventId;
   public final String id;
-  public final String aircraft;
-  public final String location;
-  public final String actualDeparture;
-  public final String estimatedArrival;
-  public final String actualArrival;
+  public final Aircraft aircraft;
+  public final Location location;
+  public final ActualDeparture actualDeparture;
+  public final EstimatedArrival estimatedArrival;
+  public final ActualArrival actualArrival;
 
   public LocationReported(final FlightState state) {
     super(SemanticVersion.from("0.0.1").toValue());

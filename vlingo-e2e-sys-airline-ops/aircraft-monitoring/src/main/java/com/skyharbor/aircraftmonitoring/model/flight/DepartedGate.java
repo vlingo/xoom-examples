@@ -8,8 +8,8 @@ public final class DepartedGate extends IdentifiedDomainEvent {
 
   private final UUID eventId;
   public final String id;
-  public final String aircraft;
-  public final String actualDeparture;
+  public final Aircraft aircraft;
+  public final ActualDeparture actualDeparture;
 
   public DepartedGate(final FlightState state) {
     super(SemanticVersion.from("0.0.1").toValue());
