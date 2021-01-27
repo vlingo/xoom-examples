@@ -19,3 +19,6 @@ out/
 /.recommenders/
 *.jtl
 **/.~lock.*
+
+#Maven
+dependency-reduced-pom.xml
