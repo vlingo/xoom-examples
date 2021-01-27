@@ -8,10 +8,10 @@ public final class InFlight extends IdentifiedDomainEvent {
 
   private final UUID eventId;
   public final String id;
-  public final String aircraft;
-  public final String actualDeparture;
-  public final String estimatedArrival;
-  public final String actualArrival;
+  public final Aircraft aircraft;
+  public final ActualDeparture actualDeparture;
+  public final EstimatedArrival estimatedArrival;
+  public final ActualArrival actualArrival;
 
   public InFlight(final FlightState state) {
     super(SemanticVersion.from("0.0.1").toValue());

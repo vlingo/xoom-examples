@@ -8,8 +8,8 @@ public final class ArrivedAtGate extends IdentifiedDomainEvent {
 
   private final UUID eventId;
   public final String id;
-  public final String estimatedArrival;
-  public final String actualArrival;
+  public final EstimatedArrival estimatedArrival;
+  public final ActualArrival actualArrival;
 
   public ArrivedAtGate(final FlightState state) {
     super(SemanticVersion.from("0.0.1").toValue());
