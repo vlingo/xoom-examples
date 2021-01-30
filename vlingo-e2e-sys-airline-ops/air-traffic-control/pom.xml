@@ -102,7 +102,7 @@
                   <src>FlightClearedForLanding.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.0</ref>
                   <src>FlightLanded.vss</src>
                 </schema>
                 <schema>
