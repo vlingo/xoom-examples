@@ -3,12 +3,12 @@ package com.vgoairlines.airportterminal.infrastructure.persistence;
 import com.vgoairlines.airportterminal.infrastructure.Events;
 import com.vgoairlines.airportterminal.infrastructure.FlightData;
 
+import com.vgoairlines.airportterminal.model.flight.FlightState;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
 
 public class FlightProjectionActor extends StateStoreProjectionActor<FlightData> {
-  private static final FlightData Empty = FlightData.empty();
 
   public FlightProjectionActor() {
     super(QueryModelStateStoreProvider.instance().store);
@@ -16,7 +16,8 @@ public class FlightProjectionActor extends StateStoreProjectionActor<FlightData>
 
   @Override
   protected FlightData currentDataFor(final Projectable projectable) {
-    return Empty;
+    final FlightState state = projectable.object();
+    return FlightData.from(state);
   }
 
   @Override
