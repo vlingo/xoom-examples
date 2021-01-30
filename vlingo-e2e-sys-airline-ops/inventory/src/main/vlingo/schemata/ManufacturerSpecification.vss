@@ -1,0 +1,5 @@
+data ManufacturerSpecification {
+  string manufacturer
+  string model
+  string serialNumber
+}
