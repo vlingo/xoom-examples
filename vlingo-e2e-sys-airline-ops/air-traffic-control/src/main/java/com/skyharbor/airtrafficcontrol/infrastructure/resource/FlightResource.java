@@ -21,6 +21,10 @@ public interface FlightResource {
   @ResponseAdapter(handler = FlightResourceHandlers.ADAPT_STATE)
   Completes<Response> departGate(@Body final FlightData data);
 
+  @Route(method = PATCH, path = "/{id}/status", handler = FlightResourceHandlers.CHANGE_STATUS)
+  @ResponseAdapter(handler = FlightResourceHandlers.ADAPT_STATE)
+  Completes<Response> changeStatus(@Id final String id, @Body final FlightData data);
+
   @Route(method = GET, handler = FlightResourceHandlers.FLIGHTS)
   Completes<Response> flights();
 

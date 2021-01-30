@@ -15,5 +15,9 @@ public enum FlightStatus {
   CLEARED_FOR_TAKE_OFF,
   IN_FLIGHT,
   CLEARED_FOR_LANDING,
-  LANDED,
+  LANDED;
+
+  public boolean isLanded() {
+    return equals(LANDED);
+  }
 }

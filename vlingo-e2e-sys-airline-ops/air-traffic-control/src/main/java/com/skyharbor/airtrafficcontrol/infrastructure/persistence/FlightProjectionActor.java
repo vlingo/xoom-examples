@@ -3,12 +3,12 @@ package com.skyharbor.airtrafficcontrol.infrastructure.persistence;
 import com.skyharbor.airtrafficcontrol.infrastructure.Events;
 import com.skyharbor.airtrafficcontrol.infrastructure.FlightData;
 
+import com.skyharbor.airtrafficcontrol.model.flight.FlightState;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
 
 public class FlightProjectionActor extends StateStoreProjectionActor<FlightData> {
-  private static final FlightData Empty = FlightData.empty();
 
   public FlightProjectionActor() {
     super(QueryModelStateStoreProvider.instance().store);
@@ -16,7 +16,8 @@ public class FlightProjectionActor extends StateStoreProjectionActor<FlightData>
 
   @Override
   protected FlightData currentDataFor(final Projectable projectable) {
-    return Empty;
+    final FlightState state = projectable.object();
+    return FlightData.from(state);
   }
 
   @Override
@@ -33,7 +34,7 @@ public class FlightProjectionActor extends StateStoreProjectionActor<FlightData>
         case FlightClearedForLanding:
           return FlightData.empty();   // TODO: implement actual merge
         case FlightLanded:
-          return FlightData.empty();   // TODO: implement actual merge
+          return currentData;   // TODO: implement actual merge
         case OutboundTaxingInitiated:
           return FlightData.empty();   // TODO: implement actual merge
         case FlightClearedForTakeOff:
@@ -41,7 +42,7 @@ public class FlightProjectionActor extends StateStoreProjectionActor<FlightData>
         case EnteredFlightLine:
           return FlightData.empty();   // TODO: implement actual merge
         case FlightDepartedGate:
-          return FlightData.empty();   // TODO: implement actual merge
+          return previousData;   // TODO: implement actual merge
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
           break;
