@@ -16,13 +16,6 @@ public class AircraftState extends StateObject {
     public final String serialNumber;
     public final String tailNumber;
 
-    public static AircraftState of(final String id,
-                                   final String model,
-                                   final String serialNumber,
-                                   final String tailNumber) {
-        return new AircraftState(id, model,serialNumber, tailNumber);
-    }
-
     public static AircraftState identifiedById(final String id) {
         return new AircraftState(id, null, null, null);
     }
@@ -35,5 +28,9 @@ public class AircraftState extends StateObject {
         this.model = model;
         this.serialNumber = serialNumber;
         this.tailNumber = tailNumber;
+    }
+
+    public AircraftState pool(final String model, final String serialNumber, final String tailNumber) {
+        return new AircraftState(id, model, serialNumber, tailNumber);
     }
 }

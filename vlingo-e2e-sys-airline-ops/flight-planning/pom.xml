@@ -96,21 +96,24 @@
               </schemata>
             </configuration>
           </execution>
-<!--          <execution>-->
-<!--            <id>pullSchemata</id>-->
-<!--            <goals>-->
-<!--              <goal>pull-schemata</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <schemataService>-->
-<!--                <url>http://localhost:9019</url>-->
-<!--                <clientOrganization>Inform the client organization</clientOrganization>-->
-<!--                <clientUnit>Inform the client unit</clientUnit>-->
-<!--              </schemataService>-->
-<!--              <schemata>-->
-<!--              </schemata>-->
-<!--            </configuration>-->
-<!--          </execution>-->
+          <execution>
+            <id>pullSchemata</id>
+            <goals>
+              <goal>pull-schemata</goal>
+            </goals>
+            <configuration>
+              <schemataService>
+                <url>http://localhost:9019</url>
+                <clientOrganization>VgoAirlines</clientOrganization>
+                <clientUnit>Inventory</clientUnit>
+              </schemataService>
+              <schemata>
+                <schema>
+                  <ref>VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:4.0.0</ref>
+                </schema>
+              </schemata>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>

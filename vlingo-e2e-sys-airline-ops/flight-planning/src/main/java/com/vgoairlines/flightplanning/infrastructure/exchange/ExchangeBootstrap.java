@@ -1,5 +1,6 @@
 package com.vgoairlines.flightplanning.infrastructure.exchange;
 
+import com.vgoairlines.inventory.event.AircraftConsigned;
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.exchange.ConnectionSettings;
 import io.vlingo.lattice.exchange.Covey;
@@ -37,6 +38,14 @@ public class ExchangeBootstrap {
         new FlightProducerAdapter(),
         IdentifiedDomainEvent.class,
         IdentifiedDomainEvent.class,
+        Message.class));
+
+    flightPlanningExchange.register(Covey.of(
+      new MessageSender(flightPlanningExchange.connection()),
+        new AircraftConsignedReceiver(stage),
+        new AircraftConsignedAdapter("VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:4.0.0"),
+        AircraftConsigned.class,
+        String.class,
         Message.class));
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
