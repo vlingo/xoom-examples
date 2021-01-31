@@ -2,6 +2,7 @@ package com.thesis2020.hh.infrastructure;
 
 
 import com.thesis2020.hh.infrastructure.persistence.CommandModelStateStoreProvider;
+import com.thesis2020.hh.infrastructure.persistence.ProjectionDispatcherProvider;
 import com.thesis2020.hh.infrastructure.persistence.QueryModelStateStoreProvider;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import com.thesis2020.hh.resource.GreetingResource;
@@ -22,18 +23,21 @@ public class Bootstrap {
 
   public Bootstrap(final int port) throws Exception {
 
-    world = World.startWithDefaults("thesis2020HH");
-//    world = World.start("thesis2020HH");
+//    world = World.startWithDefaults("thesis2020HH");
+    world = World.start("thesis2020HH");
     
     final Stage stage =
             world.stageNamed("thesis2020HH", Stage.class, new GridAddressFactory(IdentityGeneratorType.RANDOM));
-
     final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
-    QueryModelStateStoreProvider.using(stage, statefulTypeRegistry);
-    CommandModelStateStoreProvider.using(stage, statefulTypeRegistry);
-
+    
+    QueryModelStateStoreProvider.INSTANCE.using(stage, statefulTypeRegistry);
+    ProjectionDispatcherProvider.INSTANCE.using(stage,QueryModelStateStoreProvider.INSTANCE.statestore);
+    CommandModelStateStoreProvider.INSTANCE.using(stage, statefulTypeRegistry,
+    		ProjectionDispatcherProvider.INSTANCE.storeDispatcher);
+    
+    
     final GreetingResource greetingResource = new GreetingResource(stage);
-    final HelloResources helloResources = new HelloResources(stage);
+    final HelloResources helloResources = new HelloResources();
 
     Resources allResources = Resources.are(
         greetingResource.routes(),
@@ -42,7 +46,7 @@ public class Bootstrap {
 
 //    server = Server.startWith(stage, allResources, port, Sizing.define(), Timing.defineWith(7, 5, 100));
     
-    server = Server.startWithAgent(stage, allResources, port, 4);
+    server = Server.startWithAgent(stage, allResources, port, 6);
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       if (instance != null) {

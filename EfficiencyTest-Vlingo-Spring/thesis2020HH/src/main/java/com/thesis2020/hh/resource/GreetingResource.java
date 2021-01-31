@@ -8,13 +8,19 @@ import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.http.Response;
 import io.vlingo.http.resource.RequestHandler;
 import io.vlingo.http.resource.Resource;
-import io.vlingo.http.resource.ResourceBuilder;
 import io.vlingo.http.resource.ResourceHandler;
 
 import static io.vlingo.http.resource.ResourceBuilder.resource;
+import static io.vlingo.http.Response.Status.Ok;
+import static io.vlingo.http.Response.Status.Created;
+import static io.vlingo.http.Response.Status.NotFound;
+import static io.vlingo.http.resource.ResourceBuilder.get;
+import static io.vlingo.http.resource.ResourceBuilder.post;
+import static io.vlingo.http.resource.ResourceBuilder.patch;
 
+import com.thesis2020.hh.infrastructure.data.GreetingRequestData;
+import com.thesis2020.hh.infrastructure.data.GreetingChangeRequestData;
 import com.thesis2020.hh.infrastructure.data.GreetingData;
-import com.thesis2020.hh.infrastructure.data.UpdateGreetingData;
 import com.thesis2020.hh.infrastructure.persistence.Queries;
 import com.thesis2020.hh.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.thesis2020.hh.model.greeting.Greeting;
@@ -29,71 +35,69 @@ public class GreetingResource extends ResourceHandler {
     public GreetingResource(final Stage stage) {
         this.stage = stage;
         this.addressFactory = stage.addressFactory();
-        this.queries = QueryModelStateStoreProvider.instance().queries;
+        this.queries = QueryModelStateStoreProvider.INSTANCE.queris;
     }
 
     @Override
     public Resource<?> routes() {
 
-        return resource("GreetingResource",
+        return resource("GreetingResource", 20,
                 postGreeting(),
                 getGreetingWithID(),
-                changeMessage(),
-                changeDescription());
+                changeGreetingMessage(),
+                changeGreetingDescription());
     }
 
     private RequestHandler postGreeting(){
-        return ResourceBuilder.post("/greetings")
-                .body(GreetingData.class)
+        return post("/greetings")
+                .body(GreetingRequestData.class)
                 .handle(this::defineGreeting);
     }
 
     private RequestHandler getGreetingWithID(){
-        return ResourceBuilder.get("/greetings/{greetingId}")
+        return get("/greetings/{greetingId}")
                 .param(String.class)
                 .handle(this::getGreeting);
     }
 
-    private RequestHandler changeMessage(){
-        return ResourceBuilder.patch("/greetings/{greetingId}/message")
+    private RequestHandler changeGreetingMessage(){
+        return patch("/greetings/{greetingId}/message")
                 .param(String.class)
-                .body(UpdateGreetingData.class)
-                .handle(this::changeGreetingMessage);
+                .body(GreetingChangeRequestData.class)
+                .handle(this::changeMessage);
+        
     }
 
-    private RequestHandler changeDescription(){
-        return ResourceBuilder.patch("/greetings/{greetingId}/description")
+    private RequestHandler changeGreetingDescription(){
+        return patch("/greetings/{greetingId}/description")
                 .param(String.class)
-                .body(UpdateGreetingData.class)
-                .handle(this::changeGreetingDescription);
+                .body(GreetingChangeRequestData.class)
+                .handle(this::changeDescription);
     }
 
-
-
-
-    private Completes<Response> defineGreeting(GreetingData data){
+    private Completes<Response> defineGreeting(GreetingRequestData data){
         return  Greeting.defineGreeting(stage,data)
-                .andThenTo(state -> Completes.withSuccess(Response.of(Response.Status.Created, JsonSerialization.serialized(state))));
+                .andThenTo(state -> Completes.withSuccess(Response.of(Created, JsonSerialization.serialized(GreetingData.from(state)))));
     }
 
     private Completes<Response> getGreeting(String greetingId){
         return queries.greetingWithId(greetingId)
-                .andThenTo(state -> Completes.withSuccess(Response.of(Response.Status.Ok, JsonSerialization.serialized(state))))
-                .otherwise(nodata -> Response.of(Response.Status.NotFound,notFoundMessage(greetingId)));
+                .andThenTo(data -> Completes.withSuccess(Response.of(Ok, JsonSerialization.serialized(data))))
+                .otherwise(nodata -> Response.of(NotFound,notFoundMessage(greetingId)));
     }
 
-    private Completes<Response> changeGreetingMessage(String greetingId,UpdateGreetingData data){
+    private Completes<Response> changeMessage(String greetingId,GreetingChangeRequestData data){
         return resolve(greetingId)
-                .andThenTo(greeting -> greeting.updateMessage(data))
-                .andThenTo(state -> Completes.withSuccess(Response.of(Response.Status.Ok,JsonSerialization.serialized(state))))
-                .otherwise(nodata -> Response.of(Response.Status.NotFound,notFoundMessage(greetingId)));
+                .andThenTo(greeting -> greeting.changeMessage(data))
+                .andThenTo(state -> Completes.withSuccess(Response.of(Ok,JsonSerialization.serialized(GreetingData.from(state)))))
+                .otherwise(nodata -> Response.of(NotFound,notFoundMessage(greetingId)));
     }
 
-    private Completes<Response> changeGreetingDescription(String greetingId, UpdateGreetingData data){
+    private Completes<Response> changeDescription(String greetingId, GreetingChangeRequestData data){
         return resolve(greetingId)
-                .andThenTo(greeting -> greeting.updateDescription(data))
-                .andThenTo(state -> Completes.withSuccess(Response.of(Response.Status.Ok,JsonSerialization.serialized(state))))
-                .otherwise(nodata -> Response.of(Response.Status.NotFound,notFoundMessage(greetingId)));
+                .andThenTo(greeting -> greeting.changeDescription(data))
+                .andThenTo(state -> Completes.withSuccess(Response.of(Ok,JsonSerialization.serialized(GreetingData.from(state)))))
+                .otherwise(nodata -> Response.of(NotFound,notFoundMessage(greetingId)));
     }
 
     private Completes<Greeting> resolve(final String greetingId) {

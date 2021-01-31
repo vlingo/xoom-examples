@@ -9,15 +9,14 @@ import io.vlingo.symbio.Source;
 import java.util.Collections;
 import java.util.List;
 
-import com.thesis2020.hh.infrastructure.data.GreetingData;
-import com.thesis2020.hh.infrastructure.data.UpdateGreetingData;
+import com.thesis2020.hh.infrastructure.data.GreetingRequestData;
+import com.thesis2020.hh.infrastructure.data.GreetingChangeRequestData;
 
 public final class GreetingEntity extends StatefulEntity<GreetingState> implements Greeting {
   private GreetingState state;
 
   public GreetingEntity() {
     super(); // uses GridAddress id as unique identity
-
     this.state = GreetingState.identifiedBy(id);
   }
 
@@ -27,19 +26,19 @@ public final class GreetingEntity extends StatefulEntity<GreetingState> implemen
 
 
   @Override
-  public Completes<GreetingState> defineGreeting(GreetingData data) {
-      return apply(GreetingState.withGreetingData(id,data),() -> state);
+  public Completes<GreetingState> defineGreeting(GreetingRequestData data) {
+      return apply(GreetingState.defineNewGreeting(id,data),GreetingEvents.GreetingDefined.name(),() -> state);
   }
 
 
   @Override
-  public Completes<GreetingState> updateMessage(UpdateGreetingData data) {
-    return apply(state.updateMessage(data), ()-> state);
+  public Completes<GreetingState> changeMessage(GreetingChangeRequestData data) {
+    return apply(state.changeMessage(data),GreetingEvents.GreetingMessageChange.name(),()-> state);
   }
 
   @Override
-  public Completes<GreetingState> updateDescription(UpdateGreetingData data) {
-    return apply(state.updateDescription(data),()->state);
+  public Completes<GreetingState> changeDescription(GreetingChangeRequestData data) {
+    return apply(state.changeDescription(data),GreetingEvents.GreetingDescriptionChanged.name(),()->state);
   }
 
   //=====================================

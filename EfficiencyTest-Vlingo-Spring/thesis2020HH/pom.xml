@@ -13,12 +13,13 @@
     <exec.mainClass>com.thesis2020.hh.infrastructure.Bootstrap</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.xoom.version>1.3.4-SNAPSHOT</vlingo.xoom.version>
+    <vlingo.xoom.version>1.4.4-SNAPSHOT</vlingo.xoom.version>
   </properties>
-  <repositories>
+  
+<repositories>
     <repository>
-      <id>jcenter.bintray.com</id>
-      <url>https://jcenter.bintray.com</url>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -32,23 +33,29 @@
       </releases>
     </repository>
   </repositories>
+  
   <dependencies>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>1.3.4-SNAPSHOT</version>
+      <version>1.4.4-SNAPSHOT</version>
       <scope>compile</scope>
+    </dependency>
+     <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-symbio</artifactId>
+      <version>1.4.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio-jdbc</artifactId>
-      <version>1.3.4-SNAPSHOT</version>
+      <version>1.4.4-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>1.3.4-SNAPSHOT</version>
+      <version>1.4.4-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -57,6 +64,8 @@
       <version>${vlingo.xoom.version}</version>
       <scope>compile</scope>
     </dependency>
+    
+    
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -69,6 +78,7 @@
       <version>5.6.0</version>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
   <build>
     <plugins>
@@ -185,4 +195,5 @@
       </plugins>
     </pluginManagement>
   </build>
+   
 </project>
