@@ -4,19 +4,20 @@
 // Mozilla Public License, v. 2.0. If a copy of the MPL
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
-package com.skyharbor.fleetcrew.infrastructure.exchange;
+
+package com.skyharbor.airtrafficcontrol.infrastructure.exchange;
 
 public enum SchemaReferences {
 
-  FLIGHT_LANDED("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.1");
+  FLIGHT_DEPARTED("VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:FlightDeparted:1.0.0");
 
-  public final String value;
+  private final String value;
 
   SchemaReferences(final String value) {
     this.value = value;
   }
 
-  public boolean match(final String schemaName) {
-    return this.value.equals(schemaName);
+  public boolean match(final String reference) {
+    return value.equalsIgnoreCase(reference);
   }
 }

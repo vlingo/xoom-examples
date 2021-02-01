@@ -1,19 +1,17 @@
 package com.skyharbor.airtrafficcontrol.infrastructure.exchange;
 
+import com.vgoairlines.airportterminal.event.FlightDeparted;
 import io.vlingo.actors.Stage;
-import io.vlingo.xoom.actors.Settings;
-import io.vlingo.lattice.exchange.Exchange;
-import io.vlingo.xoom.exchange.ExchangeSettings;
-import io.vlingo.lattice.exchange.rabbitmq.ExchangeFactory;
 import io.vlingo.lattice.exchange.ConnectionSettings;
+import io.vlingo.lattice.exchange.Covey;
+import io.vlingo.lattice.exchange.Exchange;
+import io.vlingo.lattice.exchange.rabbitmq.ExchangeFactory;
 import io.vlingo.lattice.exchange.rabbitmq.Message;
 import io.vlingo.lattice.exchange.rabbitmq.MessageSender;
-import io.vlingo.lattice.exchange.Covey;
-import io.vlingo.symbio.store.dispatch.Dispatcher;
-
-import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
-import com.skyharbor.airtrafficcontrol.infrastructure.FlightData;
+import io.vlingo.symbio.store.dispatch.Dispatcher;
+import io.vlingo.xoom.actors.Settings;
+import io.vlingo.xoom.exchange.ExchangeSettings;
 
 public class ExchangeBootstrap {
 
@@ -41,6 +39,14 @@ public class ExchangeBootstrap {
         IdentifiedDomainEvent.class,
         IdentifiedDomainEvent.class,
         Message.class));
+
+    airTrafficControl.register(Covey.of(
+            new MessageSender(airTrafficControl.connection()),
+            new FlightDepartedReceiver(stage),
+            new FlightDepartedAdapter(),
+            FlightDeparted.class,
+            String.class,
+            Message.class));
 
     airTrafficControl.register(Covey.of(
         new MessageSender(airTrafficControl.connection()),

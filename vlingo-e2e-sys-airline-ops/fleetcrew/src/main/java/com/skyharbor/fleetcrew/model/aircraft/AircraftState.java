@@ -15,7 +15,12 @@ public final class AircraftState extends StateObject {
     return new AircraftState(id, null, null, null, null, null);
   }
 
-  public AircraftState (final String id, final String carrier, final String flightNumber, final String tailNumber, final String gate, final String fleetAgent) {
+  public AircraftState (final String id,
+                        final String carrier,
+                        final String flightNumber,
+                        final String tailNumber,
+                        final String gate,
+                        final String fleetAgent) {
     this.id = id;
     this.carrier = carrier;
     this.flightNumber = flightNumber;
@@ -25,11 +30,11 @@ public final class AircraftState extends StateObject {
   }
 
   public AircraftState recordArrival(final String carrier, final String flightNumber, final String tailNumber, final String gate) {
-    return new AircraftState(this.id, carrier, flightNumber, tailNumber, gate, this.fleetAgent);
+    return new AircraftState(this.id,  carrier, flightNumber, tailNumber, gate, this.fleetAgent);
   }
 
   public AircraftState recordDeparture(final String carrier, final String flightNumber, final String tailNumber, final String gate) {
-    return new AircraftState(this.id, carrier, flightNumber, tailNumber, gate, this.fleetAgent);
+    return new AircraftState(this.id,  carrier, flightNumber, tailNumber, gate, this.fleetAgent);
   }
 
   public AircraftState planArrival(final String carrier, final String flightNumber, final String tailNumber) {
@@ -37,11 +42,11 @@ public final class AircraftState extends StateObject {
   }
 
   public AircraftState reassignGate(final String gate) {
-    return new AircraftState(this.id, this.carrier, this.flightNumber, this.tailNumber, gate, this.fleetAgent);
+    return new AircraftState(this.id,  this.carrier, this.flightNumber, this.tailNumber, gate, this.fleetAgent);
   }
 
   public AircraftState recordLoaded(final String carrier) {
-    return new AircraftState(this.id, carrier, this.flightNumber, this.tailNumber, gate, this.fleetAgent);
+    return new AircraftState(this.id,  carrier, this.flightNumber, this.tailNumber, gate, this.fleetAgent);
   }
 
   public AircraftState recordUnloaded(final String carrier) {

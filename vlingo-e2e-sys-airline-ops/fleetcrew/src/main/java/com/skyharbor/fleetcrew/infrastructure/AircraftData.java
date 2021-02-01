@@ -1,12 +1,12 @@
 package com.skyharbor.fleetcrew.infrastructure;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import com.skyharbor.fleetcrew.model.aircraft.AircraftState;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class AircraftData {
-  public final String id;
+  public final String aircraftId;
   public final String carrier;
   public final String flightNumber;
   public final String tailNumber;
@@ -26,7 +26,7 @@ public class AircraftData {
   }
 
   private AircraftData (final AircraftState state) {
-    this.id = state.id;
+    this.aircraftId = state.id;
     this.carrier = state.carrier;
     this.flightNumber = state.flightNumber;
     this.tailNumber = state.tailNumber;

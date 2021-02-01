@@ -12,10 +12,11 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
     this.state = FlightState.identifiedBy(id);
   }
 
-  public Completes<FlightState> departGate(final String number, final String tailNumber, final String equipment) {
-    final FlightState stateArg = state.departGate(number, tailNumber, equipment);
+  public Completes<FlightState> departGate(final String aircraftId, final String number, final String tailNumber, final String equipment) {
+    final FlightState stateArg = state.departGate(aircraftId, number, tailNumber, equipment);
     return apply(stateArg, new FlightDepartedGate(stateArg), () -> state);
   }
+
 
   public Completes<FlightState> tax(final String number) {
     final FlightState stateArg = state.tax(number);
