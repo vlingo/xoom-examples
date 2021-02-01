@@ -20,7 +20,7 @@ public class AircraftResourceHandlers {
   public static final int ADAPT_STATE = 3;
 
   public static final HandlerEntry<Three<Completes<AircraftState>, Stage, AircraftData>> PLAN_ARRIVAL_HANDLER =
-          HandlerEntry.of(PLAN_ARRIVAL, ($stage, data) -> Aircraft.planArrival($stage, data.carrier, data.flightNumber, data.tailNumber));
+          HandlerEntry.of(PLAN_ARRIVAL, ($stage, data) -> Aircraft.planArrival($stage, data.aircraftId, data.carrier, data.flightNumber, data.tailNumber));
 
   public static final HandlerEntry<Three<Completes<AircraftState>, Aircraft, AircraftData>> RECORD_DEPARTURE_HANDLER =
           HandlerEntry.of(RECORD_DEPARTURE, (aircraft, data) -> aircraft.recordDeparture(data.carrier, data.flightNumber, data.tailNumber, data.gate));

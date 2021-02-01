@@ -1,6 +1,7 @@
 event FlightLanded {
   version semanticVersion
   string id
+  string aircraftId
   string number
   string tailNumber
   string equipment

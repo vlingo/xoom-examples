@@ -102,7 +102,7 @@
                   <src>FlightClearedForLanding.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.0</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.1</ref>
                   <src>FlightLanded.vss</src>
                 </schema>
                 <schema>
@@ -120,10 +120,13 @@
             <configuration>
               <schemataService>
                 <url>http://localhost:9019</url>
-                <clientOrganization>Inform the client organization</clientOrganization>
-                <clientUnit>Inform the client unit</clientUnit>
+                <clientOrganization>VgoAirlines</clientOrganization>
+                <clientUnit>AirportTerminal</clientUnit>
               </schemataService>
               <schemata>
+                <schema>
+                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:FlightDeparted:2.0.0</ref>
+                </schema>
               </schemata>
             </configuration>
           </execution>

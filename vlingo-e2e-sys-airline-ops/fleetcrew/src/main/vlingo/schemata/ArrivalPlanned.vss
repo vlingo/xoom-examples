@@ -1,6 +1,6 @@
 event ArrivalPlanned {
   version semanticVersion
-  string id
+  string aircraftId
   string carrier
   string flightNumber
   string tailNumber

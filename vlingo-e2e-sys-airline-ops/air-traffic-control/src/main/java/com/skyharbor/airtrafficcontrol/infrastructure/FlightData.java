@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 public class FlightData {
   public final String id;
+  public final String aircraftId;
   public final String number;
   public final String tailNumber;
   public final String equipment;
@@ -27,6 +28,7 @@ public class FlightData {
   private FlightData (final FlightState state) {
     this.id = state.id;
     this.number = state.number;
+    this.aircraftId = state.aircraftId;
     this.tailNumber = state.tailNumber;
     this.equipment = state.equipment;
     this.status = state.status.name();

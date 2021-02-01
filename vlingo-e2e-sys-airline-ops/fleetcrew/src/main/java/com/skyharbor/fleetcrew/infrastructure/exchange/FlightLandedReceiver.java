@@ -26,10 +26,10 @@ class FlightLandedReceiver implements ExchangeReceiver<FlightLanded> {
   @Override
   public void receive(final FlightLanded event) {
     final Address address =
-            stage.addressFactory().from(event.tailNumber);
+            stage.addressFactory().from(event.aircraftId);
 
     final Definition definition =
-            Definition.has(AircraftEntity.class, Definition.parameters(event.tailNumber));
+            Definition.has(AircraftEntity.class, Definition.parameters(event.aircraftId));
 
     stage.actorOf(Aircraft.class, address, definition).andFinallyConsume(aircraft ->{
       final String carrier = LogisticsResolver.availableCarrier();

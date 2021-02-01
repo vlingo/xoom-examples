@@ -1,28 +1,21 @@
 package com.skyharbor.airtrafficcontrol.infrastructure.exchange;
 
+import com.vgoairlines.airportterminal.event.FlightDeparted;
 import io.vlingo.lattice.exchange.ExchangeAdapter;
 import io.vlingo.lattice.exchange.MessageParameters;
 import io.vlingo.lattice.exchange.MessageParameters.DeliveryMode;
 import io.vlingo.lattice.exchange.rabbitmq.Message;
 
-import com.skyharbor.airtrafficcontrol.infrastructure.FlightData;
+public class FlightDepartedAdapter implements ExchangeAdapter<FlightDeparted, String, Message> {
 
-public class FlightConsumerAdapter implements ExchangeAdapter<FlightData, String, Message> {
-
-  private final String supportedSchemaName;
-
-  public FlightConsumerAdapter(final String supportedSchemaName) {
-    this.supportedSchemaName = supportedSchemaName;
+  @Override
+  public FlightDeparted fromExchange(final Message exchangeMessage) {
+    return new FlightDepartedMapper().externalToLocal(exchangeMessage.payloadAsText());
   }
 
   @Override
-  public FlightData fromExchange(final Message exchangeMessage) {
-    return new FlightDataMapper().externalToLocal(exchangeMessage.payloadAsText());
-  }
-
-  @Override
-  public Message toExchange(final FlightData local) {
-    final String messagePayload = new FlightDataMapper().localToExternal(local);
+  public Message toExchange(final FlightDeparted local) {
+    final String messagePayload = new FlightDepartedMapper().localToExternal(local);
     return new Message(messagePayload, MessageParameters.bare().deliveryMode(DeliveryMode.Durable));
   }
 
@@ -32,7 +25,7 @@ public class FlightConsumerAdapter implements ExchangeAdapter<FlightData, String
       return false;
     }
     final String schemaName = ((Message) exchangeMessage).messageParameters.typeName();
-    return supportedSchemaName.equalsIgnoreCase(schemaName);
+    return SchemaReferences.FLIGHT_DEPARTED.match(schemaName);
   }
 
 }
