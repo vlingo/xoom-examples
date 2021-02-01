@@ -7,6 +7,7 @@
 package com.vgoairlines.flightplanning.infrastructure.exchange;
 
 import com.vgoairlines.flightplanning.model.aircraft.Aircraft;
+import com.vgoairlines.flightplanning.model.aircraft.Denomination;
 import com.vgoairlines.inventory.event.AircraftConsigned;
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.exchange.ExchangeReceiver;
@@ -21,6 +22,10 @@ class AircraftConsignedReceiver implements ExchangeReceiver<AircraftConsigned> {
 
   @Override
   public void receive(final AircraftConsigned aircraftConsigned) {
-    Aircraft.pool(stage, aircraftConsigned.model, aircraftConsigned.serialNumber, aircraftConsigned.tailNumber);
+    final Denomination denomination =
+            Denomination.from(aircraftConsigned.model, aircraftConsigned.serialNumber,
+                    aircraftConsigned.tailNumber);
+
+    Aircraft.pool(stage, aircraftConsigned.aircraftId, denomination);
   }
 }

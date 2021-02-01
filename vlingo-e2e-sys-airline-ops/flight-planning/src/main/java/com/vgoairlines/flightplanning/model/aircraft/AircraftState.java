@@ -12,25 +12,23 @@ import io.vlingo.symbio.store.object.StateObject;
 public class AircraftState extends StateObject {
 
     public final String id;
-    public final String model;
-    public final String serialNumber;
-    public final String tailNumber;
+    public final String aircraftId;
+    public final Denomination denomination;
 
     public static AircraftState identifiedById(final String id) {
-        return new AircraftState(id, null, null, null);
+        return new AircraftState(id, null, null);
     }
 
     private AircraftState(final String id,
-                          final String model,
-                          final String serialNumber,
-                          final String tailNumber) {
+                          final String aircraftId,
+                          final Denomination denomination) {
         this.id = id;
-        this.model = model;
-        this.serialNumber = serialNumber;
-        this.tailNumber = tailNumber;
+        this.aircraftId = aircraftId;
+        this.denomination = denomination;
     }
 
-    public AircraftState pool(final String model, final String serialNumber, final String tailNumber) {
-        return new AircraftState(id, model, serialNumber, tailNumber);
+    public AircraftState pool(final String aircraftId,
+                              final Denomination denomination) {
+        return new AircraftState(id, aircraftId, denomination);
     }
 }

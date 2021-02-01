@@ -1,5 +1,6 @@
 event AircraftConsigned {
   version semanticVersion
+  string aircraftId
   string model
   string serialNumber
   string tailNumber
