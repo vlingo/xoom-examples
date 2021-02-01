@@ -1,6 +1,7 @@
 event FlightDepartedGate {
   version semanticVersion
   string id
+  string aircraftId
   string number
   string tailNumber
   string equipment
