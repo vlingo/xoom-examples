@@ -19,8 +19,8 @@ public class AircraftEntity extends StatefulEntity<AircraftState> implements Air
     }
 
     @Override
-    public Completes<AircraftState> pool(final String model, final String serialNumber, final String tailNumber) {
-        final AircraftState stateArg = state.pool(model, serialNumber, tailNumber);
+    public Completes<AircraftState> pool(final String aircraftId, final Denomination denomination) {
+        final AircraftState stateArg = state.pool(aircraftId, denomination);
         return apply(stateArg, new AircraftPooled(stateArg), () -> state);
     }
 

@@ -12,18 +12,18 @@ import com.vgoairlines.flightplanning.model.aircraft.AircraftState;
 public class AircraftData {
 
     public final String id;
-    public final String model;
-    public final String serialNumber;
-    public final String tailNumber;
+    public final DenominationData denomination;
 
     public AircraftData(final AircraftState state) {
         this.id = state.id;
-        this.model = state.model;
-        this.serialNumber = state.serialNumber;
-        this.tailNumber = state.tailNumber;
+        this.denomination =
+                new DenominationData(state.denomination.model,
+                        state.denomination.serialNumber,
+                        state.denomination.serialNumber);
     }
 
     public static AircraftData from(final AircraftState state) {
         return new AircraftData(state);
     }
+
 }

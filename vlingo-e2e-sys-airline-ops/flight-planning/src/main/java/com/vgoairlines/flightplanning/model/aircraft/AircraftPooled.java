@@ -16,9 +16,9 @@ public final class AircraftPooled extends IdentifiedDomainEvent {
   public AircraftPooled(final AircraftState state) {
     super(SemanticVersion.from("0.0.1").toValue());
     this.id = state.id;
-    this.model = state.model;
-    this.serialNumber = state.serialNumber;
-    this.tailNumber = state.tailNumber;
+    this.model = state.denomination.model;
+    this.serialNumber = state.denomination.serialNumber;
+    this.tailNumber = state.denomination.tailNumber;
     this.eventId = UUID.randomUUID();
   }
 

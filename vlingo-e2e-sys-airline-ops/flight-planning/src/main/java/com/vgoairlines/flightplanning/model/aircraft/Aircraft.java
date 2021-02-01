@@ -14,14 +14,13 @@ import io.vlingo.common.Completes;
 public interface Aircraft {
 
   static Completes<AircraftState> pool(final Stage stage,
-                                       final String model,
-                                       final String serialNumber,
-                                       final String tailNumber) {
+                                       final String aircraftId,
+                                       final Denomination denomination) {
     final Address _address = stage.addressFactory().uniquePrefixedWith("g-");
     final Aircraft aircraft = stage.actorFor(Aircraft.class, Definition.has(AircraftEntity.class, Definition.parameters(_address.idString())), _address);
-    return aircraft.pool(model, serialNumber, tailNumber);
+    return aircraft.pool(aircraftId, denomination);
   }
 
-  Completes<AircraftState> pool(final String model, final String serialNumber, final String tailNumber);
+  Completes<AircraftState> pool(final String aircraftId, final Denomination denomination);
 
 }

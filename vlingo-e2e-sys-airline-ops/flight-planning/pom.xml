@@ -109,7 +109,7 @@
               </schemataService>
               <schemata>
                 <schema>
-                  <ref>VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:4.0.0</ref>
+                  <ref>VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:4.0.1</ref>
                 </schema>
               </schemata>
             </configuration>

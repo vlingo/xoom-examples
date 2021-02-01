@@ -86,7 +86,7 @@
 <!--                  <src>ManufacturerSpecification.vss</src>-->
 <!--                </schema>-->
                 <schema>
-                  <ref>VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:4.0.0</ref>
+                  <ref>VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:4.0.1</ref>
                   <src>AircraftConsigned.vss</src>
                 </schema>
               </schemata>

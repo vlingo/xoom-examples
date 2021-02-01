@@ -8,14 +8,14 @@ import java.util.UUID;
 public final class AircraftConsigned extends IdentifiedDomainEvent {
 
   private final UUID eventId;
-  public final String id;
+  public final String aircraftId;
   public final String model;
   public final String serialNumber;
   public final String tailNumber;
 
   public AircraftConsigned(final AircraftState state) {
-    super(SemanticVersion.from("4.0.0").toValue());
-    this.id = state.id;
+    super(SemanticVersion.from("4.0.1").toValue());
+    this.aircraftId = state.id;
     this.model = state.manufacturerSpecification.model;
     this.serialNumber = state.manufacturerSpecification.serialNumber;
     this.tailNumber = state.registration.tailNumber;
