@@ -77,26 +77,26 @@
                 <clientUnit>AirportTerminal</clientUnit>
               </schemataService>
               <schemata>
+<!--                <schema>-->
+<!--                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:GateOpened:0.0.1</ref>-->
+<!--                  <src>GateOpened.vss</src>-->
+<!--                </schema>-->
+<!--                <schema>-->
+<!--                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:BoardingStarted:0.0.1</ref>-->
+<!--                  <src>BoardingStarted.vss</src>-->
+<!--                </schema>-->
+<!--                <schema>-->
+<!--                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:BoardingCompleted:0.0.1</ref>-->
+<!--                  <src>BoardingCompleted.vss</src>-->
+<!--                </schema>-->
                 <schema>
-                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.flightplanning:GateOpened:0.0.1</ref>
-                  <src>GateOpened.vss</src>
-                </schema>
-                <schema>
-                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.flightplanning:BoardingStarted:0.0.1</ref>
-                  <src>BoardingStarted.vss</src>
-                </schema>
-                <schema>
-                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.flightplanning:BoardingCompleted:0.0.1</ref>
-                  <src>BoardingCompleted.vss</src>
-                </schema>
-                <schema>
-                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.flightplanning:FlightDeparted:0.0.1</ref>
+                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:FlightDeparted:2.0.0</ref>
                   <src>FlightDeparted.vss</src>
                 </schema>
-                <schema>
-                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.flightplanning:GateClosed:0.0.1</ref>
-                  <src>GateClosed.vss</src>
-                </schema>
+<!--                <schema>-->
+<!--                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:GateClosed:0.0.1</ref>-->
+<!--                  <src>GateClosed.vss</src>-->
+<!--                </schema>-->
               </schemata>
             </configuration>
           </execution>

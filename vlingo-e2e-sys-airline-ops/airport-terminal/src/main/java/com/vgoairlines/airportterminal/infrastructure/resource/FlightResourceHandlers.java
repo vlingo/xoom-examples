@@ -9,6 +9,9 @@ import io.vlingo.xoom.annotation.autodispatch.Handler.Three;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Two;
 import io.vlingo.xoom.annotation.autodispatch.HandlerEntry;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
 
 public class FlightResourceHandlers {
@@ -42,7 +45,13 @@ public class FlightResourceHandlers {
           HandlerEntry.of(COMPLETE_BOARDING, (flight, data) -> flight.endBoarding());
 
   public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> DEPART_HANDLER =
-          HandlerEntry.of(DEPART, (flight, data) -> flight.depart(data.schedule.departureStatus.actual));
+          HandlerEntry.of(DEPART, (flight, data) -> {
+            final LocalDateTime departedOn =
+                    Instant.ofEpochMilli(data.schedule.departureStatus.actual)
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+            return flight.depart(departedOn);
+          });
 
   public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> CLOSE_GATE_HANDLER =
           HandlerEntry.of(CLOSE_GATE, (flight, data) -> flight.closeGate());
