@@ -7,9 +7,17 @@
 
 package com.skyharbor.aircraftmonitoring.model.flight;
 
-public enum Status {
+public enum FlightLanded {
   DEPARTED_GATE,
   ARRIVED_AT_GATE,
   IN_FLIGHT,
-  LANDED
+  LANDED;
+
+  public boolean isLanded() {
+    return equals(LANDED);
+  }
+
+  public boolean inFlight() {
+    return equals(IN_FLIGHT);
+  }
 }

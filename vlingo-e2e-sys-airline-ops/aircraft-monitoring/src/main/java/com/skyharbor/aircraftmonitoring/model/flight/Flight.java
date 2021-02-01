@@ -7,12 +7,12 @@ import io.vlingo.common.Completes;
 
 public interface Flight {
 
-  Completes<FlightState> departGate(final Aircraft aircraft, final ActualDeparture actualDeparture, final EstimatedArrival estimatedArrival);
+  Completes<FlightState> departGate(final Aircraft aircraft);
 
-  static Completes<FlightState> departGate(final Stage stage, final Aircraft aircraft, final ActualDeparture actualDeparture, final EstimatedArrival estimatedArrival) {
-    final Address _address = stage.addressFactory().uniquePrefixedWith("g-");
-    final Flight _flight = stage.actorFor(Flight.class, Definition.has(FlightEntity.class, Definition.parameters(_address.idString())), _address);
-    return _flight.departGate(aircraft, actualDeparture, estimatedArrival);
+  static Completes<FlightState> departGate(final Stage stage, final String flightId, final Aircraft aircraft) {
+    final Address address = stage.addressFactory().uniquePrefixedWith("g-");
+    final Flight flight = stage.actorFor(Flight.class, Definition.has(FlightEntity.class, Definition.parameters(flightId)), address);
+    return flight.departGate(aircraft);
   }
 
   Completes<FlightState> reportLocation(final Location location);

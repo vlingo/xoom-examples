@@ -5,7 +5,7 @@ import io.vlingo.symbio.store.object.StateObject;
 public final class FlightState extends StateObject {
 
   public final String id;
-  public final Status status;
+  public final FlightLanded status;
   public final Aircraft aircraft;
   public final ActualDeparture actualDeparture;
   public final EstimatedArrival estimatedArrival;
@@ -17,14 +17,14 @@ public final class FlightState extends StateObject {
   }
 
   public FlightState (final String id,
-                      final Status status,
+                      final FlightLanded flightLanded,
                       final Aircraft aircraft,
                       final ActualDeparture actualDeparture,
                       final EstimatedArrival estimatedArrival,
                       final ActualArrival actualArrival,
                       final Location location) {
     this.id = id;
-    this.status = status;
+    this.status = flightLanded;
     this.aircraft = aircraft;
     this.actualDeparture = actualDeparture;
     this.estimatedArrival = estimatedArrival;
@@ -32,16 +32,16 @@ public final class FlightState extends StateObject {
     this.location = location;
   }
 
-  public FlightState departGate(final Aircraft aircraft, final ActualDeparture actualDeparture, final EstimatedArrival estimatedArrival) {
-    return new FlightState(this.id, this.status, aircraft, actualDeparture, estimatedArrival, this.actualArrival, this.location);
+  public FlightState departGate(final Aircraft aircraft) {
+    return new FlightState(this.id, this.status, aircraft, ActualDeparture.resolve(), EstimatedArrival.resolve(), this.actualArrival, this.location);
   }
 
   public FlightState reportLocation(final Location location) {
     return new FlightState(this.id, this.status, this.aircraft, this.actualDeparture, this.estimatedArrival, this.actualArrival, location);
   }
 
-  public FlightState changeStatus(final Status status) {
-    return new FlightState(this.id, status, this.aircraft, this.actualDeparture, this.estimatedArrival, this.actualArrival, this.location);
+  public FlightState changeStatus(final FlightLanded flightLanded) {
+    return new FlightState(this.id, flightLanded, this.aircraft, this.actualDeparture, this.estimatedArrival, this.actualArrival, this.location);
   }
 
 }

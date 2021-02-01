@@ -9,10 +9,12 @@ package com.skyharbor.aircraftmonitoring.infrastructure;
 
 public class AircraftData {
 
+  public final String aircraftId;
   public final String tailNumber;
   public final String carrier;
 
-  public AircraftData(final String tailNumber, final String carrier) {
+  public AircraftData(final String aircraftId, final String tailNumber, final String carrier) {
+    this.aircraftId = aircraftId;
     this.tailNumber = tailNumber;
     this.carrier = carrier;
   }

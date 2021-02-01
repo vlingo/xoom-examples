@@ -9,14 +9,16 @@ package com.skyharbor.aircraftmonitoring.model.flight;
 
 public class Aircraft {
 
+  public final String aircraftId;
   public final String tailNumber;
   public final String carrier;
 
-  public static Aircraft of(final String tailNumber, final String carrier) {
-    return new Aircraft(tailNumber, carrier);
+  public static Aircraft of(final String aircraftId, final String tailNumber, final String carrier) {
+    return new Aircraft(aircraftId, tailNumber, carrier);
   }
 
-  private Aircraft(final String tailNumber, final String carrier) {
+  private Aircraft(final String aircraftId, final String tailNumber, final String carrier) {
+    this.aircraftId = aircraftId;
     this.tailNumber = tailNumber;
     this.carrier = carrier;
   }

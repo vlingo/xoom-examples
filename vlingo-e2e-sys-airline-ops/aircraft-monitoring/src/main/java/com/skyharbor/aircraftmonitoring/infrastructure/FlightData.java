@@ -29,9 +29,9 @@ public class FlightData {
   private FlightData (final FlightState state) {
     this.id = state.id;
     this.status = state.status.name();
-    this.aircraft = new AircraftData(state.aircraft.tailNumber, state.aircraft.carrier);
-    this.actualDeparture = new ActualDepartureData(state.actualDeparture.occurredOn);
-    this.estimatedArrival = new EstimatedArrivalData(state.estimatedArrival.time);
+    this.aircraft = new AircraftData(state.aircraft.aircraftId, state.aircraft.tailNumber, state.aircraft.carrier);
+    this.actualDeparture = new ActualDepartureData(state.actualDeparture.airportCode, state.actualDeparture.occurredOn);
+    this.estimatedArrival = new EstimatedArrivalData(state.estimatedArrival.airportCode, state.estimatedArrival.time);
     this.actualArrival = new ActualArrivalData(state.actualArrival.occurredOn);
     this.location = new LocationData(state.location.altitude,
             state.location.latitude, state.location.longitude);
