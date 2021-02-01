@@ -14,9 +14,9 @@ public class EstimatedArrivalData {
   public final String airportCode;
   public final LocalDateTime time;
 
-  public EstimatedArrivalData(final LocalDateTime time) {
+  public EstimatedArrivalData(final String airportCode, final LocalDateTime time) {
     this.time = time;
-    this.airportCode = null;
+    this.airportCode = airportCode;
   }
 
 }

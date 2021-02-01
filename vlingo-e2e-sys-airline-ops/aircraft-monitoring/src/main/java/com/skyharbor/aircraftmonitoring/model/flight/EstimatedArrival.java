@@ -14,13 +14,13 @@ public class EstimatedArrival {
   public final String airportCode;
   public final LocalDateTime time;
 
-  public static EstimatedArrival at(final LocalDateTime time) {
-    return new EstimatedArrival(time);
+  public static EstimatedArrival resolve(){
+    return new EstimatedArrival(LocalDateTime.now());
   }
 
   private EstimatedArrival(final LocalDateTime time) {
     this.time = time;
-    this.airportCode = null;
+    this.airportCode = AirportRetriever.airportCodeForArrival(time);
   }
 
 }

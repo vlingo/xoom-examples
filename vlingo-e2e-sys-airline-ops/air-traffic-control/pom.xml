@@ -78,7 +78,7 @@
               </schemataService>
               <schemata>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightDepartedGate:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightDepartedGate:1.0.0</ref>
                   <src>FlightDepartedGate.vss</src>
                 </schema>
                 <schema>

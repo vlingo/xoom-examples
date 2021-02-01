@@ -1,18 +1,20 @@
 package com.skyharbor.aircraftmonitoring.infrastructure.exchange;
 
+import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
+import com.skyharbor.airtrafficcontrol.event.FlightDepartedGate;
+import com.skyharbor.airtrafficcontrol.event.FlightLanded;
+import com.skyharbor.airtrafficcontrol.event.FlightTookOff;
 import io.vlingo.actors.Stage;
-import io.vlingo.xoom.actors.Settings;
-import io.vlingo.lattice.exchange.Exchange;
-import io.vlingo.xoom.exchange.ExchangeSettings;
-import io.vlingo.lattice.exchange.rabbitmq.ExchangeFactory;
 import io.vlingo.lattice.exchange.ConnectionSettings;
+import io.vlingo.lattice.exchange.Covey;
+import io.vlingo.lattice.exchange.Exchange;
+import io.vlingo.lattice.exchange.rabbitmq.ExchangeFactory;
 import io.vlingo.lattice.exchange.rabbitmq.Message;
 import io.vlingo.lattice.exchange.rabbitmq.MessageSender;
-import io.vlingo.lattice.exchange.Covey;
-import io.vlingo.symbio.store.dispatch.Dispatcher;
-
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
-import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
+import io.vlingo.symbio.store.dispatch.Dispatcher;
+import io.vlingo.xoom.actors.Settings;
+import io.vlingo.xoom.exchange.ExchangeSettings;
 
 public class ExchangeBootstrap {
 
@@ -33,27 +35,28 @@ public class ExchangeBootstrap {
     final Exchange aircraftMonitoringExchange =
                 ExchangeFactory.fanOutInstance(aircraftMonitoringExchangeSettings, "aircraft-monitoring-exchange", true);
 
+
+    aircraftMonitoringExchange.register(Covey.of(
+            new MessageSender(aircraftMonitoringExchange.connection()),
+            new FlightDepartedReceiver(stage),
+            new FlightDepartedAdapter(),
+            FlightDepartedGate.class,
+            String.class,
+            Message.class));
+
     aircraftMonitoringExchange.register(Covey.of(
         new MessageSender(aircraftMonitoringExchange.connection()),
-        new FlightExchangeReceivers.FlightDepartedGate(stage),
-        new FlightConsumerAdapter("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightDepartedGate:0.0.1"),
-        FlightData.class,
+        new FlightLandedReceiver(stage),
+        new FlightLandedAdapter(),
+        FlightLanded.class,
         String.class,
         Message.class));
 
     aircraftMonitoringExchange.register(Covey.of(
         new MessageSender(aircraftMonitoringExchange.connection()),
-        new FlightExchangeReceivers.FlightTookOff(stage),
-        new FlightConsumerAdapter("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightTookOff:0.0.1"),
-        FlightData.class,
-        String.class,
-        Message.class));
-
-    aircraftMonitoringExchange.register(Covey.of(
-        new MessageSender(aircraftMonitoringExchange.connection()),
-        new FlightExchangeReceivers.FlightLanded(stage),
-        new FlightConsumerAdapter("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:0.0.1"),
-        FlightData.class,
+        new FlightTookOffReceiver(stage),
+        new FlightTookOffAdapter(),
+        FlightTookOff.class,
         String.class,
         Message.class));
 

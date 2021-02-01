@@ -14,9 +14,9 @@ public class ActualDepartureData {
   public final String airportCode;
   public final LocalDateTime occurredOn;
 
-  public ActualDepartureData(final LocalDateTime occurredOn) {
+  public ActualDepartureData(final String airportCode, final LocalDateTime occurredOn) {
     this.occurredOn = occurredOn;
-    this.airportCode = null;
+    this.airportCode = airportCode;
   }
 
 }

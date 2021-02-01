@@ -12,10 +12,8 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
   }
 
   @Override
-  public Completes<FlightState> departGate(final Aircraft aircraft,
-                                           final ActualDeparture actualDeparture,
-                                           final EstimatedArrival estimatedArrival) {
-    final FlightState stateArg = state.departGate(aircraft, actualDeparture, estimatedArrival);
+  public Completes<FlightState> departGate(final Aircraft aircraft) {
+    final FlightState stateArg = state.departGate(aircraft);
     return apply(stateArg, new DepartedGate(stateArg), () -> state);
   }
 
@@ -27,19 +25,19 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
 
   @Override
   public Completes<FlightState> arriveAtGate() {
-    final FlightState stateArg = state.changeStatus(Status.ARRIVED_AT_GATE);
+    final FlightState stateArg = state.changeStatus(FlightLanded.ARRIVED_AT_GATE);
     return apply(stateArg, new ArrivedAtGate(stateArg), () -> state);
   }
 
   @Override
   public Completes<FlightState> takeOff() {
-    final FlightState stateArg = state.changeStatus(Status.IN_FLIGHT);
+    final FlightState stateArg = state.changeStatus(FlightLanded.IN_FLIGHT);
     return apply(stateArg, new InFlight(stateArg), () -> state);
   }
 
   @Override
   public Completes<FlightState> land() {
-    final FlightState stateArg = state.changeStatus(Status.LANDED);
+    final FlightState stateArg = state.changeStatus(FlightLanded.LANDED);
     return apply(stateArg, new Landed(stateArg), () -> state);
   }
 

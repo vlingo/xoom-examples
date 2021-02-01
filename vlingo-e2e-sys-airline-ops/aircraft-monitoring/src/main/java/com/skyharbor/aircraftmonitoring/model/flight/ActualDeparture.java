@@ -14,13 +14,13 @@ public class ActualDeparture {
   public final String airportCode;
   public final LocalDateTime occurredOn;
 
-  public static ActualDeparture at(final String airportCode, final LocalDateTime occurredOn) {
-    return new ActualDeparture(occurredOn);
+  public static ActualDeparture resolve() {
+    return new ActualDeparture(LocalDateTime.now());
   }
 
   private ActualDeparture(final LocalDateTime occurredOn) {
     this.occurredOn = occurredOn;
-    this.airportCode = null;
+    this.airportCode = AirportRetriever.airportCodeForDeparture(occurredOn);
   }
 
 }
