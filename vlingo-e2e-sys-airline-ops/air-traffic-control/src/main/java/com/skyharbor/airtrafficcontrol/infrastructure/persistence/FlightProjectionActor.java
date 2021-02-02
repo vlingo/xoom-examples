@@ -30,17 +30,17 @@ public class FlightProjectionActor extends StateStoreProjectionActor<FlightData>
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
         case FlightTookOff:
-          return FlightData.empty();   // TODO: implement actual merge
+          return currentData;   // TODO: implement actual merge
         case FlightClearedForLanding:
-          return FlightData.empty();   // TODO: implement actual merge
+          return currentData;   // TODO: implement actual merge
         case FlightLanded:
           return currentData;   // TODO: implement actual merge
         case OutboundTaxingInitiated:
-          return FlightData.empty();   // TODO: implement actual merge
+          return currentData;   // TODO: implement actual merge
         case FlightClearedForTakeOff:
-          return FlightData.empty();   // TODO: implement actual merge
+          return currentData;   // TODO: implement actual merge
         case EnteredFlightLine:
-          return FlightData.empty();   // TODO: implement actual merge
+          return currentData;   // TODO: implement actual merge
         case FlightDepartedGate:
           return previousData;   // TODO: implement actual merge
         default:

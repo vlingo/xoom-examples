@@ -25,19 +25,19 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
 
   @Override
   public Completes<FlightState> arriveAtGate() {
-    final FlightState stateArg = state.changeStatus(FlightLanded.ARRIVED_AT_GATE);
+    final FlightState stateArg = state.changeStatus(Status.ARRIVED_AT_GATE);
     return apply(stateArg, new ArrivedAtGate(stateArg), () -> state);
   }
 
   @Override
   public Completes<FlightState> takeOff() {
-    final FlightState stateArg = state.changeStatus(FlightLanded.IN_FLIGHT);
+    final FlightState stateArg = state.changeStatus(Status.IN_FLIGHT);
     return apply(stateArg, new InFlight(stateArg), () -> state);
   }
 
   @Override
   public Completes<FlightState> land() {
-    final FlightState stateArg = state.changeStatus(FlightLanded.LANDED);
+    final FlightState stateArg = state.changeStatus(Status.LANDED);
     return apply(stateArg, new Landed(stateArg), () -> state);
   }
 

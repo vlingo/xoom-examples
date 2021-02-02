@@ -7,7 +7,7 @@
 
 package com.skyharbor.aircraftmonitoring.model.flight;
 
-public enum FlightLanded {
+public enum Status {
   DEPARTED_GATE,
   ARRIVED_AT_GATE,
   IN_FLIGHT,
