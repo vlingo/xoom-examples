@@ -27,6 +27,8 @@ public class FlightResourceHandlers {
           HandlerEntry.of(CHANGE_STATUS, (flight, data) -> {
             if(FlightStatus.valueOf(data.status).isLanded()) {
               return flight.land(data.number);
+            } else if(FlightStatus.valueOf(data.status).inFlight()) {
+              return flight.takeOff(data.number);
             }
             throw new UnsupportedOperationException("Unable to change Flight Status to " + data.status);
           });

@@ -1,9 +1,5 @@
 package com.skyharbor.aircraftmonitoring.infrastructure.exchange;
 
-import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
-import com.skyharbor.airtrafficcontrol.event.FlightDepartedGate;
-import com.skyharbor.airtrafficcontrol.event.FlightLanded;
-import com.skyharbor.airtrafficcontrol.event.FlightTookOff;
 import io.vlingo.actors.Stage;
 import io.vlingo.lattice.exchange.ConnectionSettings;
 import io.vlingo.lattice.exchange.Covey;
@@ -35,28 +31,11 @@ public class ExchangeBootstrap {
     final Exchange aircraftMonitoringExchange =
                 ExchangeFactory.fanOutInstance(aircraftMonitoringExchangeSettings, "aircraft-monitoring-exchange", true);
 
-
-    aircraftMonitoringExchange.register(Covey.of(
-            new MessageSender(aircraftMonitoringExchange.connection()),
-            new FlightDepartedReceiver(stage),
-            new FlightDepartedAdapter(),
-            FlightDepartedGate.class,
-            String.class,
-            Message.class));
-
     aircraftMonitoringExchange.register(Covey.of(
         new MessageSender(aircraftMonitoringExchange.connection()),
-        new FlightLandedReceiver(stage),
-        new FlightLandedAdapter(),
-        FlightLanded.class,
-        String.class,
-        Message.class));
-
-    aircraftMonitoringExchange.register(Covey.of(
-        new MessageSender(aircraftMonitoringExchange.connection()),
-        new FlightTookOffReceiver(stage),
-        new FlightTookOffAdapter(),
-        FlightTookOff.class,
+        new AirTrafficStatusReceiver(stage),
+        new AirTrafficStatusAdapter(),
+        AirTrafficStatusAdapter.supportedLocalClass(),
         String.class,
         Message.class));
 

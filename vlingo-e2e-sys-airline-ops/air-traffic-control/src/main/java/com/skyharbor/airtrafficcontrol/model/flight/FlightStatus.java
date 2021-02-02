@@ -20,4 +20,9 @@ public enum FlightStatus {
   public boolean isLanded() {
     return equals(LANDED);
   }
+
+  public boolean inFlight() {
+    return equals(IN_FLIGHT);
+  }
+
 }
