@@ -20,6 +20,7 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
   }
 
   public Completes<FlightState> departGate(final String aircraftId, final String number, final String tailNumber, final String equipment) {
+    logger().info("Changing flight status to DEPARTED_GATE");
     final FlightState stateArg = state.departGate(aircraftId, number, tailNumber, equipment);
     return apply(stateArg, new FlightDepartedGate(stateArg), () -> state);
   }
