@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.skyharbor.airtrafficcontrol.model.flight;
 
 import io.vlingo.common.Completes;
@@ -17,8 +24,7 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
     return apply(stateArg, new FlightDepartedGate(stateArg), () -> state);
   }
 
-
-  public Completes<FlightState> tax(final String number) {
+  public Completes<FlightState> taxi(final String number) {
     final FlightState stateArg = state.tax(number);
     return apply(stateArg, new OutboundTaxingInitiated(stateArg), () -> state);
   }
