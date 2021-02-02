@@ -1,8 +1,14 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.skyharbor.airtrafficcontrol.infrastructure.persistence;
 
 import com.skyharbor.airtrafficcontrol.infrastructure.Events;
 import com.skyharbor.airtrafficcontrol.infrastructure.FlightData;
-
 import com.skyharbor.airtrafficcontrol.model.flight.FlightState;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
@@ -21,28 +27,21 @@ public class FlightProjectionActor extends StateStoreProjectionActor<FlightData>
   }
 
   @Override
-  protected FlightData merge(FlightData previousData, int previousVersion, FlightData currentData, int currentVersion) {
-
-    if (previousData == null) {
-      previousData = currentData;
-    }
+  protected FlightData merge(final FlightData previousData,
+                             final int previousVersion,
+                             final FlightData currentData,
+                             final int currentVersion) {
 
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
         case FlightTookOff:
-          return currentData;   // TODO: implement actual merge
         case FlightClearedForLanding:
-          return currentData;   // TODO: implement actual merge
         case FlightLanded:
-          return currentData;   // TODO: implement actual merge
         case OutboundTaxingInitiated:
-          return currentData;   // TODO: implement actual merge
         case FlightClearedForTakeOff:
-          return currentData;   // TODO: implement actual merge
         case EnteredFlightLine:
-          return currentData;   // TODO: implement actual merge
         case FlightDepartedGate:
-          return previousData;   // TODO: implement actual merge
+          return currentData;   // TODO: implement actual merge
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
           break;
