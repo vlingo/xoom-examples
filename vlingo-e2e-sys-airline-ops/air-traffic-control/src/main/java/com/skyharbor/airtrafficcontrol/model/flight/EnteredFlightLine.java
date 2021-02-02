@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.skyharbor.airtrafficcontrol.model.flight;
 
 import java.util.UUID;
@@ -13,7 +20,7 @@ public final class EnteredFlightLine extends IdentifiedDomainEvent {
   public final String equipment;
 
   public EnteredFlightLine(final FlightState state) {
-    super(SemanticVersion.from("0.0.1").toValue());
+    super(SemanticVersion.from("1.0.0").toValue());
     this.id = state.id;
     this.number = state.number;
     this.tailNumber = state.tailNumber;
