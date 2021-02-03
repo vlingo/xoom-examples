@@ -1,4 +1,4 @@
-// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
 //
 // This Source Code Form is subject to the terms of the
 // Mozilla Public License, v. 2.0. If a copy of the MPL
@@ -7,6 +7,7 @@
 
 package com.skyharbor.fleetcrew.model.aircraft;
 
+import io.vlingo.common.version.SemanticVersion;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
 import java.util.UUID;
@@ -18,6 +19,7 @@ public final class GateReassigned extends IdentifiedDomainEvent {
   public final String gate;
 
   public GateReassigned(final AircraftState state) {
+    super(SemanticVersion.from("1.0.0").toValue());
     this.id = state.id;
     this.gate = state.gate;
     this.eventId = UUID.randomUUID();

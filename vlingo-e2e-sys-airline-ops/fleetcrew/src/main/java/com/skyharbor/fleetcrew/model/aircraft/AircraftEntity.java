@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.skyharbor.fleetcrew.model.aircraft;
 
 import io.vlingo.common.Completes;
@@ -14,6 +21,7 @@ public final class AircraftEntity extends StatefulEntity<AircraftState> implemen
 
   @Override
   public Completes<AircraftState> recordArrival(final String carrier, final String flightNumber, final String tailNumber, final String gate) {
+    logger().info("Arrival is going to be recorded.");
     final AircraftState stateArg = state.recordArrival(carrier, flightNumber, tailNumber, gate);
     return apply(stateArg, new ArrivalRecorded(stateArg), () -> state);
   }
