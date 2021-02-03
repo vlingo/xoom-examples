@@ -78,15 +78,15 @@
               </schemataService>
               <schemata>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.fleetcrew:ArrivalRecorded:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.fleetcrew:ArrivalRecorded:1.0.0</ref>
                   <src>ArrivalRecorded.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.fleetcrew:DepartureRecorded:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.fleetcrew:DepartureRecorded:1.0.0</ref>
                   <src>DepartureRecorded.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.fleetcrew:ArrivalPlanned:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.fleetcrew:ArrivalPlanned:1.0.0</ref>
                   <src>ArrivalPlanned.vss</src>
                 </schema>
               </schemata>
