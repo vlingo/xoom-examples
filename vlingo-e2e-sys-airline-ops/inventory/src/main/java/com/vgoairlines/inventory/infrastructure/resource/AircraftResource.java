@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.vgoairlines.inventory.infrastructure.resource;
 
 import io.vlingo.common.Completes;
@@ -17,7 +24,7 @@ import static io.vlingo.http.Method.*;
 @Model(protocol = Aircraft.class, actor = AircraftEntity.class, data = AircraftData.class)
 public interface AircraftResource {
 
-  @Route(method = POST, path = "/", handler = AircraftResourceHandlers.CONSIGN)
+  @Route(method = POST, handler = AircraftResourceHandlers.CONSIGN)
   @ResponseAdapter(handler = AircraftResourceHandlers.ADAPT_STATE)
   Completes<Response> consign(@Body final AircraftData data);
 
