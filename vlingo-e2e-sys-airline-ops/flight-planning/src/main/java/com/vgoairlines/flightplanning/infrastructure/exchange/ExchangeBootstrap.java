@@ -50,7 +50,7 @@ public class ExchangeBootstrap {
     flightPlanningExchange.register(Covey.of(
       new MessageSender(flightPlanningExchange.connection()),
         new AircraftConsignedReceiver(stage),
-        new AircraftConsignedAdapter("VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:4.0.1"),
+        new AircraftConsignedAdapter("VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:1.0.0"),
         AircraftConsigned.class,
         String.class,
         Message.class));
