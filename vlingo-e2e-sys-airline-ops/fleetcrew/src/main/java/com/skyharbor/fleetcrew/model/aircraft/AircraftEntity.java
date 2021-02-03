@@ -21,7 +21,7 @@ public final class AircraftEntity extends StatefulEntity<AircraftState> implemen
 
   @Override
   public Completes<AircraftState> recordArrival(final String carrier, final String flightNumber, final String tailNumber, final String gate) {
-    logger().info("Arrival is going to be recorded.");
+    logger().info("Arrival has been successfully recorded. Flight number: " + flightNumber);
     final AircraftState stateArg = state.recordArrival(carrier, flightNumber, tailNumber, gate);
     return apply(stateArg, new ArrivalRecorded(stateArg), () -> state);
   }
