@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.vgoairlines.airportterminal.infrastructure.persistence;
 
 import com.vgoairlines.airportterminal.infrastructure.Events;
@@ -21,26 +28,19 @@ public class FlightProjectionActor extends StateStoreProjectionActor<FlightData>
   }
 
   @Override
-  protected FlightData merge(FlightData previousData, int previousVersion, FlightData currentData, int currentVersion) {
-
-    if (previousData == null) {
-      previousData = currentData;
-    }
-
+  protected FlightData merge(final FlightData previousData,
+                             final int previousVersion,
+                             final FlightData currentData,
+                             final int currentVersion) {
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
         case BoardingStarted:
-          return FlightData.empty();   // TODO: implement actual merge
         case GateClosed:
-          return FlightData.empty();   // TODO: implement actual merge
-        case GateOpened:
-          return FlightData.empty();   // TODO: implement actual merge
         case FlightArrived:
-          return FlightData.empty();   // TODO: implement actual merge
         case FlightDeparted:
-          return FlightData.empty();   // TODO: implement actual merge
         case BoardingEnded:
-          return FlightData.empty();   // TODO: implement actual merge
+        case GateOpened:
+          return currentData;
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
           break;
