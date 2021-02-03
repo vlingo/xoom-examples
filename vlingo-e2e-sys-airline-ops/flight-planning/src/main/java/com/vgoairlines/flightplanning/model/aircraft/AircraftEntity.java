@@ -21,7 +21,7 @@ public class AircraftEntity extends StatefulEntity<AircraftState> implements Air
 
     @Override
     public Completes<AircraftState> pool(final String aircraftId, final Denomination denomination) {
-        logger().info("Aircraft " + aircraftId + " is going to be pooled");
+        logger().info("Aircraft with id " + aircraftId + " has been successfully pooled");
         final AircraftState stateArg = state.pool(aircraftId, denomination);
         return apply(stateArg, new AircraftPooled(stateArg), () -> state);
     }
