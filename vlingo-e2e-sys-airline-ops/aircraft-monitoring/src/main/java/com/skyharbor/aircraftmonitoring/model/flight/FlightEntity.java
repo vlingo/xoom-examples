@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.skyharbor.aircraftmonitoring.model.flight;
 
 import io.vlingo.common.Completes;
@@ -13,6 +20,7 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
 
   @Override
   public Completes<FlightState> departGate(final Aircraft aircraft) {
+    logger().info("Changing flight status to DEPARTED_GATE");
     final FlightState stateArg = state.departGate(aircraft);
     return apply(stateArg, new DepartedGate(stateArg), () -> state);
   }
@@ -31,12 +39,14 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
 
   @Override
   public Completes<FlightState> takeOff() {
+    logger().info("Changing flight status to IN_FLIGHT");
     final FlightState stateArg = state.changeStatus(Status.IN_FLIGHT);
     return apply(stateArg, new InFlight(stateArg), () -> state);
   }
 
   @Override
   public Completes<FlightState> land() {
+    logger().info("Changing flight status to LANDED");
     final FlightState stateArg = state.changeStatus(Status.LANDED);
     return apply(stateArg, new Landed(stateArg), () -> state);
   }
