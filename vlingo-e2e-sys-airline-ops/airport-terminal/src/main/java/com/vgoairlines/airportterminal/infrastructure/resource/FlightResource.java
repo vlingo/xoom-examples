@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.vgoairlines.airportterminal.infrastructure.resource;
 
 import io.vlingo.common.Completes;
@@ -17,7 +24,7 @@ import static io.vlingo.http.Method.*;
 @Model(protocol = Flight.class, actor = FlightEntity.class, data = FlightData.class)
 public interface FlightResource {
 
-  @Route(method = POST, path = "/", handler = FlightResourceHandlers.OPEN_GATE)
+  @Route(method = POST, handler = FlightResourceHandlers.OPEN_GATE)
   @ResponseAdapter(handler = FlightResourceHandlers.ADAPT_STATE)
   Completes<Response> openGate(@Body final FlightData data);
 

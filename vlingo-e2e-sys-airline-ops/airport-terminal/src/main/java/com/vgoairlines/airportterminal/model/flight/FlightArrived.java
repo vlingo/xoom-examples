@@ -1,9 +1,10 @@
-// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
 //
 // This Source Code Form is subject to the terms of the
 // Mozilla Public License, v. 2.0. If a copy of the MPL
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
+
 package com.vgoairlines.airportterminal.model.flight;
 
 import io.vlingo.common.version.SemanticVersion;
@@ -21,7 +22,7 @@ public class FlightArrived extends IdentifiedDomainEvent {
   public final Schedule schedule;
 
   public FlightArrived(final FlightState state) {
-    super(SemanticVersion.from("0.0.1").toValue());
+    super(SemanticVersion.from("1.0.0").toValue());
     this.id = state.id;
     this.number = state.number;
     this.gateAssignment = state.gateAssignment;

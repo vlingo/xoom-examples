@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.vgoairlines.airportterminal.model.flight;
 
 import io.vlingo.common.Completes;
@@ -21,6 +28,7 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
     final FlightState stateArg = state.openGate(number, gateAssignment, equipment, schedule);
     return apply(stateArg, new GateOpened(stateArg), () -> state);
   }
+
 
   @Override
   public Completes<FlightState> arrive(final LocalDateTime arrivedOn) {

@@ -75,6 +75,7 @@
                 <url>http://localhost:9019</url>
                 <clientOrganization>VgoAirlines</clientOrganization>
                 <clientUnit>FlightPlanning</clientUnit>
+                <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
                 <schema>

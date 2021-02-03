@@ -75,6 +75,7 @@
                 <url>http://localhost:9019</url>
                 <clientOrganization>SkyHarborPHX</clientOrganization>
                 <clientUnit>groundops</clientUnit>
+                <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
                 <schema>
@@ -105,7 +106,7 @@
               </schemataService>
               <schemata>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.0</ref>
                 </schema>
               </schemata>
             </configuration>

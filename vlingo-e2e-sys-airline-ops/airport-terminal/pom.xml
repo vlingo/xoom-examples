@@ -75,43 +75,13 @@
                 <url>http://localhost:9019</url>
                 <clientOrganization>VgoAirlines</clientOrganization>
                 <clientUnit>AirportTerminal</clientUnit>
+                <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
-<!--                <schema>-->
-<!--                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:GateOpened:0.0.1</ref>-->
-<!--                  <src>GateOpened.vss</src>-->
-<!--                </schema>-->
-<!--                <schema>-->
-<!--                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:BoardingStarted:0.0.1</ref>-->
-<!--                  <src>BoardingStarted.vss</src>-->
-<!--                </schema>-->
-<!--                <schema>-->
-<!--                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:BoardingCompleted:0.0.1</ref>-->
-<!--                  <src>BoardingCompleted.vss</src>-->
-<!--                </schema>-->
                 <schema>
-                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:FlightDeparted:2.0.0</ref>
+                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:FlightDeparted:1.0.0</ref>
                   <src>FlightDeparted.vss</src>
                 </schema>
-<!--                <schema>-->
-<!--                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:GateClosed:0.0.1</ref>-->
-<!--                  <src>GateClosed.vss</src>-->
-<!--                </schema>-->
-              </schemata>
-            </configuration>
-          </execution>
-          <execution>
-            <id>pullSchemata</id>
-            <goals>
-              <goal>pull-schemata</goal>
-            </goals>
-            <configuration>
-              <schemataService>
-                <url>http://localhost:9019</url>
-                <clientOrganization>Inform the client organization</clientOrganization>
-                <clientUnit>Inform the client unit</clientUnit>
-              </schemataService>
-              <schemata>
               </schemata>
             </configuration>
           </execution>
