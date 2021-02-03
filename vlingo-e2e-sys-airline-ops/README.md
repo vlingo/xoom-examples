@@ -19,7 +19,7 @@ $ mvn clean install
 $ java -jar target/[jar-name].jar [port-number]
 ```
 
-__Note that the services need to be built in the following order Inventory, Flight Planning, Fleet Crew, Airport Terminal, Air Traffic Control and Aircraft Monitoring__.  
+__Note that the services need to be built in the following order: Inventory, Flight Planning, Fleet Crew, Airport Terminal, Air Traffic Control and Aircraft Monitoring__.  
 
 The `install` goal will also publish the schema files and pull the required ones for receiving Type-safe messages from other bounded contexts.
 
