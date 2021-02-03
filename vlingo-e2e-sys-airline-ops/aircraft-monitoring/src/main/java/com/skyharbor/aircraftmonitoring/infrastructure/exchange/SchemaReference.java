@@ -4,15 +4,16 @@
 // Mozilla Public License, v. 2.0. If a copy of the MPL
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
+
 package com.skyharbor.aircraftmonitoring.infrastructure.exchange;
 
 import java.util.stream.Stream;
 
 public enum SchemaReference {
 
-  DEPARTED_FROM_GATE("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightDepartedGate:0.0.1"),
+  DEPARTED_FROM_GATE("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightDepartedGate:1.0.0"),
   TOOK_OFF("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightTookOff:1.0.0"),
-  LANDED("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.1");
+  LANDED("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.0");
 
   private final String value;
 
