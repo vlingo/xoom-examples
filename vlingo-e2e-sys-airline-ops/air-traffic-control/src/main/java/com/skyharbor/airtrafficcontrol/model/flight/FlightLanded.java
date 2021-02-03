@@ -21,7 +21,7 @@ public final class FlightLanded extends IdentifiedDomainEvent {
   public final String equipment;
 
   public FlightLanded(final FlightState state) {
-    super(SemanticVersion.from("1.0.1").toValue());
+    super(SemanticVersion.from("1.0.0").toValue());
     this.id = state.id;
     this.aircraftId = state.aircraftId;
     this.number = state.number;

@@ -75,6 +75,7 @@
                 <url>http://localhost:9019</url>
                 <clientOrganization>SkyHarborPHX</clientOrganization>
                 <clientUnit>groundops</clientUnit>
+                <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
                 <schema>
@@ -82,23 +83,23 @@
                   <src>FlightDepartedGate.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:OutboundTaxingInitiated:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:OutboundTaxingInitiated:1.0.0</ref>
                   <src>OutboundTaxingInitiated.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:EnteredFlightLine:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:EnteredFlightLine:1.0.0</ref>
                   <src>EnteredFlightLine.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForTakeOff:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForTakeOff:1.0.0</ref>
                   <src>FlightClearedForTakeOff.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightTookOff:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightTookOff:1.0.0</ref>
                   <src>FlightTookOff.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForLanding:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForLanding:1.0.0</ref>
                   <src>FlightClearedForLanding.vss</src>
                 </schema>
                 <schema>
@@ -106,7 +107,7 @@
                   <src>FlightLanded.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:ControllerAuthorized:0.0.1</ref>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:ControllerAuthorized:1.0.0</ref>
                   <src>ControllerAuthorized.vss</src>
                 </schema>
               </schemata>
@@ -125,7 +126,7 @@
               </schemataService>
               <schemata>
                 <schema>
-                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:FlightDeparted:2.0.0</ref>
+                  <ref>VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal:FlightDeparted:1.0.0</ref>
                 </schema>
               </schemata>
             </configuration>
