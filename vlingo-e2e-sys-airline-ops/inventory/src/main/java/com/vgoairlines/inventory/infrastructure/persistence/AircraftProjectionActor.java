@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.vgoairlines.inventory.infrastructure.persistence;
 
 import com.vgoairlines.inventory.infrastructure.AircraftData;
@@ -20,11 +27,10 @@ public class AircraftProjectionActor extends StateStoreProjectionActor<AircraftD
   }
 
   @Override
-  protected AircraftData merge(AircraftData previousData, int previousVersion, AircraftData currentData, int currentVersion) {
-
-    if (previousData == null) {
-      previousData = currentData;
-    }
+  protected AircraftData merge(final AircraftData previousData,
+                               final int previousVersion,
+                               final AircraftData currentData,
+                               final int currentVersion) {
 
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {

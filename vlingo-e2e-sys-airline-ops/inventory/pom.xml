@@ -75,18 +75,11 @@
                 <url>http://localhost:9019</url>
                 <clientOrganization>VgoAirlines</clientOrganization>
                 <clientUnit>Inventory</clientUnit>
+                <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
-<!--                <schema>-->
-<!--                  <ref>VgoAirlines:Inventory:com.vgoairlines.inventory:Registration:2.0.1</ref>-->
-<!--                  <src>Registration.vss</src>-->
-<!--                </schema>-->
-<!--                <schema>-->
-<!--                  <ref>VgoAirlines:Inventory:com.vgoairlines.inventory:ManufacturerSpecification:2.0.1</ref>-->
-<!--                  <src>ManufacturerSpecification.vss</src>-->
-<!--                </schema>-->
                 <schema>
-                  <ref>VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:4.0.1</ref>
+                  <ref>VgoAirlines:Inventory:com.vgoairlines.inventory:AircraftConsigned:1.0.0</ref>
                   <src>AircraftConsigned.vss</src>
                 </schema>
               </schemata>

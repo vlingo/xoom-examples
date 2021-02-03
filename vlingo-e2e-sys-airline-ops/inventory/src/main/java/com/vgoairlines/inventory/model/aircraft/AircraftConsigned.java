@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package com.vgoairlines.inventory.model.aircraft;
 
 import io.vlingo.common.version.SemanticVersion;
@@ -14,7 +21,7 @@ public final class AircraftConsigned extends IdentifiedDomainEvent {
   public final String tailNumber;
 
   public AircraftConsigned(final AircraftState state) {
-    super(SemanticVersion.from("4.0.1").toValue());
+    super(SemanticVersion.from("1.0.0").toValue());
     this.aircraftId = state.id;
     this.model = state.manufacturerSpecification.model;
     this.serialNumber = state.manufacturerSpecification.serialNumber;
