@@ -1,6 +1,14 @@
 # Aircraft-Airport Ops System Example
 
-The "Aircraft-Airport-Ops System" example implements a set of services that interact with each other through a type-safe and asynchronous message-based communication provided by VLINGO/XOOM, VLINGO/LATTICE Exchange, and VLINGO/SCHEMATA. Respectively, these platform components provide a REST request and messaging auto-dispatch to the domain model, message exchange mechanism, and a Schema Registry where the DDD Published Language specifications are available.
+The "Aircraft-Airport-Ops System" example implements a set of Reactive Microservices that interact through a choregraphed Event-Driven Architecture.
+
+- All microservices designed with VLINGO/XOOM Starter
+- Six Bounded Contexts
+- Choreographed process flows
+- Domain Models Diagram
+- Big-Picture Event-Driven Model
+
+System collaboration is managed through type-safe, asynchronous, event-driven, and message-based communication provided by VLINGO/XOOM, VLINGO/LATTICE Exchange, and VLINGO/SCHEMATA. Respectively, these platform components provide a REST request and messaging auto-dispatch to the domain model, message exchange mechanism, and a Schema Registry where the DDD Published Language specifications are available.
 
 The [Domain Models](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png) and [Big-Picture Event Storming Summary](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png) diagram show the Aircraft-Airport-Ops with six Bounded Contexts and its choreographed process flows.
 
