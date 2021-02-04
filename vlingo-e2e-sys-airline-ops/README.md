@@ -10,7 +10,11 @@ The "Aircraft-Airport-Ops System" example implements a set of Reactive Microserv
 
 System collaboration is managed through type-safe, asynchronous, event-driven, and message-based communication provided by VLINGO/XOOM, VLINGO/LATTICE Exchange, and VLINGO/SCHEMATA. Respectively, these platform components provide a REST request and messaging auto-dispatch to the domain model, message exchange mechanism, and a Schema Registry where the DDD Published Language specifications are available.
 
+![Domain Models of Bounded Contexts](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png)
+
 The [Domain Models](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png) and [Big-Picture Event Storming Summary](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png) diagram show the Aircraft-Airport-Ops with six Bounded Contexts and its choreographed process flows.
+
+![Big-Picture Event Storming Summary](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png)
 
 ## Services
 
