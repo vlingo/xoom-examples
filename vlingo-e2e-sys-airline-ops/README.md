@@ -1,6 +1,6 @@
-# vlingo-e2e-sys-airline-ops
+# Aircraft-Airport Ops System Example
 
-The "Aircraft-Airport-Ops" example implements a set of services that interact with each other through a type-safe and asynchronous message-based communication provided by VLINGO/LATTICE Exchange and VLINGO/SCHEMATA. 
+The "Aircraft-Airport-Ops System" example implements a set of services that interact with each other through a type-safe and asynchronous message-based communication provided by VLINGO/LATTICE Exchange and VLINGO/SCHEMATA. 
 Respectively, those components provide a messaging mechanism and a Schema Registry where the published language specifications are available.            
 
 The [Model](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png) and [Event Storming](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png) diagram show the Aircraft-Airport-Ops with six Bounded Contexts and its choreographed process flows.
