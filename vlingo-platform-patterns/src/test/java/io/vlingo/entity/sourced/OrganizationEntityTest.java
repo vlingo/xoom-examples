@@ -24,6 +24,8 @@ import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry.Info;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
+import java.util.Arrays;
+
 public class OrganizationEntityTest {
   private static String DefaultDescription = "Object description.";
   private static String DefaultName = "Object";
@@ -66,7 +68,7 @@ public class OrganizationEntityTest {
   public void setUp() throws Exception {
     grid = Grid.start("sourced-entity-test", Configuration.define(), ClusterProperties.oneNode(), "node1");
     grid.quorumAchieved();
-    journal = grid.actorFor(Journal.class, InMemoryJournalActor.class, new MockDispatcher());
+    journal = grid.actorFor(Journal.class, InMemoryJournalActor.class, Arrays.asList(new MockDispatcher()));
     registry = new SourcedTypeRegistry(grid.world());
 
     final Info<Organization> info = new Info(journal, io.vlingo.entity.sourced.OrganizationEntity.class, "Journal");

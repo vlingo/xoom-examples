@@ -17,6 +17,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 /**
  * {@code StockTest} performs tests over {@link StockEntity}
  * to ensure data consistency and state management.
@@ -49,7 +51,7 @@ public class StockTest {
                 MapQueryExpression.using(Stock.class, "find", MapQueryExpression.map("id", "id"));
 
         final ObjectStore objectStore =
-                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
+                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, Arrays.asList(new MockDispatcher()));
 
         final StateObjectMapper stateObjectMapper =
                 StateObjectMapper.with(Stock.class, new Object(), new Object());

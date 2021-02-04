@@ -19,6 +19,7 @@ import io.vlingo.lattice.exchange.Exchange;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
+import java.util.Arrays;
 
 public class Bootstrap {
     private static Bootstrap instance;
@@ -33,7 +34,7 @@ public class Bootstrap {
 
         final ExchangeDispatcher exchangeDispatcher = new ExchangeDispatcher(exchange);
 
-        Journal<String> journal = world.actorFor(Journal.class, InMemoryJournalActor.class, exchangeDispatcher);
+        Journal<String> journal = world.actorFor(Journal.class, InMemoryJournalActor.class, Arrays.asList(exchangeDispatcher));
 
         SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
 

@@ -19,6 +19,8 @@ import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
+import java.util.Arrays;
+
 public class EntityTest {
   protected Journal<String> journal;
   protected MockJournalDispatcher journalDispatcher;
@@ -40,7 +42,7 @@ public class EntityTest {
     testWorld = TestWorld.startWithDefaults("entity-test");
     world = testWorld.world();
     journalDispatcher = new MockJournalDispatcher();
-    journal = world.actorFor(Journal.class, InMemoryJournalActor.class, journalDispatcher);
+    journal = world.actorFor(Journal.class, InMemoryJournalActor.class, Arrays.asList(journalDispatcher));
     registry = new SourcedTypeRegistry(world);
     SourcedRegistration.registerAllWith(registry, journal);
   }

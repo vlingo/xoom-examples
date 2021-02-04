@@ -53,7 +53,7 @@ public class Bootstrap {
 
         final Journal<String> journal = Journal.using(world.stage(),
                                                 InMemoryJournalActor.class,
-                                                ProjectionDispatcherProvider.instance().storeDispatcher);
+                                                Arrays.asList(ProjectionDispatcherProvider.instance().storeDispatcher));
 
         final SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
         registry.register(new Info(journal, CartActor.class, CartActor.class.getSimpleName()));

@@ -21,6 +21,7 @@ import io.vlingo.symbio.store.object.ObjectStore;
 import io.vlingo.symbio.store.object.StateObjectMapper;
 import io.vlingo.symbio.store.object.inmemory.InMemoryObjectStoreActor;
 import io.vlingo.xoom.VlingoServer;
+import java.util.Arrays;
 
 public class Bootstrap {
 
@@ -60,7 +61,7 @@ public class Bootstrap {
                 MapQueryExpression.using(Calculation.class, "find", MapQueryExpression.map("id", "id"));
 
         final ObjectStore objectStore =
-                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
+                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, Arrays.asList(new MockDispatcher()));
 
         final StateObjectMapper stateObjectMapper =
                 StateObjectMapper.with(Calculation.class, new Object(), new Object());
