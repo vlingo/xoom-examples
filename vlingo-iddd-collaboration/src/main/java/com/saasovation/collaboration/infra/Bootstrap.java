@@ -16,6 +16,8 @@ import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.symbio.store.journal.Journal;
 import io.vlingo.symbio.store.journal.inmemory.InMemoryJournalActor;
 
+import java.util.Arrays;
+
 public class Bootstrap {
 
   @SuppressWarnings("rawtypes")
@@ -24,7 +26,7 @@ public class Bootstrap {
 
     final Exchange camelExchange = new ExchangeBootstrap(world).initExchange();
     final ExchangeDispatcher dispatcher = new ExchangeDispatcher(camelExchange);
-    final Journal journal = world.actorFor(Journal.class, InMemoryJournalActor.class, dispatcher);
+    final Journal journal = world.actorFor(Journal.class, InMemoryJournalActor.class, Arrays.asList(dispatcher));
     final SourcedTypeRegistry registry = new SourcedTypeRegistry(world);
 
     SourcedRegistration.registerAllWith(registry, journal);

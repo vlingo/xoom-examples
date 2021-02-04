@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 public class CalculationTests {
 
     @Test
@@ -64,7 +66,7 @@ public class CalculationTests {
                 MapQueryExpression.using(Calculation.class, "find", MapQueryExpression.map("id", "id"));
 
         final ObjectStore objectStore =
-                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
+                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, Arrays.asList(new MockDispatcher()));
 
         final StateObjectMapper stateObjectMapper =
                 StateObjectMapper.with(CalculationState.class, new Object(), new Object());

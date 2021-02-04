@@ -7,6 +7,8 @@
 
 package io.vlingo.entity.object;
 
+import java.util.Arrays;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -68,7 +70,7 @@ public class OrganizationEntityTest {
   public void setUp() throws Exception {
     grid = Grid.start("object-entity-test", Configuration.define(), ClusterProperties.oneNode(), "node1");
     grid.quorumAchieved();
-    objectStore = grid.actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
+    objectStore = grid.actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, Arrays.asList(new MockDispatcher()));
     registry = new ObjectTypeRegistry(grid.world());
 
     final Info<Organization> info =

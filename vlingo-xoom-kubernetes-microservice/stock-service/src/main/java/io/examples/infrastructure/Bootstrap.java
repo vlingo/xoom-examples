@@ -14,6 +14,8 @@ import io.vlingo.symbio.store.object.StateObjectMapper;
 import io.vlingo.symbio.store.object.inmemory.InMemoryObjectStoreActor;
 import io.vlingo.xoom.VlingoServer;
 
+import java.util.Arrays;
+
 /**
  * The {@code StockApplication} is a microservice that implements features in the {@link StockEntity} context.
  */
@@ -58,7 +60,7 @@ public class Bootstrap {
                 MapQueryExpression.using(StockEntity.class, "find", MapQueryExpression.map("id", "id"));
 
         final ObjectStore objectStore =
-                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
+                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, Arrays.asList(new MockDispatcher()));
 
         final StateObjectMapper stateObjectMapper =
                 StateObjectMapper.with(StockEntity.class, new Object(), new Object());

@@ -17,6 +17,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Arrays;
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 
@@ -54,7 +56,7 @@ public class OrderTest {
                 MapQueryExpression.using(Order.class, "find", MapQueryExpression.map("id", "id"));
 
         final ObjectStore objectStore =
-                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, new MockDispatcher());
+                world.stage().actorFor(ObjectStore.class, InMemoryObjectStoreActor.class, Arrays.asList(new MockDispatcher()));
 
         final StateObjectMapper stateObjectMapper =
                 StateObjectMapper.with(Order.class, new Object(), new Object());
