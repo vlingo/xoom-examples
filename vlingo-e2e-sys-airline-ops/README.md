@@ -3,16 +3,16 @@
 The "Aircraft-Airport-Ops System" example implements a set of Reactive Microservices that interact through a choregraphed Event-Driven Architecture.
 
 - All microservices designed with VLINGO/XOOM Starter
-- Six Bounded Contexts
+- Six _Bounded Contexts_
 - Choreographed process flows
 - Domain Models Diagram
 - Big-Picture Event-Driven Model
 
-System collaboration is managed through type-safe, asynchronous, event-driven, and message-based communication provided by VLINGO/XOOM, VLINGO/LATTICE Exchange, and VLINGO/SCHEMATA. Respectively, these platform components provide a REST request and messaging auto-dispatch to the domain model, message exchange mechanism, and a Schema Registry where the DDD Published Language specifications are available.
+System collaboration is managed through type-safe, asynchronous, event-driven, and message-based communication provided by VLINGO/XOOM, VLINGO/LATTICE Exchange, and VLINGO/SCHEMATA. Respectively, these platform components provide a REST request and messaging auto-dispatch to the domain model, message exchange mechanism, and a Schema Registry where the DDD _Published Language_ specifications are available.
 
 ![Domain Models of Bounded Contexts](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png)
 
-The [Domain Models](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png) and [Big-Picture Event Storming Summary](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png) diagram show the Aircraft-Airport-Ops with six Bounded Contexts and its choreographed process flows.
+The [Domain Models](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png) and [Big-Picture Event Storming Summary](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png) diagram show the Aircraft-Airport-Ops with six _Bounded Contexts_ and its choreographed process flows.
 
 ![Big-Picture Event Storming Summary](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png)
 
@@ -32,9 +32,9 @@ $ java -jar target/[jar-name].jar [port-number]
 
 __Note that the services need to be built in the following order: Inventory, Flight Planning, Fleet Crew, Airport Terminal, Air Traffic Control and Aircraft Monitoring__.  
 
-The `install` goal will also publish the schema files and pull the required ones for receiving Type-safe messages from other bounded contexts.
+The `install` goal will also publish the schema files and pull the required ones for receiving Type-safe messages from other _Bounded Contexts._
 
-## Exchanging messages between Bounded Contexts 
+## Exchanging messages between _Bounded Contexts_
 
 Let's get started by requesting an Aircraft Consignment on the `Inventory` service. Consequently, an `AircraftConsigned` event will be emitted and consumed by `Flight Planning` service.   
 
@@ -109,9 +109,9 @@ class FlightLandedReceiver implements ExchangeReceiver<FlightLanded> {
 The arrival record can be verified when the message below is logged:
 
  ```
- INFO com.skyharbor.fleetcreew.model.aircraft.AircraftEntity - Arrival has been successfully recorded. Flight number: 3881  
+ INFO com.skyharbor.fleetcrew.model.aircraft.AircraftEntity - Arrival has been successfully recorded. Flight number: 3881  
  ```
 
-##More information
+## More information
 
-This example demonstrates how VLINGO/LATTICE Exchange and VLINGO/SCHEMATA collaborates efficiently making easier to establish a domain model - message handling connection based on a type-safe published language. Find a comprehensive documentation on VLINGO components [here](http://docs.vlingo.io).
+This example demonstrates how VLINGO/LATTICE Exchange and VLINGO/SCHEMATA collaborates efficiently making easier to establish a domain model - message handling connection based on a type-safe _Published Language._ Find a comprehensive documentation on VLINGO components [here](http://docs.vlingo.io).
