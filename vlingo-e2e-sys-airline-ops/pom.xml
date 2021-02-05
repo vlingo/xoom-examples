@@ -5,9 +5,9 @@
   <version>1.5.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
-    <micronaut.version>1.2.7</micronaut.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <schemata.url>http://localhost:9019</schemata.url>
   </properties>
   <modules>
     <module>inventory</module>
