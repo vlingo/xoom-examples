@@ -25,15 +25,8 @@ public class StorageProvider {
     private static final long DefaultConfirmationExpiration = 5000;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static Tuple2<StateStore, DispatcherControl> storeWithControl(final Stage stage, final Configuration configuration, Dispatcher dispatcher) {
-        final StateStore.StorageDelegate delegate = new PostgresStorageDelegate(configuration, stage.world().defaultLogger());
-
-        final DispatcherControl dispatcherControl = stage.actorFor(DispatcherControl.class,
-                Definition.has(DispatcherControlActor.class,
-                        new DispatcherControl.DispatcherControlInstantiator(dispatcher,
-                                (DispatcherControl.DispatcherControlDelegate) delegate,
-                                DefaultCheckConfirmationExpirationInterval,
-                                DefaultConfirmationExpiration)));
+    public static Tuple2<StateStore, DispatcherControl> storeWithControl(final Stage stage, final Configuration configuration, final Dispatcher dispatcher) {
+        final DispatcherControl dispatcherControl = DispatcherControlProvider.using(stage, configuration, dispatcher).dispatcherControl;
 
         PartitioningStateStore.InstantiatorProvider instantiatorProvider = new PartitioningStateStore.InstantiatorProvider() {
             @Override
@@ -60,5 +53,35 @@ public class StorageProvider {
 
     public static Tuple2<StateStore, DispatcherControl> storeWithControl(final Stage stage, final Configuration config) {
         return storeWithControl(stage, config, new NoOpDispatcher());
+    }
+
+    private static class DispatcherControlProvider {
+        private static final long DefaultCheckConfirmationExpirationInterval = 5000;
+        private static final long DefaultConfirmationExpiration = 5000;
+
+        private static DispatcherControlProvider instance = null;
+
+        private final DispatcherControl dispatcherControl;
+
+        private DispatcherControlProvider(DispatcherControl dispatcherControl) {
+            this.dispatcherControl = dispatcherControl;
+        }
+
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        private static DispatcherControlProvider using(final Stage stage, final Configuration configuration, final Dispatcher dispatcher) {
+            if (instance != null) return instance;
+
+            final StateStore.StorageDelegate delegate = new PostgresStorageDelegate(configuration, stage.world().defaultLogger());
+            final DispatcherControl dispatcherControl = stage.actorFor(DispatcherControl.class,
+                    Definition.has(DispatcherControlActor.class,
+                            new DispatcherControl.DispatcherControlInstantiator(dispatcher,
+                                    (DispatcherControl.DispatcherControlDelegate) delegate,
+                                    DefaultCheckConfirmationExpirationInterval,
+                                    DefaultConfirmationExpiration)));
+
+            instance = new DispatcherControlProvider(dispatcherControl);
+
+            return instance;
+        }
     }
 }
