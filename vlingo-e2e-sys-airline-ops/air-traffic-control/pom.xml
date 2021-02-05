@@ -93,14 +93,14 @@
                   <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:OutboundTaxingInitiated:1.0.0</ref>
                   <src>OutboundTaxingInitiated.vss</src>
                 </schema>
-                <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:EnteredFlightLine:1.0.0</ref>
-                  <src>EnteredFlightLine.vss</src>
-                </schema>
-                <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForTakeOff:1.0.0</ref>
-                  <src>FlightClearedForTakeOff.vss</src>
-                </schema>
+<!--                <schema>-->
+<!--                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:EnteredFlightLine:1.0.0</ref>-->
+<!--                  <src>EnteredFlightLine.vss</src>-->
+<!--                </schema>-->
+<!--                <schema>-->
+<!--                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForTakeOff:1.0.0</ref>-->
+<!--                  <src>FlightClearedForTakeOff.vss</src>-->
+<!--                </schema>-->
                 <schema>
                   <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightTookOff:1.0.0</ref>
                   <src>FlightTookOff.vss</src>
