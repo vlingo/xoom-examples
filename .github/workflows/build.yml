@@ -26,8 +26,14 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Clone Schemata
+        run: git clone https://github.com/vlingo/vlingo-schemata.git
+
+      - name: Run Schemata
+        run: mvn package -f ./vlingo-schemata/pom.xml && java -jar ./vlingo-schemata/target/vlingo-schemata-1.5.1-SNAPSHOT-jar-with-dependencies.jar &
+
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots clean test
+        run: mvn --batch-mode --update-snapshots clean install
 
       - name: Notify slack
         if: always() && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) && github.repository_owner == 'vlingo'
