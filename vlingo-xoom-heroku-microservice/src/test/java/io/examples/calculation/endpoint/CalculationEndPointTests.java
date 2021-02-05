@@ -10,6 +10,7 @@ import io.vlingo.http.Request;
 import io.vlingo.http.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import static io.vlingo.http.Response.Status.Ok;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled("Disabled until the deprecated vlingo-xoom features are replaced")
 public class CalculationEndPointTests {
 
     private static final ObjectMapper MAPPER = new ObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
