@@ -69,7 +69,7 @@
       <plugin>
         <groupId>io.vlingo</groupId>
         <artifactId>vlingo-build-plugins</artifactId>
-        <version>1.4.4-SNAPSHOT</version>
+        <version>${vlingo.xoom.version}</version>
         <executions>
           <execution>
             <phase>compile</phase>
