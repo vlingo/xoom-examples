@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.vgoairlines</groupId>
   <artifactId>flight-planning</artifactId>
-  <version>1.0.0</version>
+  <version>1.5.1-SNAPSHOT</version>
   <properties>
     <jdk.version>1.8</jdk.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
