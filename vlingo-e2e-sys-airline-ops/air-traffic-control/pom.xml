@@ -19,7 +19,7 @@
     <exec.mainClass>com.skyharbor.airtrafficcontrol.infrastructure.XoomInitializer</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.xoom.version>1.4.4-SNAPSHOT</vlingo.xoom.version>
+    <vlingo.xoom.version>${project.version}</vlingo.xoom.version>
   </properties>
   <repositories>
     <repository>
