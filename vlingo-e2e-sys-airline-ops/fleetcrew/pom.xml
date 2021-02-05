@@ -72,14 +72,14 @@
         <version>1.4.4-SNAPSHOT</version>
         <executions>
           <execution>
-            <phase>pre-integration-test</phase>
+            <phase>compile</phase>
             <goals>
               <goal>push-schemata</goal>
             </goals>
             <configuration>
               <srcDirectory>${basedir}/src/main/vlingo/schemata</srcDirectory>
               <schemataService>
-                <url>http://localhost:9019</url>
+                <url>${schemata.url}</url>
                 <clientOrganization>SkyHarborPHX</clientOrganization>
                 <clientUnit>groundops</clientUnit>
                 <hierarchicalCascade>true</hierarchicalCascade>
@@ -107,7 +107,7 @@
             </goals>
             <configuration>
               <schemataService>
-                <url>http://localhost:9019</url>
+                <url>${schemata.url}</url>
                 <clientOrganization>SkyHarborPHX</clientOrganization>
                 <clientUnit>groundops</clientUnit>
               </schemataService>
