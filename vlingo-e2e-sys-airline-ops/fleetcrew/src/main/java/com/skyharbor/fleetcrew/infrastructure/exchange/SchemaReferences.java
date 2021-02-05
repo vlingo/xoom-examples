@@ -9,7 +9,7 @@ package com.skyharbor.fleetcrew.infrastructure.exchange;
 
 public enum SchemaReferences {
 
-  FLIGHT_LANDED("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.1");
+  FLIGHT_LANDED("SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.0");
 
   public final String value;
 
