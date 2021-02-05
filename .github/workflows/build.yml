@@ -30,7 +30,7 @@ jobs:
         run: git clone https://github.com/vlingo/vlingo-schemata.git && mvn package -f ./vlingo-schemata/pom.xml
 
       - name: Run Schemata
-        run: java -jar ./vlingo-schemata/target/vlingo-schemata-1.5.1-SNAPSHOT-jar-with-dependencies.jar
+        run: java -jar ./vlingo-schemata/target/vlingo-schemata-1.5.1-SNAPSHOT-jar-with-dependencies.jar &
 
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots clean test
