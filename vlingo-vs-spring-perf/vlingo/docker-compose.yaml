@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - vlingo_symbio_jdbc_postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: vlingoDBTest
+      POSTGRES_USER: vlingodb
+      POSTGRES_PASSWORD: test
+
+volumes:
+  vlingo_symbio_jdbc_postgres:
