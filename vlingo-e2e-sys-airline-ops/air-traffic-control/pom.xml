@@ -90,9 +90,17 @@
                   <src>FlightDepartedGate.vss</src>
                 </schema>
                 <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:OutboundTaxingInitiated:1.0.0</ref>
-                  <src>OutboundTaxingInitiated.vss</src>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightTookOff:1.0.0</ref>
+                  <src>FlightTookOff.vss</src>
                 </schema>
+                <schema>
+                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.0</ref>
+                  <src>FlightLanded.vss</src>
+                </schema>
+<!--                <schema>-->
+<!--                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:OutboundTaxingInitiated:1.0.0</ref>-->
+<!--                  <src>OutboundTaxingInitiated.vss</src>-->
+<!--                </schema>-->
 <!--                <schema>-->
 <!--                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:EnteredFlightLine:1.0.0</ref>-->
 <!--                  <src>EnteredFlightLine.vss</src>-->
@@ -101,22 +109,14 @@
 <!--                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForTakeOff:1.0.0</ref>-->
 <!--                  <src>FlightClearedForTakeOff.vss</src>-->
 <!--                </schema>-->
-                <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightTookOff:1.0.0</ref>
-                  <src>FlightTookOff.vss</src>
-                </schema>
-                <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForLanding:1.0.0</ref>
-                  <src>FlightClearedForLanding.vss</src>
-                </schema>
-                <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightLanded:1.0.0</ref>
-                  <src>FlightLanded.vss</src>
-                </schema>
-                <schema>
-                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:ControllerAuthorized:1.0.0</ref>
-                  <src>ControllerAuthorized.vss</src>
-                </schema>
+<!--                <schema>-->
+<!--                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:FlightClearedForLanding:1.0.0</ref>-->
+<!--                  <src>FlightClearedForLanding.vss</src>-->
+<!--                </schema>-->
+<!--                <schema>-->
+<!--                  <ref>SkyHarborPHX:groundops:com.skyharbor.airtrafficcontrol:ControllerAuthorized:1.0.0</ref>-->
+<!--                  <src>ControllerAuthorized.vss</src>-->
+<!--                </schema>-->
               </schemata>
             </configuration>
           </execution>
