@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "67d44f67-b8f3-431b-a7d8-83db17e52b4a",
+		"name": "VGO Airlines",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "Consign Aircraft",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"registration\":{\r\n        \"tailNumber\":\"VGO1616\"\r\n    },\r\n    \"manufacturerSpecification\" : {\r\n        \"manufacturer\":\"EMB\",\r\n        \"model\": \"E1-190\",\r\n        \"serialNumber\": \"1515\"\r\n    },\r\n    \"carrier\": {\r\n        \"name\": \"TAM\",\r\n        \"type\": \"AIRLINE\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:18080/aircrafts/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "18080",
+							"path": [
+								"aircrafts",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Flight Planning",
+			"item": [
+				{
+					"name": "Schedule Flights",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"schedule\":{\r\n        \"departure\": {\r\n            \"airport\": {\r\n                \"code\": \"TTAB789\",\r\n                \"plannedFor\": \"\"\r\n            }\r\n        }\r\n    },\r\n    \"manufacturerSpecification\" : {\r\n        \"manufacturer\":\"EMBRAER\",\r\n        \"model\": \"E2-190\",\r\n        \"serialNumber\": \"283201230\"\r\n    },\r\n    \"carrier\": {\r\n        \"name\": \"TAM\",\r\n        \"type\": \"AIRLINE\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:18081/flights/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "18081",
+							"path": [
+								"flights",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Air Traffic Control",
+			"item": [
+				{
+					"name": "Depart from Gate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aircraftId\": \"05e5b41c-1fc7-4946-b04a-fb7a43d9d119\",\r\n    \"number\": \"1983\",\r\n    \"tailNumber\": \"2011\",\r\n    \"equipment\": \"RPC AC INTERNATIONAL\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:18084/flights/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "18084",
+							"path": [
+								"flights",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"number\": \"1983\",\r\n    \"status\": \"LANDED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:18084/flights/a4d63f79-f1d7-4af1-a88a-58476ccc28bc/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "18084",
+							"path": [
+								"flights",
+								"a4d63f79-f1d7-4af1-a88a-58476ccc28bc",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fleet Crew",
+			"item": [
+				{
+					"name": "Plan Arrival",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aircraftId\": \"05e5b41c-1fc7-4946-b04a-fb7a43d9d119\",\r\n    \"carrier\": \"EMB\",\r\n    \"flightNumber\": \"1983\",\r\n    \"tailNumber\": \"2011\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:18082/fleetcrew/aircrafts/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "18082",
+							"path": [
+								"fleetcrew",
+								"aircrafts",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Airport Terminal",
+			"item": [
+				{
+					"name": "Airport Terminal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"number\":\"1983\",\r\n    \"gateAssignment\": {\r\n        \"terminal\":\"A1\",\r\n        \"number\": \"12\"\r\n    },\r\n    \"equipment\": {\r\n        \"carrier\": \"EMB\",\r\n        \"tailNumber\": \"2011\"\r\n    },\r\n    \"schedule\":{\r\n        \"scheduledDeparture\" : \"2021-01-03'T'11:40:00\",\r\n        \"scheduledArrival\": \"2021-01-04'T'09:15:00\",\r\n        \"departureStatus\": {\r\n            \"actual\": \"2021-01-03'T'12:00:01\",\r\n            \"delayedBy\":18937\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:18083/flights/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "18083",
+							"path": [
+								"flights",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
