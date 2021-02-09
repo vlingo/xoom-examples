@@ -52,7 +52,7 @@ public class StorageProvider {
         };
 
         return Tuple2.from(
-                PartitioningStateStore.using(stage, JDBCStateStoreActor.class, instantiatorProvider, 10, 10),
+                PartitioningStateStore.using(stage, JDBCStateStoreActor.class, instantiatorProvider, 10, 30),
                 dispatcherControl);
     }
 
