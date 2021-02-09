@@ -28,8 +28,6 @@ import java.util.Collections;
 import java.util.Optional;
 
 public class StorageProvider {
-    private static final long DefaultCheckConfirmationExpirationInterval = 5000;
-    private static final long DefaultConfirmationExpiration = 5000;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static Tuple2<StateStore, DispatcherControl> storeWithControl(final Stage stage, final Configuration configuration, final Dispatcher dispatcher) {
