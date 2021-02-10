@@ -87,6 +87,5 @@
     <module>vlingo-platform-patterns</module>
     <module>vlingo-xoom-heroku-microservice</module>
     <module>vlingo-xoom-kubernetes-microservice</module>
-    <module>vlingo-e2e-sys-airline-ops</module>
   </modules>
 </project>
