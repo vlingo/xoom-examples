@@ -5,12 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.perf.vlingo.infrastructure.data;
+package io.vlingo.perf.spring.repositories;
 
-public class UpdateGreetingData {
-    public final String value;
-    
-    public UpdateGreetingData(final String value){
-        this.value = value;
-    }
+import io.vlingo.perf.spring.entities.Greeting;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface GreetingRepository extends JpaRepository<Greeting, String>{
+	
 }
