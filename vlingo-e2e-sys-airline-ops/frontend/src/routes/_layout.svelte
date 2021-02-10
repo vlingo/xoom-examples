@@ -27,7 +27,7 @@
     	    </Button>
     	  {/if}
 		</div>
-		<a href="context" slot="title" class="text--primary"><span style="color: var(--theme-text-primary);"> Vlingo E2E Sys Airline Ops </span></a>
+		<a href="inventory" slot="title" class="text--primary"><span style="color: var(--theme-text-primary);"> VLINGO E2E Sys Airline Ops </span></a>
 		<div style="flex-grow:1" />
     	<Button fab text on:click={toggleTheme} aria-label="Toggle Theme">
     		<Icon path={$theme === "light" ? mdiWeatherNight : mdiWeatherSunny}/>
@@ -40,7 +40,7 @@
 		<Container>
 			<slot />
 		</Container>
-  	</main>
+	</main>
 </MaterialApp>
 </div>
 
@@ -56,5 +56,18 @@
 		.s-input__details {
 			color: inherit;
 		}
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	.s-card.vl-card {
+		box-shadow: 0 0 64px 16px rgba(0, 0, 0, 0.075) !important;
+		border-radius: 16px !important;
+	}
+
+	.s-input {
+		margin-bottom: 1rem;
 	}
 </style>
