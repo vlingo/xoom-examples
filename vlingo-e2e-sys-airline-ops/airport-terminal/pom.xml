@@ -3,13 +3,13 @@
   <parent>
     <groupId>io.examples</groupId>
     <artifactId>vlingo-e2e-sys-airline-ops</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.0</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.vgoairlines</groupId>
   <artifactId>airport-terminal</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>1.5.0</version>
   <properties>
     <jdk.version>1.8</jdk.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
@@ -19,7 +19,6 @@
     <exec.mainClass>com.vgoairlines.airportterminal.infrastructure.XoomInitializer</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.xoom.version>${project.version}</vlingo.xoom.version>
   </properties>
   <repositories>
     <repository>
@@ -42,13 +41,13 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom</artifactId>
-      <version>${vlingo.xoom.version}</version>
+      <version>${vlingo.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-build-plugins</artifactId>
-      <version>${vlingo.xoom.version}</version>
+      <version>${vlingo.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -69,10 +68,9 @@
       <plugin>
         <groupId>io.vlingo</groupId>
         <artifactId>vlingo-build-plugins</artifactId>
-        <version>${vlingo.xoom.version}</version>
+        <version>${vlingo.version}</version>
         <executions>
           <execution>
-            <phase>compile</phase>
             <goals>
               <goal>push-schemata</goal>
             </goals>
@@ -82,7 +80,6 @@
                 <url>${schemata.url}</url>
                 <clientOrganization>VgoAirlines</clientOrganization>
                 <clientUnit>AirportTerminal</clientUnit>
-                <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
                 <schema>
@@ -100,7 +97,6 @@
         <version>3.1.0</version>
         <executions>
           <execution>
-            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
@@ -179,7 +175,7 @@
               <path>
                 <groupId>io.vlingo</groupId>
                 <artifactId>vlingo-xoom</artifactId>
-                <version>${vlingo.xoom.version}</version>
+                <version>${vlingo.version}</version>
               </path>
             </annotationProcessorPaths>
           </configuration>
@@ -197,7 +193,7 @@
                   <path>
                     <groupId>io.vlingo</groupId>
                     <artifactId>vlingo-xoom</artifactId>
-                    <version>${vlingo.xoom.version}</version>
+                    <version>${vlingo.version}</version>
                   </path>
                 </annotationProcessorPaths>
               </configuration>
