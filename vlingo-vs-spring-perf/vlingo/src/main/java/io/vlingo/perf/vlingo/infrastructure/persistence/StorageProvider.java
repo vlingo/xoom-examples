@@ -1,3 +1,10 @@
+// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 package io.vlingo.perf.vlingo.infrastructure.persistence;
 
 import io.vlingo.actors.Actor;
@@ -21,8 +28,6 @@ import java.util.Collections;
 import java.util.Optional;
 
 public class StorageProvider {
-    private static final long DefaultCheckConfirmationExpirationInterval = 5000;
-    private static final long DefaultConfirmationExpiration = 5000;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static Tuple2<StateStore, DispatcherControl> storeWithControl(final Stage stage, final Configuration configuration, final Dispatcher dispatcher) {
@@ -47,7 +52,7 @@ public class StorageProvider {
         };
 
         return Tuple2.from(
-                PartitioningStateStore.using(stage, JDBCStateStoreActor.class, instantiatorProvider, 10, 10),
+                PartitioningStateStore.using(stage, JDBCStateStoreActor.class, instantiatorProvider, 10, 30),
                 dispatcherControl);
     }
 
