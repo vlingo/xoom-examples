@@ -5,12 +5,17 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.perf.vlingo.infrastructure.data;
+package io.vlingo.perf.spring.dtos;
 
-public class UpdateGreetingData {
-    public final String value;
-    
-    public UpdateGreetingData(final String value){
-        this.value = value;
-    }
+public class GreetingUpdateRequest {
+
+	private String value;
+	
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
+	public String getValue() {
+		return value;
+	}
 }
