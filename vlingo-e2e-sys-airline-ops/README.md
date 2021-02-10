@@ -14,7 +14,7 @@ System collaboration is managed through type-safe, asynchronous, event-driven, a
 
 ![Domain Models of Bounded Contexts](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png)
 
-The [Domain Models](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png) and [Big-Picture Event Storming Summary](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png) diagrams show the Aircraft-Airport-Ops with six _Bounded Contexts_ and its choreographed process flows.
+The [Context Map](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsContextMap.png), [Domain Models](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineOpsDomainModel.png), and [Big-Picture Event Storming Summary](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png) diagrams show different views of the Aircraft-Airport-Ops with six _Bounded Contexts_ and its choreographed process flows.
 
 ![Big-Picture Event Storming Summary](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png)
 
