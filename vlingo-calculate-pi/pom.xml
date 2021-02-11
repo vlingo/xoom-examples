@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-calculate-pi</artifactId>
-  <version>1.4.4-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
   <name>vlingo-calculate-pi</name>
   <description>Example of VLINGO/ACTORS calculating Pi.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>1.4.4-SNAPSHOT</version>
+      <version>1.5.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
@@ -113,11 +113,10 @@
     </repository>
 
     <repository>
-      <id>oss-jfrog-snapshot</id>
-      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/vlingo/vlingo-platform</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
     </repository>
   </repositories>
 

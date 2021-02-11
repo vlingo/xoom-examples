@@ -14,7 +14,7 @@
     <exec.mainClass>io.vlingo.perf.vlingo.infrastructure.Bootstrap</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.version>1.4.4-SNAPSHOT</vlingo.version>
+    <vlingo.version>1.5.1-SNAPSHOT</vlingo.version>
   </properties>
 
   <dependencies>
@@ -182,11 +182,10 @@
     </repository>
 
     <repository>
-      <id>oss-jfrog-snapshot</id>
-      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/vlingo/vlingo-platform</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
     </repository>
   </repositories>
  
