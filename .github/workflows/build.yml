@@ -22,9 +22,9 @@ jobs:
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
-          path: ~/.m2
+          path: ~/.m2/repository
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          restore-keys: ${{ runner.os }}-m2-repository
 
       - name: Clone and build Schemata
         run: git clone https://github.com/vlingo/vlingo-schemata.git && mvn package -f ./vlingo-schemata/pom.xml
