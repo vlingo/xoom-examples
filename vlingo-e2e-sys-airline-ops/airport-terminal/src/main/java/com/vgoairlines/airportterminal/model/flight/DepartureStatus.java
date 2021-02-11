@@ -7,23 +7,22 @@
 
 package com.vgoairlines.airportterminal.model.flight;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 public class DepartureStatus {
 
-    public final LocalDateTime actual;
+    public final Date actual;
     public final long delayedBy;
 
-    public static DepartureStatus from(final LocalDateTime scheduledDeparture,
-                                       final LocalDateTime actual) {
+    public static DepartureStatus from(final Date scheduledDeparture,
+                                       final Date actual) {
         return new DepartureStatus(actual, scheduledDeparture);
     }
 
-    private DepartureStatus(final LocalDateTime scheduledDeparture,
-                            final LocalDateTime actual) {
+    private DepartureStatus(final Date scheduledDeparture,
+                            final Date actual) {
         this.actual = actual;
-        this.delayedBy = actual.isAfter(scheduledDeparture) ?
-                       scheduledDeparture.until(actual, ChronoUnit.SECONDS) : 0;
+        this.delayedBy = actual.compareTo(scheduledDeparture) > 0 ?
+                actual.getTime()-scheduledDeparture.getTime()/1000 : 0;
     }
 }

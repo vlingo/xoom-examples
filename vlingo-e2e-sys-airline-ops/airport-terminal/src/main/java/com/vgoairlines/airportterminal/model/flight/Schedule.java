@@ -7,31 +7,33 @@
 
 package com.vgoairlines.airportterminal.model.flight;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Schedule {
 
-    public final LocalDateTime scheduledDeparture;
-    public final LocalDateTime scheduledArrival;
+    public final Date scheduledDeparture;
+    public final Date scheduledArrival;
     public final DepartureStatus departureStatus;
 
-    public static Schedule on(final LocalDateTime scheduledDeparture, final LocalDateTime scheduledArrival) {
-        return new Schedule(scheduledDeparture, scheduledArrival, null);
+    public static Schedule on(final Date scheduledDeparture,
+                              final Date scheduledArrival,
+                              final DepartureStatus departureStatus) {
+        return new Schedule(scheduledDeparture, scheduledArrival, departureStatus);
     }
 
-    private Schedule(final LocalDateTime scheduledDeparture,
-                     final LocalDateTime scheduledArrival,
+    private Schedule(final Date scheduledDeparture,
+                     final Date scheduledArrival,
                      final DepartureStatus departureStatus) {
         this.scheduledDeparture = scheduledDeparture;
         this.scheduledArrival = scheduledArrival;
         this.departureStatus = departureStatus;
     }
 
-    public Schedule arrivedOn(final LocalDateTime scheduledArrival) {
+    public Schedule arrivedOn(final Date scheduledArrival) {
         return new Schedule(this.scheduledDeparture, scheduledArrival, this.departureStatus);
     }
 
-    public Schedule departedOn(final LocalDateTime actuallyDepartedOn) {
+    public Schedule departedOn(final Date actuallyDepartedOn) {
         return new Schedule(this.scheduledDeparture, this.scheduledArrival, DepartureStatus.from(this.scheduledDeparture, actuallyDepartedOn));
     }
 }

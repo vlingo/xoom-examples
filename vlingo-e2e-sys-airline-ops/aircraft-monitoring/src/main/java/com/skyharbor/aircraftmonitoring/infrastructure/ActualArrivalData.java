@@ -7,18 +7,18 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ActualArrivalData {
 
   public final String airportCode;
-  public final LocalDateTime occurredOn;
+  public final Date occurredOn;
 
-  public static ActualArrivalData at(final LocalDateTime occurredOn) {
+  public static ActualArrivalData at(final Date occurredOn) {
     return new ActualArrivalData(occurredOn);
   }
 
-  public ActualArrivalData(final LocalDateTime occurredOn) {
+  public ActualArrivalData(final Date occurredOn) {
     this.airportCode = null;
     this.occurredOn = occurredOn;
   }
