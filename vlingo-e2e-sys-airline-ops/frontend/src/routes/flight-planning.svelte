@@ -11,6 +11,30 @@
     { name: 'AirCraft2', value: 'AirCraft2' },
   ];
 	let valid = false;
+	let airportCode = "TTAB789";
+	let airportPlannedFor = "";
+
+	$: formdata = {
+		schedule: {
+			departure: {
+				airport: {
+					code: airportCode,
+					plannedFor: airportPlannedFor
+				}
+			}
+		},
+		// Selected aircraft manufacturerSpecification
+		manufacturerSpecification: {
+			manufacturer: "EMBRAER",
+			model: "E2-190",
+			serialNumber: 283201230
+		},
+		// Selected aircraft carrier
+		carrier: {
+			name: "TAM",
+			type: "AIRLINE"
+		}
+	}
 </script>
 
 <CardForm title="Flight Planning" prevLink="inventory" nextLink="fleet-crew" isNextDisabled={false}>
