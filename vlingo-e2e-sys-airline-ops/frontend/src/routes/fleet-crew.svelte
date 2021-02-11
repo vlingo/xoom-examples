@@ -11,20 +11,20 @@
     { name: 'AirCraft2', value: 'AirCraft2' },
   ];
 
-	const agents = [
-    { name: 'AirCraft1', value: 'AirCraft1' },
-    { name: 'AirCraft2', value: 'AirCraft2' },
-  ];
-
-	const fleetCrewStatus = [
-    { name: 'AirCraft1', value: 'AirCraft1' },
-    { name: 'AirCraft2', value: 'AirCraft2' },
-	]
 	let valid = false;
+
+	let formData = {
+		aircraftId: "05e5b41c-1fc7-4946-b04a-fb7a43d9d119",
+		carrier: "EMB",
+		flightNumber: "1983",
+		tailNumber: "2011"
+	}
+
 </script>
 
 <CardForm title="Fleet Crew" prevLink="flight-planning" nextLink="airport-terminal" isNextDisabled={false}>
-	<Select outlined items={aircrafts}>Aircraft</Select>
-	<Select outlined items={agents}>Agent</Select>
-	<Select outlined items={fleetCrewStatus}>Status</Select>
+	<Select outlined items={aircrafts} bind:value={formData.aircraftId}>Aircraft</Select>
+	<TextField outlined bind:value={formData.flightNumber}>Flight Number</TextField>
+	<TextField outlined bind:value={formData.tailNumber}>Tail Number</TextField>
+	<TextField outlined bind:value={formData.carrier}>Carrier Name</TextField>
 </CardForm>
