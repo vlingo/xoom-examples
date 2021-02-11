@@ -25,9 +25,11 @@
 						<VlButton icon={mdiChevronLeft} outlined text="Prev" href={prevLink} />
 				</Col>
 				{/if}
+				{#if nextLink}
 				<Col cols="auto" class="text-center">
 					<VlButton icon={mdiChevronRight} outlined text="Next" href={nextLink} disabled={isNextDisabled} />
 				</Col>
+				{/if}
 			</Row>
 		</slot>
 	</CardActions>
