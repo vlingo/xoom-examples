@@ -7,17 +7,17 @@
 
 package com.vgoairlines.airportterminal.infrastructure;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ScheduleData {
 
-    public final LocalDateTime scheduledDeparture;
-    public final LocalDateTime scheduledArrival;
+    public final Date scheduledDeparture;
+    public final Date scheduledArrival;
     public final DepartureStatusData departureStatus;
 
-    public ScheduleData(final LocalDateTime scheduledDeparture,
-                         final LocalDateTime scheduledArrival,
-                         final DepartureStatusData departureStatus) {
+    public ScheduleData(final Date scheduledDeparture,
+                        final Date scheduledArrival,
+                        final DepartureStatusData departureStatus) {
         this.scheduledDeparture = scheduledDeparture;
         this.scheduledArrival = scheduledArrival;
         this.departureStatus = departureStatus;

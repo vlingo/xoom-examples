@@ -16,9 +16,6 @@ import io.vlingo.xoom.annotation.autodispatch.Handler.Three;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Two;
 import io.vlingo.xoom.annotation.autodispatch.HandlerEntry;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collection;
 
 public class FlightResourceHandlers {
@@ -39,8 +36,13 @@ public class FlightResourceHandlers {
             final Equipment equipment =
                     Equipment.of(data.equipment.carrier, data.equipment.tailNumber);
 
+            final DepartureStatus departureStatus =
+                    DepartureStatus.from(data.schedule.scheduledDeparture,
+                            data.schedule.departureStatus.actual);
+
             final Schedule schedule =
-                    Schedule.on(data.schedule.scheduledDeparture, data.schedule.scheduledArrival);
+                    Schedule.on(data.schedule.scheduledDeparture,
+                            data.schedule.scheduledArrival, departureStatus);
 
             return Flight.openGate($stage, data.number, gateAssignment, equipment, schedule);
           });
@@ -53,11 +55,7 @@ public class FlightResourceHandlers {
 
   public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> DEPART_HANDLER =
           HandlerEntry.of(DEPART, (flight, data) -> {
-            final LocalDateTime departedOn =
-                    Instant.ofEpochMilli(data.schedule.departureStatus.actual)
-                            .atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-            return flight.depart(departedOn);
+            return flight.depart(data.schedule.departureStatus.actual);
           });
 
   public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> CLOSE_GATE_HANDLER =

@@ -1,0 +1,30 @@
+version: '3'
+services:
+  schemata:
+    image: vlingo/vlingo-schemata
+    ports:
+      - 9019:9019
+    environment:
+      server.port: 9019
+  db:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - ./assets/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 18787:5432
+    environment:
+      POSTGRES_USER: "vlingo"
+      POSTGRES_PASSWORD: "vlingo123"
+  rabbit:
+    image: "rabbitmq:3-management"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "vlingo_exchange"
+      RABBITMQ_DEFAULT_PASS: "vlingo123"
+      RABBITMQ_DEFAULT_VHOST: "vgo-airlines"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "./assets/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"

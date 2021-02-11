@@ -182,7 +182,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"number\":\"1983\",\r\n    \"gateAssignment\": {\r\n        \"terminal\":\"A1\",\r\n        \"number\": \"12\"\r\n    },\r\n    \"equipment\": {\r\n        \"carrier\": \"EMB\",\r\n        \"tailNumber\": \"2011\"\r\n    },\r\n    \"schedule\":{\r\n        \"scheduledDeparture\" : \"2021-01-03'T'11:40:00\",\r\n        \"scheduledArrival\": \"2021-01-04'T'09:15:00\",\r\n        \"departureStatus\": {\r\n            \"actual\": \"2021-01-03'T'12:00:01\",\r\n            \"delayedBy\":18937\r\n        }\r\n    }\r\n}",
+							"raw": "{\r\n    \"number\":\"1983\",\r\n    \"gateAssignment\": {\r\n        \"terminal\":\"A1\",\r\n        \"number\": \"12\"\r\n    },\r\n    \"equipment\": {\r\n        \"carrier\": \"EMB\",\r\n        \"tailNumber\": \"2011\"\r\n    },\r\n    \"schedule\":{\r\n        \"scheduledDeparture\" : 1613066697198,\r\n        \"scheduledArrival\": 1613066908474,\r\n        \"departureStatus\": {\r\n            \"actual\": 1613066918474\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
