@@ -7,18 +7,19 @@
 
 package com.skyharbor.aircraftmonitoring.model.flight;
 
-import java.time.LocalDateTime;
+
+import java.util.Date;
 
 public class ActualDeparture {
 
   public final String airportCode;
-  public final LocalDateTime occurredOn;
+  public final Date occurredOn;
 
   public static ActualDeparture resolve() {
-    return new ActualDeparture(LocalDateTime.now());
+    return new ActualDeparture(new Date());
   }
 
-  private ActualDeparture(final LocalDateTime occurredOn) {
+  private ActualDeparture(final Date occurredOn) {
     this.occurredOn = occurredOn;
     this.airportCode = AirportRetriever.airportCodeForDeparture(occurredOn);
   }

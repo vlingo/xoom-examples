@@ -7,14 +7,14 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ActualDepartureData {
 
   public final String airportCode;
-  public final LocalDateTime occurredOn;
+  public final Date occurredOn;
 
-  public ActualDepartureData(final String airportCode, final LocalDateTime occurredOn) {
+  public ActualDepartureData(final String airportCode, final Date occurredOn) {
     this.occurredOn = occurredOn;
     this.airportCode = airportCode;
   }

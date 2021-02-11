@@ -3,13 +3,13 @@
   <parent>
     <groupId>io.examples</groupId>
     <artifactId>vlingo-e2e-sys-airline-ops</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.skyharbor</groupId>
   <artifactId>fleetcrew</artifactId>
-  <version>1.5.0</version>
+  <version>1.5.1-SNAPSHOT</version>
   <properties>
     <jdk.version>1.8</jdk.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
@@ -30,11 +30,10 @@
     </repository>
 
     <repository>
-      <id>oss-jfrog-snapshot</id>
-      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/vlingo/vlingo-platform</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
     </repository>
   </repositories>
   <dependencies>
@@ -80,6 +79,7 @@
                 <url>${schemata.url}</url>
                 <clientOrganization>SkyHarborPHX</clientOrganization>
                 <clientUnit>groundops</clientUnit>
+                <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
                 <schema>

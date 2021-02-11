@@ -7,12 +7,12 @@
 
 package com.vgoairlines.airportterminal.model.flight;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.Address;
+import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public interface Flight {
 
@@ -31,13 +31,13 @@ public interface Flight {
     return _flight.openGate(number, gateAssignment, equipment, schedule);
   }
 
-  Completes<FlightState> arrive(final LocalDateTime arrivedOn);
+  Completes<FlightState> arrive(final Date arrivedOn);
 
   Completes<FlightState> startBoarding();
 
   Completes<FlightState> endBoarding();
 
-  Completes<FlightState> depart(final LocalDateTime departedOn);
+  Completes<FlightState> depart(final Date departedOn);
 
   Completes<FlightState> closeGate();
 

@@ -7,16 +7,15 @@
 
 package com.vgoairlines.airportterminal.infrastructure;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.Date;
 
 public class DepartureStatusData {
 
-    public final long actual;
+    public final Date actual;
     public final long delayedBy;
 
-    public DepartureStatusData(final LocalDateTime actual, final long delayedBy) {
-        this.actual = actual.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+    public DepartureStatusData(final Date actual, final long delayedBy) {
+        this.actual = actual;
         this.delayedBy = delayedBy;
     }
 }

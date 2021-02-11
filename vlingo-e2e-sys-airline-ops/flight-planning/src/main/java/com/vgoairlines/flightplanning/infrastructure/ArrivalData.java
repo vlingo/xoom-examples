@@ -7,14 +7,14 @@
 
 package com.vgoairlines.flightplanning.infrastructure;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ArrivalData {
 
     public final AirportData airport;
-    public final LocalDateTime plannedFor;
+    public final Date plannedFor;
 
-    public ArrivalData(final AirportData airport, final LocalDateTime plannedFor) {
+    public ArrivalData(final AirportData airport, final Date plannedFor) {
         this.airport = airport;
         this.plannedFor = plannedFor;
     }

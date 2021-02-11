@@ -7,14 +7,14 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class EstimatedArrivalData {
 
   public final String airportCode;
-  public final LocalDateTime time;
+  public final Date time;
 
-  public EstimatedArrivalData(final String airportCode, final LocalDateTime time) {
+  public EstimatedArrivalData(final String airportCode, final Date time) {
     this.time = time;
     this.airportCode = airportCode;
   }
