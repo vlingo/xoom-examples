@@ -7,20 +7,29 @@
 
 package com.skyharbor.aircraftmonitoring.model.flight;
 
-import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.function.Predicate;
 
 public class AirportRetriever {
 
-  public static String airportCodeForDeparture(final LocalDateTime departureOccurredOn) {
-    return airportCode(departureOccurredOn, time -> time.getDayOfMonth() % 2 == 0);
+  public static String airportCodeForDeparture(final Date departureOccurredOn) {
+    return airportCode(departureOccurredOn, time -> {
+      final Calendar calendar = Calendar.getInstance();
+      calendar.setTime(departureOccurredOn);
+      return calendar.get(Calendar.DAY_OF_MONTH) %2 == 0;
+    });
   }
 
-  public static String airportCodeForArrival(final LocalDateTime estimatedArrival) {
-    return airportCode(estimatedArrival, time -> time.getDayOfMonth() % 2 != 0);
+  public static String airportCodeForArrival(final Date estimatedArrival) {
+    return airportCode(estimatedArrival, time -> {
+      final Calendar calendar = Calendar.getInstance();
+      calendar.setTime(estimatedArrival);
+      return calendar.get(Calendar.DAY_OF_MONTH) % 2 != 0;
+    });
   }
 
-  private static String airportCode(final LocalDateTime time, final Predicate<LocalDateTime> condition) {
+  private static String airportCode(final Date time, final Predicate<Date> condition) {
     if(condition.test(time)) {
       return "PHX";
     }

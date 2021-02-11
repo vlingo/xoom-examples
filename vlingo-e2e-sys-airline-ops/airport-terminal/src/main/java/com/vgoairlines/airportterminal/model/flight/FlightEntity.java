@@ -10,7 +10,7 @@ package com.vgoairlines.airportterminal.model.flight;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public final class FlightEntity extends StatefulEntity<FlightState> implements Flight {
   private FlightState state;
@@ -31,7 +31,7 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
 
 
   @Override
-  public Completes<FlightState> arrive(final LocalDateTime arrivedOn) {
+  public Completes<FlightState> arrive(final Date arrivedOn) {
     final FlightState stateArg = state.arrive(state.schedule.arrivedOn(arrivedOn));
     return apply(stateArg, new FlightArrived(stateArg), () -> state);
   }
@@ -49,7 +49,7 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
   }
 
   @Override
-  public Completes<FlightState> depart(final LocalDateTime actual) {
+  public Completes<FlightState> depart(final Date actual) {
     final FlightState stateArg = state.depart(state.schedule.departedOn(actual));
     return apply(stateArg, new FlightDeparted(stateArg), () -> state);
   }

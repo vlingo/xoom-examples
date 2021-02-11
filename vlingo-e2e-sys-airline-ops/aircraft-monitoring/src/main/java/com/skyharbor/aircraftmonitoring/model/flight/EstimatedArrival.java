@@ -7,18 +7,18 @@
 
 package com.skyharbor.aircraftmonitoring.model.flight;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class EstimatedArrival {
 
   public final String airportCode;
-  public final LocalDateTime time;
+  public final Date time;
 
   public static EstimatedArrival resolve(){
-    return new EstimatedArrival(LocalDateTime.now());
+    return new EstimatedArrival(new Date());
   }
 
-  private EstimatedArrival(final LocalDateTime time) {
+  private EstimatedArrival(final Date time) {
     this.time = time;
     this.airportCode = AirportRetriever.airportCodeForArrival(time);
   }
