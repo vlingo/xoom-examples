@@ -27,28 +27,19 @@ public class FlightProjectionActor extends StateStoreProjectionActor<FlightData>
   }
 
   @Override
-  protected FlightData merge(FlightData previousData, int previousVersion, FlightData currentData, int currentVersion) {
-
-    if (previousData == null) {
-      previousData = currentData;
-    }
-
+  protected FlightData merge(final FlightData previousData, final int previousVersion, final FlightData currentData, final int currentVersion) {
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
         case FlightScheduled:
-          return FlightData.empty();   // TODO: implement actual merge
         case AircraftPooled:
-          return FlightData.empty();   // TODO: implement actual merge
         case FlightRescheduled:
-          return FlightData.empty();   // TODO: implement actual merge
         case FlightCanceled:
-          return FlightData.empty();   // TODO: implement actual merge
+          return currentData;
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
           break;
       }
     }
-
     return previousData;
   }
 }
