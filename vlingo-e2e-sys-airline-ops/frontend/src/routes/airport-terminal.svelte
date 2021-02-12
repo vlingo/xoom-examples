@@ -31,22 +31,30 @@
 		}
 	}
 
+
+	const submit= async () => {
+		const res = await Api.post("/flights", formData);
+		console.log(res);
+	}
+
 </script>
 
 <CardForm title="Airport Terminal" prevLink="fleet-crew" nextLink="air-traffic-control" isNextDisabled={false}>
-	<TextField outlined>Gate Agent Name</TextField>
-	<Select outlined items={aircrafts}>Flight</Select>
+	<form on:submit|preventDefault={submit}>
+		<TextField outlined>Gate Agent Name</TextField>
+		<Select outlined items={aircrafts}>Flight</Select>
 
-	<TextField outlined>Equipment - Terminal</TextField>
-	<TextField outlined>Equipment - Number</TextField>
+		<TextField outlined>Equipment - Terminal</TextField>
+		<TextField outlined>Equipment - Number</TextField>
 
-	<TextField outlined>Gate Assignment - Terminal</TextField>
-	<TextField outlined>Gate Assignment - Number</TextField>
+		<TextField outlined>Gate Assignment - Terminal</TextField>
+		<TextField outlined>Gate Assignment - Number</TextField>
 
-	<TextField outlined>Scheduled Departure</TextField>
-	<TextField outlined>Scheduled Arrival</TextField>
+		<TextField outlined>Scheduled Departure</TextField>
+		<TextField outlined>Scheduled Arrival</TextField>
 
-	<TextField outlined>Departure Status - Delayed By</TextField>
-	<TextField outlined>Departure Status - Actual</TextField>
+		<TextField outlined>Departure Status - Delayed By</TextField>
+		<TextField outlined>Departure Status - Actual</TextField>
+	</form>
 </CardForm>
 
