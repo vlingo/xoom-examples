@@ -41,13 +41,25 @@
 	}
 
 
+	const submit= async () => {
+		const res = await Api.post("/flights", formData);
+		console.log(res);
+	}
+
+	const updateStatus = async () => {
+		const res = await Api.patch("/flights", formData);
+		console.log(res);
+	}
+
 </script>
 
 <CardForm title="Air Traffic Control" prevLink="airport-terminal" nextLink="aircraft-monitoring" isNextDisabled={false}>
-	<TextField outlined>Gate Agent Name</TextField>
-	<Select outlined items={aircrafts}>Flight</Select>
+	<form on:submit|preventDefault={submit}>
+		<TextField outlined>Gate Agent Name</TextField>
+		<Select outlined items={aircrafts}>Flight</Select>
 
-	<Select outlined items={statuses}>Equipment - Terminal</Select>
+		<Select outlined items={statuses}>Equipment - Terminal</Select>
+	</form>
 </CardForm>
 
 

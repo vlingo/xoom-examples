@@ -20,11 +20,17 @@
 		tailNumber: "2011"
 	}
 
+	const submit= async () => {
+		const res = await Api.post("/fleetcrew/aircrafts/", formData);
+		console.log(res);
+	}
 </script>
 
 <CardForm title="Fleet Crew" prevLink="flight-planning" nextLink="airport-terminal" isNextDisabled={false}>
-	<Select outlined items={aircrafts} bind:value={formData.aircraftId}>Aircraft</Select>
-	<TextField outlined bind:value={formData.flightNumber}>Flight Number</TextField>
-	<TextField outlined bind:value={formData.tailNumber}>Tail Number</TextField>
-	<TextField outlined bind:value={formData.carrier}>Carrier Name</TextField>
+	<form on:submit|preventDefault={submit}>
+		<Select outlined items={aircrafts} bind:value={formData.aircraftId}>Aircraft</Select>
+		<TextField outlined bind:value={formData.flightNumber}>Flight Number</TextField>
+		<TextField outlined bind:value={formData.tailNumber}>Tail Number</TextField>
+		<TextField outlined bind:value={formData.carrier}>Carrier Name</TextField>
+	</form>
 </CardForm>

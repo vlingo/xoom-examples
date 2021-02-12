@@ -35,12 +35,19 @@
 			type: "AIRLINE"
 		}
 	}
+
+	const submit= async () => {
+		const res = await Api.post("/flight-plannings", formData);
+		console.log(res);
+	}
 </script>
 
 <CardForm title="Flight Planning" prevLink="inventory" nextLink="fleet-crew" isNextDisabled={false}>
-	<Select outlined items={aircrafts}>Aircraft</Select>
-	<TextField outlined>Departure Date</TextField>
-	<TextField outlined>Departure Airport</TextField>
-	<TextField outlined>Arrival Date</TextField>
-	<TextField outlined>Arrival Airport</TextField>
+	<form on:submit|preventDefault={submit}>
+		<Select outlined items={aircrafts}>Aircraft</Select>
+		<TextField outlined>Departure Date</TextField>
+		<TextField outlined>Departure Airport</TextField>
+		<TextField outlined>Arrival Date</TextField>
+		<TextField outlined>Arrival Airport</TextField>
+	</form>
 </CardForm>
