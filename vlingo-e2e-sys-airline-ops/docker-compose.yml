@@ -25,7 +25,7 @@ services:
       - "./assets/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
 
   schemata:
-    image: dambrosio/vlingo-schemata:1.1
+    image: dambrosio/vlingo-schemata:2.0
     ports:
       - 9019:9019
     environment:
