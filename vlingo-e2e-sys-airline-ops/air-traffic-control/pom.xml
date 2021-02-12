@@ -79,7 +79,6 @@
                 <url>${schemata.url}</url>
                 <clientOrganization>SkyHarborPHX</clientOrganization>
                 <clientUnit>groundops</clientUnit>
-                <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
                 <schema>
