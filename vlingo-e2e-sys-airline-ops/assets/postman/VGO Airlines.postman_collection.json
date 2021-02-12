@@ -49,7 +49,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"schedule\":{\r\n        \"departure\": {\r\n            \"airport\": {\r\n                \"code\": \"TTAB789\",\r\n                \"plannedFor\": \"\"\r\n            }\r\n        }\r\n    },\r\n    \"manufacturerSpecification\" : {\r\n        \"manufacturer\":\"EMBRAER\",\r\n        \"model\": \"E2-190\",\r\n        \"serialNumber\": \"283201230\"\r\n    },\r\n    \"carrier\": {\r\n        \"name\": \"TAM\",\r\n        \"type\": \"AIRLINE\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"schedule\":{\r\n        \"departure\": {\r\n            \"airport\": {\r\n                \"code\": \"TTAB789\",\r\n                \"plannedFor\": 1613066697198\r\n            }\r\n        }\r\n    },\r\n    \"manufacturerSpecification\" : {\r\n        \"manufacturer\":\"EMBRAER\",\r\n        \"model\": \"E2-190\",\r\n        \"serialNumber\": \"283201230\"\r\n    },\r\n    \"carrier\": {\r\n        \"name\": \"TAM\",\r\n        \"type\": \"AIRLINE\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -57,14 +57,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:18081/flights/",
+							"raw": "http://localhost:18081/flight-plannings/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "18081",
 							"path": [
-								"flights",
+								"flight-plannings",
 								""
 							]
 						}
