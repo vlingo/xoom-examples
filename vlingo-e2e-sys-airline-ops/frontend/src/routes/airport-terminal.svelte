@@ -3,7 +3,7 @@
 </svelte:head>
 
 <script>
-	import { TextField, Button, Dialog, Row } from 'svelte-materialify/src';
+	import { TextField, Button, Dialog, Row, Alert, Icon } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
 	import { Api } from "../api";
 	import { terminals } from "../stores/airport-terminal.js"
@@ -87,7 +87,16 @@
 			{/each}
 		</tbody>
 	</table>
-
+	{#if $terminals.length < 1}
+		<Alert class="error-color">
+			<div slot="icon">
+				<Icon class="mdi mdi-alert" />
+			</div>
+			<div>
+				There is no airport terminal! Add one.
+			</div>
+		</Alert>
+	{/if}
 	<Button on:click={toggleDialog}>New Terminal</Button>
 	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
 		<form on:submit|preventDefault={submit}>

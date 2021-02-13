@@ -3,7 +3,7 @@
 </svelte:head>
 
 <script>
-	import { TextField, Select, Button, Dialog, Row } from 'svelte-materialify/src';
+	import { TextField, Select, Button, Dialog, Row, Alert, Icon } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
 	import { Api } from "../api";
 	import { inventories } from "../stores/inventory.js";
@@ -80,6 +80,16 @@
 			{/each}
 		</tbody>
 	</table>
+	{#if $inventories.length < 1}
+		<Alert class="error-color">
+			<div slot="icon">
+				<Icon class="mdi mdi-alert" />
+			</div>
+			<div>
+				There is no inventory! Add one.
+			</div>
+		</Alert>
+	{/if}
 	<Button on:click={toggleDialog}>New Inventory</Button>
 	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
 		<form on:submit|preventDefault={submit}>
