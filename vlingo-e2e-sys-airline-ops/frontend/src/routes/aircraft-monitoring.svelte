@@ -34,14 +34,5 @@
 </CardForm>
 
 <style>
-	table, th, td {
-		border-bottom: 1px solid lightgrey;
-		border-collapse: collapse;
-		padding: 0.5rem 1rem 0.75rem;
-	}
-	table {
-		width: 100%;
-		text-align: center;
-	}
 </style>
 
