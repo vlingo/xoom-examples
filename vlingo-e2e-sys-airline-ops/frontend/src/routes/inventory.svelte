@@ -80,7 +80,7 @@
 			{/each}
 		</tbody>
 	</table>
-	{#if $inventories.length}
+	{#if $inventories.length < 1}
 		<Alert class="error-color">
 			<div>
 				There is no inventory! Add one.
