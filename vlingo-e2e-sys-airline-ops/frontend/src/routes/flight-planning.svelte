@@ -40,10 +40,6 @@
 		}
 	}
 
-	onMount(async () => {
-		$flights = await Api.get("/flight-plannings/");
-	})
-
 	const submit= async () => {
 		const res = await Api.post("/flight-plannings/", formData);
 		if (res) {
