@@ -13,6 +13,7 @@ polka() // You can also use Express
 	.use("/flight-plannings/", createProxyMiddleware({ target: "http://localhost:18081", changeOrigin: true }))
 	.use("/fleetcrew/aircrafts/", createProxyMiddleware({ target: "http://localhost:18082", changeOrigin: true }))
 	.use("/flights/", createProxyMiddleware({ target: "http://localhost:18083", changeOrigin: true }))
+	.use("/traffic-control/", createProxyMiddleware({ target: "http://localhost:18084", changeOrigin: true, pathRewrite: { '^/traffic-control/': '/flights/' }}))
 	.use(json())
 	.use(
 		compression({ threshold: 0 }),
