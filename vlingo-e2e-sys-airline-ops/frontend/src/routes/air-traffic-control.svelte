@@ -5,7 +5,7 @@
 <script>
 import { onMount } from 'svelte';
 
-	import { TextField, Select, Button, Dialog, Row } from 'svelte-materialify/src';
+	import { TextField, Select, Button, Dialog, Row, Alert, Icon } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
 	import VlSelect from '../components/VlSelect.svelte';
 	import { Api } from "../api";
@@ -94,6 +94,16 @@ import { onMount } from 'svelte';
 			{/each}
 		</tbody>
 	</table>
+	{#if $controls.length < 1}
+		<Alert class="error-color">
+			<div slot="icon">
+				<Icon class="mdi mdi-alert" />
+			</div>
+			<div>
+				There is no air traffic control! Add one.
+			</div>
+		</Alert>
+	{/if}
 	<Button on:click={toggleDialog}>New Control</Button>
 	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
 		<form on:submit|preventDefault={submit} style="min-height: 500px">

@@ -3,7 +3,7 @@
 </svelte:head>
 
 <script>
-	import { Select, Button, Dialog, Row } from 'svelte-materialify/src';
+	import { Select, Button, Dialog, Row, Alert, Icon } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
 	import { Api } from "../api";
 	import { flights } from "../stores/flights.js";
@@ -95,6 +95,16 @@
 			{/each}
 		</tbody>
 	</table>
+	{#if $fleetcrews.length < 1}
+		<Alert class="error-color">
+			<div slot="icon">
+				<Icon class="mdi mdi-alert" />
+			</div>
+			<div>
+				There is no fleet crew! Add one.
+			</div>
+		</Alert>
+	{/if}
 	<Button on:click={toggleDialog}>New Fleet Crew</Button>
 	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
 		<form on:submit|preventDefault={submit} style="min-height: 500px;">
