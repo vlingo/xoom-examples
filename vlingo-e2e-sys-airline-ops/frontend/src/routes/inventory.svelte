@@ -3,13 +3,12 @@
 </svelte:head>
 
 <script>
-	import { TextField, Select, Button, Dialog, Row, Col } from 'svelte-materialify/src';
+	import { TextField, Select, Button, Dialog, Row } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
 	import { Api } from "../api";
-	import { onMount } from 'svelte';
 	import { inventories } from "../stores/inventory.js";
 
-	let isNewInventoryFormActive = false;
+	let isDialogActive = false;
 	const carrierTypes = [
     { name: 'Airline', value: 'AIRLINE' },
     { name: 'Shipping', value: 'SHIPPING' },
@@ -36,20 +35,16 @@
 		}
 	}
 
-	onMount(async () => {
-		$inventories = await Api.get("/aircrafts/");
-	})
-
 	const submit= async () => {
 		const res = await Api.post("/aircrafts/", formData);
 		if (res) {
-			$inventories = [...$inventories, { ...res }];
+			$inventories = [...$inventories, res];
 			toggleDialog();
 		}
 	}
 
 	const toggleDialog = () => {
-		isNewInventoryFormActive = !isNewInventoryFormActive;
+		isDialogActive = !isDialogActive;
 	}
 </script>
 
@@ -68,7 +63,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each $inventories as inventory, ind (ind)}
+			{#each $inventories as inventory, ind (inventory.id)}
 				<tr>
 					<td>{ind + 1}</td>
 					<td>{inventory.manufacturerSpecification.manufacturer}</td>
@@ -83,23 +78,21 @@
 		</tbody>
 	</table>
 	<Button on:click={toggleDialog}>New Inventory</Button>
-	{#if isNewInventoryFormActive }
-		<Dialog persistent class="pa-8 text-center" bind:active={isNewInventoryFormActive}>
-			<form on:submit|preventDefault={submit}>
-				<TextField outlined bind:value={manufacturer}>Manufacturer</TextField>
-				<TextField outlined bind:value={model}>Model</TextField>
-				<TextField outlined bind:value={serialNumber}>Serial Number</TextField>
-				<TextField outlined bind:value={tailNumber}>Tail Number</TextField>
-				<TextField outlined bind:value={carrierName}>Carrier Name</TextField>
-				<Select outlined items={carrierTypes} bind:value={carrierType}>Carrier Type</Select>
-				<Row class="ml-0 mr-0">
-					<div style="flex:1; text-align: left;">
-						<Button class="success-color" type="submit">Create</Button>
-					</div>
-					<Button class="ml-3" type="reset">Reset</Button>
-					<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
-				</Row>
-			</form>
-		</Dialog>
-	{/if}
+	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
+		<form on:submit|preventDefault={submit}>
+			<TextField outlined bind:value={manufacturer}>Manufacturer</TextField>
+			<TextField outlined bind:value={model}>Model</TextField>
+			<TextField outlined bind:value={serialNumber}>Serial Number</TextField>
+			<TextField outlined bind:value={tailNumber}>Tail Number</TextField>
+			<TextField outlined bind:value={carrierName}>Carrier Name</TextField>
+			<Select outlined items={carrierTypes} bind:value={carrierType}>Carrier Type</Select>
+			<Row class="ml-0 mr-0">
+				<div style="flex:1; text-align: left;">
+					<Button class="success-color" type="submit">Create</Button>
+				</div>
+				<Button class="ml-3" type="reset">Reset</Button>
+				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
+			</Row>
+		</form>
+	</Dialog>
 </CardForm>
