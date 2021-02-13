@@ -7,7 +7,6 @@
 	const dispatch = createEventDispatcher();
 
 	export let text = "";
-	export let color = "success";
 	export let outlined = false;
 	export let icon = "";
 	export let href = "";
@@ -21,12 +20,9 @@
 			dispatch("click");
 		}
 	}
-
-  $: btnClass = `${disabled ? "disabled " : `${color}-text ${color}-color`}`;
-
 </script>
 
-<MatButton class={"m-1 " + btnClass} {...$$restProps}  on:click={clicked} {outlined} disabled={disabled}>
+<MatButton class={"m-1 "} {...$$restProps}  on:click={clicked} {outlined} disabled={disabled}>
 	<span>
 		{#if icon}
 			<Icon path={icon}/>
