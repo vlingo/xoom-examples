@@ -10,6 +10,7 @@ const dev = NODE_ENV === 'development';
 
 polka() // You can also use Express
 	.use("/aircrafts/", createProxyMiddleware({ target: "http://localhost:18080", changeOrigin: true }))
+	.use("/flight-plannings/", createProxyMiddleware({ target: "http://localhost:18081", changeOrigin: true }))
 	.use(json())
 	.use(
 		compression({ threshold: 0 }),
