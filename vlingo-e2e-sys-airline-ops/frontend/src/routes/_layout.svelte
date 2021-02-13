@@ -7,6 +7,8 @@
 	export let segment;
 	import { Api } from "../api";
 	import { inventories } from "../stores/inventory.js";
+	import { fleetcrews } from "../stores/fleetcrew.js";
+	import { flights } from "../stores/flights.js";
 
 	let sidenav = false;
 	const toggleTheme = () => $theme = ($theme === "light") ? "dark" : "light";
@@ -15,6 +17,8 @@
 	onMount(async () => {
 		isMobile.check();
 		$inventories = await Api.get("/aircrafts/");
+		$flights = await Api.get("/flight-plannings/");
+		$fleetcrews = await Api.get("/fleetcrew/aircrafts/");
 	})
 </script>
 
