@@ -3,10 +3,13 @@
 </svelte:head>
 
 <script>
-	import { TextField, Select, Button } from 'svelte-materialify/src';
+	import { TextField, Select, Button, Dialog, Row, Col } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
 	import { Api } from "../api";
-import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
+	import { inventories } from "../stores/inventory.js";
+
+	let isNewInventoryFormActive = false;
 	const carrierTypes = [
     { name: 'Airline', value: 'AIRLINE' },
     { name: 'Shipping', value: 'SHIPPING' },
@@ -34,24 +37,69 @@ import { onMount } from 'svelte';
 	}
 
 	onMount(async () => {
-		const res = await Api.get("/aircrafts/");
-		console.log(res);
+		$inventories = await Api.get("/aircrafts/");
 	})
 
 	const submit= async () => {
 		const res = await Api.post("/aircrafts/", formData);
-		console.log(res);
+		if (res) {
+			$inventories = [...$inventories, { ...res }];
+			toggleDialog();
+		}
+	}
+
+	const toggleDialog = () => {
+		isNewInventoryFormActive = !isNewInventoryFormActive;
 	}
 </script>
 
-<CardForm title="Inventory" nextLink="flight-planning" isNextDisabled={false}>
-	<form on:submit|preventDefault={submit}>
-		<TextField outlined bind:value={manufacturer}>Manufacturer</TextField>
-		<TextField outlined bind:value={model}>Model</TextField>
-		<TextField outlined bind:value={serialNumber}>Serial Number</TextField>
-		<TextField outlined bind:value={tailNumber}>Tail Number</TextField>
-		<TextField outlined bind:value={carrierName}>Carrier Name</TextField>
-		<Select outlined items={carrierTypes} bind:value={carrierType}>Carrier Type</Select>
-		<Button type="submit">Create</Button>
-	</form>
+<CardForm title="Inventories" nextLink="flight-planning" isNextDisabled={$inventories.length < 1}>
+	<table class="mb-6">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Manufacturer</th>
+				<th>Model</th>
+				<th>Serial Number</th>
+				<th>Career Name</th>
+				<th>Career Type</th>
+				<th>Tail Number</th>
+				<th>#</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each $inventories as inventory, ind (ind)}
+				<tr>
+					<td>{ind + 1}</td>
+					<td>{inventory.manufacturerSpecification.manufacturer}</td>
+					<td> {inventory.manufacturerSpecification.model}</td>
+					<td>{inventory.manufacturerSpecification.serialNumber}</td>
+					<td>{inventory.carrier.name}</td>
+					<td>{inventory.carrier.type}</td>
+					<td>{inventory.registration.tailNumber}</td>
+					<td></td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
+	<Button on:click={toggleDialog}>New Inventory</Button>
+	{#if isNewInventoryFormActive }
+		<Dialog persistent class="pa-8 text-center" bind:active={isNewInventoryFormActive}>
+			<form on:submit|preventDefault={submit}>
+				<TextField outlined bind:value={manufacturer}>Manufacturer</TextField>
+				<TextField outlined bind:value={model}>Model</TextField>
+				<TextField outlined bind:value={serialNumber}>Serial Number</TextField>
+				<TextField outlined bind:value={tailNumber}>Tail Number</TextField>
+				<TextField outlined bind:value={carrierName}>Carrier Name</TextField>
+				<Select outlined items={carrierTypes} bind:value={carrierType}>Carrier Type</Select>
+				<Row class="ml-0 mr-0">
+					<div style="flex:1; text-align: left;">
+						<Button class="success-color" type="submit">Create</Button>
+					</div>
+					<Button class="ml-3" type="reset">Reset</Button>
+					<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
+				</Row>
+			</form>
+		</Dialog>
+	{/if}
 </CardForm>
