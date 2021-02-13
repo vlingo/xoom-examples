@@ -34,12 +34,12 @@ import { onMount } from 'svelte';
 	}
 
 	onMount(async () => {
-		const res = await Api.get("/aircrafts");
+		const res = await Api.get("/aircrafts/");
 		console.log(res);
 	})
 
 	const submit= async () => {
-		const res = await Api.post("/aircrafts", formData);
+		const res = await Api.post("/aircrafts/", formData);
 		console.log(res);
 	}
 </script>
