@@ -5,13 +5,16 @@
 	import { mdiMenu, mdiWeatherNight, mdiWeatherSunny } from '@mdi/js';
 	import SiteNavigation from '../components/SiteNavigation.svelte';
 	export let segment;
+	import { Api } from "../api";
+	import { inventories } from "../stores/inventory.js";
 
 	let sidenav = false;
 	const toggleTheme = () => $theme = ($theme === "light") ? "dark" : "light";
 	$: bgTheme = ($theme === "light") ? "#ffffff" : "#212121";
 
-	onMount(() => {
+	onMount(async () => {
 		isMobile.check();
+		$inventories = await Api.get("/aircrafts/");
 	})
 </script>
 
