@@ -3,30 +3,27 @@
 </svelte:head>
 
 <script>
-	import { TextField, Select } from 'svelte-materialify/src';
+import { onMount } from 'svelte';
+
+	import { TextField, Select, Button, Dialog, Row } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
-
-	const aircrafts = [
-    { name: 'AirCraft1', value: 'AirCraft1' },
-    { name: 'AirCraft2', value: 'AirCraft2' },
-  ];
-
-	const agents = [
-    { name: 'AirCraft1', value: 'AirCraft1' },
-    { name: 'AirCraft2', value: 'AirCraft2' },
-  ];
+	import VlSelect from '../components/VlSelect.svelte';
+	import { Api } from "../api";
+	import { inventories } from "../stores/inventory.js";
+	import { controls } from "../stores/air-traffic-control.js";
 
 	const statuses = [
-    { name: 'Departed Gate', value: 'DepartedGate' },
-    { name: 'Outbouind Taxiing', value: 'OutbouindTaxiing' },
-		{ name: 'In Flight Line', value: 'InFlightLine' },
-		{ name: 'Cleared For Take Off', value: 'ClearedForTakeOff' },
-		{ name: 'In Flight', value: 'InFlight' },
-		{ name: 'Landing Pattern', value: 'LandingPattern' },
-		{ name: 'Cleared For Landing', value: 'ClearedForLanding' },
-		{ name: 'Landed', value: 'Landed' },
-		{ name: 'Arrived At Gate', value: 'ArrivedAtGate' },
+    { name: 'Departed Gate', value: 'DEPARTED_GATE' },
+    // { name: 'Outbouind Taxiing', value: 'OUTBOUND_TAXIING' },
+		// { name: 'In Flight Line', value: 'IN_FLIGHT_LINE' },
+		// { name: 'Cleared For Take Off', value: 'CLEARED_FOR_TAKEOFF' },
+		{ name: 'In Flight', value: 'IN_FLIGHT' },
+		// { name: 'Landing Pattern', value: 'LANDING_PATTERN' },
+		// { name: 'Cleared For Landing', value: 'CLEARED_FOR_LANDING' },
+		{ name: 'Landed', value: 'LANDED' },
+		// { name: 'Arrived At Gate', value: 'ARRIVED_AT_GATE' },
 	]
+	let isDialogActive = false;
 	let valid = false;
 	let formData = {
 		aircraftId: "05e5b41c-1fc7-4946-b04a-fb7a43d9d119",
@@ -35,31 +32,88 @@
 		equipment: "RPC AC INTERNATIONAL"
 	}
 
-	let statusChangeFormData = {
-		number: 1983,
-		status: "LANDED"
-	}
-
+	onMount(async () => {
+		$controls = await Api.get("/traffic-control/");
+	})
 
 	const submit= async () => {
-		const res = await Api.post("/flights", formData);
-		console.log(res);
+		const res = await Api.post("/traffic-control/", formData);
+		if (res) {
+			controls = [...controls, res]
+			toggleDialog()
+		}
 	}
 
-	const updateStatus = async () => {
-		const res = await Api.patch("/flights", formData);
-		console.log(res);
+	const updateStatus = async (status, control) => {
+		let data = {
+			number: control.number,
+			status: status
+		};
+		const res = await Api.patch(`/traffic-control/${control.aircraftId}/status`, data);
 	}
 
+	const toggleDialog = () => {
+		isDialogActive = !isDialogActive;
+	}
+
+	$: aircrafts = $inventories.map((inv => {
+		return {
+			name: inv.manufacturerSpecification.manufacturer,
+			value: inv.id,
+			...inv
+		};
+	}));
 </script>
 
 <CardForm title="Air Traffic Control" prevLink="airport-terminal" nextLink="aircraft-monitoring" isNextDisabled={false}>
-	<form on:submit|preventDefault={submit}>
-		<TextField outlined>Gate Agent Name</TextField>
-		<Select outlined items={aircrafts}>Flight</Select>
-
-		<Select outlined items={statuses}>Equipment - Terminal</Select>
-	</form>
+	<table class="mb-6">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Number</th>
+				<th>Tail Number</th>
+				<th>Equipment</th>
+				<th>Status</th>
+				<th>#</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each $controls as control, ind (control.id)}
+				<tr>
+					<td>{ind + 1}</td>
+					<td>{control.number}</td>
+					<td>{control.tailNumber}</td>
+					<td>{control.equipment}</td>
+					<td class="table-select">
+						<VlSelect on:change={(e) => updateStatus(e.detail, control)} solo items={statuses} bind:value={control.status} />
+					</td>
+					<td></td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
+	<Button on:click={toggleDialog}>New Control</Button>
+	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
+		<form on:submit|preventDefault={submit} style="min-height: 500px">
+			<Select outlined items={aircrafts}>Flight</Select>
+			<TextField outlined bind:value={formData.number}>Number</TextField>
+			<TextField outlined bind:value={formData.tailNumber}>Tail Number</TextField>
+			<TextField outlined bind:value={formData.equipment}>Equipment</TextField>
+			<Row class="ml-0 mr-0">
+				<div style="flex:1; text-align: left;">
+					<Button class="success-color" type="submit">Create</Button>
+				</div>
+				<Button class="ml-3" type="reset">Reset</Button>
+				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
+			</Row>
+		</form>
+	</Dialog>
 </CardForm>
 
-
+<style global lang="scss">
+.table-select {
+	.s-input, .s-input__slot {
+		margin-bottom: 0;
+	}
+}
+</style>
