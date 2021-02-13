@@ -1,6 +1,6 @@
 export async function get(path) {
 	const res = await fetch(path);
-	return res;
+	return await res.json();
 }
 
 export async function post(path, body) {
@@ -9,7 +9,7 @@ export async function post(path, body) {
 		headers: { 'Content-Type': 'application/json'},
 		body: JSON.stringify(body)
 	});
-	return res;
+	return await res.json();
 }
 
 export async function put(path, body) {
@@ -18,7 +18,7 @@ export async function put(path, body) {
 		headers: { 'Content-Type': 'application/json'},
 		body: JSON.stringify(body)
 	});
-	return res;
+	return await res.json();
 }
 
 export async function patch(path, body) {
@@ -27,7 +27,7 @@ export async function patch(path, body) {
 		headers: { 'Content-Type': 'application/json'},
 		body: body,
 	});
-	return res;
+	return await res.json();
 }
 
 export const Api = { get, post, put, patch };
