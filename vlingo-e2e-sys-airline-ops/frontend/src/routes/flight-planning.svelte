@@ -3,12 +3,12 @@
 </svelte:head>
 
 <script>
-	import { onMount } from 'svelte';
 	import { TextField, Select, Button, Dialog, Row } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
 	import { Api } from "../api";
 	import { flights } from "../stores/flights.js";
 	import { inventories } from "../stores/inventory.js";
+	import { required } from "../util/validators.js";
 
 	let isDialogActive = false;
 	let valid = false;
@@ -66,9 +66,11 @@
 			formData.carrier = carrier;
 		}
 	}
+
+	$: valid = !!selectedAircraft && !!formData.schedule.departure.airport.code && !!formData.schedule.departure.airport.plannedFor && !!formData.schedule.arrival.airport.code && !!formData.schedule.arrival.airport.plannedFor;
 </script>
 
-<CardForm title="Flight Planning" prevLink="inventory" nextLink="fleet-crew" isNextDisabled={false}>
+<CardForm title="Flight Planning" prevLink="inventory" nextLink="fleet-crew" isNextDisabled={$flights.length < 1}>
 	<table class="mb-6">
 		<thead>
 			<tr>
@@ -94,14 +96,14 @@
 	<Button on:click={toggleDialog}>New Flight</Button>
 	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
 		<form on:submit|preventDefault={submit}>
-			<Select outlined items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
-			<TextField outlined bind:value={formData.schedule.departure.airport.code}>Departure Airport Code</TextField>
-			<TextField outlined bind:value={formData.schedule.departure.airport.plannedFor}>Departure Airport Planned For</TextField>
-			<TextField outlined bind:value={formData.schedule.arrival.airport.code}>Arrival Airport Code</TextField>
-			<TextField outlined bind:value={formData.schedule.arrival.airport.plannedFor}>Arrival Airport Planned For</TextField>
+			<Select outlined rules={[required]} items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
+			<TextField outlined rules={[required]} bind:value={formData.schedule.departure.airport.code}>Departure Airport Code</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.schedule.departure.airport.plannedFor}>Departure Airport Planned For</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.schedule.arrival.airport.code}>Arrival Airport Code</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.schedule.arrival.airport.plannedFor}>Arrival Airport Planned For</TextField>
 			<Row class="ml-0 mr-0">
 				<div style="flex:1; text-align: left;">
-					<Button class="success-color" type="submit">Create</Button>
+					<Button class="{valid ? 'success-color' : ''}" type="submit" disabled={!valid}>Create</Button>
 				</div>
 				<Button class="ml-3" type="reset">Reset</Button>
 				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>

@@ -11,6 +11,7 @@ import { onMount } from 'svelte';
 	import { Api } from "../api";
 	import { inventories } from "../stores/inventory.js";
 	import { controls } from "../stores/air-traffic-control.js";
+	import { required } from "../util/validators.js";
 
 	const statuses = [
     { name: 'Departed Gate', value: 'DEPARTED_GATE' },
@@ -24,7 +25,6 @@ import { onMount } from 'svelte';
 		// { name: 'Arrived At Gate', value: 'ARRIVED_AT_GATE' },
 	]
 	let isDialogActive = false;
-	let valid = false;
 	let formData = {
 		aircraftId: "05e5b41c-1fc7-4946-b04a-fb7a43d9d119",
 		number: 1983,
@@ -39,7 +39,7 @@ import { onMount } from 'svelte';
 	const submit= async () => {
 		const res = await Api.post("/traffic-control/", formData);
 		if (res) {
-			controls = [...controls, res]
+			$controls = [...$controls, res]
 			toggleDialog()
 		}
 	}
@@ -63,9 +63,11 @@ import { onMount } from 'svelte';
 			...inv
 		};
 	}));
+
+	$: valid = Object.values(formData).every(f => !!f);
 </script>
 
-<CardForm title="Air Traffic Control" prevLink="airport-terminal" nextLink="aircraft-monitoring" isNextDisabled={false}>
+<CardForm title="Air Traffic Control" prevLink="airport-terminal" nextLink="aircraft-monitoring" isNextDisabled={$controls.length < 1}>
 	<table class="mb-6">
 		<thead>
 			<tr>
@@ -95,13 +97,13 @@ import { onMount } from 'svelte';
 	<Button on:click={toggleDialog}>New Control</Button>
 	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
 		<form on:submit|preventDefault={submit} style="min-height: 500px">
-			<Select outlined items={aircrafts}>Flight</Select>
-			<TextField outlined bind:value={formData.number}>Number</TextField>
-			<TextField outlined bind:value={formData.tailNumber}>Tail Number</TextField>
-			<TextField outlined bind:value={formData.equipment}>Equipment</TextField>
+			<Select outlined rules={[required]} items={aircrafts} bind:value={formData.aircraftId}>Flight</Select>
+			<TextField outlined rules={[required]} bind:value={formData.number}>Number</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.tailNumber}>Tail Number</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.equipment}>Equipment</TextField>
 			<Row class="ml-0 mr-0">
 				<div style="flex:1; text-align: left;">
-					<Button class="success-color" type="submit">Create</Button>
+					<Button class="{valid ? 'success-color' : ''}" type="submit" disabled={!valid}>Create</Button>
 				</div>
 				<Button class="ml-3" type="reset">Reset</Button>
 				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>

@@ -9,6 +9,7 @@
 	import { flights } from "../stores/flights.js";
 	import { inventories } from "../stores/inventory.js";
 	import { fleetcrews } from "../stores/fleetcrew.js";
+	import { required } from "../util/validators.js";
 
 	let isDialogActive = false;
 	let valid = false;
@@ -67,9 +68,11 @@
 			formData.flightNumber = f.id;
 		}
 	}
+
+	$: valid = !!selectedAircraft && !!selectedFlight;
 </script>
 
-<CardForm title="Fleet Crew" prevLink="flight-planning" nextLink="airport-terminal" isNextDisabled={false}>
+<CardForm title="Fleet Crew" prevLink="flight-planning" nextLink="airport-terminal" isNextDisabled={$fleetcrews.length < 1}>
 	<table class="mb-6">
 		<thead>
 			<tr>
@@ -95,11 +98,11 @@
 	<Button on:click={toggleDialog}>New Fleet Crew</Button>
 	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
 		<form on:submit|preventDefault={submit} style="min-height: 500px;">
-			<Select outlined items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
-			<Select outlined items={flightsForSelect} bind:value={selectedFlight}>Flight</Select>
+			<Select rules={[required]} outlined items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
+			<Select rules={[required]} outlined items={flightsForSelect} bind:value={selectedFlight}>Flight</Select>
 			<Row class="ml-0 mr-0">
 				<div style="flex:1; text-align: left;">
-					<Button class="success-color" type="submit">Create</Button>
+					<Button class="{valid ? 'success-color' : ''}" type="submit" disabled={!valid}>Create</Button>
 				</div>
 				<Button class="ml-3" type="reset">Reset</Button>
 				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
