@@ -7,6 +7,7 @@
 	import CardForm from '../components/CardForm.svelte';
 	import { Api } from "../api";
 	import { inventories } from "../stores/inventory.js";
+	import { required } from "../util/validators.js";
 
 	let isDialogActive = false;
 	const carrierTypes = [
@@ -46,6 +47,8 @@
 	const toggleDialog = () => {
 		isDialogActive = !isDialogActive;
 	}
+
+	$: valid = !!manufacturer && !!model && !!serialNumber && !!carrierName && !!carrierType && !!tailNumber;
 </script>
 
 <CardForm title="Inventories" nextLink="flight-planning" isNextDisabled={$inventories.length < 1}>
@@ -80,15 +83,15 @@
 	<Button on:click={toggleDialog}>New Inventory</Button>
 	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
 		<form on:submit|preventDefault={submit}>
-			<TextField outlined bind:value={manufacturer}>Manufacturer</TextField>
-			<TextField outlined bind:value={model}>Model</TextField>
-			<TextField outlined bind:value={serialNumber}>Serial Number</TextField>
-			<TextField outlined bind:value={tailNumber}>Tail Number</TextField>
-			<TextField outlined bind:value={carrierName}>Carrier Name</TextField>
-			<Select outlined items={carrierTypes} bind:value={carrierType}>Carrier Type</Select>
+			<TextField outlined rules={[required]} bind:value={manufacturer}>Manufacturer</TextField>
+			<TextField outlined rules={[required]} bind:value={model}>Model</TextField>
+			<TextField outlined rules={[required]} bind:value={serialNumber}>Serial Number</TextField>
+			<TextField outlined rules={[required]} bind:value={tailNumber}>Tail Number</TextField>
+			<TextField outlined rules={[required]} bind:value={carrierName}>Carrier Name</TextField>
+			<Select outlined rules={[required]} items={carrierTypes} bind:value={carrierType}>Carrier Type</Select>
 			<Row class="ml-0 mr-0">
 				<div style="flex:1; text-align: left;">
-					<Button class="success-color" type="submit">Create</Button>
+					<Button class="{valid ? 'success-color' : ''}" type="submit" disabled={!valid}>Create</Button>
 				</div>
 				<Button class="ml-3" type="reset">Reset</Button>
 				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>

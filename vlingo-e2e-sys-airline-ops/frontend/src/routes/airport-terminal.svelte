@@ -8,6 +8,8 @@
 	import { Api } from "../api";
 	import { terminals } from "../stores/airport-terminal.js"
 	import { onMount } from 'svelte';
+	import { required } from "../util/validators.js";
+
 	let isDialogActive = false;
 	let valid = false;
 
@@ -45,9 +47,18 @@
 		isDialogActive = !isDialogActive;
 	}
 
+	$: valid =  !!formData.number &&
+							!!formData.equipment.carrier &&
+							!!formData.equipment.tailNumber &&
+							!!formData.gateAssignment.terminal &&
+							!!formData.gateAssignment.number &&
+							!!formData.schedule.scheduledDeparture &&
+							!!formData.schedule.scheduledArrival &&
+							!!formData.schedule.departureStatus.actual;
+
 </script>
 
-<CardForm title="Airport Terminal" prevLink="fleet-crew" nextLink="air-traffic-control" isNextDisabled={false}>
+<CardForm title="Airport Terminal" prevLink="fleet-crew" nextLink="air-traffic-control" isNextDisabled={$terminals.length < 1}>
 	<table class="mb-6">
 		<thead>
 			<tr>
@@ -80,21 +91,21 @@
 	<Button on:click={toggleDialog}>New Terminal</Button>
 	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
 		<form on:submit|preventDefault={submit}>
-			<TextField outlined bind:value={formData.number}>Number</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.number}>Number</TextField>
 
-			<TextField outlined bind:value={formData.equipment.carrier}>Equipment - Carrier</TextField>
-			<TextField outlined bind:value={formData.equipment.tailNumber}>Equipment - Tail Number</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.equipment.carrier}>Equipment - Carrier</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.equipment.tailNumber}>Equipment - Tail Number</TextField>
 
-			<TextField outlined bind:value={formData.gateAssignment.terminal}>Gate Assignment - Terminal</TextField>
-			<TextField outlined bind:value={formData.gateAssignment.number}>Gate Assignment - Number</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.gateAssignment.terminal}>Gate Assignment - Terminal</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.gateAssignment.number}>Gate Assignment - Number</TextField>
 
-			<TextField outlined bind:value={formData.schedule.scheduledDeparture}>Scheduled Departure</TextField>
-			<TextField outlined bind:value={formData.schedule.scheduledArrival}>Scheduled Arrival</TextField>
-			<TextField outlined bind:value={formData.schedule.departureStatus.actual}>Departure Status - Actual</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.schedule.scheduledDeparture}>Scheduled Departure</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.schedule.scheduledArrival}>Scheduled Arrival</TextField>
+			<TextField outlined rules={[required]} bind:value={formData.schedule.departureStatus.actual}>Departure Status - Actual</TextField>
 
 			<Row class="ml-0 mr-0">
 				<div style="flex:1; text-align: left;">
-					<Button class="success-color" type="submit">Create</Button>
+					<Button class="{valid ? 'success-color' : ''}" type="submit" disabled={!valid}>Create</Button>
 				</div>
 				<Button class="ml-3" type="reset">Reset</Button>
 				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
