@@ -19,15 +19,15 @@
 	</CardText>
 	<CardActions class="pa-0">
 		<slot name="actions">
-			<Row class="justify-center">
+			<Row>
 				{#if prevLink}
-				<Col cols="auto">
-						<VlButton icon={mdiChevronLeft} outlined text="Prev" href={prevLink} />
+				<Col cols="6" class="text-left">
+						<VlButton icon={mdiChevronLeft} text="Prev" href={prevLink} />
 				</Col>
 				{/if}
 				{#if nextLink}
-				<Col cols="auto" class="text-center">
-					<VlButton icon={mdiChevronRight} outlined text="Next" href={nextLink} disabled={isNextDisabled} />
+				<Col cols={prevLink ? 6 : 12} class="text-right">
+					<VlButton icon={mdiChevronRight} text="Next" href={nextLink} disabled={isNextDisabled} />
 				</Col>
 				{/if}
 			</Row>
