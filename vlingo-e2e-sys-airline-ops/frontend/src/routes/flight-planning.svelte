@@ -3,51 +3,114 @@
 </svelte:head>
 
 <script>
-	import { TextField, Select } from 'svelte-materialify/src';
+	import { onMount } from 'svelte';
+	import { TextField, Select, Button, Dialog, Row } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
+	import { Api } from "../api";
+	import { flights } from "../stores/flights.js";
+	import { inventories } from "../stores/inventory.js";
 
-	const aircrafts = [
-    { name: 'AirCraft1', value: 'AirCraft1' },
-    { name: 'AirCraft2', value: 'AirCraft2' },
-  ];
+	let isDialogActive = false;
 	let valid = false;
-	let airportCode = "TTAB789";
-	let airportPlannedFor = "";
+	let selectedAircraft = "";
 
-	$: formdata = {
+	let formData = {
 		schedule: {
 			departure: {
 				airport: {
-					code: airportCode,
-					plannedFor: airportPlannedFor
+					code: "TTAB789",
+					plannedFor: 1613066697198
+				}
+			},
+			arrival: {
+				airport: {
+					code: "TTAB12",
+					plannedFor: 1613066797198
 				}
 			}
 		},
-		// Selected aircraft manufacturerSpecification
 		manufacturerSpecification: {
 			manufacturer: "EMBRAER",
 			model: "E2-190",
-			serialNumber: 283201230
+			serialNumber: "283201230"
 		},
-		// Selected aircraft carrier
-		carrier: {
-			name: "TAM",
+		carrier: {    
+			name: "TAM",    
 			type: "AIRLINE"
 		}
 	}
 
+	onMount(async () => {
+		$flights = await Api.get("/flight-plannings/");
+	})
+
 	const submit= async () => {
-		const res = await Api.post("/flight-plannings", formData);
-		console.log(res);
+		const res = await Api.post("/flight-plannings/", formData);
+		if (res) {
+			$flights = [...$flights, res]
+		}
+	}
+
+	const toggleDialog = () => {
+		isDialogActive = !isDialogActive;
+	}
+
+	$: aircrafts = $inventories.map((inv => {
+		return {
+			name: inv.manufacturerSpecification.manufacturer,
+			value: inv.id,
+			...inv
+		};
+	}));
+
+	$: {
+		if (selectedAircraft) {
+			const { manufacturerSpecification, carrier } = aircrafts.find(airc => airc.id === selectedAircraft);
+			formData.manufacturerSpecification = manufacturerSpecification;
+			formData.carrier = carrier;
+		}
 	}
 </script>
 
 <CardForm title="Flight Planning" prevLink="inventory" nextLink="fleet-crew" isNextDisabled={false}>
-	<form on:submit|preventDefault={submit}>
-		<Select outlined items={aircrafts}>Aircraft</Select>
-		<TextField outlined>Departure Date</TextField>
-		<TextField outlined>Departure Airport</TextField>
-		<TextField outlined>Arrival Date</TextField>
-		<TextField outlined>Arrival Airport</TextField>
-	</form>
+	<table class="mb-6">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Departure Airport Code</th>
+				<th>Arrival Airport Code</th>
+				<th>Cancelled</th>
+				<th>#</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each $flights as flight, ind (flight.id)}
+				<tr>
+					<td>{ind + 1}</td>
+					<td>{flight.schedule.departure.airport.code}</td>
+					<td>{flight.schedule.arrival.airport.code}</td>
+					<td>{flight.cancelled}</td>
+					<td></td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
+	<Button on:click={toggleDialog}>New Flight</Button>
+	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
+		<form on:submit|preventDefault={submit}>
+			<Select outlined items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
+			<TextField outlined bind:value={formData.schedule.departure.airport.code}>Departure Airport Code</TextField>
+			<TextField outlined bind:value={formData.schedule.departure.airport.plannedFor}>Departure Airport Planned For</TextField>
+			<TextField outlined bind:value={formData.schedule.arrival.airport.code}>Arrival Airport Code</TextField>
+			<TextField outlined bind:value={formData.schedule.arrival.airport.plannedFor}>Arrival Airport Planned For</TextField>
+			<Row class="ml-0 mr-0">
+				<div style="flex:1; text-align: left;">
+					<Button class="success-color" type="submit">Create</Button>
+				</div>
+				<Button class="ml-3" type="reset">Reset</Button>
+				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
+			</Row>
+		</form>
+	</Dialog>
+
 </CardForm>
