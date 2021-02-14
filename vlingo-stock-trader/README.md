@@ -8,7 +8,7 @@ The repository represents an example of trading stocks. The project was develope
 
 This example is based on the original IBM Developer Stock Trader found in the series of articles _Introducing StockTrader_:
 
-[IBM Stock Trader][https://developer.ibm.com/languages/java/blogs/introducing-stocktrader/]
+[IBM Stock Trader](https://developer.ibm.com/languages/java/blogs/introducing-stocktrader/)
 
 [stocktrader]: https://github.com/whzinformatik/stocktrader
 [issues]: https://github.com/whzinformatik/stocktrader/issues
