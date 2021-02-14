@@ -6,6 +6,10 @@
 
 The repository represents an example of trading stocks. The project was developed with the help of students of the University of Applied Science in Zwickau, Germany. It can be accessed at the [following link][stocktrader].
 
+This example is based on the original IBM Developer Stock Trader found in the series of articles _Introducing StockTrader_:
+
+[IBM Stock Trader][https://developer.ibm.com/languages/java/blogs/introducing-stocktrader/]
+
 [stocktrader]: https://github.com/whzinformatik/stocktrader
 [issues]: https://github.com/whzinformatik/stocktrader/issues
 [forks]: https://github.com/whzinformatik/stocktrader/network
