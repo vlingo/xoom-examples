@@ -15,7 +15,7 @@ function isMobileStore() {
 
 export const isMobile = isMobileStore();
 
-export function createLocalStore(key, initialValue) {
+export function createThemeStore(key, initialValue) {
 	const localValue = process.browser ? localStorage.getItem(key) : initialValue;
 	const { subscribe, set, update } = writable(localValue);
 
@@ -33,7 +33,7 @@ export function createLocalStore(key, initialValue) {
 	};
 }
 
-export const theme = createLocalStore('theme', 'light');
+export const theme = createThemeStore('theme', 'light');
 
 export const controls = writable([]);
 export const terminals = writable([]);
