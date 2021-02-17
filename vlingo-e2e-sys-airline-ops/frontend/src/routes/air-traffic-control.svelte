@@ -3,8 +3,7 @@
 </svelte:head>
 
 <script>
-import { onMount } from 'svelte';
-
+	import { onMount } from 'svelte';
 	import { TextField, Select, Button, Dialog, Row, Alert } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
 	import VlSelect from '../components/VlSelect.svelte';
@@ -24,13 +23,14 @@ import { onMount } from 'svelte';
 		{ name: 'Landed', value: 'LANDED' },
 		// { name: 'Arrived At Gate', value: 'ARRIVED_AT_GATE' },
 	]
-	let isDialogActive = false;
 	let formData = {
 		aircraftId: "05e5b41c-1fc7-4946-b04a-fb7a43d9d119",
 		number: 1983,
 		tailNumber: 2011,
 		equipment: "RPC AC INTERNATIONAL"
 	}
+
+	let cardForm;
 
 	onMount(async () => {
 		$controls = await Api.get("/traffic-control/");
@@ -40,7 +40,7 @@ import { onMount } from 'svelte';
 		const res = await Api.post("/traffic-control/", formData);
 		if (res) {
 			$controls = [...$controls, res]
-			toggleDialog()
+			cardForm.toggleDialog();
 		}
 	}
 
@@ -67,7 +67,17 @@ import { onMount } from 'svelte';
 	$: valid = Object.values(formData).every(f => !!f);
 </script>
 
-<CardForm title="Air Traffic Control" prevLink="airport-terminal" nextLink="aircraft-monitoring" isNextDisabled={$controls.length < 1}>
+<CardForm
+	title="Air Traffic Control"
+	buttonText="New Traffic Control"
+	prevLink="airport-terminal"
+	nextLink="aircraft-monitoring"
+	isNextDisabled={$controls.length < 1}
+	showNoContent={$controls.length < 1}
+	{valid}
+	on:submit={submit}
+	bind:this={cardForm}
+>
 	<table class="mb-6">
 		<thead>
 			<tr>
@@ -94,29 +104,13 @@ import { onMount } from 'svelte';
 			{/each}
 		</tbody>
 	</table>
-	{#if $controls.length < 1}
-		<Alert class="error-color">
-			<div>
-				There is no air traffic control! Add one.
-			</div>
-		</Alert>
-	{/if}
-	<Button on:click={toggleDialog}>New Control</Button>
-	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
-		<form on:submit|preventDefault={submit} style="min-height: 500px">
-			<Select outlined rules={[required]} items={aircrafts} bind:value={formData.aircraftId}>Flight</Select>
-			<TextField outlined rules={[required]} bind:value={formData.number}>Number</TextField>
-			<TextField outlined rules={[required]} bind:value={formData.tailNumber}>Tail Number</TextField>
-			<TextField outlined rules={[required]} bind:value={formData.equipment}>Equipment</TextField>
-			<Row class="ml-0 mr-0">
-				<div style="flex:1; text-align: left;">
-					<Button class="{valid ? 'success-color' : ''}" type="submit" disabled={!valid}>Create</Button>
-				</div>
-				<Button class="ml-3" type="reset">Reset</Button>
-				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
-			</Row>
-		</form>
-	</Dialog>
+
+	<div slot="dialog-form">
+		<Select outlined rules={[required]} items={aircrafts} bind:value={formData.aircraftId}>Flight</Select>
+		<TextField outlined rules={[required]} bind:value={formData.number}>Number</TextField>
+		<TextField outlined rules={[required]} bind:value={formData.tailNumber}>Tail Number</TextField>
+		<TextField outlined rules={[required]} bind:value={formData.equipment}>Equipment</TextField>
+	</div>
 </CardForm>
 
 <style global lang="scss">
