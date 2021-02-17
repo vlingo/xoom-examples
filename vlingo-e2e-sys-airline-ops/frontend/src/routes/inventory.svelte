@@ -35,7 +35,7 @@
 	}
 
 	let cardForm;
-	const submit= async (cb) => {
+	const submit= async () => {
 		const res = await Api.post("/aircrafts/", formData);
 		if (res) {
 			$inventories = [...$inventories, res];

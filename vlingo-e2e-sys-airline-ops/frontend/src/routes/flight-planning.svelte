@@ -3,16 +3,16 @@
 </svelte:head>
 
 <script>
-	import { TextField, Select, Button, Dialog, Row, Alert } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
+	import { TextField, Select } from 'svelte-materialify/src';
 	import { Api } from "../api";
 	import { flights } from "../stores/flights.js";
 	import { inventories } from "../stores/inventory.js";
 	import { required } from "../util/validators.js";
 
-	let isDialogActive = false;
 	let valid = false;
 	let selectedAircraft = "";
+	let cardForm;
 
 	let formData = {
 		schedule: {
@@ -43,12 +43,9 @@
 	const submit= async () => {
 		const res = await Api.post("/flight-plannings/", formData);
 		if (res) {
-			$flights = [...$flights, res]
+			$flights = [...$flights, res];
+			cardForm.toggleDialog();
 		}
-	}
-
-	const toggleDialog = () => {
-		isDialogActive = !isDialogActive;
 	}
 
 	$: aircrafts = $inventories.map((inv => {
@@ -59,18 +56,26 @@
 		};
 	}));
 
-	$: {
-		if (selectedAircraft) {
+	$: if (selectedAircraft) {
 			const { manufacturerSpecification, carrier } = aircrafts.find(airc => airc.id === selectedAircraft);
 			formData.manufacturerSpecification = manufacturerSpecification;
 			formData.carrier = carrier;
 		}
-	}
 
 	$: valid = !!selectedAircraft && !!formData.schedule.departure.airport.code && !!formData.schedule.departure.airport.plannedFor && !!formData.schedule.arrival.airport.code && !!formData.schedule.arrival.airport.plannedFor;
 </script>
 
-<CardForm title="Flight Planning" prevLink="inventory" nextLink="fleet-crew" isNextDisabled={$flights.length < 1}>
+<CardForm
+	title="Flight Planning"
+	buttonText="New Flight Planning"
+	prevLink="inventory"
+	nextLink="fleet-crew"
+	isNextDisabled={$flights.length < 1}
+	showNoContent={$flights.length < 1}
+	{valid}
+	on:submit={submit}
+	bind:this={cardForm}
+>
 	<table class="mb-6">
 		<thead>
 			<tr>
@@ -93,29 +98,11 @@
 			{/each}
 		</tbody>
 	</table>
-	{#if $flights.length < 1}
-		<Alert class="error-color">
-			<div>
-				There is no flight planning! Add one.
-			</div>
-		</Alert>
-	{/if}
-	<Button on:click={toggleDialog}>New Flight</Button>
-	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
-		<form on:submit|preventDefault={submit}>
-			<Select outlined rules={[required]} items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
-			<TextField outlined rules={[required]} bind:value={formData.schedule.departure.airport.code}>Departure Airport Code</TextField>
-			<TextField outlined rules={[required]} bind:value={formData.schedule.departure.airport.plannedFor}>Departure Airport Planned For</TextField>
-			<TextField outlined rules={[required]} bind:value={formData.schedule.arrival.airport.code}>Arrival Airport Code</TextField>
-			<TextField outlined rules={[required]} bind:value={formData.schedule.arrival.airport.plannedFor}>Arrival Airport Planned For</TextField>
-			<Row class="ml-0 mr-0">
-				<div style="flex:1; text-align: left;">
-					<Button class="{valid ? 'success-color' : ''}" type="submit" disabled={!valid}>Create</Button>
-				</div>
-				<Button class="ml-3" type="reset">Reset</Button>
-				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
-			</Row>
-		</form>
-	</Dialog>
-
+	<div slot="dialog-form">
+		<Select outlined rules={[required]} items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
+		<TextField outlined rules={[required]} bind:value={formData.schedule.departure.airport.code}>Departure Airport Code</TextField>
+		<TextField outlined rules={[required]} bind:value={formData.schedule.departure.airport.plannedFor}>Departure Airport Planned For</TextField>
+		<TextField outlined rules={[required]} bind:value={formData.schedule.arrival.airport.code}>Arrival Airport Code</TextField>
+		<TextField outlined rules={[required]} bind:value={formData.schedule.arrival.airport.plannedFor}>Arrival Airport Planned For</TextField>
+	</div>
 </CardForm>
