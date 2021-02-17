@@ -19,10 +19,6 @@
 	export const toggleDialog = () => {
 		isDialogActive = !isDialogActive;
 	}
-
-	const formSubmit = () => {
-		dispatch('submit');
-	}
 </script>
 
 <Card class="vl-card pa-4 pa-md-8">
@@ -41,7 +37,7 @@
 		{#if dialogFormPresent}
 			<Button on:click={toggleDialog}>{buttonText}</Button>
 			<Dialog persistent class="pa-8" bind:active={isDialogActive}>
-				<form on:submit|preventDefault={formSubmit}>
+				<form on:submit|preventDefault>
 					<slot name="dialog-form" />
 					<Row class="ml-0 mr-0">
 						<div style="flex:1; text-align: left;">
