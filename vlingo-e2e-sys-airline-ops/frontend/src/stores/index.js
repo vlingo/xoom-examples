@@ -17,7 +17,7 @@ export const isMobile = isMobileStore();
 
 export function createLocalStore(key, initialValue) {
 	const localValue = process.browser ? localStorage.getItem(key) : initialValue;
-	const { subscribe, set } = writable(localValue);
+	const { subscribe, set, update } = writable(localValue);
 
 	return {
 		subscribe,
@@ -27,6 +27,9 @@ export function createLocalStore(key, initialValue) {
 			}
 			set(value)
 		},
+		toggle: () => {
+			update(prevValue => prevValue === 'light' ? 'dark' : prevValue === 'dark' ? 'light' : initialValue)
+		}
 	};
 }
 

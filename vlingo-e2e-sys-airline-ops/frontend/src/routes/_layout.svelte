@@ -9,8 +9,6 @@
 	import { inventories, fleetcrews, flights } from "../stores";
 
 	let sidenav = false;
-	const toggleTheme = () => $theme = ($theme === "light") ? "dark" : "light";
-	$: bgTheme = ($theme === "light") ? "#ffffff" : "#212121";
 
 	onMount(async () => {
 		isMobile.check();
@@ -22,7 +20,7 @@
 
 <svelte:window on:resize={isMobile.check} />
 
-<div style="height: 100vh; background-color: {bgTheme}">
+<div style="height: 100vh;">
 <MaterialApp theme={$theme}>
 	<AppBar fixed style="width:100%">
     	<div slot="icon">
@@ -34,7 +32,7 @@
 		</div>
 		<a href="inventory" slot="title" class="text--primary"><span style="color: var(--theme-text-primary);"> VLINGO E2E Sys Airline Ops </span></a>
 		<div style="flex-grow:1" />
-    	<Button fab text on:click={toggleTheme} aria-label="Toggle Theme">
+    	<Button fab text on:click={() => theme.toggle()} aria-label="Toggle Theme">
     		<Icon path={$theme === "light" ? mdiWeatherNight : mdiWeatherSunny}/>
     	</Button>
 	</AppBar>
