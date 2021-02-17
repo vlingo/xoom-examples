@@ -6,11 +6,9 @@
 
 	export let value = "";
 
-  $: {
-    if (value) {
+  $: if (value) {
       dispatch('change', value)
     }
-  }
 </script>
 
 <Select { ...$$props } bind:value />
