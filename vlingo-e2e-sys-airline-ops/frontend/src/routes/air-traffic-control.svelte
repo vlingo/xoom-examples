@@ -3,13 +3,12 @@
 </svelte:head>
 
 <script>
-	import { onMount } from 'svelte';
-	import { TextField, Select, Button, Dialog, Row, Alert } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
 	import VlSelect from '../components/VlSelect.svelte';
+	import { onMount } from 'svelte';
+	import { TextField, Select } from 'svelte-materialify/src';
 	import { Api } from "../api";
-	import { inventories } from "../stores/inventory.js";
-	import { controls } from "../stores/air-traffic-control.js";
+	import { inventories, controls } from "../stores";
 	import { required } from "../util/validators.js";
 
 	const statuses = [

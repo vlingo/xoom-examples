@@ -6,9 +6,7 @@
 	import SiteNavigation from '../components/SiteNavigation.svelte';
 	export let segment;
 	import { Api } from "../api";
-	import { inventories } from "../stores/inventory.js";
-	import { fleetcrews } from "../stores/fleetcrew.js";
-	import { flights } from "../stores/flights.js";
+	import { inventories, fleetcrews, flights } from "../stores";
 
 	let sidenav = false;
 	const toggleTheme = () => $theme = ($theme === "light") ? "dark" : "light";

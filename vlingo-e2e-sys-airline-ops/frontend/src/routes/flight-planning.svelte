@@ -6,8 +6,7 @@
 	import CardForm from '../components/CardForm.svelte';
 	import { TextField, Select } from 'svelte-materialify/src';
 	import { Api } from "../api";
-	import { flights } from "../stores/flights.js";
-	import { inventories } from "../stores/inventory.js";
+	import { inventories, flights } from "../stores";
 	import { required } from "../util/validators.js";
 
 	let valid = false;

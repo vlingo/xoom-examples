@@ -31,3 +31,9 @@ export function createLocalStore(key, initialValue) {
 }
 
 export const theme = createLocalStore('theme', 'light');
+
+export const controls = writable([]);
+export const terminals = writable([]);
+export const fleetcrews = writable([]);
+export const flights = writable([]);
+export const inventories = writable([]);

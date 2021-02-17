@@ -3,22 +3,24 @@
 </svelte:head>
 
 <script>
-	import { TextField, Select } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
+	import { TextField, Select } from 'svelte-materialify/src';
 	import { Api } from "../api";
-	import { inventories } from "../stores/inventory.js";
+	import { inventories } from "../stores";
 	import { required } from "../util/validators.js";
+
 	const carrierTypes = [
     { name: 'Airline', value: 'AIRLINE' },
     { name: 'Shipping', value: 'SHIPPING' },
   ];
-	let valid = false;
+
 	let manufacturer = "EMB";
 	let model = "E1-190";
 	let serialNumber = "1515";
 	let carrierName = "TAM";
 	let carrierType = "AIRLINE";
 	let tailNumber = "VGO1616";
+
 	$: formData = {
 		registration: {
 			tailNumber
@@ -34,6 +36,7 @@
 		}
 	}
 
+	let valid = false;
 	let cardForm;
 	const submit= async () => {
 		const res = await Api.post("/aircrafts/", formData);

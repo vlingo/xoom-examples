@@ -3,12 +3,10 @@
 </svelte:head>
 
 <script>
-	import { Select } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
+	import { Select } from 'svelte-materialify/src';
 	import { Api } from "../api";
-	import { flights } from "../stores/flights.js";
-	import { inventories } from "../stores/inventory.js";
-	import { fleetcrews } from "../stores/fleetcrew.js";
+	import { inventories, flights, fleetcrews } from "../stores";
 	import { required } from "../util/validators.js";
 
 	let valid = false;
