@@ -6,7 +6,12 @@
 	import CardForm from '../components/CardForm.svelte';
 </script>
 
-<CardForm title="Aircraft Monitoring" prevLink="air-traffic-control" isNextDisabled={false}>
+<CardForm
+	title="Aircraft Monitoring"
+	prevLink="air-traffic-control"
+	isNextDisabled={false}
+	dialogFormPresent={false}
+>
 	<table>
 		<thead>
 			<tr>
