@@ -11,7 +11,6 @@
 	import { fleetcrews } from "../stores/fleetcrew.js";
 	import { required } from "../util/validators.js";
 
-	let isDialogActive = false;
 	let valid = false;
 
 	let selectedAircraft = "";
@@ -24,17 +23,14 @@
 		tailNumber: "2011"
 	}
 
+	let cardForm;
+
 	const submit= async () => {
 		const res = await Api.post("/fleetcrew/aircrafts/", formData);
-		console.log(res);
 		if (res) {
 			$fleetcrews = [...$fleetcrews, res]
-			toggleDialog()
+			cardForm.toggleDialog();
 		}
-	}
-
-	const toggleDialog = () => {
-		isDialogActive = !isDialogActive;
 	}
 
 	$: aircrafts = $inventories.map((inv => {
@@ -53,26 +49,32 @@
 		};
 	}));
 
-	$: {
-		if (selectedAircraft) {
+	$: if (selectedAircraft) {
 			const { id, carrier, registration } = aircrafts.find(airc => airc.id === selectedAircraft);
 			formData.aircraftId = id;
 			formData.carrier = carrier.name;
 			formData.tailNumber = registration.tailNumber;
 		}
-	}
 
-	$: {
-		if (selectedFlight) {
+	$: if (selectedFlight) {
 			const f = flightsForSelect.find(flight => flight.id === selectedFlight);
 			formData.flightNumber = f.id;
 		}
-	}
 
 	$: valid = !!selectedAircraft && !!selectedFlight;
 </script>
 
-<CardForm title="Fleet Crew" prevLink="flight-planning" nextLink="airport-terminal" isNextDisabled={$fleetcrews.length < 1}>
+<CardForm
+	title="Fleet Crew"
+	buttonText="New Fleet Crew"
+	prevLink="flight-planning"
+	nextLink="airport-terminal"
+	isNextDisabled={$fleetcrews.length < 1}
+	showNoContent={$fleetcrews.length < 1}
+	{valid}
+	on:submit={submit}
+	bind:this={cardForm}
+>
 	<table class="mb-6">
 		<thead>
 			<tr>
@@ -95,25 +97,9 @@
 			{/each}
 		</tbody>
 	</table>
-	{#if $fleetcrews.length < 1}
-		<Alert class="error-color">
-			<div>
-				There is no fleet crew! Add one.
-			</div>
-		</Alert>
-	{/if}
-	<Button on:click={toggleDialog}>New Fleet Crew</Button>
-	<Dialog persistent class="pa-8" bind:active={isDialogActive}>
-		<form on:submit|preventDefault={submit} style="min-height: 500px;">
-			<Select rules={[required]} outlined items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
-			<Select rules={[required]} outlined items={flightsForSelect} bind:value={selectedFlight}>Flight</Select>
-			<Row class="ml-0 mr-0">
-				<div style="flex:1; text-align: left;">
-					<Button class="{valid ? 'success-color' : ''}" type="submit" disabled={!valid}>Create</Button>
-				</div>
-				<Button class="ml-3" type="reset">Reset</Button>
-				<Button class="error-color  ml-3" on:click={toggleDialog}>Cancel</Button>
-			</Row>
-		</form>
-	</Dialog>
+
+	<div slot="dialog-form">
+		<Select rules={[required]} outlined items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
+		<Select rules={[required]} outlined items={flightsForSelect} bind:value={selectedFlight}>Flight</Select>
+	</div>
 </CardForm>
