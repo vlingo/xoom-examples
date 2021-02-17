@@ -15,7 +15,6 @@
 	function clicked() {
 		if (href) {
 			goto(href);
-			return;
 		} else {
 			dispatch("click");
 		}
