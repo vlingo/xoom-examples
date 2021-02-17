@@ -3,10 +3,10 @@
 </svelte:head>
 
 <script>
-	import { TextField } from 'svelte-materialify/src';
 	import CardForm from '../components/CardForm.svelte';
+	import { TextField } from 'svelte-materialify/src';
 	import { Api } from "../api";
-	import { terminals } from "../stores/airport-terminal.js"
+	import { terminals } from "../stores"
 	import { onMount } from 'svelte';
 	import { required } from "../util/validators.js";
 
@@ -42,10 +42,6 @@
 	onMount(async () => {
 		$terminals = await Api.get("/flights/");
 	})
-
-	const toggleDialog = () => {
-		isDialogActive = !isDialogActive;
-	}
 
 	$: valid =  !!formData.number &&
 							!!formData.equipment.carrier &&
