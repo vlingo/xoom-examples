@@ -13,6 +13,10 @@ public class Location {
   public final String latitude;
   public final String longitude;
 
+  public static Location unknown() {
+    return at(null, null, null);
+  }
+
   public static Location at(final String altitude, final String latitude, final String longitude) {
     return new Location(altitude, latitude, longitude);
   }

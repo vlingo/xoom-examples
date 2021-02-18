@@ -14,6 +14,10 @@ public class ActualArrival {
   public final String airportCode;
   public final Date occurredOn;
 
+  public static ActualArrival unknown() {
+    return at(null);
+  }
+
   public static ActualArrival at(final Date occurredOn) {
     return new ActualArrival(occurredOn);
   }
