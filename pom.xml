@@ -82,7 +82,7 @@
     <module>vlingo-iddd-collaboration</module>
     <module>vlingo-kubernetes-cluster</module>
     <module>vlingo-reactive-messaging-patterns</module>
-    <!--module>vlingo-schemata-integration</module-->
+    <module>vlingo-schemata-integration</module>
     <module>vlingo-simgui-mediator</module>
     <module>vlingo-platform-patterns</module>
     <module>vlingo-xoom-heroku-microservice</module>
