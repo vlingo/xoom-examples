@@ -8,6 +8,7 @@ target/
 *.log
 build/
 .metadata/
+.factorypath
 
 # Intellij
 .idea/
@@ -20,5 +21,8 @@ out/
 *.jtl
 **/.~lock.*
 
-#Maven
+# Maven
 dependency-reduced-pom.xml
+
+# vscode
+.vscode
