@@ -20,21 +20,17 @@ The [Context Map](https://github.com/vlingo/vlingo-examples/blob/master/vlingo-e
 
 ## Services
 
-Under the root folder, there is a specific folder for each service. The steps to build it and run it are described below:
- 1. Install and run `RabbitMQ` message broker
- 2. Keep the [VLINGO/SCHEMATA](https://github.com/vlingo/vlingo-schemata) up and running during the service compilation and packaging
- 3. Under each project folder, the database and message exchange settings have to be update on `vlingo-xoom` properties
- 4. Run the following maven build goal on a terminal window then execute the built `jar` passing a port number:
+There are few steps to run the "Aircraft-Airport-Ops" services in this example. In the root folder, execute `docker-compose up -d` so that all infrastructure resources (Postgres DB, Schemata and RabbitMQ) will be installed and initialized. Then, run the following maven build goal:
 
 ```
-$ mvn clean install
-...
-$ java -jar target/[jar-name].jar [port-number]
+$ mvn clean package
 ```
 
-__Note that the services need to be built in the following order: Inventory, Flight Planning, Fleet Crew, Airport Terminal, Air Traffic Control and Aircraft Monitoring__.  
+Finally, run each service through executable `jar` passing a port number:
 
-The `install` goal will also publish the schema files and pull the required ones for receiving Type-safe messages from other _Bounded Contexts._
+```
+$ java -jar [service-folder-name]/target/[jar-name].jar [port-number]
+```
 
 ## Exchanging messages between _Bounded Contexts_
 
