@@ -105,7 +105,7 @@
 	</table>
 
 	<div slot="dialog-form">
-		<Select outlined rules={[required]} items={aircrafts} bind:value={formData.aircraftId}>Flight</Select>
+		<VlSelect outlined rules={[required]} items={aircrafts} bind:value={formData.aircraftId}>Flight</VlSelect>
 		<TextField outlined rules={[required]} bind:value={formData.number}>Number</TextField>
 		<TextField outlined rules={[required]} bind:value={formData.tailNumber}>Tail Number</TextField>
 		<TextField outlined rules={[required]} bind:value={formData.equipment}>Equipment</TextField>
