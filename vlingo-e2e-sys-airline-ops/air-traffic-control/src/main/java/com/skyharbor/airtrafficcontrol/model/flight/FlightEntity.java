@@ -8,7 +8,6 @@
 package com.skyharbor.airtrafficcontrol.model.flight;
 
 import io.vlingo.common.Completes;
-
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
 public final class FlightEntity extends StatefulEntity<FlightState> implements Flight {
@@ -19,7 +18,7 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
     this.state = FlightState.identifiedBy(id);
   }
 
-  public Completes<FlightState> departGate(final String aircraftId, final String number, final String tailNumber, final String equipment) {
+  public Completes<FlightState> departFromGate(final String aircraftId, final String number, final String tailNumber, final String equipment) {
     logger().info("Changing flight status to DEPARTED_GATE");
     final FlightState stateArg = state.departGate(aircraftId, number, tailNumber, equipment);
     return apply(stateArg, new FlightDepartedGate(stateArg), () -> state);
