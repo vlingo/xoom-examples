@@ -36,15 +36,10 @@ public class FlightResourceHandlers {
             final Equipment equipment =
                     Equipment.of(data.equipment.carrier, data.equipment.tailNumber);
 
-            final DepartureStatus departureStatus =
-                    DepartureStatus.from(data.schedule.scheduledDeparture,
-                            data.schedule.departureStatus.actual);
-
             final Schedule schedule =
-                    Schedule.on(data.schedule.scheduledDeparture,
-                            data.schedule.scheduledArrival, departureStatus);
+                    Schedule.on(data.schedule.scheduledDeparture, data.schedule.scheduledArrival);
 
-            return Flight.openGate($stage, data.number, gateAssignment, equipment, schedule);
+            return Flight.openGate($stage, data.number, data.aircraftId, gateAssignment, equipment, schedule);
           });
 
   public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> START_BOARDING_HANDLER =

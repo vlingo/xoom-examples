@@ -19,10 +19,19 @@ public class DepartureStatus {
         return new DepartureStatus(actual, scheduledDeparture);
     }
 
+    public static DepartureStatus unknown() {
+        return new DepartureStatus();
+    }
+
     private DepartureStatus(final Date scheduledDeparture,
                             final Date actual) {
         this.actual = actual;
         this.delayedBy = actual.compareTo(scheduledDeparture) > 0 ?
                 actual.getTime()-scheduledDeparture.getTime()/1000 : 0;
+    }
+
+    private DepartureStatus() {
+        this.actual = null;
+        this.delayedBy = 0;
     }
 }
