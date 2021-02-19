@@ -20,6 +20,26 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>metadata-setup</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>../masterdata.sh</executable>
+              <environmentVariables>
+                <VLINGO_SCHEMATA_PORT>9019</VLINGO_SCHEMATA_PORT>
+              </environmentVariables>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>io.vlingo</groupId>
         <artifactId>vlingo-build-plugins</artifactId>
         <version>${project.version}</version>
@@ -28,6 +48,8 @@
             <goals>
               <goal>push-schemata</goal>
             </goals>
+            <!-- by default it's run in the install phase, but in this case we also want schemata to be pushed for tests -->
+            <phase>process-test-resources</phase>
             <configuration>
               <srcDirectory>${basedir}/src/main/vlingo/schemata</srcDirectory>
               <schemataService>
@@ -51,4 +73,12 @@
       </plugin>
     </plugins>
   </build>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/vlingo/vlingo-platform</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 </project>
