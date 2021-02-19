@@ -4,10 +4,11 @@
 
 <script>
 	import CardForm from '../components/CardForm.svelte';
-	import { TextField, Select } from 'svelte-materialify/src';
+	import { TextField } from 'svelte-materialify/src';
 	import { Api } from "../api";
 	import { inventories, flights } from "../stores";
 	import { required } from "../util/validators.js";
+	import VlSelect from '../components/VlSelect.svelte';
 
 	let valid = false;
 	let selectedAircraft = "";
@@ -98,7 +99,7 @@
 		</tbody>
 	</table>
 	<div slot="dialog-form">
-		<Select outlined rules={[required]} items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
+		<VlSelect outlined rules={[required]} items={aircrafts} bind:value={selectedAircraft}>Aircraft</VlSelect>
 		<TextField outlined rules={[required]} bind:value={formData.schedule.departure.airport.code}>Departure Airport Code</TextField>
 		<TextField outlined rules={[required]} bind:value={formData.schedule.departure.airport.plannedFor}>Departure Airport Planned For</TextField>
 		<TextField outlined rules={[required]} bind:value={formData.schedule.arrival.airport.code}>Arrival Airport Code</TextField>

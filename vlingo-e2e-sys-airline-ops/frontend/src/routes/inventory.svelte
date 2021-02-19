@@ -4,7 +4,8 @@
 
 <script>
 	import CardForm from '../components/CardForm.svelte';
-	import { TextField, Select } from 'svelte-materialify/src';
+	import { TextField } from 'svelte-materialify/src';
+	import VlSelect from '../components/VlSelect.svelte';
 	import { Api } from "../api";
 	import { inventories } from "../stores";
 	import { required } from "../util/validators.js";
@@ -93,6 +94,6 @@
 		<TextField outlined rules={[required]} bind:value={serialNumber}>Serial Number</TextField>
 		<TextField outlined rules={[required]} bind:value={tailNumber}>Tail Number</TextField>
 		<TextField outlined rules={[required]} bind:value={carrierName}>Carrier Name</TextField>
-		<Select outlined rules={[required]} items={carrierTypes} bind:value={carrierType}>Carrier Type</Select>
+		<VlSelect outlined rules={[required]} items={carrierTypes} bind:value={carrierType}>Carrier Type</VlSelect>
 	</div>
 </CardForm>
