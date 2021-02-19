@@ -23,7 +23,7 @@ services:
       - "./assets/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json"
 
   schemata:
-    image: dambrosio/vlingo-schemata:3.0
+    image: vlingo/vlingo-schemata:latest
     ports:
       - 9019:9019
     environment:
