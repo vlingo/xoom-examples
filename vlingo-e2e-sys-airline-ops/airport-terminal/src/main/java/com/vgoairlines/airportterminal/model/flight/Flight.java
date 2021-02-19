@@ -17,18 +17,20 @@ import java.util.Date;
 public interface Flight {
 
   Completes<FlightState> openGate(final String number,
+                                  final String aircraftId,
                                   final GateAssignment gateAssignment,
                                   final Equipment equipment,
                                   final Schedule schedule);
 
   static Completes<FlightState> openGate(final Stage stage,
                                          final String number,
+                                         final String aircraftId,
                                          final GateAssignment gateAssignment,
                                          final Equipment equipment,
                                          final Schedule schedule) {
     final Address _address = stage.addressFactory().uniquePrefixedWith("g-");
     final Flight _flight = stage.actorFor(Flight.class, Definition.has(FlightEntity.class, Definition.parameters(_address.idString())), _address);
-    return _flight.openGate(number, gateAssignment, equipment, schedule);
+    return _flight.openGate(number, aircraftId, gateAssignment, equipment, schedule);
   }
 
   Completes<FlightState> arrive(final Date arrivedOn);

@@ -22,6 +22,7 @@ public final class FlightEntity extends StatefulEntity<FlightState> implements F
 
   @Override
   public Completes<FlightState> openGate(final String number,
+                                         final String aircraftId,
                                          final GateAssignment gateAssignment,
                                          final Equipment equipment,
                                          final Schedule schedule) {

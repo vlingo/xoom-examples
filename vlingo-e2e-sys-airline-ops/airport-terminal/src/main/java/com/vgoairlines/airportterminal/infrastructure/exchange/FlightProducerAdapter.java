@@ -15,7 +15,7 @@ import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
 public class FlightProducerAdapter implements ExchangeAdapter<IdentifiedDomainEvent, IdentifiedDomainEvent, Message> {
 
-  private static final String SCHEMA_PREFIX = "VgoAirlines:AirportTerminal:com.vgoairlines.flightplanning";
+  private static final String SCHEMA_PREFIX = "VgoAirlines:AirportTerminal:com.vgoairlines.airportterminal";
 
   private final DomainEventMapper mapper = new DomainEventMapper();
 
