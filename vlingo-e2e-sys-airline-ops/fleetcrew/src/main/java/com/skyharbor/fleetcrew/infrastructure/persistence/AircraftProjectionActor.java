@@ -9,6 +9,7 @@ package com.skyharbor.fleetcrew.infrastructure.persistence;
 
 import com.skyharbor.fleetcrew.infrastructure.AircraftData;
 import com.skyharbor.fleetcrew.infrastructure.Events;
+import com.skyharbor.fleetcrew.model.aircraft.AircraftState;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
@@ -22,7 +23,8 @@ public class AircraftProjectionActor extends StateStoreProjectionActor<AircraftD
 
   @Override
   protected AircraftData currentDataFor(final Projectable projectable) {
-    return Empty;
+    final AircraftState state = projectable.object();
+    return AircraftData.from(state);
   }
 
   @Override
