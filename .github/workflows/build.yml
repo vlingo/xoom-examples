@@ -11,6 +11,15 @@ jobs:
     name: Build & Deploy
     runs-on: ubuntu-latest
 
+    services:
+      schemata:
+        image: vlingo/vlingo-schemata:latest
+        ports:
+          - "9019:9019"
+        env:
+          VLINGO_SCHEMATA_PORT: 9019
+          VLINGO_ENV: dev
+
     steps:
       - uses: actions/checkout@v2
 
@@ -26,16 +35,8 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2-repository
 
-      - name: Clone and build Schemata
-        run: git clone https://github.com/vlingo/vlingo-schemata.git && mvn package -f ./vlingo-schemata/pom.xml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run Schemata
-        run: java -jar ./vlingo-schemata/target/vlingo-schemata-1.5.1-SNAPSHOT-jar-with-dependencies.jar &
-
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots clean test -e
+        run: mvn --batch-mode --update-snapshots clean test -e -Pdefault,extended
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -22,6 +22,6 @@ public class FlightDepartedReceiver implements ExchangeReceiver<FlightDeparted> 
 
   @Override
   public void receive(final FlightDeparted event) {
-    Flight.departGate(stage, event.aircraftId, event.number, event.tailNumber, event.equipment);
+    Flight.departFromGate(stage, event.aircraftId, event.number, event.tailNumber, event.equipment);
   }
 }

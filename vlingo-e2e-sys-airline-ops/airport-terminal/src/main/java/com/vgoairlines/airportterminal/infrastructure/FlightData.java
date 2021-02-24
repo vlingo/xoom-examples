@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 public class FlightData {
   public final String id;
+  public final String aircraftId;
   public final String number;
   public final GateAssignmentData gateAssignment;
   public final EquipmentData equipment;
@@ -34,6 +35,7 @@ public class FlightData {
   private FlightData (final FlightState state) {
     this.id = state.id;
     this.number = state.number;
+    this.aircraftId = state.aircraftId;
     this.gateAssignment = new GateAssignmentData(state.gateAssignment.terminal, state.gateAssignment.number);
     this.equipment = new EquipmentData(state.equipment.carrier, state.equipment.tailNumber);
     this.schedule = new ScheduleData(state.schedule.scheduledDeparture, state.schedule.scheduledArrival,

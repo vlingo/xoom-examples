@@ -40,7 +40,7 @@ public final class FlightState extends StateObject {
   }
 
   public FlightState departGate(final Aircraft aircraft) {
-    return new FlightState(this.id, Status.DEPARTED_GATE, aircraft, ActualDeparture.resolve(), EstimatedArrival.resolve(), this.actualArrival, this.location);
+    return new FlightState(this.id, Status.DEPARTED_GATE, aircraft, ActualDeparture.resolve(), EstimatedArrival.resolve(), ActualArrival.unknown(), Location.unknown());
   }
 
   public FlightState reportLocation(final Location location) {

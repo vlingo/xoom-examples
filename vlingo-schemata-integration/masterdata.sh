@@ -49,12 +49,12 @@ echo Creating schemata ...
 curl -s \
   -d '{ "organizationId": "'${ORG_ID}'", "unitId": "'${UNIT_ID}'", "contextId": "'${CONTEXT_ID}'", "schemaId": "", "category": "Event", "name": "SchemaDefined", "scope": "Public", "description": "Fired whenever a new schema is defined." }' \
   -H 'Content-Type: application/json' \
-  -X POST http://localhost:${PORT}/api/organizations/${ORG_ID}/units/${UNIT_ID}/contexts/${CONTEXT_ID}/schemas | jq
+  -X POST http://localhost:${PORT}/api/organizations/${ORG_ID}/units/${UNIT_ID}/contexts/${CONTEXT_ID}/schemas | jq .
 
 curl -s \
   -d '{ "organizationId": "'${ORG_ID}'", "unitId": "'${UNIT_ID}'", "contextId": "'${CONTEXT_ID}'", "schemaId": "", "category": "Event", "name": "SchemaPublished", "scope": "Public", "description": "Fired whenever a schema version is published." }' \
   -H 'Content-Type: application/json' \
-  -X POST http://localhost:${PORT}/api/organizations/${ORG_ID}/units/${UNIT_ID}/contexts/${CONTEXT_ID}/schemas | jq
+  -X POST http://localhost:${PORT}/api/organizations/${ORG_ID}/units/${UNIT_ID}/contexts/${CONTEXT_ID}/schemas | jq .
 
 echo Created schemata.
 echo Done.
