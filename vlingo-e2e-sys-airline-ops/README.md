@@ -110,6 +110,25 @@ The arrival record can be verified when the message below is logged:
  INFO com.skyharbor.fleetcrew.model.aircraft.AircraftEntity - Arrival has been successfully recorded. Flight number: 3881  
  ```
 
+ ## How to run UI
+
+ 1. Go to frontend folder
+
+ ```
+ cd frontend
+ ```
+
+ 2. Install dependencies
+ ```
+ npm install
+ ```
+
+3. Run Dev Server
+
+```
+npm run dev
+```
+
 ## More information
 
 This example demonstrates how VLINGO/LATTICE Exchange and VLINGO/SCHEMATA collaborates efficiently making easier to establish a domain model - message handling connection based on a type-safe _Published Language._ Find a comprehensive documentation on VLINGO components [here](http://docs.vlingo.io).
