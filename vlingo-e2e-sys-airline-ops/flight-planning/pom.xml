@@ -36,16 +36,18 @@
       <snapshots><enabled>true</enabled></snapshots>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/vlingo/vlingo-platform</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   <dependencies>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom</artifactId>
-      <version>${vlingo.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-build-plugins</artifactId>
       <version>${vlingo.version}</version>
       <scope>compile</scope>
     </dependency>

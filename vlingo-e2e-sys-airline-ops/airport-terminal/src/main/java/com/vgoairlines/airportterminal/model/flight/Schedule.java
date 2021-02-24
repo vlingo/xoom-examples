@@ -16,9 +16,8 @@ public class Schedule {
     public final DepartureStatus departureStatus;
 
     public static Schedule on(final Date scheduledDeparture,
-                              final Date scheduledArrival,
-                              final DepartureStatus departureStatus) {
-        return new Schedule(scheduledDeparture, scheduledArrival, departureStatus);
+                              final Date scheduledArrival) {
+        return new Schedule(scheduledDeparture, scheduledArrival, DepartureStatus.unknown());
     }
 
     private Schedule(final Date scheduledDeparture,

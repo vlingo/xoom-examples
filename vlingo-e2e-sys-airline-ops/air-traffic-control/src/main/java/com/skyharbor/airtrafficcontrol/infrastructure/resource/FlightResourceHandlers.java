@@ -28,7 +28,7 @@ public class FlightResourceHandlers {
   public static final int CHANGE_STATUS = 3;
 
   public static final HandlerEntry<Three<Completes<FlightState>, Stage, FlightData>> DEPART_GATE_HANDLER =
-          HandlerEntry.of(DEPART_GATE, ($stage, data) -> Flight.departGate($stage, data.aircraftId, data.number, data.tailNumber, data.equipment));
+          HandlerEntry.of(DEPART_GATE, ($stage, data) -> Flight.departFromGate($stage, data.aircraftId, data.number, data.tailNumber, data.equipment));
 
   public static final HandlerEntry<Three<Completes<FlightState>, Flight, FlightData>> CHANGE_STATUS_HANDLER =
           HandlerEntry.of(CHANGE_STATUS, (flight, data) -> {

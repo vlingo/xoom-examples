@@ -1,1 +1,1 @@
-[rabbitmq_management, rabbitmq_management_visualiser].
+[rabbitmq_management, rabbitmq_management_visualiser, rabbitmq_export_definitions].
