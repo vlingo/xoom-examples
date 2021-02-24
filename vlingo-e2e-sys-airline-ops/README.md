@@ -26,7 +26,7 @@ There are few steps to run the "Aircraft-Airport-Ops" services in this example. 
 $ mvn clean package
 ```
 
-Finally, run each service through executable `jar` passing a port number:	
+Finally, run each service through executable `jar` passing a port number:
 
 ```
 $ java -jar [service-folder-name]/target/[jar-name].jar [port-number]
