@@ -3,11 +3,11 @@
   <parent>
     <artifactId>vlingo-xoom-kubernetes-microservice</artifactId>
     <groupId>io.examples</groupId>
-    <version>1.4.4-SNAPSHOT</version>
+    <version>1.5.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>stock-service</artifactId>
-  <version>1.4.4-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
   <build>
     <pluginManagement>
       <plugins>
