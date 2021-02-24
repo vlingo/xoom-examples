@@ -4,10 +4,10 @@
 
 <script>
 	import CardForm from '../components/CardForm.svelte';
-	import { Select } from 'svelte-materialify/src';
 	import { Api } from "../api";
 	import { inventories, flights, fleetcrews } from "../stores";
 	import { required } from "../util/validators.js";
+	import VlSelect from '../components/VlSelect.svelte';
 
 	let valid = false;
 
@@ -97,7 +97,7 @@
 	</table>
 
 	<div slot="dialog-form">
-		<Select rules={[required]} outlined items={aircrafts} bind:value={selectedAircraft}>Aircraft</Select>
-		<Select rules={[required]} outlined items={flightsForSelect} bind:value={selectedFlight}>Flight</Select>
+		<VlSelect rules={[required]} outlined items={aircrafts} bind:value={selectedAircraft}>Aircraft</VlSelect>
+		<VlSelect rules={[required]} outlined items={flightsForSelect} bind:value={selectedFlight}>Flight</VlSelect>
 	</div>
 </CardForm>
