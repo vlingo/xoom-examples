@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
   <artifactId>vlingo-xoom-heroku-microservice</artifactId>
-  <version>1.4.4-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
   <build>
     <pluginManagement>
       <plugins>
@@ -134,11 +134,10 @@
       <url>https://jcenter.bintray.com/</url>
     </repository>
     <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <id>oss-jfrog-snapshot</id>
-      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+      <releases />
+      <snapshots />
+      <id>github</id>
+      <url>https://maven.pkg.github.com/vlingo/vlingo-platform</url>
     </repository>
   </repositories>
   <dependencies>
