@@ -14,10 +14,12 @@ import io.vlingo.lattice.model.IdentifiedDomainEvent;
 public final class SpecialtyTypeOffered extends IdentifiedDomainEvent {
 
   private final UUID eventId;
+  public final String id;
   public final String name;
 
-  public SpecialtyTypeOffered(final String name) {
+  public SpecialtyTypeOffered(final String id, final String name) {
     super(SemanticVersion.from("0.0.1").toValue());
+    this.id = id;
     this.name = name;
     this.eventId = UUID.randomUUID(); //TODO: Define the event id
   }

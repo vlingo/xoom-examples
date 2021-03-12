@@ -21,7 +21,7 @@ public final class SpecialtyTypeEntity extends EventSourced implements Specialty
   }
 
   public Completes<SpecialtyTypeState> offer(final String name) {
-    return apply(new SpecialtyTypeOffered(name), () -> state);
+    return apply(new SpecialtyTypeOffered(state.id, name), () -> state);
   }
 
   public Completes<SpecialtyTypeState> rename(final String name) {
