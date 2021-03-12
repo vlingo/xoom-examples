@@ -17,6 +17,10 @@ public class SpecialtyTypeData {
     return states.stream().map(SpecialtyTypeData::from).collect(Collectors.toList());
   }
 
+  public static SpecialtyTypeData from(String id, String name){
+    return new SpecialtyTypeData(id, name);
+  }
+
   public static SpecialtyTypeData empty() {
     return new SpecialtyTypeData(SpecialtyTypeState.identifiedBy(null));
   }
@@ -26,4 +30,8 @@ public class SpecialtyTypeData {
     this.name = state.name;
   }
 
+  private SpecialtyTypeData(String id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 }

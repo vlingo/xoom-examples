@@ -2,7 +2,8 @@ package io.vlingo.developers.petclinic.infrastructure.persistence;
 
 import io.vlingo.developers.petclinic.infrastructure.Events;
 import io.vlingo.developers.petclinic.infrastructure.SpecialtyTypeData;
-import io.vlingo.developers.petclinic.model.specialtytype.SpecialtyTypeState;
+import io.vlingo.developers.petclinic.model.specialtytype.SpecialtyTypeOffered;
+import io.vlingo.developers.petclinic.model.specialtytype.SpecialtyTypeRenamed;
 
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
@@ -30,9 +31,9 @@ public class SpecialtyTypeProjectionActor extends StateStoreProjectionActor<Spec
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
         case SpecialtyTypeOffered:
-          return SpecialtyTypeData.empty();   // TODO: implement actual merge
+          return merge(typed(event));
         case SpecialtyTypeRenamed:
-          return SpecialtyTypeData.empty();   // TODO: implement actual merge
+          return mergeRename(previousData, typed(event));
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
           break;
@@ -40,5 +41,13 @@ public class SpecialtyTypeProjectionActor extends StateStoreProjectionActor<Spec
     }
 
     return previousData;
+  }
+
+  private SpecialtyTypeData merge(SpecialtyTypeOffered offered){
+    return SpecialtyTypeData.from(offered.id, offered.name);
+  }
+
+  private SpecialtyTypeData mergeRename(SpecialtyTypeData previous, SpecialtyTypeRenamed renamed){
+    return SpecialtyTypeData.from(previous.id, renamed.name);
   }
 }
