@@ -25,7 +25,7 @@ public final class AnimalTypeEntity extends EventSourced implements AnimalType {
   }
 
   public Completes<AnimalTypeState> rename(final String name) {
-    return apply(new AnimalTypeRenamed(name), () -> state);
+    return apply(new AnimalTypeRenamed(state.id, name), () -> state);
   }
 
   private void applyAnimalTypeTreatmentOffered(final AnimalTypeTreatmentOffered event) {

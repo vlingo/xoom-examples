@@ -24,7 +24,7 @@ public class AnimalTypeData {
   }
 
   public static AnimalTypeData empty() {
-    return new AnimalTypeData(AnimalTypeState.identifiedBy(null));
+    return new AnimalTypeData(AnimalTypeState.identifiedBy(""));
   }
 
   private AnimalTypeData (final AnimalTypeState state) {
