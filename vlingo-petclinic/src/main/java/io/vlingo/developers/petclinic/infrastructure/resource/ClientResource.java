@@ -99,7 +99,7 @@ public class ClientResource extends DynamicResourceHandler {
   }
 
   private String location(final String id) {
-    return "/clients" + id;
+    return "/clients/" + id;
   }
 
   private Completes<Client> resolve(final String id) {

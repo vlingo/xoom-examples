@@ -71,7 +71,7 @@ public class AnimalTypeResource extends DynamicResourceHandler {
   }
 
   private String location(final String id) {
-    return "/animalTypes" + id;
+    return "/animalTypes/" + id;
   }
 
   private Completes<AnimalType> resolve(final String id) {

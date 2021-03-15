@@ -71,7 +71,7 @@ public class SpecialtyTypeResource extends DynamicResourceHandler {
   }
 
   private String location(final String id) {
-    return "/specialties" + id;
+    return "/specialties/" + id;
   }
 
   private Completes<SpecialtyType> resolve(final String id) {

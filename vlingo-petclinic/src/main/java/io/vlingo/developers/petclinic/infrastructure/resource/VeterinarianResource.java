@@ -114,7 +114,7 @@ public class VeterinarianResource extends DynamicResourceHandler {
   }
 
   private String location(final String id) {
-    return "/veterinarians" + id;
+    return "/veterinarians/" + id;
   }
 
   private Completes<Veterinarian> resolve(final String id) {
