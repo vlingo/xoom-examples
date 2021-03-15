@@ -32,23 +32,23 @@ public final class PetEntity extends EventSourced implements Pet {
   }
 
   public Completes<PetState> changeName(final Name name) {
-    return apply(new PetNameChanged(name), () -> state);
+    return apply(new PetNameChanged(state.id, name), () -> state);
   }
 
   public Completes<PetState> recordBirth(final long birth) {
-    return apply(new PetBirthRecorded(birth), () -> state);
+    return apply(new PetBirthRecorded(state.id, birth), () -> state);
   }
 
   public Completes<PetState> recordDeath(final long death) {
-    return apply(new PetDeathRecorded(death), () -> state);
+    return apply(new PetDeathRecorded(state.id, death), () -> state);
   }
 
   public Completes<PetState> correctKind(final Kind kind) {
-    return apply(new PetKindCorrected(kind), () -> state);
+    return apply(new PetKindCorrected(state.id, kind), () -> state);
   }
 
   public Completes<PetState> changeOwner(final Owner owner) {
-    return apply(new PetOwnerChanged(owner), () -> state);
+    return apply(new PetOwnerChanged(state.id, owner), () -> state);
   }
 
   private void applyPetRegistered(final PetRegistered event) {
