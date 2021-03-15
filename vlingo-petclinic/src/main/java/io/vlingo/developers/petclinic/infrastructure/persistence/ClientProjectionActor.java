@@ -6,7 +6,6 @@ import io.vlingo.developers.petclinic.infrastructure.FullnameData;
 import io.vlingo.developers.petclinic.model.client.ClientContactInformationChanged;
 import io.vlingo.developers.petclinic.model.client.ClientNameChanged;
 import io.vlingo.developers.petclinic.model.client.ClientRegistered;
-import io.vlingo.developers.petclinic.model.client.ClientState;
 import io.vlingo.developers.petclinic.infrastructure.ClientData;
 
 import io.vlingo.lattice.model.projection.Projectable;
