@@ -27,7 +27,7 @@ public class PetData {
   }
 
   public static PetData empty() {
-    return new PetData(PetState.identifiedBy(""));
+    return PetData.from("", null, 0, 0, null, null, null);
   }
 
   private PetData (final PetState state) {

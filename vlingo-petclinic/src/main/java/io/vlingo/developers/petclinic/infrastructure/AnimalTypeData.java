@@ -23,7 +23,7 @@ public class AnimalTypeData {
   }
 
   public static AnimalTypeData empty() {
-    return new AnimalTypeData(AnimalTypeState.identifiedBy(""));
+    return AnimalTypeData.from("", null);
   }
 
   private AnimalTypeData (final AnimalTypeState state) {
