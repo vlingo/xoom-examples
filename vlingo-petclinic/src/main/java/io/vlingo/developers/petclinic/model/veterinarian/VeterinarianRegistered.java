@@ -1,6 +1,5 @@
 package io.vlingo.developers.petclinic.model.veterinarian;
 
-import java.util.UUID;
 import io.vlingo.common.version.SemanticVersion;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
@@ -16,7 +15,6 @@ import io.vlingo.developers.petclinic.model.Fullname;
  */
 public final class VeterinarianRegistered extends IdentifiedDomainEvent {
 
-  private final UUID eventId;
   public final String id;
   public final Fullname name;
   public final ContactInformation contact;
@@ -31,11 +29,10 @@ public final class VeterinarianRegistered extends IdentifiedDomainEvent {
     this.name = name;
     this.contact = contact;
     this.specialty = specialty;
-    this.eventId = UUID.randomUUID(); //TODO: Define the event id
   }
 
   @Override
   public String identity() {
-    return eventId.toString();
+    return id;
   }
 }

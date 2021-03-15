@@ -1,6 +1,5 @@
 package io.vlingo.developers.petclinic.model.client;
 
-import java.util.UUID;
 import io.vlingo.common.version.SemanticVersion;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
@@ -14,17 +13,17 @@ import io.vlingo.developers.petclinic.model.Fullname;
  */
 public final class ClientNameChanged extends IdentifiedDomainEvent {
 
-  private final UUID eventId;
+  private final String id;
   public final Fullname name;
 
-  public ClientNameChanged(final Fullname name) {
+  public ClientNameChanged(final String id, final Fullname name) {
     super(SemanticVersion.from("0.0.1").toValue());
     this.name = name;
-    this.eventId = UUID.randomUUID(); //TODO: Define the event id
+    this.id = id;
   }
 
   @Override
   public String identity() {
-    return eventId.toString();
+    return id;
   }
 }
