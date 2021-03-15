@@ -30,15 +30,15 @@ public final class VeterinarianEntity extends EventSourced implements Veterinari
   }
 
   public Completes<VeterinarianState> changeName(final Fullname name) {
-    return apply(new VeterinarianNameChanged(name), () -> state);
+    return apply(new VeterinarianNameChanged(state.id, name), () -> state);
   }
 
   public Completes<VeterinarianState> changeContactInformation(final ContactInformation contact) {
-    return apply(new VeterinarianContactInformationChanged(contact), () -> state);
+    return apply(new VeterinarianContactInformationChanged(state.id, contact), () -> state);
   }
 
   public Completes<VeterinarianState> specializesIn(final Specialty specialty) {
-    return apply(new VeterinarianSpecialtyChosen(specialty), () -> state);
+    return apply(new VeterinarianSpecialtyChosen(state.id, specialty), () -> state);
   }
 
   private void applyVeterinarianRegistered(final VeterinarianRegistered event) {

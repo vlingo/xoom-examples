@@ -21,7 +21,7 @@ public class SpecialtyTypeData {
   }
 
   public static SpecialtyTypeData empty() {
-    return new SpecialtyTypeData(SpecialtyTypeState.identifiedBy(null));
+    return new SpecialtyTypeData(SpecialtyTypeState.identifiedBy(""));
   }
 
   private SpecialtyTypeData (final SpecialtyTypeState state) {
