@@ -25,7 +25,7 @@ public class VeterinarianData {
   }
 
   public static VeterinarianData empty() {
-    return new VeterinarianData(VeterinarianState.identifiedBy(""));
+    return VeterinarianData.from("", null, null, null);
   }
 
   private VeterinarianData (final VeterinarianState state) {

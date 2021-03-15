@@ -22,7 +22,7 @@ public class ClientData {
   }
 
   public static ClientData empty() {
-    return new ClientData(ClientState.identifiedBy(""));
+    return ClientData.from("", null, null);
   }
 
   private ClientData (final ClientState state) {
