@@ -1,6 +1,5 @@
 package io.vlingo.developers.petclinic.infrastructure;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import io.vlingo.developers.petclinic.model.specialtytype.SpecialtyTypeState;
@@ -22,7 +21,7 @@ public class SpecialtyTypeData {
   }
 
   public static SpecialtyTypeData empty() {
-    return new SpecialtyTypeData(SpecialtyTypeState.identifiedBy(null));
+    return new SpecialtyTypeData(SpecialtyTypeState.identifiedBy(""));
   }
 
   private SpecialtyTypeData (final SpecialtyTypeState state) {

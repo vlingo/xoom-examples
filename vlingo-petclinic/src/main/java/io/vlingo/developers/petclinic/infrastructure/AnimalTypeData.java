@@ -1,6 +1,5 @@
 package io.vlingo.developers.petclinic.infrastructure;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -24,7 +23,7 @@ public class AnimalTypeData {
   }
 
   public static AnimalTypeData empty() {
-    return new AnimalTypeData(AnimalTypeState.identifiedBy(null));
+    return AnimalTypeData.from("", null);
   }
 
   private AnimalTypeData (final AnimalTypeState state) {

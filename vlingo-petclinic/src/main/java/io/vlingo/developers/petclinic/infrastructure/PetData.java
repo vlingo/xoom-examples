@@ -1,6 +1,5 @@
 package io.vlingo.developers.petclinic.infrastructure;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import io.vlingo.developers.petclinic.model.pet.PetState;
@@ -28,7 +27,7 @@ public class PetData {
   }
 
   public static PetData empty() {
-    return new PetData(PetState.identifiedBy(null));
+    return PetData.from("", null, 0, 0, null, null, null);
   }
 
   private PetData (final PetState state) {
