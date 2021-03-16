@@ -54,7 +54,7 @@ public class SpecialtyTypeResource extends DynamicResourceHandler {
   @Override
   public Resource<?> routes() {
      return resource("SpecialtyTypeResource",
-        io.vlingo.http.resource.ResourceBuilder.post("/specialties/{id}/")
+        io.vlingo.http.resource.ResourceBuilder.post("/specialties/{id}")
             .param(String.class)
             .body(SpecialtyTypeData.class)
             .handle(this::rename),
