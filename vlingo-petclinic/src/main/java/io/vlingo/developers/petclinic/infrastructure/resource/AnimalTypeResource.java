@@ -54,7 +54,7 @@ public class AnimalTypeResource extends DynamicResourceHandler {
   @Override
   public Resource<?> routes() {
      return resource("AnimalTypeResource",
-        io.vlingo.http.resource.ResourceBuilder.put("/animalTypes/{id}/")
+        io.vlingo.http.resource.ResourceBuilder.put("/animalTypes/{id}")
             .param(String.class)
             .body(AnimalTypeData.class)
             .handle(this::rename),
