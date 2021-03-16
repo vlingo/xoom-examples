@@ -717,9 +717,9 @@
    "deployment":{
       "clusterNodes":3,
       "type":"NONE",
-      "dockerImage":"aircraft-maintenance",
-      "kubernetesImage":"dambrosio/aircraft-maintenance",
-      "kubernetesPod":"aircraft-maintenance"
+      "dockerImage":"",
+      "kubernetesImage":"",
+      "kubernetesPod":""
    },
    "projectDirectory":"/projects/",
    "useAnnotations":false,
