@@ -28,11 +28,11 @@ public final class ClientEntity extends EventSourced implements Client {
   }
 
   public Completes<ClientState> changeName(final Fullname name) {
-    return apply(new ClientNameChanged(name), () -> state);
+    return apply(new ClientNameChanged(state.id, name), () -> state);
   }
 
   public Completes<ClientState> changeContactInformation(final ContactInformation contact) {
-    return apply(new ClientContactInformationChanged(contact), () -> state);
+    return apply(new ClientContactInformationChanged(state.id, contact), () -> state);
   }
 
   private void applyClientRegistered(final ClientRegistered event) {
