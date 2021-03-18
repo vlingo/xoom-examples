@@ -7,10 +7,9 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure.exchange;
 
-import io.vlingo.lattice.exchange.ExchangeMapper;
-import io.vlingo.common.serialization.JsonSerialization;
-
 import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
+import io.vlingo.common.serialization.JsonSerialization;
+import io.vlingo.lattice.exchange.ExchangeMapper;
 
 public class FlightDataMapper implements ExchangeMapper<FlightData,String> {
 

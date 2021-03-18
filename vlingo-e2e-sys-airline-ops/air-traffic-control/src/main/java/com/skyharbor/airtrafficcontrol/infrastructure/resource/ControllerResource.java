@@ -7,17 +7,17 @@
 
 package com.skyharbor.airtrafficcontrol.infrastructure.resource;
 
-import io.vlingo.common.Completes;
-import io.vlingo.xoom.annotation.autodispatch.*;
-import io.vlingo.http.Response;
-
 import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
-import com.skyharbor.airtrafficcontrol.model.controller.ControllerEntity;
+import com.skyharbor.airtrafficcontrol.infrastructure.persistence.ControllerQueries;
 import com.skyharbor.airtrafficcontrol.infrastructure.persistence.ControllerQueriesActor;
 import com.skyharbor.airtrafficcontrol.model.controller.Controller;
-import com.skyharbor.airtrafficcontrol.infrastructure.persistence.ControllerQueries;
+import com.skyharbor.airtrafficcontrol.model.controller.ControllerEntity;
+import io.vlingo.common.Completes;
+import io.vlingo.http.Response;
+import io.vlingo.xoom.annotation.autodispatch.*;
 
-import static io.vlingo.http.Method.*;
+import static io.vlingo.http.Method.GET;
+import static io.vlingo.http.Method.POST;
 
 @AutoDispatch(path="/controllers", handlers=ControllerResourceHandlers.class)
 @Queries(protocol = ControllerQueries.class, actor = ControllerQueriesActor.class)

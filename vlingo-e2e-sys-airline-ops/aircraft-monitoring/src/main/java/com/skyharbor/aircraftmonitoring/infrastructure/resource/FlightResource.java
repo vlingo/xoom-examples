@@ -7,17 +7,17 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure.resource;
 
-import io.vlingo.common.Completes;
-import io.vlingo.xoom.annotation.autodispatch.*;
-import io.vlingo.http.Response;
-
-import com.skyharbor.aircraftmonitoring.infrastructure.persistence.FlightQueriesActor;
-import com.skyharbor.aircraftmonitoring.infrastructure.persistence.FlightQueries;
-import com.skyharbor.aircraftmonitoring.model.flight.FlightEntity;
-import com.skyharbor.aircraftmonitoring.model.flight.Flight;
 import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
+import com.skyharbor.aircraftmonitoring.infrastructure.persistence.FlightQueries;
+import com.skyharbor.aircraftmonitoring.infrastructure.persistence.FlightQueriesActor;
+import com.skyharbor.aircraftmonitoring.model.flight.Flight;
+import com.skyharbor.aircraftmonitoring.model.flight.FlightEntity;
+import io.vlingo.common.Completes;
+import io.vlingo.http.Response;
+import io.vlingo.xoom.annotation.autodispatch.*;
 
-import static io.vlingo.http.Method.*;
+import static io.vlingo.http.Method.GET;
+import static io.vlingo.http.Method.PATCH;
 
 @AutoDispatch(path="/flights", handlers=FlightResourceHandlers.class)
 @Queries(protocol = FlightQueries.class, actor = FlightQueriesActor.class)

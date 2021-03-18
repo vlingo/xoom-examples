@@ -7,21 +7,10 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure.persistence;
 
-import io.vlingo.xoom.annotation.persistence.Persistence;
-import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
-import io.vlingo.xoom.annotation.persistence.Projections;
-import io.vlingo.xoom.annotation.persistence.Projection;
-import io.vlingo.xoom.annotation.persistence.Adapters;
-import io.vlingo.xoom.annotation.persistence.EnableQueries;
-import io.vlingo.xoom.annotation.persistence.QueriesEntry;
-import io.vlingo.xoom.annotation.persistence.DataObjects;
-import com.skyharbor.aircraftmonitoring.model.flight.Landed;
-import com.skyharbor.aircraftmonitoring.model.flight.FlightState;
-import com.skyharbor.aircraftmonitoring.model.flight.InFlight;
-import com.skyharbor.aircraftmonitoring.model.flight.LocationReported;
-import com.skyharbor.aircraftmonitoring.model.flight.DepartedGate;
 import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
-import com.skyharbor.aircraftmonitoring.model.flight.ArrivedAtGate;
+import com.skyharbor.aircraftmonitoring.model.flight.*;
+import io.vlingo.xoom.annotation.persistence.*;
+import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 
 @Persistence(basePackage = "com.skyharbor.aircraftmonitoring", storageType = StorageType.STATE_STORE, cqrs = true)
 @Projections({

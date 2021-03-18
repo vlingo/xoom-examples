@@ -8,7 +8,6 @@
 package com.skyharbor.fleetcrew.model.aircraft;
 
 import io.vlingo.common.Completes;
-
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
 public final class AircraftEntity extends StatefulEntity<AircraftState> implements Aircraft {

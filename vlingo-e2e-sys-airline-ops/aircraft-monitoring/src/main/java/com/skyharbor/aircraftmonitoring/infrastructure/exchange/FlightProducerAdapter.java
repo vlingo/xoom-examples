@@ -10,7 +10,6 @@ package com.skyharbor.aircraftmonitoring.infrastructure.exchange;
 import io.vlingo.common.version.SemanticVersion;
 import io.vlingo.lattice.exchange.ExchangeAdapter;
 import io.vlingo.lattice.exchange.rabbitmq.Message;
-
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 
 public class FlightProducerAdapter implements ExchangeAdapter<IdentifiedDomainEvent, IdentifiedDomainEvent, Message> {

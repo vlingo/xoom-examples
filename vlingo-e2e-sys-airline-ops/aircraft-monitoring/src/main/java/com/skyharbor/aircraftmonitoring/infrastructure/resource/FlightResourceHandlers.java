@@ -7,17 +7,16 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure.resource;
 
+import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
+import com.skyharbor.aircraftmonitoring.infrastructure.persistence.FlightQueries;
+import com.skyharbor.aircraftmonitoring.model.flight.Flight;
+import com.skyharbor.aircraftmonitoring.model.flight.FlightState;
 import com.skyharbor.aircraftmonitoring.model.flight.Location;
-import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Three;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Two;
 import io.vlingo.xoom.annotation.autodispatch.HandlerEntry;
 
-import com.skyharbor.aircraftmonitoring.infrastructure.persistence.FlightQueries;
-import com.skyharbor.aircraftmonitoring.model.flight.FlightState;
-import com.skyharbor.aircraftmonitoring.model.flight.Flight;
-import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
 import java.util.Collection;
 
 public class FlightResourceHandlers {

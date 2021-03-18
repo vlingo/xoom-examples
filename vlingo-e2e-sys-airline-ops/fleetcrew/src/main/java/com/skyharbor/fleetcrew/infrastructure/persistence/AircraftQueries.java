@@ -7,10 +7,10 @@
 
 package com.skyharbor.fleetcrew.infrastructure.persistence;
 
-import java.util.Collection;
+import com.skyharbor.fleetcrew.infrastructure.AircraftData;
 import io.vlingo.common.Completes;
 
-import com.skyharbor.fleetcrew.infrastructure.AircraftData;
+import java.util.Collection;
 
 public interface AircraftQueries {
   Completes<AircraftData> aircraftOf(String id);

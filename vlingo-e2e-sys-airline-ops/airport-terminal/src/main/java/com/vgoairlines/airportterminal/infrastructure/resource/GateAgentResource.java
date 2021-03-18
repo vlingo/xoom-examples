@@ -7,17 +7,17 @@
 
 package com.vgoairlines.airportterminal.infrastructure.resource;
 
-import io.vlingo.common.Completes;
-import io.vlingo.xoom.annotation.autodispatch.*;
-import io.vlingo.http.Response;
-
-import com.vgoairlines.airportterminal.model.gateagent.GateAgentEntity;
 import com.vgoairlines.airportterminal.infrastructure.GateAgentData;
+import com.vgoairlines.airportterminal.infrastructure.persistence.GateAgentQueries;
 import com.vgoairlines.airportterminal.infrastructure.persistence.GateAgentQueriesActor;
 import com.vgoairlines.airportterminal.model.gateagent.GateAgent;
-import com.vgoairlines.airportterminal.infrastructure.persistence.GateAgentQueries;
+import com.vgoairlines.airportterminal.model.gateagent.GateAgentEntity;
+import io.vlingo.common.Completes;
+import io.vlingo.http.Response;
+import io.vlingo.xoom.annotation.autodispatch.*;
 
-import static io.vlingo.http.Method.*;
+import static io.vlingo.http.Method.GET;
+import static io.vlingo.http.Method.POST;
 
 @AutoDispatch(path="/gate-agents", handlers=GateAgentResourceHandlers.class)
 @Queries(protocol = GateAgentQueries.class, actor = GateAgentQueriesActor.class)

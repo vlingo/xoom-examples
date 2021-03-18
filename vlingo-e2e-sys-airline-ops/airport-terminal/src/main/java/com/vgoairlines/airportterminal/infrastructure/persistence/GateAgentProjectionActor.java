@@ -7,9 +7,8 @@
 
 package com.vgoairlines.airportterminal.infrastructure.persistence;
 
-import com.vgoairlines.airportterminal.infrastructure.GateAgentData;
 import com.vgoairlines.airportterminal.infrastructure.Events;
-
+import com.vgoairlines.airportterminal.infrastructure.GateAgentData;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;

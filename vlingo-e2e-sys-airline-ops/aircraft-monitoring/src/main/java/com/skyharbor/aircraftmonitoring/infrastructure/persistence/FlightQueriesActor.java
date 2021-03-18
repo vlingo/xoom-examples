@@ -7,14 +7,13 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure.persistence;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.query.StateStoreQueryActor;
 import io.vlingo.symbio.store.state.StateStore;
 
-import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class FlightQueriesActor extends StateStoreQueryActor implements FlightQueries {
 

@@ -7,17 +7,17 @@
 
 package com.vgoairlines.inventory.infrastructure.resource;
 
-import io.vlingo.common.Completes;
-import io.vlingo.xoom.annotation.autodispatch.*;
-import io.vlingo.http.Response;
-
-import com.vgoairlines.inventory.model.aircraft.AircraftEntity;
 import com.vgoairlines.inventory.infrastructure.AircraftData;
 import com.vgoairlines.inventory.infrastructure.persistence.AircraftQueries;
-import com.vgoairlines.inventory.model.aircraft.Aircraft;
 import com.vgoairlines.inventory.infrastructure.persistence.AircraftQueriesActor;
+import com.vgoairlines.inventory.model.aircraft.Aircraft;
+import com.vgoairlines.inventory.model.aircraft.AircraftEntity;
+import io.vlingo.common.Completes;
+import io.vlingo.http.Response;
+import io.vlingo.xoom.annotation.autodispatch.*;
 
-import static io.vlingo.http.Method.*;
+import static io.vlingo.http.Method.GET;
+import static io.vlingo.http.Method.POST;
 
 @AutoDispatch(path="/aircrafts", handlers=AircraftResourceHandlers.class)
 @Queries(protocol = AircraftQueries.class, actor = AircraftQueriesActor.class)

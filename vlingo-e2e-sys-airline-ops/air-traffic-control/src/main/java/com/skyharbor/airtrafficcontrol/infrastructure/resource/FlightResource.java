@@ -7,15 +7,14 @@
 
 package com.skyharbor.airtrafficcontrol.infrastructure.resource;
 
-import io.vlingo.common.Completes;
-import io.vlingo.xoom.annotation.autodispatch.*;
-import io.vlingo.http.Response;
-
-import com.skyharbor.airtrafficcontrol.model.flight.FlightEntity;
-import com.skyharbor.airtrafficcontrol.infrastructure.persistence.FlightQueries;
 import com.skyharbor.airtrafficcontrol.infrastructure.FlightData;
+import com.skyharbor.airtrafficcontrol.infrastructure.persistence.FlightQueries;
 import com.skyharbor.airtrafficcontrol.infrastructure.persistence.FlightQueriesActor;
 import com.skyharbor.airtrafficcontrol.model.flight.Flight;
+import com.skyharbor.airtrafficcontrol.model.flight.FlightEntity;
+import io.vlingo.common.Completes;
+import io.vlingo.http.Response;
+import io.vlingo.xoom.annotation.autodispatch.*;
 
 import static io.vlingo.http.Method.*;
 

@@ -7,10 +7,10 @@
 
 package com.skyharbor.airtrafficcontrol.infrastructure.persistence;
 
-import java.util.Collection;
+import com.skyharbor.airtrafficcontrol.infrastructure.FlightData;
 import io.vlingo.common.Completes;
 
-import com.skyharbor.airtrafficcontrol.infrastructure.FlightData;
+import java.util.Collection;
 
 public interface FlightQueries {
   Completes<FlightData> flightOf(String id);

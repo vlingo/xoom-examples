@@ -7,9 +7,10 @@
 
 package com.vgoairlines.airportterminal.model.gateagent;
 
-import java.util.UUID;
 import io.vlingo.common.version.SemanticVersion;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
+
+import java.util.UUID;
 
 public final class GateAgentRegistered extends IdentifiedDomainEvent {
 

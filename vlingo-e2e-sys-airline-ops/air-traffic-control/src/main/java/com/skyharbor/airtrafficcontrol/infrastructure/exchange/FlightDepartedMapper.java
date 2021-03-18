@@ -8,10 +8,8 @@
 package com.skyharbor.airtrafficcontrol.infrastructure.exchange;
 
 import com.vgoairlines.airportterminal.event.FlightDeparted;
-import io.vlingo.lattice.exchange.ExchangeMapper;
 import io.vlingo.common.serialization.JsonSerialization;
-
-import com.skyharbor.airtrafficcontrol.infrastructure.FlightData;
+import io.vlingo.lattice.exchange.ExchangeMapper;
 
 public class FlightDepartedMapper implements ExchangeMapper<FlightDeparted, String> {
 

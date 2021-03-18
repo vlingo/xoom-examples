@@ -7,9 +7,10 @@
 
 package com.skyharbor.airtrafficcontrol.model.flight;
 
-import java.util.UUID;
 import io.vlingo.common.version.SemanticVersion;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
+
+import java.util.UUID;
 
 public final class OutboundTaxingInitiated extends IdentifiedDomainEvent {
 

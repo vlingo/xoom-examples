@@ -7,26 +7,13 @@
 
 package com.skyharbor.airtrafficcontrol.infrastructure.persistence;
 
-import io.vlingo.xoom.annotation.persistence.Persistence;
-import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
-import io.vlingo.xoom.annotation.persistence.Projections;
-import io.vlingo.xoom.annotation.persistence.Projection;
-import io.vlingo.xoom.annotation.persistence.Adapters;
-import io.vlingo.xoom.annotation.persistence.EnableQueries;
-import io.vlingo.xoom.annotation.persistence.QueriesEntry;
-import io.vlingo.xoom.annotation.persistence.DataObjects;
 import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
-import com.skyharbor.airtrafficcontrol.model.controller.ControllerState;
-import com.skyharbor.airtrafficcontrol.model.controller.ControllerAuthorized;
-import com.skyharbor.airtrafficcontrol.model.flight.OutboundTaxingInitiated;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightClearedForLanding;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightLanded;
-import com.skyharbor.airtrafficcontrol.model.flight.EnteredFlightLine;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightState;
 import com.skyharbor.airtrafficcontrol.infrastructure.FlightData;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightClearedForTakeOff;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightTookOff;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightDepartedGate;
+import com.skyharbor.airtrafficcontrol.model.controller.ControllerAuthorized;
+import com.skyharbor.airtrafficcontrol.model.controller.ControllerState;
+import com.skyharbor.airtrafficcontrol.model.flight.*;
+import io.vlingo.xoom.annotation.persistence.*;
+import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 
 @Persistence(basePackage = "com.skyharbor.airtrafficcontrol", storageType = StorageType.STATE_STORE, cqrs = true)
 @Projections({

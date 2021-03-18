@@ -8,7 +8,6 @@
 package com.vgoairlines.airportterminal.model.gateagent;
 
 import io.vlingo.common.Completes;
-
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
 public final class GateAgentEntity extends StatefulEntity<GateAgentState> implements GateAgent {

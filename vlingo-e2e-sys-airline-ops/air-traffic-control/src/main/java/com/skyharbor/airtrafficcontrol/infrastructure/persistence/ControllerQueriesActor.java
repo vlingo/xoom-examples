@@ -7,14 +7,13 @@
 
 package com.skyharbor.airtrafficcontrol.infrastructure.persistence;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
 import io.vlingo.common.Completes;
 import io.vlingo.lattice.query.StateStoreQueryActor;
 import io.vlingo.symbio.store.state.StateStore;
 
-import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ControllerQueriesActor extends StateStoreQueryActor implements ControllerQueries {
 

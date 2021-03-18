@@ -7,16 +7,16 @@
 
 package com.skyharbor.fleetcrew.infrastructure.resource;
 
+import com.skyharbor.fleetcrew.infrastructure.AircraftData;
+import com.skyharbor.fleetcrew.infrastructure.persistence.AircraftQueries;
+import com.skyharbor.fleetcrew.model.aircraft.Aircraft;
+import com.skyharbor.fleetcrew.model.aircraft.AircraftState;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Three;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Two;
 import io.vlingo.xoom.annotation.autodispatch.HandlerEntry;
 
-import com.skyharbor.fleetcrew.model.aircraft.Aircraft;
-import com.skyharbor.fleetcrew.infrastructure.persistence.AircraftQueries;
-import com.skyharbor.fleetcrew.infrastructure.AircraftData;
-import com.skyharbor.fleetcrew.model.aircraft.AircraftState;
 import java.util.Collection;
 
 public class AircraftResourceHandlers {

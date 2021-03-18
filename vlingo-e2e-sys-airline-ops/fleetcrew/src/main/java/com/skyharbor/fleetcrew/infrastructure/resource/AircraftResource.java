@@ -7,15 +7,14 @@
 
 package com.skyharbor.fleetcrew.infrastructure.resource;
 
-import io.vlingo.common.Completes;
-import io.vlingo.xoom.annotation.autodispatch.*;
-import io.vlingo.http.Response;
-
+import com.skyharbor.fleetcrew.infrastructure.AircraftData;
+import com.skyharbor.fleetcrew.infrastructure.persistence.AircraftQueries;
 import com.skyharbor.fleetcrew.infrastructure.persistence.AircraftQueriesActor;
 import com.skyharbor.fleetcrew.model.aircraft.Aircraft;
-import com.skyharbor.fleetcrew.infrastructure.persistence.AircraftQueries;
-import com.skyharbor.fleetcrew.infrastructure.AircraftData;
 import com.skyharbor.fleetcrew.model.aircraft.AircraftEntity;
+import io.vlingo.common.Completes;
+import io.vlingo.http.Response;
+import io.vlingo.xoom.annotation.autodispatch.*;
 
 import static io.vlingo.http.Method.*;
 
