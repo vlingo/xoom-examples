@@ -10,7 +10,6 @@ package com.vgoairlines.flightplanning.infrastructure;
 
 import com.vgoairlines.flightplanning.infrastructure.exchange.ExchangeBootstrap;
 import io.vlingo.actors.Grid;
-import io.vlingo.actors.Stage;
 import io.vlingo.xoom.XoomInitializationAware;
 import io.vlingo.xoom.annotation.initializer.Xoom;
 

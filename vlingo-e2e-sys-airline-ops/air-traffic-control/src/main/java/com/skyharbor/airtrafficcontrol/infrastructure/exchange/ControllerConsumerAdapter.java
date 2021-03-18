@@ -7,12 +7,11 @@
 
 package com.skyharbor.airtrafficcontrol.infrastructure.exchange;
 
+import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
 import io.vlingo.lattice.exchange.ExchangeAdapter;
 import io.vlingo.lattice.exchange.MessageParameters;
 import io.vlingo.lattice.exchange.MessageParameters.DeliveryMode;
 import io.vlingo.lattice.exchange.rabbitmq.Message;
-
-import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
 
 public class ControllerConsumerAdapter implements ExchangeAdapter<ControllerData, String, Message> {
 

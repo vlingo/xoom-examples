@@ -7,16 +7,16 @@
 
 package com.skyharbor.airtrafficcontrol.infrastructure.resource;
 
+import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
+import com.skyharbor.airtrafficcontrol.infrastructure.persistence.ControllerQueries;
+import com.skyharbor.airtrafficcontrol.model.controller.Controller;
+import com.skyharbor.airtrafficcontrol.model.controller.ControllerState;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Three;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Two;
 import io.vlingo.xoom.annotation.autodispatch.HandlerEntry;
 
-import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
-import com.skyharbor.airtrafficcontrol.model.controller.ControllerState;
-import com.skyharbor.airtrafficcontrol.model.controller.Controller;
-import com.skyharbor.airtrafficcontrol.infrastructure.persistence.ControllerQueries;
 import java.util.Collection;
 
 public class ControllerResourceHandlers {

@@ -7,12 +7,11 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure.exchange;
 
+import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
 import io.vlingo.lattice.exchange.ExchangeAdapter;
 import io.vlingo.lattice.exchange.MessageParameters;
 import io.vlingo.lattice.exchange.MessageParameters.DeliveryMode;
 import io.vlingo.lattice.exchange.rabbitmq.Message;
-
-import com.skyharbor.aircraftmonitoring.infrastructure.FlightData;
 
 public class FlightConsumerAdapter implements ExchangeAdapter<FlightData, String, Message> {
 

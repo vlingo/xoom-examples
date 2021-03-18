@@ -7,15 +7,14 @@
 
 package com.vgoairlines.inventory.infrastructure.resource;
 
+import com.vgoairlines.inventory.infrastructure.AircraftData;
+import com.vgoairlines.inventory.infrastructure.persistence.AircraftQueries;
 import com.vgoairlines.inventory.model.aircraft.*;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Three;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Two;
 import io.vlingo.xoom.annotation.autodispatch.HandlerEntry;
-
-import com.vgoairlines.inventory.infrastructure.AircraftData;
-import com.vgoairlines.inventory.infrastructure.persistence.AircraftQueries;
 
 import java.util.Collection;
 

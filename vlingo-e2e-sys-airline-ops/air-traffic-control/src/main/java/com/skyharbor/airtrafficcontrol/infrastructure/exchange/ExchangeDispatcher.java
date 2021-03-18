@@ -7,6 +7,8 @@
 
 package com.skyharbor.airtrafficcontrol.infrastructure.exchange;
 
+import com.skyharbor.airtrafficcontrol.model.controller.ControllerAuthorized;
+import com.skyharbor.airtrafficcontrol.model.flight.*;
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.lattice.exchange.Exchange;
 import io.vlingo.symbio.Entry;
@@ -18,19 +20,10 @@ import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.symbio.store.dispatch.DispatcherControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.*;
-import java.util.stream.Stream;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
-import com.skyharbor.airtrafficcontrol.model.controller.ControllerAuthorized;
-import com.skyharbor.airtrafficcontrol.model.flight.OutboundTaxingInitiated;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightClearedForLanding;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightLanded;
-import com.skyharbor.airtrafficcontrol.model.flight.EnteredFlightLine;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightClearedForTakeOff;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightTookOff;
-import com.skyharbor.airtrafficcontrol.model.flight.FlightDepartedGate;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ExchangeDispatcher implements Dispatcher<Dispatchable<Entry<String>, State<String>>>, ConfirmDispatchedResultInterest {
   private static final Logger logger = LoggerFactory.getLogger(ExchangeDispatcher.class);

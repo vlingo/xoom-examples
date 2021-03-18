@@ -7,10 +7,10 @@
 
 package com.skyharbor.airtrafficcontrol.infrastructure.persistence;
 
-import java.util.Collection;
+import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
 import io.vlingo.common.Completes;
 
-import com.skyharbor.airtrafficcontrol.infrastructure.ControllerData;
+import java.util.Collection;
 
 public interface ControllerQueries {
   Completes<ControllerData> controllerOf(String id);

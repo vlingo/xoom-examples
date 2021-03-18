@@ -8,7 +8,6 @@
 package com.skyharbor.airtrafficcontrol.model.controller;
 
 import io.vlingo.common.Completes;
-
 import io.vlingo.lattice.model.stateful.StatefulEntity;
 
 public final class ControllerEntity extends StatefulEntity<ControllerState> implements Controller {

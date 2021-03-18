@@ -7,16 +7,16 @@
 
 package com.vgoairlines.airportterminal.infrastructure.resource;
 
+import com.vgoairlines.airportterminal.infrastructure.GateAgentData;
+import com.vgoairlines.airportterminal.infrastructure.persistence.GateAgentQueries;
+import com.vgoairlines.airportterminal.model.gateagent.GateAgent;
+import com.vgoairlines.airportterminal.model.gateagent.GateAgentState;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Three;
 import io.vlingo.xoom.annotation.autodispatch.Handler.Two;
 import io.vlingo.xoom.annotation.autodispatch.HandlerEntry;
 
-import com.vgoairlines.airportterminal.infrastructure.GateAgentData;
-import com.vgoairlines.airportterminal.model.gateagent.GateAgentState;
-import com.vgoairlines.airportterminal.model.gateagent.GateAgent;
-import com.vgoairlines.airportterminal.infrastructure.persistence.GateAgentQueries;
 import java.util.Collection;
 
 public class GateAgentResourceHandlers {

@@ -7,15 +7,14 @@
 
 package com.vgoairlines.airportterminal.infrastructure.resource;
 
-import io.vlingo.common.Completes;
-import io.vlingo.xoom.annotation.autodispatch.*;
-import io.vlingo.http.Response;
-
-import com.vgoairlines.airportterminal.infrastructure.persistence.FlightQueries;
-import com.vgoairlines.airportterminal.model.flight.FlightEntity;
-import com.vgoairlines.airportterminal.model.flight.Flight;
 import com.vgoairlines.airportterminal.infrastructure.FlightData;
+import com.vgoairlines.airportterminal.infrastructure.persistence.FlightQueries;
 import com.vgoairlines.airportterminal.infrastructure.persistence.FlightQueriesActor;
+import com.vgoairlines.airportterminal.model.flight.Flight;
+import com.vgoairlines.airportterminal.model.flight.FlightEntity;
+import io.vlingo.common.Completes;
+import io.vlingo.http.Response;
+import io.vlingo.xoom.annotation.autodispatch.*;
 
 import static io.vlingo.http.Method.*;
 

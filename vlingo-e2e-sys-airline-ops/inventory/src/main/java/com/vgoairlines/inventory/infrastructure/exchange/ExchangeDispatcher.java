@@ -7,6 +7,7 @@
 
 package com.vgoairlines.inventory.infrastructure.exchange;
 
+import com.vgoairlines.inventory.model.aircraft.AircraftConsigned;
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.lattice.exchange.Exchange;
 import io.vlingo.symbio.Entry;
@@ -18,12 +19,10 @@ import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.symbio.store.dispatch.DispatcherControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.*;
-import java.util.stream.Stream;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
-import com.vgoairlines.inventory.model.aircraft.AircraftConsigned;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ExchangeDispatcher implements Dispatcher<Dispatchable<Entry<String>, State<String>>>, ConfirmDispatchedResultInterest {
   private static final Logger logger = LoggerFactory.getLogger(ExchangeDispatcher.class);

@@ -8,7 +8,6 @@
 package com.skyharbor.fleetcrew.infrastructure.exchange;
 
 import com.skyharbor.airtrafficcontrol.event.FlightLanded;
-import com.skyharbor.fleetcrew.infrastructure.AircraftData;
 import io.vlingo.common.serialization.JsonSerialization;
 import io.vlingo.lattice.exchange.ExchangeMapper;
 

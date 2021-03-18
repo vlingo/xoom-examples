@@ -7,8 +7,8 @@
 
 package com.vgoairlines.airportterminal.model.gateagent;
 
-import io.vlingo.actors.Definition;
 import io.vlingo.actors.Address;
+import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
 import io.vlingo.common.Completes;
 
