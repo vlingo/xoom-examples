@@ -9,22 +9,20 @@
 package com.vgoairlines.flightplanning.infrastructure;
 
 import com.vgoairlines.flightplanning.infrastructure.exchange.ExchangeBootstrap;
+import io.vlingo.actors.Grid;
 import io.vlingo.actors.Stage;
 import io.vlingo.xoom.XoomInitializationAware;
-import io.vlingo.xoom.annotation.initializer.AddressFactory;
 import io.vlingo.xoom.annotation.initializer.Xoom;
 
-import static io.vlingo.xoom.annotation.initializer.AddressFactory.Type.UUID;
-
-@Xoom(name = "flight-planning", addressFactory = @AddressFactory(type = UUID))
+@Xoom(name = "flight-planning")
 public class Bootstrap implements XoomInitializationAware {
 
   @Override
-  public void onInit(final Stage stage) {
+  public void onInit(final Grid grid) {
   }
 
   @Override
-  public io.vlingo.symbio.store.dispatch.Dispatcher exchangeDispatcher(final Stage stage) {
-     return ExchangeBootstrap.init(stage).dispatcher();
+  public io.vlingo.symbio.store.dispatch.Dispatcher exchangeDispatcher(final Grid grid) {
+     return ExchangeBootstrap.init(grid).dispatcher();
   }
 }

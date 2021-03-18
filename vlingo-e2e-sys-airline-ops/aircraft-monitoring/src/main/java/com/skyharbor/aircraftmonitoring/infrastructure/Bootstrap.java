@@ -8,23 +8,19 @@
 package com.skyharbor.aircraftmonitoring.infrastructure;
 
 import com.skyharbor.aircraftmonitoring.infrastructure.exchange.ExchangeBootstrap;
-
-import io.vlingo.actors.Stage;
+import io.vlingo.actors.Grid;
 import io.vlingo.xoom.XoomInitializationAware;
-import io.vlingo.xoom.annotation.initializer.AddressFactory;
 import io.vlingo.xoom.annotation.initializer.Xoom;
 
-import static io.vlingo.xoom.annotation.initializer.AddressFactory.Type.UUID;
-
-@Xoom(name = "aircraft-monitoring", addressFactory = @AddressFactory(type = UUID))
+@Xoom(name = "aircraft-monitoring")
 public class Bootstrap implements XoomInitializationAware {
 
   @Override
-  public void onInit(final Stage stage) {
+  public void onInit(final Grid stage) {
   }
 
   @Override
-  public io.vlingo.symbio.store.dispatch.Dispatcher exchangeDispatcher(final Stage stage) {
+  public io.vlingo.symbio.store.dispatch.Dispatcher exchangeDispatcher(final Grid stage) {
      return ExchangeBootstrap.init(stage).dispatcher();
   }
 }
