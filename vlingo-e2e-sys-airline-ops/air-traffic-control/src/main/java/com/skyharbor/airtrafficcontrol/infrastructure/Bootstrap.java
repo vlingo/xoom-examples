@@ -8,23 +8,20 @@
 package com.skyharbor.airtrafficcontrol.infrastructure;
 
 import com.skyharbor.airtrafficcontrol.infrastructure.exchange.ExchangeBootstrap;
-
-import io.vlingo.actors.Stage;
+import io.vlingo.actors.Grid;
+import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.xoom.XoomInitializationAware;
-import io.vlingo.xoom.annotation.initializer.AddressFactory;
 import io.vlingo.xoom.annotation.initializer.Xoom;
 
-import static io.vlingo.xoom.annotation.initializer.AddressFactory.Type.UUID;
-
-@Xoom(name = "air-traffic-control", addressFactory = @AddressFactory(type = UUID))
+@Xoom(name = "air-traffic-control")
 public class Bootstrap implements XoomInitializationAware {
 
   @Override
-  public void onInit(final Stage stage) {
+  public void onInit(final Grid grid) {
   }
 
   @Override
-  public io.vlingo.symbio.store.dispatch.Dispatcher exchangeDispatcher(final Stage stage) {
-     return ExchangeBootstrap.init(stage).dispatcher();
+  public Dispatcher exchangeDispatcher(final Grid grid) {
+     return ExchangeBootstrap.init(grid).dispatcher();
   }
 }

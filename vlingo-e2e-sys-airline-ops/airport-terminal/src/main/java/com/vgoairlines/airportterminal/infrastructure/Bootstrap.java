@@ -8,23 +8,19 @@
 package com.vgoairlines.airportterminal.infrastructure;
 
 import com.vgoairlines.airportterminal.infrastructure.exchange.ExchangeBootstrap;
-
-import io.vlingo.actors.Stage;
+import io.vlingo.actors.Grid;
 import io.vlingo.xoom.XoomInitializationAware;
-import io.vlingo.xoom.annotation.initializer.AddressFactory;
 import io.vlingo.xoom.annotation.initializer.Xoom;
 
-import static io.vlingo.xoom.annotation.initializer.AddressFactory.Type.UUID;
-
-@Xoom(name = "airport-terminal", addressFactory = @AddressFactory(type = UUID))
+@Xoom(name = "airport-terminal")
 public class Bootstrap implements XoomInitializationAware {
 
   @Override
-  public void onInit(final Stage stage) {
+  public void onInit(final Grid grid) {
   }
 
   @Override
-  public io.vlingo.symbio.store.dispatch.Dispatcher exchangeDispatcher(final Stage stage) {
-     return ExchangeBootstrap.init(stage).dispatcher();
+  public io.vlingo.symbio.store.dispatch.Dispatcher exchangeDispatcher(final Grid grid) {
+     return ExchangeBootstrap.init(grid).dispatcher();
   }
 }
