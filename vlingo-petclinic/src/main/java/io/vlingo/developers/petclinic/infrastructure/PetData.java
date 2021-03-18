@@ -37,7 +37,9 @@ public class PetData {
     this.name = NameData.of(state.name.value);
     this.kind = KindData.of(state.kind.animalTypeId);
     this.owner = OwnerData.of(state.owner.clientId);
-    this.visit = VisitData.of(state.visit.start, state.visit.end, state.visit.description);
+    this.visit = state.visit != null
+            ? VisitData.of(state.visit.start, state.visit.end, state.visit.description)
+            : null;
   }
 
   private PetData(String id, NameData name, long birth, long death, KindData kind, OwnerData owner, VisitData visit) {
