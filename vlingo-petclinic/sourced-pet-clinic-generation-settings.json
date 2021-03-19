@@ -1,10 +1,11 @@
 {
    "context":{
-      "groupId":"io.vlingo",
-      "artifactId":"pet-clinic",
+      "groupId":"io.vlingo.developers",
+      "artifactId":"vlingo-petclinic",
       "artifactVersion":"1.0.0",
-      "packageName":"io.vlingo.petclinic"   
-	},
+      "packageName":"io.vlingo.developers.petclinic",
+      "xoomVersion":""
+   },
    "model":{
       "aggregateSettings":[
          {
