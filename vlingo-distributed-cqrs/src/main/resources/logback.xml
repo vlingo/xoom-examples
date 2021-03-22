@@ -1,0 +1,25 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="io.netty" level="error"/>
+    <logger name="io.rsocket" level="error"/>
+    <logger name="reactor" level="error"/>
+    <logger name="io.vlingo.wire" level="error"/>
+    <logger name="io.vlingo.lattice.grid" level="info"/>
+    <!--logger name="io.vlingo" level="error"/-->
+    <logger name="io.vlingo.actors.GridMailbox" level="debug"/>
+    <logger name="io.vlingo.actors.Grid" level="debug"/>
+    <logger name="io.vlingo.lattice.grid.GridNode" level="debug"/>
+    <!--logger name="io.vlingo.lattice.grid.application.GridApplicationMessageHandler" level="error"/-->
+    <logger name="io.vlingo.actors.InboundGridActorControl" level="debug"/>
+    <logger name="io.vlingo.lattice.grid.application.OutboundGridActorControl" level="debug"/>
+    <!--logger name="io.vlingo.cluster.model.outbound.OperationalOutboundStreamActor" level="debug"/-->
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
