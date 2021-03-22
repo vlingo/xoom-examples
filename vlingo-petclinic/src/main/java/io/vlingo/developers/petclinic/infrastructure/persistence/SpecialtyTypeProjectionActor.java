@@ -8,6 +8,7 @@ import io.vlingo.developers.petclinic.model.specialtytype.SpecialtyTypeRenamed;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
+import io.vlingo.symbio.store.state.StateStore;
 
 /**
  * See
@@ -19,6 +20,10 @@ public class SpecialtyTypeProjectionActor extends StateStoreProjectionActor<Spec
 
   public SpecialtyTypeProjectionActor() {
     super(QueryModelStateStoreProvider.instance().store);
+  }
+
+  public SpecialtyTypeProjectionActor(final StateStore stateStore) {
+    super(stateStore);
   }
 
   @Override
