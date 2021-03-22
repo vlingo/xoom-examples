@@ -86,9 +86,16 @@ public class SpecialtyTypeProjectionTests {
         assertEquals("Dentistry", item.name);
     }
 
+    private void registerExampleSpecialtyType(){
+        final CountingProjectionControl control = new CountingProjectionControl();
+        final AccessSafely access = control.afterCompleting(2);
+        projection.projectWith(createSpecialtyTypeOffered("1", "Behaviour"), control);
+        projection.projectWith(createSpecialtyTypeOffered("2", "Dentistry"), control);
+    }
+
     @Test
     public void changeName(){
-        register();
+        registerExampleSpecialtyType();
 
         final CountingProjectionControl control = new CountingProjectionControl();
         final AccessSafely access = control.afterCompleting(1);

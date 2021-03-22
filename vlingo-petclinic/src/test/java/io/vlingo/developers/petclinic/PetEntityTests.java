@@ -50,8 +50,6 @@ public class PetEntityTests {
         registry = new SourcedTypeRegistry(world);
         registry.register(new SourcedTypeRegistry.Info(journal, PetEntity.class, PetEntity.class.getSimpleName()));
 
-        //result = new Result();
-
         pet = world.actorFor(Pet.class, PetEntity.class, "Pet#1");
     }
 
@@ -75,9 +73,13 @@ public class PetEntityTests {
         assertEquals(PetRegistered.class.getName(), appendedAt0.typeName());
     }
 
+    private PetState registerExamplePet(){
+        return pet.register(Name.of("Hedwig"), 100L, Kind.of("Owl"), Owner.of("Potter")).await();
+    }
+
     @Test
     public void nameChange() {
-        register();
+        registerExamplePet();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
@@ -99,7 +101,7 @@ public class PetEntityTests {
 
     @Test
     public void ownerChange() {
-        register();
+        registerExamplePet();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
@@ -121,7 +123,7 @@ public class PetEntityTests {
 
     @Test
     public void correctKind() {
-        register();
+        registerExamplePet();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
@@ -143,7 +145,7 @@ public class PetEntityTests {
 
     @Test
     public void recordBirth() {
-        register();
+        registerExamplePet();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
@@ -165,7 +167,7 @@ public class PetEntityTests {
 
     @Test
     public void recordDeath() {
-        register();
+        registerExamplePet();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 

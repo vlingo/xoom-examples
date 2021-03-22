@@ -45,7 +45,7 @@ public class AnimalTypeProjectionTests {
         projection = world.actorFor(Projection.class, AnimalTypeProjectionActor.class, stateStore);
     }
 
-    private Projectable createPetOwnerChanged(String id, String name){
+    private Projectable createAnimalTypeTreatmentOffered(String id, String name){
         final AnimalTypeTreatmentOffered eventData = new AnimalTypeTreatmentOffered(id, name);
 
         BaseEntry.TextEntry textEntry = new BaseEntry.TextEntry(AnimalTypeTreatmentOffered.class, 1,
@@ -62,8 +62,8 @@ public class AnimalTypeProjectionTests {
 
         final AccessSafely access = control.afterCompleting(2);
 
-        projection.projectWith(createPetOwnerChanged("1", "Owl"), control);
-        projection.projectWith(createPetOwnerChanged("2", "Dog"), control);
+        projection.projectWith(createAnimalTypeTreatmentOffered("1", "Owl"), control);
+        projection.projectWith(createAnimalTypeTreatmentOffered("2", "Dog"), control);
 
         final Map<String,Integer> confirmations = access.readFrom("confirmations");
 
@@ -87,9 +87,16 @@ public class AnimalTypeProjectionTests {
         assertEquals("Dog", animalType.name);
     }
 
+    private void registerExampleAnimalType(){
+        final CountingProjectionControl control = new CountingProjectionControl();
+        final AccessSafely access = control.afterCompleting(2);
+        projection.projectWith(createAnimalTypeTreatmentOffered("1", "Owl"), control);
+        projection.projectWith(createAnimalTypeTreatmentOffered("2", "Dog"), control);
+    }
+
     @Test
     public void changeName(){
-        register();
+        registerExampleAnimalType();
 
         final CountingProjectionControl control = new CountingProjectionControl();
         final AccessSafely access = control.afterCompleting(1);

@@ -64,9 +64,13 @@ public class SpecialtyTypeEntityTests {
         assertEquals(SpecialtyTypeOffered.class.getName(), appendedAt0.typeName());
     }
 
+    private SpecialtyTypeState offerExampleSpecialtyType(){
+        return specialtyType.offer("Behaviour").await();
+    }
+
     @Test
     public void rename(){
-        offer();
+        offerExampleSpecialtyType();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
