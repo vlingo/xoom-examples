@@ -11,6 +11,7 @@ import io.vlingo.developers.petclinic.infrastructure.ClientData;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
+import io.vlingo.symbio.store.state.StateStore;
 
 /**
  * See
@@ -22,6 +23,10 @@ public class ClientProjectionActor extends StateStoreProjectionActor<ClientData>
 
   public ClientProjectionActor() {
     super(QueryModelStateStoreProvider.instance().store);
+  }
+
+  public ClientProjectionActor(StateStore stateStore) {
+    super(stateStore);
   }
 
   @Override
