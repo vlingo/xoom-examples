@@ -27,6 +27,12 @@
 
     <dependency>
       <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-cluster</artifactId>
+      <version>1.5.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
       <version>1.5.1-SNAPSHOT</version>
     </dependency>
@@ -45,6 +51,8 @@
   </dependencies>
 
   <build>
+    <finalName>${project.artifactId}</finalName>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -5,7 +5,7 @@ import io.vlingo.common.config.EnvVarProperties;
 import java.io.IOException;
 import java.util.Properties;
 
-public class Config {
+public class CarConfig {
     public final String databaseDriver;
     public final String databaseUrl;
     public final String databaseName;
@@ -13,13 +13,13 @@ public class Config {
     public final String databasePassword;
     public final String databaseOriginator;
 
-    public static Config load() throws IOException {
+    public static CarConfig load() throws IOException {
         final Properties properties = new EnvVarProperties();
         final String propertiesFile = "/vlingo-cars.properties";
 
-        properties.load(Config.class.getResourceAsStream(propertiesFile));
+        properties.load(CarConfig.class.getResourceAsStream(propertiesFile));
 
-        return new Config(
+        return new CarConfig(
                 properties.getProperty("database.driver"),
                 properties.getProperty("database.url"),
                 properties.getProperty("database.name"),
@@ -28,7 +28,7 @@ public class Config {
                 properties.getProperty("database.originator"));
     }
 
-    public Config(String databaseDriver, String databaseUrl, String databaseName, String databaseUsername, String databasePassword, String databaseOriginator) {
+    public CarConfig(String databaseDriver, String databaseUrl, String databaseName, String databaseUsername, String databasePassword, String databaseOriginator) {
         this.databaseDriver = databaseDriver;
         this.databaseUrl = databaseUrl;
         this.databaseName = databaseName;
