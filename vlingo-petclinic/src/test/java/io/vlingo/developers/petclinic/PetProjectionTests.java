@@ -119,9 +119,17 @@ public class PetProjectionTests {
         assertEquals("Malfoy", pet.owner.clientId);
     }
 
+    private void registerExamplePet(){
+        final CountingProjectionControl control = new CountingProjectionControl();
+        final AccessSafely access = control.afterCompleting(3);
+        projection.projectWith(createPetRegistered("1", "Hedwig", 100L, "Owl", "Potter"), control);
+        projection.projectWith(createPetRegistered("2", "Eurasian", 101L, "Owl", "Malfoy"), control);
+        projection.projectWith(createPetRegistered("3", "Barn", 102L, "Owl", "Longbottom"), control);
+    }
+
     @Test
     public void changeName(){
-        register();
+        registerExamplePet();
 
         final CountingProjectionControl control = new CountingProjectionControl();
 
@@ -146,7 +154,7 @@ public class PetProjectionTests {
 
     @Test
     public void changeOwner(){
-        register();
+        registerExamplePet();
 
         final CountingProjectionControl control = new CountingProjectionControl();
 
@@ -171,7 +179,7 @@ public class PetProjectionTests {
 
     @Test
     public void correctKind(){
-        register();
+        registerExamplePet();
 
         final CountingProjectionControl control = new CountingProjectionControl();
         final AccessSafely access = control.afterCompleting(1);

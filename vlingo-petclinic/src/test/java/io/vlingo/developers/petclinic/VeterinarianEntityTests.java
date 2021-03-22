@@ -88,9 +88,17 @@ public class VeterinarianEntityTests {
         assertEquals(VeterinarianRegistered.class.getName(), appendedAt0.typeName());
     }
 
+    private VeterinarianState offerExampleVet(){
+        final ContactInformation contact = ContactInformation.of(
+                PostalAddress.of("Ave.", "New-York", "US", "321"),
+                Telephone.of("991100")
+        );
+        return vet.register(Fullname.of("Rubeus", "Hagrid"), contact, Specialty.of("Behaviour")).await();
+    }
+
     @Test
     public void rename(){
-        offer();
+        offerExampleVet();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
@@ -109,7 +117,7 @@ public class VeterinarianEntityTests {
 
     @Test
     public void specialize(){
-        offer();
+        offerExampleVet();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
@@ -127,7 +135,7 @@ public class VeterinarianEntityTests {
 
     @Test
     public void contactUpdate(){
-        offer();
+        offerExampleVet();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 

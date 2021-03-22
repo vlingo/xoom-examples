@@ -109,9 +109,28 @@ public class ClientProjectionTests {
         assertEquals("Malfoy", item.name.last);
     }
 
+    private void registerExampleClient(){
+        final CountingProjectionControl control = new CountingProjectionControl();
+        final AccessSafely access = control.afterCompleting(2);
+        projection.projectWith(createClientRegistered(
+                "1",
+                Fullname.of("Harry", "Potter"),
+                ContactInformation.of(
+                        PostalAddress.of("St.", "City", "UK", "123"),
+                        Telephone.of("99110011")
+                )), control);
+        projection.projectWith(createClientRegistered(
+                "2",
+                Fullname.of("Draco", "Malfoy"),
+                ContactInformation.of(
+                        PostalAddress.of("St.", "City", "UK", "123"),
+                        Telephone.of("88110011")
+                )), control);
+    }
+
     @Test
     public void changeName(){
-        register();
+        registerExampleClient();
 
         final CountingProjectionControl control = new CountingProjectionControl();
         final AccessSafely access = control.afterCompleting(1);
@@ -143,7 +162,7 @@ public class ClientProjectionTests {
 
     @Test
     public void changeContact(){
-        register();
+        registerExampleClient();
 
         final CountingProjectionControl control = new CountingProjectionControl();
         final AccessSafely access = control.afterCompleting(1);

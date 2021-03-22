@@ -85,9 +85,17 @@ public class ClientEntityTests {
         assertEquals(ClientRegistered.class.getName(), appendedAt0.typeName());
     }
 
+    private ClientState registerExampleClient(){
+        final ContactInformation contact = ContactInformation.of(
+                PostalAddress.of("St.", "London", "UK", "123"),
+                Telephone.of("112233")
+        );
+        return client.register(Fullname.of("Harry", "Potter"), contact).await();
+    }
+
     @Test
     public void rename(){
-        register();
+        registerExampleClient();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
@@ -116,7 +124,7 @@ public class ClientEntityTests {
 
     @Test
     public void contactUpdate(){
-        register();
+        registerExampleClient();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 

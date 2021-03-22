@@ -65,7 +65,7 @@ public class AnimalTypeEntityTests {
 
     @Test
     public void rename(){
-        offer();
+        pet.offerTreatmentFor("Owl").await();
 
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
