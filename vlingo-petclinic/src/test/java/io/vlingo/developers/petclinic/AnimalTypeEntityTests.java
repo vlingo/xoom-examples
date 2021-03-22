@@ -2,7 +2,6 @@ package io.vlingo.developers.petclinic;
 
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.AccessSafely;
-import io.vlingo.actors.testkit.TestWorld;
 import io.vlingo.developers.petclinic.infrastructure.persistence.*;
 import io.vlingo.developers.petclinic.model.animaltype.*;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
@@ -21,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AnimalTypeEntityTests {
 
     private World world;
-    private TestWorld testWorld;
 
     private Journal<String> journal;
     private MockJournalDispatcher dispatcher;
@@ -32,9 +30,7 @@ public class AnimalTypeEntityTests {
     @BeforeEach
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void setUp(){
-        testWorld = TestWorld.startWithDefaults("test-es");
-
-        world = testWorld.world();
+        world = World.startWithDefaults("test-es");
 
         dispatcher = new MockJournalDispatcher();
 
