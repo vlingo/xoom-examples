@@ -2,7 +2,6 @@ package io.vlingo.developers.petclinic;
 
 import io.vlingo.actors.World;
 import io.vlingo.actors.testkit.AccessSafely;
-import io.vlingo.actors.testkit.TestWorld;
 import io.vlingo.developers.petclinic.infrastructure.persistence.SpecialtyTypeOfferedAdapter;
 import io.vlingo.developers.petclinic.infrastructure.persistence.SpecialtyTypeRenamedAdapter;
 import io.vlingo.developers.petclinic.model.specialtytype.*;
@@ -22,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SpecialtyTypeEntityTests {
 
     private World world;
-    private TestWorld testWorld;
 
     private Journal<String> journal;
     private MockJournalDispatcher dispatcher;
@@ -33,9 +31,7 @@ public class SpecialtyTypeEntityTests {
     @BeforeEach
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void setUp(){
-        testWorld = TestWorld.startWithDefaults("test-es");
-
-        world = testWorld.world();
+        world = World.startWithDefaults("test-es");
 
         dispatcher = new MockJournalDispatcher();
 
