@@ -1,8 +1,9 @@
 package io.vlingo.cars.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class CarState {
+public class CarState implements Serializable {
     public final String carId;
     public final String type;
     public final String model;

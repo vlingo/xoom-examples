@@ -3,6 +3,7 @@ package io.vlingo.cars.query.view;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class CarsView {
     public static final String Id = "root";
@@ -36,6 +37,13 @@ public class CarsView {
         return Collections.unmodifiableList(cars);
     }
 
+    @Override
+    public String toString() {
+        return "CarsView[" +
+                "cars=" + cars +
+                ']';
+    }
+
     public static class CarItem {
         public final String carId;
         public final String type;
@@ -51,6 +59,29 @@ public class CarsView {
             this.type = type;
             this.model = model;
             this.registrationNumber = registrationNumber;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CarItem carItem = (CarItem) o;
+            return carId.equals(carItem.carId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(carId);
+        }
+
+        @Override
+        public String toString() {
+            return "CarItem{" +
+                    "carId='" + carId + '\'' +
+                    ", type='" + type + '\'' +
+                    ", model='" + model + '\'' +
+                    ", registrationNumber='" + registrationNumber + '\'' +
+                    '}';
         }
     }
 }

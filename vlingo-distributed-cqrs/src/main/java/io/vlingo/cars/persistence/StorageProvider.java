@@ -8,7 +8,7 @@ import io.vlingo.lattice.model.projection.ProjectionDispatcher;
 import io.vlingo.lattice.model.projection.TextProjectionDispatcherActor;
 import io.vlingo.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
-import io.vlingo.cars.Config;
+import io.vlingo.cars.CarConfig;
 import io.vlingo.cars.model.CarEntity;
 import io.vlingo.cars.model.CarEvents;
 import io.vlingo.cars.query.CarProjection;
@@ -55,7 +55,7 @@ public class StorageProvider {
         return instance;
     }
 
-    public static StorageProvider using(World world, Config config) throws Exception {
+    public static StorageProvider using(World world, CarConfig config) throws Exception {
         if (instance != null) {
             return instance;
         }
@@ -87,7 +87,7 @@ public class StorageProvider {
         return instance;
     }
 
-    private static Journal<String> newJournal(World world, Config config, Dispatcher dispatcher) throws Exception {
+    private static Journal<String> newJournal(World world, CarConfig config, Dispatcher dispatcher) throws Exception {
         final Configuration databaseConfiguration = buildDatabaseConfiguration(world, config);
 
         final JDBCDispatcherControlDelegate dispatcherControlDelegate =
@@ -112,7 +112,7 @@ public class StorageProvider {
         return journal;
     }
 
-    private static Configuration buildDatabaseConfiguration(World world, Config config) throws Exception {
+    private static Configuration buildDatabaseConfiguration(World world, CarConfig config) throws Exception {
         Exception connectionException = null;
 
         for (int retryCount = 1; retryCount <= MAXIMUM_RETRIES; retryCount++) {
@@ -138,7 +138,7 @@ public class StorageProvider {
         throw connectionException;
     }
 
-    private static StateStore newStateStore(World world, Config config) throws Exception {
+    private static StateStore newStateStore(World world, CarConfig config) throws Exception {
         final Configuration databaseConfiguration = buildDatabaseConfiguration(world, config);
 
         final JDBCStorageDelegate<?> delegate =
