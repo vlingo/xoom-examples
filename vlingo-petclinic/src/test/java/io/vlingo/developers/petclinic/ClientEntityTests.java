@@ -55,6 +55,29 @@ public class ClientEntityTests {
     }
 
     @Test
+    public void registerByFactoryMethod(){
+        final ContactInformation contact = ContactInformation.of(
+                PostalAddress.of("St.", "London", "UK", "123"),
+                Telephone.of("112233")
+        );
+        ClientState clientState = Client.register(world.stage(), Fullname.of("Newt", "Scamander"), contact).await();
+
+        assertNotNull(clientState);
+        assertNotNull(clientState.id);
+        assertNotNull(clientState.name);
+        assertEquals("Newt", clientState.name.first);
+        assertEquals("Scamander", clientState.name.last);
+        assertNotNull(clientState.contact);
+        assertNotNull(clientState.contact.postalAddress);
+        assertNotNull(clientState.contact.telephone);
+        assertEquals("St.", clientState.contact.postalAddress.streetAddress);
+        assertEquals("London", clientState.contact.postalAddress.city);
+        assertEquals("UK", clientState.contact.postalAddress.stateProvince);
+        assertEquals("123", clientState.contact.postalAddress.postalCode);
+        assertEquals("112233", clientState.contact.telephone.number);
+    }
+
+    @Test
     public void register(){
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 

@@ -54,6 +54,19 @@ public class PetEntityTests {
     }
 
     @Test
+    public void registerByFactoryMethod(){
+        PetState petState = Pet.register(world.stage(), Name.of("Bowtruckle"), 201L, Kind.of("Insect"), Owner.of("Newt"))
+                            .await();
+
+        assertEquals("Bowtruckle", petState.name.value);
+        assertEquals("Insect", petState.kind.animalTypeId);
+        assertEquals(201L, petState.birth);
+        assertEquals(0L, petState.death);
+        assertEquals("Newt", petState.owner.clientId);
+        assertNull(petState.visit);
+    }
+
+    @Test
     public void register() {
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 

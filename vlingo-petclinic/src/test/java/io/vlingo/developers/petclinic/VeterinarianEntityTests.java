@@ -54,6 +54,33 @@ public class VeterinarianEntityTests {
     }
 
     @Test
+    public void offerByFactoryMethod(){
+        final ContactInformation contact = ContactInformation.of(
+                PostalAddress.of("Ave.", "New-York", "US", "321"),
+                Telephone.of("991100")
+        );
+        VeterinarianState vetState = Veterinarian.register(world.stage(), Fullname.of("Queenie", "Goldstein"),
+                                                            contact, Specialty.of("Behaviour")).await();
+        assertNotNull(vetState);
+        assertNotNull(vetState.name);
+        assertNotNull(vetState.contact);
+        assertNotNull(vetState.contact.postalAddress);
+        assertNotNull(vetState.contact.telephone);
+        assertNotNull(vetState.specialty);
+        assertNotNull(vetState.id);
+        assertEquals("Queenie", vetState.name.first);
+        assertEquals("Goldstein", vetState.name.last);
+
+        assertEquals("Ave.", vetState.contact.postalAddress.streetAddress);
+        assertEquals("New-York", vetState.contact.postalAddress.city);
+        assertEquals("US", vetState.contact.postalAddress.stateProvince);
+        assertEquals("321", vetState.contact.postalAddress.postalCode);
+        assertEquals("991100", vetState.contact.telephone.number);
+
+        assertEquals("Behaviour", vetState.specialty.specialtyTypeId);
+    }
+
+    @Test
     public void offer(){
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 

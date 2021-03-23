@@ -48,6 +48,13 @@ public class AnimalTypeEntityTests {
     }
 
     @Test
+    public void offerByFactoryMethod(){
+        AnimalTypeState animalTypeState = AnimalType.offerTreatmentFor(world.stage(), "Kat").await();
+        assertNotNull(animalTypeState.id);
+        assertEquals("Kat", animalTypeState.name);
+    }
+
+    @Test
     public void offer(){
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 

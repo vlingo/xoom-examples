@@ -49,6 +49,13 @@ public class SpecialtyTypeEntityTests {
     }
 
     @Test
+    public void offerByFactoryMethod(){
+        SpecialtyTypeState sp = SpecialtyType.offer(world.stage(), "Internal Medicine").await();
+        assertNotNull(sp.id);
+        assertEquals("Internal Medicine", sp.name);
+    }
+
+    @Test
     public void offer(){
         final AccessSafely dispatcherAccess = dispatcher.afterCompleting(1);
 
