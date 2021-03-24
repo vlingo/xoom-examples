@@ -51,6 +51,13 @@ public class AnimalTypeResource extends DynamicResourceHandler {
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
+  public Completes<Response> animalType(String id) {
+    return $queries.animalTypeOf(id)
+            .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+            .otherwise(arg -> Response.of(NotFound, location()))
+            .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
+  }
+
   @Override
   public Resource<?> routes() {
      return resource("AnimalTypeResource",
@@ -62,7 +69,10 @@ public class AnimalTypeResource extends DynamicResourceHandler {
             .body(AnimalTypeData.class)
             .handle(this::offerTreatmentFor),
         io.vlingo.http.resource.ResourceBuilder.get("/animalTypes")
-            .handle(this::animalTypes)
+            .handle(this::animalTypes),
+        io.vlingo.http.resource.ResourceBuilder.get("/animalTypes/{id}")
+            .param(String.class)
+            .handle(this::animalType)
      );
   }
 
