@@ -1,58 +1,21 @@
 package io.vlingo.developers.petclinic.infrastructure.persistence;
 
-import java.util.Arrays;
-import java.util.List;
-
-import io.vlingo.developers.petclinic.infrastructure.OwnerData;
-import io.vlingo.developers.petclinic.infrastructure.persistence.AnimalTypeQueriesActor;
-import io.vlingo.developers.petclinic.infrastructure.ContactInformationData;
-import io.vlingo.developers.petclinic.model.animaltype.AnimalTypeEntity;
-import io.vlingo.developers.petclinic.infrastructure.PetData;
-import io.vlingo.developers.petclinic.infrastructure.persistence.AnimalTypeQueries;
-import io.vlingo.developers.petclinic.infrastructure.persistence.PetQueriesActor;
-import io.vlingo.developers.petclinic.infrastructure.SpecialtyTypeData;
-import io.vlingo.developers.petclinic.infrastructure.persistence.SpecialtyTypeQueriesActor;
-import io.vlingo.developers.petclinic.infrastructure.persistence.VeterinarianQueries;
-import io.vlingo.developers.petclinic.model.veterinarian.VeterinarianEntity;
-import io.vlingo.developers.petclinic.infrastructure.PostalAddressData;
-import io.vlingo.developers.petclinic.infrastructure.FullnameData;
-import io.vlingo.developers.petclinic.infrastructure.AnimalTypeData;
-import io.vlingo.developers.petclinic.infrastructure.persistence.PetQueries;
-import io.vlingo.developers.petclinic.infrastructure.SpecialtyData;
-import io.vlingo.developers.petclinic.infrastructure.persistence.VeterinarianQueriesActor;
-import io.vlingo.developers.petclinic.infrastructure.persistence.SpecialtyTypeQueries;
-import io.vlingo.developers.petclinic.infrastructure.VisitData;
-import io.vlingo.developers.petclinic.infrastructure.NameData;
-import io.vlingo.developers.petclinic.infrastructure.persistence.ClientQueriesActor;
-import io.vlingo.developers.petclinic.infrastructure.KindData;
-import io.vlingo.developers.petclinic.infrastructure.persistence.ClientQueries;
-import io.vlingo.developers.petclinic.model.pet.PetEntity;
-import io.vlingo.developers.petclinic.infrastructure.VeterinarianData;
-import io.vlingo.developers.petclinic.infrastructure.TelephoneData;
-import io.vlingo.developers.petclinic.model.client.ClientEntity;
-import io.vlingo.developers.petclinic.model.specialtytype.SpecialtyTypeEntity;
-import io.vlingo.developers.petclinic.infrastructure.ClientData;
-
-import io.vlingo.actors.Definition;
-import io.vlingo.actors.Protocols;
 import io.vlingo.actors.Stage;
-import io.vlingo.symbio.store.state.StateTypeStateStoreMap;
+import io.vlingo.developers.petclinic.infrastructure.*;
 import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.symbio.EntryAdapterProvider;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.symbio.store.dispatch.NoOpDispatcher;
-import io.vlingo.symbio.store.dispatch.DispatcherControl;
-import io.vlingo.symbio.store.dispatch.Dispatchable;
 import io.vlingo.symbio.store.state.StateStore;
+import io.vlingo.symbio.store.state.StateTypeStateStoreMap;
 import io.vlingo.xoom.actors.Settings;
+import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 import io.vlingo.xoom.storage.Model;
 import io.vlingo.xoom.storage.StoreActorBuilder;
-import io.vlingo.xoom.annotation.persistence.Persistence.StorageType;
 
+import java.util.Arrays;
 
 public class QueryModelStateStoreProvider {
-  private static QueryModelStateStoreProvider instance;
-
   public final StateStore store;
   public final SpecialtyTypeQueries specialtyTypeQueries;
   public final AnimalTypeQueries animalTypeQueries;
@@ -60,19 +23,12 @@ public class QueryModelStateStoreProvider {
   public final ClientQueries clientQueries;
   public final PetQueries petQueries;
 
-  public static QueryModelStateStoreProvider instance() {
-    return instance;
-  }
-
   public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry) {
     return using(stage, registry, new NoOpDispatcher());
   }
 
   @SuppressWarnings("rawtypes")
   public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final Dispatcher ...dispatchers) {
-    if (instance != null) {
-      return instance;
-    }
 
     new EntryAdapterProvider(stage.world()); // future use
 
@@ -95,9 +51,7 @@ public class QueryModelStateStoreProvider {
             StoreActorBuilder.from(stage, Model.QUERY, Arrays.asList(dispatchers), StorageType.STATE_STORE, Settings.properties(), true);
 
 
-    instance = new QueryModelStateStoreProvider(stage, store);
-
-    return instance;
+    return new QueryModelStateStoreProvider(stage, store);
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

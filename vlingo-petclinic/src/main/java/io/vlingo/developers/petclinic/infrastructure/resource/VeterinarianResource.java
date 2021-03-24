@@ -27,9 +27,9 @@ import static io.vlingo.http.ResponseHeader.*;
 public class VeterinarianResource extends DynamicResourceHandler {
   private final VeterinarianQueries $queries;
 
-  public VeterinarianResource(final Stage stage) {
+  public VeterinarianResource(final Stage stage, final VeterinarianQueries veterinarianQueries) {
       super(stage);
-      this.$queries = QueryModelStateStoreProvider.instance().veterinarianQueries;
+      this.$queries = veterinarianQueries;
   }
 
   public Completes<Response> changeName(final String id, final VeterinarianData data) {

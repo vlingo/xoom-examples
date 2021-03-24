@@ -35,14 +35,14 @@ public class Bootstrap {
 
     final SourcedTypeRegistry sourcedTypeRegistry = new SourcedTypeRegistry(world);
     final StatefulTypeRegistry statefulTypeRegistry = new StatefulTypeRegistry(world);
-    QueryModelStateStoreProvider.using(stage, statefulTypeRegistry);
-    CommandModelJournalProvider.using(stage, sourcedTypeRegistry, ProjectionDispatcherProvider.using(stage).storeDispatcher);
+    final QueryModelStateStoreProvider queryModelStateStoreProvider = QueryModelStateStoreProvider.using(stage, statefulTypeRegistry);
+    CommandModelJournalProvider.using(stage, sourcedTypeRegistry, ProjectionDispatcherProvider.using(stage, queryModelStateStoreProvider).storeDispatcher);
 
-    final PetResource petResource = new PetResource(stage);
-    final AnimalTypeResource animalTypeResource = new AnimalTypeResource(stage);
-    final SpecialtyTypeResource specialtyTypeResource = new SpecialtyTypeResource(stage);
-    final ClientResource clientResource = new ClientResource(stage);
-    final VeterinarianResource veterinarianResource = new VeterinarianResource(stage);
+    final PetResource petResource = new PetResource(stage, queryModelStateStoreProvider.petQueries);
+    final AnimalTypeResource animalTypeResource = new AnimalTypeResource(stage, queryModelStateStoreProvider.animalTypeQueries);
+    final SpecialtyTypeResource specialtyTypeResource = new SpecialtyTypeResource(stage, queryModelStateStoreProvider.specialtyTypeQueries);
+    final ClientResource clientResource = new ClientResource(stage, queryModelStateStoreProvider.clientQueries);
+    final VeterinarianResource veterinarianResource = new VeterinarianResource(stage, queryModelStateStoreProvider.veterinarianQueries);
 
     Resources allResources = Resources.are(
         petResource.routes(),
