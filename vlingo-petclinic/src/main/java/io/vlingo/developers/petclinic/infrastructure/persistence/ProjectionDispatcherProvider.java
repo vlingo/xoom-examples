@@ -2,6 +2,7 @@ package io.vlingo.developers.petclinic.infrastructure.persistence;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Protocols;
@@ -31,25 +32,19 @@ import io.vlingo.developers.petclinic.model.pet.PetRegistered;
 
 @SuppressWarnings("rawtypes")
 public class ProjectionDispatcherProvider {
-  private static ProjectionDispatcherProvider instance;
 
   public final ProjectionDispatcher projectionDispatcher;
   public final Dispatcher storeDispatcher;
 
-  public static ProjectionDispatcherProvider instance() {
-    return instance;
-  }
-
-  public static ProjectionDispatcherProvider using(final Stage stage) {
-    if (instance != null) return instance;
+  public static ProjectionDispatcherProvider using(final Stage stage, QueryModelStateStoreProvider queryModelStateStoreProvider) {
 
     final List<ProjectToDescription> descriptions =
             Arrays.asList(
-                    ProjectToDescription.with(SpecialtyTypeProjectionActor.class, SpecialtyTypeOffered.class.getName(), SpecialtyTypeRenamed.class.getName()),
-                    ProjectToDescription.with(AnimalTypeProjectionActor.class, AnimalTypeRenamed.class.getName(), AnimalTypeTreatmentOffered.class.getName()),
-                    ProjectToDescription.with(VeterinarianProjectionActor.class, VeterinarianContactInformationChanged.class.getName(), VeterinarianSpecialtyChosen.class.getName(), VeterinarianRegistered.class.getName(), VeterinarianNameChanged.class.getName()),
-                    ProjectToDescription.with(ClientProjectionActor.class, ClientRegistered.class.getName(), ClientNameChanged.class.getName(), ClientContactInformationChanged.class.getName()),
-                    ProjectToDescription.with(PetProjectionActor.class, PetKindCorrected.class.getName(), PetNameChanged.class.getName(), PetRegistered.class.getName(), PetDeathRecorded.class.getName(), PetOwnerChanged.class.getName(), PetBirthRecorded.class.getName())
+                    ProjectToDescription.with(SpecialtyTypeProjectionActor.class, Optional.of(queryModelStateStoreProvider.store), SpecialtyTypeOffered.class.getName(), SpecialtyTypeRenamed.class.getName()),
+                    ProjectToDescription.with(AnimalTypeProjectionActor.class, Optional.of(queryModelStateStoreProvider.store), AnimalTypeRenamed.class.getName(), AnimalTypeTreatmentOffered.class.getName()),
+                    ProjectToDescription.with(VeterinarianProjectionActor.class, Optional.of(queryModelStateStoreProvider.store), VeterinarianContactInformationChanged.class.getName(), VeterinarianSpecialtyChosen.class.getName(), VeterinarianRegistered.class.getName(), VeterinarianNameChanged.class.getName()),
+                    ProjectToDescription.with(ClientProjectionActor.class, Optional.of(queryModelStateStoreProvider.store), ClientRegistered.class.getName(), ClientNameChanged.class.getName(), ClientContactInformationChanged.class.getName()),
+                    ProjectToDescription.with(PetProjectionActor.class, Optional.of(queryModelStateStoreProvider.store), PetKindCorrected.class.getName(), PetNameChanged.class.getName(), PetRegistered.class.getName(), PetDeathRecorded.class.getName(), PetOwnerChanged.class.getName(), PetBirthRecorded.class.getName())
                     );
 
     final Protocols dispatcherProtocols =
@@ -59,9 +54,7 @@ public class ProjectionDispatcherProvider {
 
     final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
 
-    instance = new ProjectionDispatcherProvider(dispatchers._1, dispatchers._2);
-
-    return instance;
+    return new ProjectionDispatcherProvider(dispatchers._1, dispatchers._2);
   }
 
   private ProjectionDispatcherProvider(final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {

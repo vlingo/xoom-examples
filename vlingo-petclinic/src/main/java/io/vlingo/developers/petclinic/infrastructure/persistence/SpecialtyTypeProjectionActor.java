@@ -18,10 +18,6 @@ import io.vlingo.symbio.store.state.StateStore;
  */
 public class SpecialtyTypeProjectionActor extends StateStoreProjectionActor<SpecialtyTypeData> {
 
-  public SpecialtyTypeProjectionActor() {
-    super(QueryModelStateStoreProvider.instance().store);
-  }
-
   public SpecialtyTypeProjectionActor(final StateStore stateStore) {
     super(stateStore);
   }
