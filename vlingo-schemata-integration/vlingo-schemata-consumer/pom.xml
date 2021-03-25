@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-schemata-consumer</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>1.5.2-SNAPSHOT</version>
   <name>vlingo-schemata-consumer</name>
   <description>Example of a project consuming schemas from vlingo/schemata.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
