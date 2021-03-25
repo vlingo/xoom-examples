@@ -6,6 +6,7 @@ import io.vlingo.developers.petclinic.model.pet.*;
 import io.vlingo.lattice.model.projection.Projectable;
 import io.vlingo.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.symbio.Source;
+import io.vlingo.symbio.store.state.StateStore;
 
 /**
  * See
@@ -17,6 +18,10 @@ public class PetProjectionActor extends StateStoreProjectionActor<PetData> {
 
   public PetProjectionActor() {
     super(QueryModelStateStoreProvider.instance().store);
+  }
+
+  public PetProjectionActor(final StateStore store) {
+    super(store);
   }
 
   @Override

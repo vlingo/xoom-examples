@@ -148,7 +148,7 @@ public class PetResource extends DynamicResourceHandler {
   }
 
   private String location(final String id) {
-    return "/pets" + id;
+    return "/pets/" + id;
   }
 
   private Completes<Pet> resolve(final String id) {
