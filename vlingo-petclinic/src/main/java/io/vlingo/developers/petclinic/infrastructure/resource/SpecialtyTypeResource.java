@@ -51,6 +51,13 @@ public class SpecialtyTypeResource extends DynamicResourceHandler {
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
+  public Completes<Response> specialtyType(String id) {
+    return $queries.specialtyTypeOf(id)
+            .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+            .otherwise(arg -> Response.of(NotFound, location()))
+            .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
+  }
+
   @Override
   public Resource<?> routes() {
      return resource("SpecialtyTypeResource",
@@ -62,7 +69,10 @@ public class SpecialtyTypeResource extends DynamicResourceHandler {
             .body(SpecialtyTypeData.class)
             .handle(this::offer),
         io.vlingo.http.resource.ResourceBuilder.get("/specialties")
-            .handle(this::specialtyTypes)
+            .handle(this::specialtyTypes),
+        io.vlingo.http.resource.ResourceBuilder.get("/specialties/{id}")
+            .param(String.class)
+            .handle(this::specialtyType)
      );
   }
 

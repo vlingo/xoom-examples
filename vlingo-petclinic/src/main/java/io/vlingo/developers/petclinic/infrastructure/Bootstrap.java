@@ -66,9 +66,9 @@ public class Bootstrap {
     }));
   }
 
-  void stopServer() throws Exception {
+  public static void stopServer() throws Exception {
     if (instance == null) {
-      throw new IllegalStateException("Schemata server not running");
+      throw new IllegalStateException("PetClinic server is not running");
     }
     instance.server.stop();
   }
