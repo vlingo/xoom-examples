@@ -13,7 +13,7 @@ jobs:
 
     services:
       schemata:
-        image: vlingo/vlingo-schemata:1.5.0
+        image: vlingo/vlingo-schemata:latest
         ports:
           - "9019:9019"
         env:
