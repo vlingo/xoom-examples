@@ -2,21 +2,19 @@ package io.vlingo.developers.petclinic.infrastructure.resource;
 
 import io.vlingo.actors.Definition;
 import io.vlingo.actors.Stage;
-import io.vlingo.http.resource.Resource;
-import io.vlingo.http.resource.DynamicResourceHandler;
-import static io.vlingo.http.resource.ResourceBuilder.resource;
-
+import io.vlingo.common.Completes;
 import io.vlingo.developers.petclinic.infrastructure.SpecialtyTypeData;
 import io.vlingo.developers.petclinic.infrastructure.persistence.SpecialtyTypeQueries;
 import io.vlingo.developers.petclinic.model.specialtytype.SpecialtyType;
 import io.vlingo.developers.petclinic.model.specialtytype.SpecialtyTypeEntity;
-import io.vlingo.developers.petclinic.infrastructure.persistence.QueryModelStateStoreProvider;
-
 import io.vlingo.http.Response;
-import io.vlingo.common.Completes;
+import io.vlingo.http.resource.DynamicResourceHandler;
+import io.vlingo.http.resource.Resource;
+
 import static io.vlingo.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.http.Response.Status.*;
 import static io.vlingo.http.ResponseHeader.*;
+import static io.vlingo.http.resource.ResourceBuilder.resource;
 
 /**
  * See <a href="https://docs.vlingo.io/vlingo-xoom/xoom-annotations#resourcehandlers">@ResourceHandlers</a>
@@ -24,9 +22,9 @@ import static io.vlingo.http.ResponseHeader.*;
 public class SpecialtyTypeResource extends DynamicResourceHandler {
   private final SpecialtyTypeQueries $queries;
 
-  public SpecialtyTypeResource(final Stage stage) {
+  public SpecialtyTypeResource(final Stage stage, final SpecialtyTypeQueries specialtyTypeQueries) {
       super(stage);
-      this.$queries = QueryModelStateStoreProvider.instance().specialtyTypeQueries;
+      this.$queries = specialtyTypeQueries;
   }
 
   public Completes<Response> rename(final String id, final SpecialtyTypeData data) {

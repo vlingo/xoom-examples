@@ -16,10 +16,6 @@ import io.vlingo.symbio.store.state.StateStore;
  */
 public class PetProjectionActor extends StateStoreProjectionActor<PetData> {
 
-  public PetProjectionActor() {
-    super(QueryModelStateStoreProvider.instance().store);
-  }
-
   public PetProjectionActor(final StateStore store) {
     super(store);
   }

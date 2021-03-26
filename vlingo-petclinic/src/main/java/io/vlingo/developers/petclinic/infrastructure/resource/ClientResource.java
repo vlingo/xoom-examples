@@ -26,9 +26,9 @@ import static io.vlingo.http.ResponseHeader.*;
 public class ClientResource extends DynamicResourceHandler {
   private final ClientQueries $queries;
 
-  public ClientResource(final Stage stage) {
+  public ClientResource(final Stage stage, final ClientQueries clientQueries) {
       super(stage);
-      this.$queries = QueryModelStateStoreProvider.instance().clientQueries;
+      this.$queries = clientQueries;
   }
 
   public Completes<Response> changeName(final String id, final ClientData data) {

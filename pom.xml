@@ -87,6 +87,7 @@
         <module>vlingo-iddd-agilepm</module>
         <module>vlingo-iddd-collaboration</module>
         <module>vlingo-kubernetes-cluster</module>
+        <module>vlingo-petclinic</module>
         <module>vlingo-reactive-messaging-patterns</module>
         <module>vlingo-simgui-mediator</module>
         <module>vlingo-platform-patterns</module>
