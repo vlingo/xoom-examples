@@ -78,6 +78,7 @@
         <module>vlingo-auth-authservice</module>
         <module>vlingo-benchmarks</module>
         <module>vlingo-calculate-pi</module>
+        <module>vlingo-distributed-cqrs</module>
         <module>vlingo-ecommerce</module>
         <module>vlingo-eventjournal</module>
         <!--module>vlingo-hike-backend</module-->
