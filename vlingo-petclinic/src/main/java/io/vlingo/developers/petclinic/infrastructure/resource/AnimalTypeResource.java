@@ -24,9 +24,9 @@ import static io.vlingo.http.ResponseHeader.*;
 public class AnimalTypeResource extends DynamicResourceHandler {
   private final AnimalTypeQueries $queries;
 
-  public AnimalTypeResource(final Stage stage) {
+  public AnimalTypeResource(final Stage stage, final AnimalTypeQueries animalTypeQueries) {
       super(stage);
-      this.$queries = QueryModelStateStoreProvider.instance().animalTypeQueries;
+      this.$queries = animalTypeQueries;
   }
 
   public Completes<Response> rename(final String id, final AnimalTypeData data) {
