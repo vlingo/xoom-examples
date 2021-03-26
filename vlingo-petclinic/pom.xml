@@ -17,23 +17,24 @@
   </properties>
   <repositories>
     <repository>
-      <id>jcenter.bintray.com</id>
-      <url>https://jcenter.bintray.com</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
+      <id>ossrh-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ossrh-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   <dependencies>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-xoom</artifactId>
-      <version>${vlingo.xoom.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-build-plugins</artifactId>
       <version>${vlingo.xoom.version}</version>
       <scope>compile</scope>
     </dependency>
@@ -168,46 +169,7 @@
             </execution>
           </executions>
         </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.2.0</version>
-          <executions>
-            <execution>
-              <id>is-snapshot-build</id>
-              <phase>validate</phase>
-              <goals>
-                <goal>regex-property</goal>
-              </goals>
-              <configuration>
-                <name>is.snapshot.build</name>
-                <value>${project.version}</value>
-                <regex>.*-SNAPSHOT</regex>
-                <replacement>true</replacement>
-                <failIfNoMatch>false</failIfNoMatch>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
       </plugins>
     </pluginManagement>
   </build>
-  <profiles>
-    <profile>
-      <id>snapshot-build</id>
-      <activation>
-        <property>
-          <name>is.snapshot.build</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <repositories>
-        <repository>
-          <id>github</id>
-          <url>https://maven.pkg.github.com/vlingo/vlingo-platform</url>
-          <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-      </repositories>
-    </profile>
-  </profiles>
 </project>
