@@ -14,7 +14,7 @@
     <exec.mainClass>io.vlingo.perf.vlingo.infrastructure.Bootstrap</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.version>1.5.2-SNAPSHOT</vlingo.version>
+    <vlingo.version>1.5.3-SNAPSHOT</vlingo.version>
   </properties>
 
   <dependencies>
