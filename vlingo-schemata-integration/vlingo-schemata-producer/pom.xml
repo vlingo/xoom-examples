@@ -20,26 +20,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-            <id>metadata-setup</id>
-            <phase>process-test-resources</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>../masterdata.sh</executable>
-              <environmentVariables>
-                <VLINGO_SCHEMATA_PORT>9019</VLINGO_SCHEMATA_PORT>
-              </environmentVariables>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>io.vlingo</groupId>
         <artifactId>vlingo-build-plugins</artifactId>
         <version>${project.version}</version>
@@ -56,6 +36,7 @@
                 <url>http://localhost:9019</url>
                 <clientOrganization>Vlingo</clientOrganization>
                 <clientUnit>examples</clientUnit>
+                <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
                 <schema>
