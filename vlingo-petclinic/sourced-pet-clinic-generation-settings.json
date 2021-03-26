@@ -65,7 +65,7 @@
                      "requireEntityLoad":false
                   },
                   {
-                     "path":"/{id}/",
+                     "path":"/{id}",
                      "httpMethod":"PUT",
                      "aggregateMethod":"rename",
                      "requireEntityLoad":true
@@ -76,13 +76,13 @@
                "exchangeName":"",
                "schemaGroup":"",
                "outgoingEvents":[
-                  
+
                ]
             },
             "consumerExchange":{
                "exchangeName":"",
                "receivers":[
-                  
+
                ]
             }
          },
@@ -96,7 +96,7 @@
                },
                {
                   "name":"name",
-                  "type":"FullName"
+                  "type":"Fullname"
                },
                {
                   "name":"contact",
@@ -181,13 +181,13 @@
                "exchangeName":"",
                "schemaGroup":"",
                "outgoingEvents":[
-              
+
                ]
             },
             "consumerExchange":{
                "exchangeName":"",
                "receivers":[
-                  
+
                ]
             }
          },
@@ -206,14 +206,14 @@
             ],
             "events":[
                {
-                  "name":"SpecialTypeOffered",
+                  "name":"SpecialtyTypeOffered",
                   "fields":[
                      "id",
                      "name"
                   ]
                },
                {
-                  "name":"SpecialTypeRenamed",
+                  "name":"SpecialtyTypeRenamed",
                   "fields":[
                      "id",
                      "name"
@@ -227,7 +227,7 @@
                   "parameters":[
                      "name"
                   ],
-                  "event":"SpecialTypeOffered"
+                  "event":"SpecialtyTypeOffered"
                },
                {
                   "name":"rename",
@@ -235,7 +235,7 @@
                   "parameters":[
                      "name"
                   ],
-                  "event":"SpecialTypeRenamed"
+                  "event":"SpecialtyTypeRenamed"
                }
             ],
             "api":{
@@ -248,7 +248,7 @@
                      "requireEntityLoad":false
                   },
                   {
-                     "path":"/{id}/",
+                     "path":"/{id}",
                      "httpMethod":"PUT",
                      "aggregateMethod":"rename",
                      "requireEntityLoad":true
@@ -259,13 +259,13 @@
                "exchangeName":"",
                "schemaGroup":"",
                "outgoingEvents":[
-                  
+
                ]
             },
             "consumerExchange":{
                "exchangeName":"",
                "receivers":[
-                  
+
                ]
             }
          },
@@ -283,11 +283,11 @@
                },
                {
                   "name":"birth",
-                  "type":"Date"
+                  "type":"long"
                },
                {
                   "name":"death",
-                  "type":"Date"
+                  "type":"long"
                },
                {
                   "name":"kind",
@@ -443,13 +443,13 @@
                "exchangeName":"",
                "schemaGroup":"",
                "outgoingEvents":[
-                  
+
                ]
             },
             "consumerExchange":{
                "exchangeName":"",
                "receivers":[
-                  
+
                ]
             }
          },
@@ -463,7 +463,7 @@
                },
                {
                   "name":"name",
-                  "type":"FullName"
+                  "type":"Fullname"
                },
                {
                   "name":"contact",
@@ -575,13 +575,13 @@
                "exchangeName":"",
                "schemaGroup":"",
                "outgoingEvents":[
-                  
+
                ]
             },
             "consumerExchange":{
                "exchangeName":"",
                "receivers":[
-                  
+
                ]
             }
          }
@@ -596,7 +596,7 @@
       },
       "valueObjectSettings":[
          {
-            "name":"FullName",
+            "name":"Fullname",
             "fields":[
                {
                   "name":"fisrt",
@@ -661,15 +661,6 @@
             ]
          },
          {
-            "name":"Date",
-            "fields":[
-               {
-                  "name":"value",
-                  "type":"long"
-               }
-            ]
-         },
-         {
             "name":"Kind",
             "fields":[
                {
@@ -692,11 +683,11 @@
             "fields":[
                {
                   "name":"start",
-                  "type":"Date"
+                  "type":"long"
                },
                {
                   "name":"end",
-                  "type":"Date"
+                  "type":"long"
                },
                {
                   "name":"description",
@@ -722,7 +713,7 @@
       "kubernetesImage":"",
       "kubernetesPod":""
    },
-   "projectDirectory":"/projects/",
+   "projectDirectory":"/home/hurlee/generated/vlingo-petclinic-exp",
    "useAnnotations":false,
    "useAutoDispatch":false
 }
