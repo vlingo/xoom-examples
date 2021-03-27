@@ -8,7 +8,7 @@
 package com.skyharbor.airtrafficcontrol.infrastructure.exchange;
 
 import com.vgoairlines.airportterminal.event.FlightDeparted;
-import io.vlingo.actors.Stage;
+import io.vlingo.actors.Grid;
 import io.vlingo.lattice.exchange.ConnectionSettings;
 import io.vlingo.lattice.exchange.Covey;
 import io.vlingo.lattice.exchange.Exchange;
@@ -18,19 +18,15 @@ import io.vlingo.lattice.exchange.rabbitmq.MessageSender;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.xoom.actors.Settings;
+import io.vlingo.xoom.exchange.ExchangeInitializer;
 import io.vlingo.xoom.exchange.ExchangeSettings;
 
-public class ExchangeBootstrap {
+public class ExchangeBootstrap implements ExchangeInitializer {
 
-  private static ExchangeBootstrap instance;
+  private Dispatcher dispatcher;
 
-  private final Dispatcher dispatcher;
-
-  public static ExchangeBootstrap init(final Stage stage) {
-    if(instance != null) {
-      return instance;
-    }
-
+  @Override
+  public void init(final Grid grid) {
     ExchangeSettings.load(Settings.properties());
 
     final ConnectionSettings airTrafficControlSettings =
@@ -49,7 +45,7 @@ public class ExchangeBootstrap {
 
     airTrafficControl.register(Covey.of(
             new MessageSender(airTrafficControl.connection()),
-            new FlightDepartedReceiver(stage),
+            new FlightDepartedReceiver(grid),
             new FlightDepartedAdapter(),
             FlightDeparted.class,
             String.class,
@@ -63,6 +59,8 @@ public class ExchangeBootstrap {
         IdentifiedDomainEvent.class,
         Message.class));
 
+    this.dispatcher = new ExchangeDispatcher(airTrafficControl);
+
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
         airTrafficControl.close();
 
@@ -71,14 +69,6 @@ public class ExchangeBootstrap {
         System.out.println("Stopping exchange.");
         System.out.println("==================");
     }));
-
-    instance = new ExchangeBootstrap(airTrafficControl);
-
-    return instance;
-  }
-
-  private ExchangeBootstrap(final Exchange ...exchanges) {
-    this.dispatcher = new ExchangeDispatcher(exchanges);
   }
 
   public Dispatcher dispatcher() {

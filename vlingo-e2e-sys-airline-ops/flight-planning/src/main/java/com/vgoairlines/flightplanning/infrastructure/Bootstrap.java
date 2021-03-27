@@ -5,10 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-
 package com.vgoairlines.flightplanning.infrastructure;
 
-import com.vgoairlines.flightplanning.infrastructure.exchange.ExchangeBootstrap;
 import io.vlingo.actors.Grid;
 import io.vlingo.xoom.XoomInitializationAware;
 import io.vlingo.xoom.annotation.initializer.Xoom;
@@ -20,8 +18,4 @@ public class Bootstrap implements XoomInitializationAware {
   public void onInit(final Grid grid) {
   }
 
-  @Override
-  public io.vlingo.symbio.store.dispatch.Dispatcher exchangeDispatcher(final Grid grid) {
-     return ExchangeBootstrap.init(grid).dispatcher();
-  }
 }
