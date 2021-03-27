@@ -7,7 +7,6 @@
 
 package com.skyharbor.aircraftmonitoring.infrastructure;
 
-import com.skyharbor.aircraftmonitoring.infrastructure.exchange.ExchangeBootstrap;
 import io.vlingo.actors.Grid;
 import io.vlingo.xoom.XoomInitializationAware;
 import io.vlingo.xoom.annotation.initializer.Xoom;
@@ -19,8 +18,4 @@ public class Bootstrap implements XoomInitializationAware {
   public void onInit(final Grid stage) {
   }
 
-  @Override
-  public io.vlingo.symbio.store.dispatch.Dispatcher exchangeDispatcher(final Grid stage) {
-     return ExchangeBootstrap.init(stage).dispatcher();
-  }
 }

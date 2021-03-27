@@ -8,7 +8,7 @@
 package com.skyharbor.fleetcrew.infrastructure.exchange;
 
 import com.skyharbor.airtrafficcontrol.event.FlightLanded;
-import io.vlingo.actors.Stage;
+import io.vlingo.actors.Grid;
 import io.vlingo.lattice.exchange.ConnectionSettings;
 import io.vlingo.lattice.exchange.Covey;
 import io.vlingo.lattice.exchange.Exchange;
@@ -18,19 +18,14 @@ import io.vlingo.lattice.exchange.rabbitmq.MessageSender;
 import io.vlingo.lattice.model.IdentifiedDomainEvent;
 import io.vlingo.symbio.store.dispatch.Dispatcher;
 import io.vlingo.xoom.actors.Settings;
+import io.vlingo.xoom.exchange.ExchangeInitializer;
 import io.vlingo.xoom.exchange.ExchangeSettings;
 
-public class ExchangeBootstrap {
+public class ExchangeBootstrap implements ExchangeInitializer {
 
-  private static ExchangeBootstrap instance;
+  private Dispatcher dispatcher;
 
-  private final Dispatcher dispatcher;
-
-  public static ExchangeBootstrap init(final Stage stage) {
-    if(instance != null) {
-      return instance;
-    }
-
+  public void init(final Grid stage) {
     ExchangeSettings.load(Settings.properties());
 
     final ConnectionSettings vgoAirportsSettings =
@@ -38,6 +33,8 @@ public class ExchangeBootstrap {
 
     final Exchange fleetCrewExchange =
                 ExchangeFactory.fanOutInstance(vgoAirportsSettings, "fleet-crew-exchange", true);
+
+    this.dispatcher = new ExchangeDispatcher(fleetCrewExchange);
 
     fleetCrewExchange.register(Covey.of(
         new MessageSender(fleetCrewExchange.connection()),
@@ -56,23 +53,17 @@ public class ExchangeBootstrap {
         Message.class));
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        fleetCrewExchange.close();
+      fleetCrewExchange.close();
 
-        System.out.println("\n");
-        System.out.println("==================");
-        System.out.println("Stopping exchange.");
-        System.out.println("==================");
+      System.out.println("\n");
+      System.out.println("==================");
+      System.out.println("Stopping exchange.");
+      System.out.println("==================");
     }));
 
-    instance = new ExchangeBootstrap(fleetCrewExchange);
-
-    return instance;
   }
 
-  private ExchangeBootstrap(final Exchange ...exchanges) {
-    this.dispatcher = new ExchangeDispatcher(exchanges);
-  }
-
+  @Override
   public Dispatcher dispatcher() {
     return dispatcher;
   }
