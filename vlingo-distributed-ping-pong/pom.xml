@@ -3,7 +3,7 @@
 
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-distributed-ping-pong</artifactId>
-  <version>1.5.3-SNAPSHOT</version>
+  <version>1.6.1-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,7 +15,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>1.5.3-SNAPSHOT</version>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
