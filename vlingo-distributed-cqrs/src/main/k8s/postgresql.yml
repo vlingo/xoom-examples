@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pghost # acts as DNS!
+spec:
+  selector:
+    tier: postgresqldb
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  labels:
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      tier: postgresqldb
+  template:
+    metadata:
+      labels:
+        tier: postgresqldb
+    spec:
+      containers:
+        - name: postgresql-database
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: vlingodb
+            - name: POSTGRES_USER
+              value: vlingo_test
+            - name: POSTGRES_PASSWORD
+              value: vlingo123
+      volumes:
+      - name: postgresql-volume
