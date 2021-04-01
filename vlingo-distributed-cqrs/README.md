@@ -1,6 +1,12 @@
-# vlingo-distributed-cqrs
+# vlingo-distributed-cqrs example
 
 Command model is persisted by `Journal` into PostgreSQL. Query model is persisted by `StateStore` into PostgreSQL as well.
+
+---
+
+## Building and running locally
+
+Prerequisites: Change 'hosts' to localhost in `vlingo-cluster.properties` and `vlingo-cars.properties`.
 
 Commands for PostgreSQL docker image/container:
 - start: `docker-compose up -d`
@@ -17,8 +23,41 @@ Only node1 handles HTTP requests!
 
 ---
 
-## Building Kubernetes cluster
+## Building and running into Kubernetes cluster
 
-Build docker image: `docker build -t vlingo/example-cqrs:1.0 .`
+Prerequisites: Docker Desktop (https://www.docker.com/products/docker-desktop). All k8s config files are located in `src/main/k8s` folder.
 
-Test run docker image: `docker run -e APP_OPTS=node1 -p 18080:18080 vlingo/example-cqrs:1.0`
+- Build docker image: `docker build -t vlingo/example-cqrs:1.0 .`
+- PostgreSQL k8s Service and Deployment: `kubectl create -f postgresql.yml`
+  - Delete: `kubectl delete -f postgresql.yml`
+- For each `vlingo-distributed-cqrs` node: `kubectl -f create [node3.yml | node2.yml | node1.yml]`
+  - Delete: `kubetcl delete -f [node3.yml | node2.yml | node1.yml]`
+
+---
+
+## REST API requests:
+
+Car command:
+```
+curl --request POST 'http://localhost:30080/api/cars' \
+  --header 'Content-Type: application/json' \  
+  --data-raw '{
+    "type":"Audi",  
+    "model":"A4",
+    "registrationNumber":"AB-01-ABC"
+  }'
+```
+
+Cars query:
+```
+curl --request GET 'http://localhost:30080/api/cars'
+```
+
+---
+
+Each node has exposed a debugging port:
+- node1: 30571
+- node2: 30572
+- node3: 30573
+
+Observe node logs: choose a docker container (`docker ps`) and then `docker logs <container_id>`
