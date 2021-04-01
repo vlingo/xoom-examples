@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.*;
 
 public class SpecialtyTypeResourceTests extends AbstractRestTest{
 
-    @Test @Disabled("due to unknown bug")
+    @Test
     public void testEmptyResponse(){
         given()
                 .when()

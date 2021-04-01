@@ -67,7 +67,7 @@ public class ClientQueryTests {
         assertEquals("Malfoy", item.name.last);
     }
 
-    @Test @Disabled("due to unknown bug")
+    @Test
     public void clientsEmptyResult(){
         Collection<ClientData> animalTypes = queries.clients().await();
         assertEquals(0, animalTypes.size());

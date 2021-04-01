@@ -34,7 +34,7 @@ public class VeterinarianResourceTests extends AbstractRestTest{
             "  }\n" +
             "}";
 
-    @Test @Disabled("due to unknown bug")
+    @Test
     public void testEmptyResponse(){
         given()
                 .when()
