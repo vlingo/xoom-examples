@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app3host # acts as DNS!
+spec:
+  type: NodePort # switch to ClusterIP afterwards
+  selector:
+    appName: node3
+  ports:
+    - name: operational
+      protocol: TCP
+      port: 17375
+      targetPort: 17375
+    - name: application
+      protocol: TCP
+      port: 17376
+      targetPort: 17376
+    - name: debug # to be removed
+      protocol: TCP
+      targetPort: 5070
+      port: 5073
+      nodePort: 30573 # debugging port for IDE
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-node3
+  labels:
+    appName: node3
+spec:
+  selector:
+    matchLabels:
+      appName: node3
+  template:
+    metadata:
+      labels:
+        appName: node3
+    spec:
+      containers:
+        - name: node3-app
+          image: vlingo/example-cqrs:1.0
+          ports:
+          - name: operational
+            containerPort: 17375
+          - name: application
+            containerPort: 17376
+          - name: debug # to be removed
+            containerPort: 5070
+          env:
+          - name: APP_ARGS
+            value: node3

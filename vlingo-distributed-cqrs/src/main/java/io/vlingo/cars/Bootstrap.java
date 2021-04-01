@@ -37,7 +37,7 @@ public class Bootstrap {
 
         StorageProvider.using(grid.world(), CarConfig.load());
 
-        if ("node3".equals(nodeName)) {
+        if ("node1".equals(nodeName)) {
             CarResource carResource = new CarResource(grid);
             Resources allResources = Resources.are(carResource.routes());
 

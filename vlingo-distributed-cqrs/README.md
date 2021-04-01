@@ -14,3 +14,11 @@ Start node2: `java -jar target/vlingo-distributed-cqrs.jar node2`
 Start node3: `java -jar target/vlingo-distributed-cqrs.jar node3`
 
 Only node1 handles HTTP requests!
+
+---
+
+## Building Kubernetes cluster
+
+Build docker image: `docker build -t vlingo/example-cqrs:1.0 .`
+
+Test run docker image: `docker run -e APP_OPTS=node1 -p 18080:18080 vlingo/example-cqrs:1.0`
