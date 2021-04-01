@@ -38,7 +38,7 @@ public class PetResourceTests extends AbstractRestTest{
                 .get("/pets")
                 .then()
                 .statusCode(200)
-                .body(is(equalTo("")));
+                .body(is(equalTo("[]")));
     }
 
     @Test

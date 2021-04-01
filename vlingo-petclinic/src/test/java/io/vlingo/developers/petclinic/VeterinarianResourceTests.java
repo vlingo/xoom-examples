@@ -41,7 +41,7 @@ public class VeterinarianResourceTests extends AbstractRestTest{
                 .get("/veterinarians")
                 .then()
                 .statusCode(200)
-                .body(is(equalTo("")));
+                .body(is(equalTo("[]")));
     }
 
     @Test

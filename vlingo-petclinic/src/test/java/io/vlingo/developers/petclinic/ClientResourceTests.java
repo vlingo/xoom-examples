@@ -38,7 +38,7 @@ public class ClientResourceTests extends AbstractRestTest{
                 .get("/clients")
                 .then()
                 .statusCode(200)
-                .body(is(equalTo("")));
+                .body(is(equalTo("[]")));
     }
 
     @Test

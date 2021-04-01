@@ -19,7 +19,7 @@ public class SpecialtyTypeResourceTests extends AbstractRestTest{
                 .get("/specialties")
                 .then()
                 .statusCode(200)
-                .body(is(equalTo("")));
+                .body(is(equalTo("[]")));
     }
 
     @Test

@@ -18,7 +18,7 @@ public class AnimalTypeResourceTests extends AbstractRestTest{
                 .get("/animalTypes")
                 .then()
                 .statusCode(200)
-                .body(is(equalTo("")));
+                .body(is(equalTo("[]")));
     }
 
     @Test
