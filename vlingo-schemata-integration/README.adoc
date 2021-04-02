@@ -1,4 +1,4 @@
-= Integration w/ vlingo/schemata
+= Integration With VLINGO XOOM SCHEMATA
 
 ifdef::env-github[]
 :tip-caption: :bulb:
@@ -8,25 +8,30 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-`vlingo/schemata` allows for managing schemata for events and commands that
-to be consumed by other bounded contexts, thus implementing the published language pattern.
+XOOM SCHEMATA enables the management of schemas for events and commands that are
+to be consumed by other services and applications (e.g. Bounded Contexts), thus
+implementing the Published Language pattern.
 
-`vlingo/schemata` can be run as standalone service and comes with a user interface
-and an HTTP API that lets you manage master data, schemata and generate source code.
-Using `vlingo-build-plugins`, you can also interact with schemata as part of your build process.
+XOOM SCHEMATA can be run as standalone service with a user interface
+and by means of an HTTP API proving schema management from builds or
+command line interaction. The build interfaces requires the use of `vlingo-build-plugins`.
+With SCHEMATA you can push schemas to and pull schemas from the registry, and generate
+source code for the schemas.
 
-In projects, you'll typically consume and/or publish schemata to be able to integrate
-with other bounded contexts in a type safe and versioned manner.
+In projects you'll typically consume and/or publish schemas to integrate
+with other services and applications (e.g. Bounded Contexts) in a type safe
+and versioned manner.
 
-In this example, you'll see how to ...
+In this example, you'll see how to:
 
-* ... build an run `vlingo/schemata`
-* ... manage schemata and schemata meta data using the UI and the HTTP API.
-* ... push schemata to the registry from maven builds and
-* ... consume schemata stored in the registry as part of the build.
+* build an run `vlingo/schemata`
+* manage schemata and schemata meta data using the UI and the HTTP API
+* push schemata to the registry from maven builds
+* consume schemata stored in the registry as part of the build
 
-For detailed information on the rationale and usage of `vlingo-schemtata`,
-please refer to https://docs.vlingo.io/vlingo-schemata.
+For detailed information on the rationale and usage of XOOM SCHEMATA,
+refer to the documentation [SCHEMATA](https://docs.vlingo.io/vlingo-schemata)
+and the [build plugins](https://docs.vlingo.io/vlingo-build-plugins).
 
 == Prerequisites
 
@@ -34,28 +39,38 @@ To be able to follow along, you'll need:
 
 * JDK 8
 * Maven 3.3.x
-* A running instance of `vlingo/schemata` (see <<Set up vlingo/schemata>>)
-* Some master data (see <<Provision schemata master data>>)
+* A running instance of XOOM SCHEMATA (see <<Set up>>)
+* Some master data (see <<Provision SCHEMATA master data>>)
 
-=== Set up vlingo/schemata
+=== Setting Up XOOM SCHEMATA
 
-The easiest way to get started is to use the `vlingo/vlingo-schemata` docker image:
-`docker run -eVLINGO_ENV=dev -p9019:9019 vlingo/vlingo-schemata`.
-This will expose the application on `:9019` using an in-memory DB for persistence.
+The easiest way to get started is to use the [`vlingo/vlingo-schemata` docker image](https://hub.docker.com/r/vlingo/vlingo-schemata):
 
-If you want to build it yourself, clone https://github.com/vlingo/vlingo-schemata
-and refer to https://github.com/vlingo/vlingo-schemata#build for further instructions
-footnote:[`mvn package -Pfrontend` on JDK8 does the trick. Thats about it, instruction-wise, actually.].
+```
+$ docker run -eVLINGO_ENV=dev -p9019:9019 vlingo/vlingo-schemata
+```
 
-NOTE: For further configuration options like connecting to a persistent DB, see https://hub.docker.com/r/vlingo/vlingo-schemata.
+This will expose the application on `:9019` using an in-memory database for persistence.
 
-=== Provision schemata master data
+If you want to build SCHEMATA yourself:
 
-To be able to integrate your projects with the schema registry, you need to
+```
+$ clone https://github.com/vlingo/vlingo-schemata
+```
+
+Refer to [Build](https://github.com/vlingo/vlingo-schemata#build) for further instructions.
+footnote:[`mvn package -Pfrontend` on JDK8 does the trick. Thats about it, instruction-wise, actually.]
+
+NOTE: For further configuration options like connecting to a persistent database,
+see [`vlingo/vlingo-schemata` on Docker Hub](https://hub.docker.com/r/vlingo/vlingo-schemata).
+
+=== Provision Schemata Master Data
+
+To integrate your projects with the schema registry, you need to
 make your organization structure and available published languages known first.
 You can do this either via the HTTP API or the UI.
 
-Schemata are structured in a hierarchical manner:
+Schemas are structured in a hierarchical manner:
 `Organisation -> Units -> Contexts -> Schemas -> Schema Versions`.
 We'll push new schema versions using the maven plugin.
 Before running the build, you need to have at least one of each other entity prepared.
@@ -65,7 +80,7 @@ Before running the build, you need to have at least one of each other entity pre
 From the navigation drawer to the left, open the editor for each of these entities and create one.
 The build assumes the following structure:
 
-* Organisation: `Vlingo`
+* Organisation: `VLINGO`
 ** Unit: `examples`
 ***** Context Namepace: `io.vlingo.examples.schemata`
 ****** Schema: `SchemaDefined`
@@ -82,15 +97,16 @@ image::doc/ui-browse.png[]
 In case you are using IntelliJ, you can just run the requests in `masterdata.http` directly;
 `masterdata.sh` is a bash script doing the same
 footnote:[Requires `curl` and `jq` on the path and `VLINGO_SCHEMATA_PORT` to be set, e.g. `VLINGO_SCHEMATA_PORT=9019 ./masterdata.sh].
-Otherwise, deriving the `wget` footnote:[`PostMan`, `HTTPie`, `Insomnia`, `Invoke-WebRequest`, pick your poison.]
+Otherwise, deriving the `wget` footnote:[Use `Postnan`, `HTTPie`, `Insomnia`, or `Invoke-WebRequest`. It's your choice.]
 calls from the snippets should be a simple exercise.
 
 == Run
 
-Now that we have the master data in place, we can publish some schemata from
-`vlingo-schemata-producer`. The schema sources live in `src/main/vlingo/schemata`
-in that project. To publish them, simply run `mvn install` in the project root.
-The build output should contain <<output-producer>>, the UI should display the created schemata as shown in <<ui-schema-version>>.
+Now that there is master data in place, we can publish some schemas from
+`vlingo-schemata-producer`. The schema sources are within the project, inside
+`src/main/vlingo/schemata`. To publish the schemas to the registry,
+simply run `mvn install` in the project root.
+The build output should contain <<output-producer>>, the UI should display the created schemas as shown in <<ui-schema-version>>.
 You can also have a look at the generated code (`Specification -> Source`) and description using the
 and the generated description (`Description -> Preview`)
 
@@ -99,23 +115,26 @@ Next, hop over to `vlingo-schemata-consumer` and open `SchemataUsageTest` in you
 You'll notice that it does not compile, as the schema class is missing.
 Now run `mvn generate-sources` and verify that the code generated from schemata is
 pulled and written to `target/generated-sources/vlingo` as shown in <<output-consumer>>.
-The test relying on schemata sources will now compile and execute as expected,
-verify this by running `mvn test`.
+The tests that depend on schema sources will now compile and execute as expected.
+Verify this by running `mvn test`.
 
 NOTE: This is just for illustration purposes. Typically, you'll rely on maven's default lifecycle binding
  and not call `generate-sources` explicitly. Simply running `mvn install` will determine
  that `vlingo-build-plugin` is bound to `generate-sources` and run it before compilation.
 
-
-Note that in the build output, you see two warning messages indicating that the status of the schemata
+In the build output you will see two warning messages indicating that the status of the schema
 used is `Draft`. You can go through the schemas lifecycle using the UI as highlighted in <<ui-schema-version-lifecycle>>.
-Alternatively, you can change the status using the API by `PATCHing` against http://localhost:9019/api/organizations/<orgId>/units/<unitId>/contexts/<contextId>/schemas/<schemaId>/versions/<schemaVersionId>/status.
+Alternatively, you can change the status using the API by `PATCHing` against:
 
-Now, publish one of the schemata and re-run the consumer build. You'll notice the warning no longer shows up.
-Then deprecate the schema, and re-build again. You'll see a warning again.
+```
+http://localhost:9019/api/organizations/<orgId>/units/<unitId>/contexts/<contextId>/schemas/<schemaId>/versions/<schemaVersionId>/status
+```
+
+Now, publish one of the schemas and re-run the consumer build. You'll notice the warning was eliminated.
+Now deprecate the schema, and re-build again. You'll see a warning again.
 After setting the state to removed, your consumer build will fail, see <<output-consumer-removed-schema>>. Try that as well.
 
-`vlingo/schemata` also provides a safety net to prevent you from publishing incompatible versions by
+XOOM SCHEMATA also provides a safety net to prevent you from publishing incompatible versions by
 accident, so you won't break consumers of your published versions.
 To see what happens in this case, open the `SchemaDefined.vss` specification and make some incompatible changes,
 e.g. by changing a type, reordering some fields and changing field names:
@@ -129,13 +148,13 @@ event SchemaDefined {
 }
 ```
 
-In the producer project's pom, remove the second schema from the list of
+In the producer project's `pom.xom`, remove the second schema from the list of
 schemas to push and reference the updated file as a new patch version.
 
 .refer to the updated schema in the POM
 ```
 <schema>
-  <ref>Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.2</ref> <1>
+  <ref>VLINGO:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.2</ref> <1>
   <src>SchemaDefined2.vss</src> <2>
   <previousVersion>0.0.1</previousVersion> <3>
 </schema>
@@ -148,8 +167,8 @@ You'll notice that the build fails and presents you with a list of changes you h
 Now you can either change the update to make it compatible or update the version to the next
 major version `1.0.0`.
 
-So, by using the schema registry you not only have a way to integrate multiple bounded contexts
-but are - as a consumer - safe from inadvertent upstream incompatibilities and, - as a publisher -
+By using the schema registry you not only have a way to integrate multiple bounded contexts
+but are, as a consumer, from inadvertent upstream incompatibilities and, as a publisher,
 safe from accidentally pushing such updates.
 
 If you've tried this via the UI, you would have seen a detailed <<ui-incompatible-diff>> as shown below.
