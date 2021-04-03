@@ -29,10 +29,8 @@ Prerequisites: Docker Desktop (https://www.docker.com/products/docker-desktop). 
 
 - Build docker image: `docker build -t vlingo/example-cqrs:1.0 .`
 - Kubernetes namespace: `kubectl [create | delete] namespace xoom-space`
-- PostgreSQL k8s Service and Deployment: `kubectl create -f postgresql.yml`
-  - Delete: `kubectl delete -f postgresql.yml`
-- For each `vlingo-distributed-cqrs` node: `kubectl -f create [node3.yml | node2.yml | node1.yml]`
-  - Delete: `kubetcl delete -f [node3.yml | node2.yml | node1.yml]`
+- PostgreSQL Service and Deployment: `kubectl [create | delete] -f postgresql.yml`
+- Application (3x nodes) Service and Deployment: `kubectl -f [create | delete] nodes.yml`
 
 ---
 
