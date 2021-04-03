@@ -39,7 +39,7 @@ public class CarResource extends DynamicResourceHandler {
                         .handle(this::defineWith),
                 ResourceBuilder.get("/api/cars")
                         .handle(this::queryCars),
-                ResourceBuilder.get("/api/cars/{carId}/register")
+                ResourceBuilder.patch("/api/cars/{carId}/register")
                         .param(String.class)
                         .body(String.class)
                         .handle(this::registerCar),
