@@ -9,6 +9,7 @@ public class CarEntity extends EventSourced implements Car {
 
     static {
         registerConsumer(CarEntity.class, CarEvents.CarDefined.class, CarEntity::applyCarDefined);
+        registerConsumer(CarEntity.class, CarEvents.CarRegistered.class, CarEntity::applyCarRegistered);
     }
 
     public CarEntity(String carId) {
@@ -21,8 +22,17 @@ public class CarEntity extends EventSourced implements Car {
         return apply(CarEvents.CarDefined.with(state.carId, type, model, registrationNumber), () -> state);
     }
 
+    @Override
+    public Completes<CarState> registerWith(String registrationNumber) {
+        return apply(CarEvents.CarRegistered.with(state.carId, registrationNumber), () -> state);
+    }
+
     private void applyCarDefined(final CarEvents.CarDefined event) {
         this.state = state.defineWith(event.type, event.model, event.registrationNumber);
+    }
+
+    private void applyCarRegistered(final CarEvents.CarRegistered event) {
+        this.state = state.registerWith(event.registrationNumber);
     }
 
     public static class CarEntityInstantiator implements ActorInstantiator<CarEntity> {

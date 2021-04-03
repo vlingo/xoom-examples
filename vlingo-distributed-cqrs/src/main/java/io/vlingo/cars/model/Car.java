@@ -14,4 +14,6 @@ public interface Car {
     }
 
     Completes<CarState> defineWith(String type, String model, String registrationNumber);
+
+    Completes<CarState> registerWith(String registrationNumber);
 }

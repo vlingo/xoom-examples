@@ -4,6 +4,7 @@ import io.vlingo.lattice.model.DomainEvent;
 
 public enum CarViewType {
     CarDefined,
+    CarRegistered,
 
     Unmatched;
 

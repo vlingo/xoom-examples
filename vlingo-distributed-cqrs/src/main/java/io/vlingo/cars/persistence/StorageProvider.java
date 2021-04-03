@@ -64,7 +64,9 @@ public class StorageProvider {
         StateStore stateStore = newStateStore(world, config);
         List<ProjectionDispatcher.ProjectToDescription> descriptions = Arrays.asList(
                 ProjectionDispatcher.ProjectToDescription.with(CarProjection.class, Optional.of(stateStore), CarEvents.CarDefined.class),
-                ProjectionDispatcher.ProjectToDescription.with(CarsProjection.class, Optional.of(stateStore), CarEvents.CarDefined.class));
+                ProjectionDispatcher.ProjectToDescription.with(CarProjection.class, Optional.of(stateStore), CarEvents.CarRegistered.class),
+                ProjectionDispatcher.ProjectToDescription.with(CarsProjection.class, Optional.of(stateStore), CarEvents.CarDefined.class),
+                ProjectionDispatcher.ProjectToDescription.with(CarsProjection.class, Optional.of(stateStore), CarEvents.CarRegistered.class));
         Protocols dispatcherProtocols = world.stage().actorFor(
                 new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class },
                 Definition.has(TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
@@ -77,7 +79,8 @@ public class StorageProvider {
 
         registry.register(new SourcedTypeRegistry.Info(journal, CarEntity.class, CarEntity.class.getSimpleName()));
         registry.info(CarEntity.class)
-                .registerEntryAdapter(CarEvents.CarDefined.class, new EventAdapter<>(CarEvents.CarDefined.class));
+                .registerEntryAdapter(CarEvents.CarDefined.class, new EventAdapter<>(CarEvents.CarDefined.class))
+                .registerEntryAdapter(CarEvents.CarRegistered.class, new EventAdapter<>(CarEvents.CarRegistered.class));
 
         // QUERIES
         CarQueries carQueries = world.stage().actorFor(CarQueries.class, CarQueriesActor.class, stateStore);

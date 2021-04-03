@@ -39,6 +39,10 @@ public class CarResource extends DynamicResourceHandler {
                         .handle(this::defineWith),
                 ResourceBuilder.get("/api/cars")
                         .handle(this::queryCars),
+                ResourceBuilder.get("/api/cars/{carId}/register")
+                        .param(String.class)
+                        .body(String.class)
+                        .handle(this::registerCar),
                 ResourceBuilder.get("/api/cars/{carId}")
                         .param(String.class)
                         .handle(this::queryCar));
@@ -76,5 +80,13 @@ public class CarResource extends DynamicResourceHandler {
                         : Completes.withSuccess(Response.of(Ok, serialized(cars.all()))))
                 .otherwise(response -> Response.of(NotFound, serialized(CarsView.empty().all())))
                 .recoverFrom(e -> Response.of(InternalServerError, serialized(e)));
+    }
+
+    private Completes<Response> registerCar(final String carId, final String registrationNumber) {
+        return grid.actorOf(Car.class, grid.addressFactory().from(carId))
+                .andThenTo(car -> car.registerWith(registrationNumber))
+                .andThen(carState -> carState == null
+                        ? Response.of(NotFound, "Car not found!")
+                        : Response.of(Ok, serialized(carState)));
     }
 }
