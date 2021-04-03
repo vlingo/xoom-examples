@@ -1,0 +1,183 @@
+# Service for node3
+apiVersion: v1
+kind: Service
+metadata:
+  name: app3host # acts as DNS!
+  namespace: xoom-space
+spec:
+  type: NodePort # switch to ClusterIP afterwards
+  selector:
+    tier: application
+    appName: pod-node3
+  ports:
+    - name: operational
+      protocol: TCP
+      port: 17375
+      targetPort: 17375
+    - name: application
+      protocol: TCP
+      port: 17376
+      targetPort: 17376
+    - name: debug # to be removed
+      protocol: TCP
+      targetPort: 5070
+      port: 5073
+      nodePort: 30573 # debugging port for IDE
+---
+# Deployment for node3
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-node3
+  namespace: xoom-space
+  labels:
+    appName: deployment-node3
+spec:
+  selector:
+    matchLabels:
+      tier: application
+      appName: pod-node3
+  template:
+    metadata:
+      labels:
+        tier: application
+        appName: pod-node3
+    spec:
+      containers:
+        - name: node3-app
+          image: vlingo/example-cqrs:1.0
+          ports:
+            - name: operational
+              containerPort: 17375
+            - name: application
+              containerPort: 17376
+            - name: debug # to be removed
+              containerPort: 5070
+          env:
+            - name: APP_ARGS
+              value: node3
+---
+# Service for node2
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2host # acts as DNS!
+  namespace: xoom-space
+spec:
+  type: NodePort # switch to ClusterIP afterwards
+  selector:
+    tier: application
+    appName: pod-node2
+  ports:
+    - name: operational
+      protocol: TCP
+      port: 17373
+      targetPort: 17373
+    - name: application
+      protocol: TCP
+      port: 17374
+      targetPort: 17374
+    - name: debug # to be removed
+      protocol: TCP
+      targetPort: 5070
+      port: 5072
+      nodePort: 30572 # debugging port for IDE
+---
+# Deployment for node3
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-node2
+  namespace: xoom-space
+  labels:
+    appName: deployment-node2
+spec:
+  selector:
+    matchLabels:
+      tier: application
+      appName: pod-node2
+  template:
+    metadata:
+      labels:
+        tier: application
+        appName: pod-node2
+    spec:
+      containers:
+        - name: node2-app
+          image: vlingo/example-cqrs:1.0
+          ports:
+            - name: operational
+              containerPort: 17373
+            - name: application
+              containerPort: 17374
+            - name: debug # to be removed
+              containerPort: 5070
+          env:
+            - name: APP_ARGS
+              value: node2
+---
+# Service for node1
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1host # acts as DNS!
+  namespace: xoom-space
+spec:
+  type: NodePort # switch to ClusterIP afterwards
+  selector:
+    tier: application
+    appName: pod-node1
+  ports:
+    - name: operational
+      protocol: TCP
+      port: 17371
+      targetPort: 17371
+    - name: application
+      protocol: TCP
+      port: 17372
+      targetPort: 17372
+    - name: http # HTTP port
+      protocol: TCP
+      targetPort: 18080
+      port: 18080
+      nodePort: 30080
+    - name: debug # to be removed
+      protocol: TCP
+      targetPort: 5070
+      port: 5071
+      nodePort: 30571 # debugging port for IDE
+---
+# Deployment for node1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-node1
+  namespace: xoom-space
+  labels:
+    appName: deployment-node1
+spec:
+  selector:
+    matchLabels:
+      tier: application
+      appName: pod-node1
+  template:
+    metadata:
+      labels:
+        tier: application
+        appName: pod-node1
+    spec:
+      containers:
+        - name: node1-app
+          image: vlingo/example-cqrs:1.0
+          ports:
+            - name: operational
+              containerPort: 17371
+            - name: application
+              containerPort: 17372
+            - name: http
+              containerPort: 18080
+            - name: debug # to be removed
+              containerPort: 5070
+          env:
+            - name: APP_ARGS
+              value: node1
