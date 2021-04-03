@@ -2,10 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: app1host # acts as DNS!
+  namespace: xoom-space
 spec:
   type: NodePort # switch to ClusterIP afterwards
   selector:
-    appName: node1
+    tier: application
+    appName: pod-node1
   ports:
     - name: operational
       protocol: TCP
@@ -30,16 +32,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deployment-node1
+  namespace: xoom-space
   labels:
-    appName: node1
+    appName: deployment-node1
 spec:
   selector:
     matchLabels:
-      appName: node1
+      tier: application
+      appName: pod-node1
   template:
     metadata:
       labels:
-        appName: node1
+        tier: application
+        appName: pod-node1
     spec:
       containers:
         - name: node1-app
