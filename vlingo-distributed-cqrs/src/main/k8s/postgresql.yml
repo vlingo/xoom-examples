@@ -2,9 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pghost # acts as DNS!
+  namespace: xoom-space
 spec:
   selector:
-    tier: postgresqldb
+    tier: database
+    appName: pod-postgresql
   ports:
     - protocol: TCP
       port: 5432
@@ -13,17 +15,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgresql
+  name: postgresql-database
+  namespace: xoom-space
   labels:
     tier: database
+    type: deployment-postgresql
 spec:
   selector:
     matchLabels:
-      tier: postgresqldb
+      tier: database
+      appName: pod-postgresql
   template:
     metadata:
       labels:
-        tier: postgresqldb
+        tier: database
+        appName: pod-postgresql
     spec:
       containers:
         - name: postgresql-database
