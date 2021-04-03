@@ -25,4 +25,23 @@ public class CarEvents {
             return carId;
         }
     }
+
+    public static final class CarRegistered extends IdentifiedDomainEvent {
+        public final String carId;
+        public final String registrationNumber;
+
+        public static CarRegistered with(String carId, String registrationNumber) {
+            return new CarRegistered(carId, registrationNumber);
+        }
+
+        private CarRegistered(String carId, String registrationNumber) {
+            this.carId = carId;
+            this.registrationNumber = registrationNumber;
+        }
+
+        @Override
+        public String identity() {
+            return carId;
+        }
+    }
 }

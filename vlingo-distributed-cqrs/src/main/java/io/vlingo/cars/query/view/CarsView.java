@@ -37,6 +37,19 @@ public class CarsView {
         return Collections.unmodifiableList(cars);
     }
 
+    public CarsView mergeWith(String carId, String registrationNumber) {
+        final int index = cars.indexOf(CarItem.of(carId));
+        if (index >= 0) {
+            CarItem item = cars.get(index).mergeWith(registrationNumber);
+            CarsView view = new CarsView(new ArrayList<>(cars));
+            view.cars.set(index, item);
+
+            return view;
+        } else {
+            return this;
+        }
+    }
+
     @Override
     public String toString() {
         return "CarsView[" +
@@ -52,6 +65,10 @@ public class CarsView {
 
         public static CarItem of(String carId, String type, String model, String registrationNumber) {
             return new CarItem(carId, type, model, registrationNumber);
+        }
+
+        public static CarItem of(String carId) {
+            return new CarItem(carId, "", "", "");
         }
 
         private CarItem(String carId, String type, String model, String registrationNumber) {
@@ -82,6 +99,10 @@ public class CarsView {
                     ", model='" + model + '\'' +
                     ", registrationNumber='" + registrationNumber + '\'' +
                     '}';
+        }
+
+        public CarItem mergeWith(String registrationNumber) {
+            return new CarItem(this.carId, this.type, this.model, registrationNumber);
         }
     }
 }

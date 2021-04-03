@@ -41,6 +41,10 @@ public class CarState implements Serializable {
         return new CarState(this.carId, type, model, registrationNumber);
     }
 
+    public CarState registerWith(String registrationNumber) {
+        return new CarState(this.carId, this.type, this.model, registrationNumber);
+    }
+
     @Override
     public String toString() {
         return "CarState{" +

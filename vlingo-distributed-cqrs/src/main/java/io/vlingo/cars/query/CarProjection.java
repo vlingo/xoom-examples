@@ -65,6 +65,9 @@ public class CarProjection extends StateStoreProjectionActor<CarView> {
                     CarEvents.CarDefined defined = typed(event);
                     mergedData = CarView.with(defined.carId, defined.type, defined.model, defined.registrationNumber);
                     break;
+                case CarRegistered:
+                    CarEvents.CarRegistered registered = typed(event);
+                    mergedData = mergedData.mergeWith(registered.carId, registered.registrationNumber);
                 case Unmatched:
                     logger().warn("Event of type " + event.typeName() + " was not matched.");
                     break;

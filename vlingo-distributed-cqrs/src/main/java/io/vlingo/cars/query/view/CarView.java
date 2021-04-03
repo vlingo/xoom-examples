@@ -16,6 +16,12 @@ public class CarView {
         return new CarView(carId, type, model, registrationNumber);
     }
 
+    public CarView mergeWith(String carId, String registrationNumber) {
+        return this.carId.equals(carId)
+                ? new CarView(this.carId, this.type, this.model, registrationNumber)
+                : this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
