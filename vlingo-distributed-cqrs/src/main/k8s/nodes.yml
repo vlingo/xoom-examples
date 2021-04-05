@@ -45,7 +45,7 @@ spec:
         type: worker
     spec:
       containers:
-        - name: node3-app
+        - name: example-cqrs-app
           image: vlingo/example-cqrs:1.0
           ports:
             - name: operational
@@ -105,7 +105,7 @@ spec:
         type: worker
     spec:
       containers:
-        - name: node2-app
+        - name: example-cqrs-app
           image: vlingo/example-cqrs:1.0
           ports:
             - name: operational
@@ -170,7 +170,7 @@ spec:
         type: http
     spec:
       containers:
-        - name: node1-app
+        - name: example-cqrs-app
           image: vlingo/example-cqrs:1.0
           ports:
             - name: operational
