@@ -40,6 +40,7 @@ spec:
   template:
     metadata:
       labels:
+        system: example-cqrs
         tier: application
         appName: pod-node3
         type: worker
@@ -100,6 +101,7 @@ spec:
   template:
     metadata:
       labels:
+        system: example-cqrs
         tier: application
         appName: pod-node2
         type: worker
@@ -165,6 +167,7 @@ spec:
   template:
     metadata:
       labels:
+        system: example-cqrs
         tier: application
         appName: pod-node1
         type: http
