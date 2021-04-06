@@ -1,0 +1,8 @@
+event PetRegistered {
+  version semanticVersion
+  string id
+  vlingo:apps:io.vlingo.xoom.petclinic:Name:1.0.0 name
+  vlingo:apps:io.vlingo.xoom.petclinic:Date:1.0.0 birth
+  vlingo:apps:io.vlingo.xoom.petclinic:Kind:1.0.0 kind
+  vlingo:apps:io.vlingo.xoom.petclinic:Owner:1.0.0 owner
+}

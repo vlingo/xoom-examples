@@ -38,21 +38,21 @@ public class SpecialtyTypeResource extends DynamicResourceHandler {
   public Completes<Response> offer(final SpecialtyTypeData data) {
     return SpecialtyType.offer(stage(), data.name)
       .andThenTo(state -> Completes.withSuccess(Response.of(Created, headers(of(Location, location(state.id))), serialized(SpecialtyTypeData.from(state))))
-      .otherwise(arg -> Response.of(NotFound, location()))
+      .otherwise(arg -> Response.of(NotFound))
       .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
   }
 
   public Completes<Response> specialtyTypes() {
     return $queries.specialtyTypes()
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
   public Completes<Response> specialtyType(String id) {
     return $queries.specialtyTypeOf(id)
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
@@ -72,10 +72,6 @@ public class SpecialtyTypeResource extends DynamicResourceHandler {
             .param(String.class)
             .handle(this::specialtyType)
      );
-  }
-
-  private String location() {
-    return location("");
   }
 
   private String location(final String id) {

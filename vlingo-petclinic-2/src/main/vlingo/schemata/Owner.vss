@@ -1,0 +1,4 @@
+data Owner {
+  version semanticVersion
+  string clientId
+}

@@ -1,0 +1,4 @@
+data Name {
+  version semanticVersion
+  string value
+}

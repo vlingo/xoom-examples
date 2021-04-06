@@ -65,21 +65,21 @@ public class VeterinarianResource extends DynamicResourceHandler {
     final Specialty specialty = Specialty.of(data.specialty.specialtyTypeId);
     return Veterinarian.register(stage(), name, contact, specialty)
       .andThenTo(state -> Completes.withSuccess(Response.of(Created, headers(of(Location, location(state.id))), serialized(VeterinarianData.from(state))))
-      .otherwise(arg -> Response.of(NotFound, location()))
+      .otherwise(arg -> Response.of(NotFound))
       .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
   }
 
   public Completes<Response> veterinarians() {
     return $queries.veterinarians()
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
   public Completes<Response> veterinarian(String id) {
     return $queries.veterinarianOf(id)
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
@@ -107,10 +107,6 @@ public class VeterinarianResource extends DynamicResourceHandler {
             .param(String.class)
             .handle(this::veterinarian)
      );
-  }
-
-  private String location() {
-    return location("");
   }
 
   private String location(final String id) {

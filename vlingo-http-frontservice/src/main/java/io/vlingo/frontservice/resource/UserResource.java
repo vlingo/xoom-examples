@@ -68,20 +68,20 @@ public class UserResource {
     return stage.actorOf(User.class, addressFactory.from(userId))
       .andThenTo(user -> user.withContact(new Contact(contactData.emailAddress, contactData.telephoneNumber)))
       .andThenTo(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
-      .otherwise(noUser -> Response.of(NotFound, userLocation(userId)));
+      .otherwise(noUser -> Response.of(NotFound));
   }
 
   public Completes<Response> changeName(final String userId, final NameData nameData) {
     return stage.actorOf(User.class, addressFactory.from(userId))
       .andThenTo(user -> user.withName(new Name(nameData.given, nameData.family)))
       .andThenTo(userState -> Completes.withSuccess(Response.of(Ok, serialized(UserData.from(userState)))))
-      .otherwise(noUser -> Response.of(NotFound, userLocation(userId)));
+      .otherwise(noUser -> Response.of(NotFound));
   }
 
   public Completes<Response> queryUser(final String userId) {
     return queries.userDataOf(userId)
       .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-      .otherwise(noData -> Response.of(NotFound, userLocation(userId)));
+      .otherwise(noData -> Response.of(NotFound));
   }
 
   public Completes<Response> queryUsers() {

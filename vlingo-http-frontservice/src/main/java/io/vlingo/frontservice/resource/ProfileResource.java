@@ -61,7 +61,7 @@ public class ProfileResource {
   public Completes<Response> query(final String userId) {
     return queries.profileOf(userId)
       .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-      .otherwise(noData -> Response.of(NotFound, profileLocation(userId)));
+      .otherwise(noData -> Response.of(NotFound));
   }
 
   private String profileLocation(final String userId) {

@@ -33,28 +33,28 @@ public class AnimalTypeResource extends DynamicResourceHandler {
     return resolve(id)
             .andThenTo(animalType -> animalType.rename(data.name))
             .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(AnimalTypeData.from(state)))))
-            .otherwise(noGreeting -> Response.of(NotFound, location(id)))
+            .otherwise(noGreeting -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
   public Completes<Response> offerTreatmentFor(final AnimalTypeData data) {
     return AnimalType.offerTreatmentFor(stage(), data.name)
       .andThenTo(state -> Completes.withSuccess(Response.of(Created, headers(of(Location, location(state.id))), serialized(AnimalTypeData.from(state))))
-      .otherwise(arg -> Response.of(NotFound, location()))
+      .otherwise(arg -> Response.of(NotFound))
       .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
   }
 
   public Completes<Response> animalTypes() {
     return $queries.animalTypes()
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
   public Completes<Response> animalType(String id) {
     return $queries.animalTypeOf(id)
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
@@ -74,10 +74,6 @@ public class AnimalTypeResource extends DynamicResourceHandler {
             .param(String.class)
             .handle(this::animalType)
      );
-  }
-
-  private String location() {
-    return location("");
   }
 
   private String location(final String id) {
