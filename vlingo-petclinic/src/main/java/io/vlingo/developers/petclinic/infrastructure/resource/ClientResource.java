@@ -36,7 +36,7 @@ public class ClientResource extends DynamicResourceHandler {
     return resolve(id)
             .andThenTo(client -> client.changeName(name))
             .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(ClientData.from(state)))))
-            .otherwise(noGreeting -> Response.of(NotFound, location(id)))
+            .otherwise(noGreeting -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
@@ -45,7 +45,7 @@ public class ClientResource extends DynamicResourceHandler {
     return resolve(id)
             .andThenTo(client -> client.changeContactInformation(contact))
             .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(ClientData.from(state)))))
-            .otherwise(noGreeting -> Response.of(NotFound, location(id)))
+            .otherwise(noGreeting -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
@@ -54,21 +54,21 @@ public class ClientResource extends DynamicResourceHandler {
     final ContactInformation contact = ContactInformation.of(data.contact.postalAddress, data.contact.telephone);
     return Client.register(stage(), name, contact)
       .andThenTo(state -> Completes.withSuccess(Response.of(Created, headers(of(Location, location(state.id))), serialized(ClientData.from(state))))
-      .otherwise(arg -> Response.of(NotFound, location()))
+      .otherwise(arg -> Response.of(NotFound))
       .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
   }
 
   public Completes<Response> clients() {
     return $queries.clients()
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
   public Completes<Response> client(String id) {
     return $queries.clientOf(id)
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
@@ -92,10 +92,6 @@ public class ClientResource extends DynamicResourceHandler {
             .param(String.class)
             .handle(this::client)
      );
-  }
-
-  private String location() {
-    return location("");
   }
 
   private String location(final String id) {

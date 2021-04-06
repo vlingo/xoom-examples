@@ -1,0 +1,5 @@
+event PetOwnerChanged {
+  version semanticVersion
+  string id
+  vlingo:apps:io.vlingo.xoom.petclinic:Owner:1.0.0 owner
+}

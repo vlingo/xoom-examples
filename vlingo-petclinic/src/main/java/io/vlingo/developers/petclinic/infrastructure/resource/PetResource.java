@@ -81,28 +81,28 @@ public class PetResource extends DynamicResourceHandler {
     final Owner owner = Owner.of(data.owner.clientId);
     return Pet.register(stage(), name, data.birth, kind, owner)
       .andThenTo(state -> Completes.withSuccess(Response.of(Created, headers(of(Location, location(state.id))), serialized(PetData.from(state))))
-      .otherwise(arg -> Response.of(NotFound, location()))
+      .otherwise(arg -> Response.of(NotFound))
       .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
   }
 
   public Completes<Response> pets() {
     return $queries.pets()
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
   public Completes<Response> pet(String id) {
     return $queries.petOf(id)
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
   public Completes<Response> petsForOwner(String ownerId) {
     return $queries.petsForOwner(ownerId)
             .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound, location()))
+            .otherwise(arg -> Response.of(NotFound))
             .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
   }
 
@@ -141,10 +141,6 @@ public class PetResource extends DynamicResourceHandler {
             .param(String.class)
             .handle(this::petsForOwner)
      );
-  }
-
-  private String location() {
-    return location("");
   }
 
   private String location(final String id) {
