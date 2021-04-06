@@ -28,6 +28,7 @@ spec:
   template:
     metadata:
       labels:
+        system: example-cqrs
         tier: database
         appName: pod-postgresql
     spec:
