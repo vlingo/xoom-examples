@@ -21,8 +21,8 @@ To be able to follow along, you'll need:
 
 * JDK 8
 * Maven 3.3.x
-* A running instance of XOOM SCHEMATA (see [below](##setting-up-xoom-schemata))
-* Some master data (see [Provision Schemata Master](##provision-schemata-master))
+* A running instance of XOOM SCHEMATA (see [below](#setting-up-xoom-schemata))
+* Some master data (see [Provision Schemata Master](#provision-schemata-master))
 
 ### Setting Up XOOM SCHEMATA
 
@@ -46,7 +46,7 @@ For further configuration options like connecting to a persistent database, see 
 
 ### Provision Schemata Master Data
 
-To integrate your projects with the schema registry, you need to make your organization structure and available published languages known first. You can do this either via the [UI](####using-the-ui) or the [HTTP API](####using-the-api).
+To integrate your projects with the schema registry, you need to make your organization structure and available published languages known first. You can do this either via the [UI](#using-the-ui) or the [HTTP API](#using-the-api).
 
 Schemas are structured in a hierarchical manner:
 `Organisation -> Units -> Contexts -> Schemas -> Schema Versions`
@@ -90,7 +90,7 @@ The build output should contain something like:
 ```
 The UI should display the created schemas, similar to this:
 ![home page of the VLINGO/SCHEMATA UI](https://gblobscdn.gitbook.com/assets%2F-LLB-V2sJmANuWISDmBf%2F-MM21620_xboVuiBgbJw%2F-MM29DWTgqgr-rH17m5H%2FschemataHomeSpec.png)
-Only the hierarchy elements will be different, as defined in [Using the UI](####using-the-ui).
+Only the hierarchy elements will be different, as defined in [Using the UI](#using-the-ui).
 You can also have a look at the generated code (`Specification -> Source`) and the generated description (`Description -> Preview`).
 
 
