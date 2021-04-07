@@ -22,7 +22,7 @@ To be able to follow along, you'll need:
 * JDK 8
 * Maven 3.3.x
 * A running instance of XOOM SCHEMATA (see [below](#setting-up-xoom-schemata))
-* Some master data (see [Provision Schemata Master](#provision-schemata-master))
+* Some master data (see [Provision Schemata Master Data](#provision-schemata-master-data))
 
 ### Setting Up XOOM SCHEMATA
 
