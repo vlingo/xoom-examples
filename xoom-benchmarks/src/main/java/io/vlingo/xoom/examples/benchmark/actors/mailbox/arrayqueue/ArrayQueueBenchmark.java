@@ -5,7 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.benchmark.actors.mailbox.arrayqueue;
+package io.vlingo.xoom.examples.benchmark.actors.mailbox.arrayqueue;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -20,9 +20,9 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 
-import io.vlingo.actors.Actor;
-import io.vlingo.actors.Definition;
-import io.vlingo.actors.World;
+import io.vlingo.xoom.actors.Actor;
+import io.vlingo.xoom.actors.Definition;
+import io.vlingo.xoom.actors.World;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
