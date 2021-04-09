@@ -74,7 +74,7 @@
       </activation>
       <modules>
         <module>xoom-actors-playground</module>
-        <module>vlingo-actors-playground-kotlin</module>
+        <module>xoom-actors-playground-kotlin</module>
         <module>vlingo-auth-authservice</module>
         <module>vlingo-benchmarks</module>
         <module>vlingo-calculate-pi</module>

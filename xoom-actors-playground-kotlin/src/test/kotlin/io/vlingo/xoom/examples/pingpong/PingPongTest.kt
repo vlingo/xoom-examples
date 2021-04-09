@@ -1,8 +1,7 @@
-package io.vlingo
+package io.vlingo.xoom.examples.pingpong
 
-import io.vlingo.actors.Definition
-import io.vlingo.actors.World
-import io.vlingo.actors.testkit.TestUntil
+import io.vlingo.xoom.actors.World
+import io.vlingo.xoom.actors.testkit.TestUntil
 import org.junit.Test
 
 class PingPongTest {

@@ -1,6 +1,6 @@
-package io.vlingo
+package io.vlingo.xoom.examples.pingpong
 
-import io.vlingo.actors.Actor
+import io.vlingo.xoom.actors.Actor
 
 class PongerActor: Actor, Ponger {
 
