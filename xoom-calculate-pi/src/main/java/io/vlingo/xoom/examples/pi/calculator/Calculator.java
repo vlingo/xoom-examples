@@ -5,11 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.pi.calculator;
+package io.vlingo.xoom.examples.pi.calculator;
 
-import io.vlingo.actors.Stage;
-import io.vlingo.actors.Stoppable;
-import io.vlingo.common.Completes;
+import io.vlingo.xoom.actors.Stage;
+import io.vlingo.xoom.actors.Stoppable;
+import io.vlingo.xoom.common.Completes;
 
 public interface Calculator extends Stoppable {
   static Calculator with(final Stage stage, final int totalWorkers, final int totalPartitionValues, final int totalMessages) {
