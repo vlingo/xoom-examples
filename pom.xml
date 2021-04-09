@@ -78,7 +78,7 @@
         <module>xoom-auth-authservice</module>
         <module>xoom-benchmarks</module>
         <module>xoom-calculate-pi</module>
-        <module>vlingo-distributed-cqrs</module>
+        <module>xoom-distributed-cqrs</module>
         <module>vlingo-ecommerce</module>
         <module>vlingo-eventjournal</module>
         <!--module>vlingo-hike-backend</module-->
