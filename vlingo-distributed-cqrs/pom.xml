@@ -3,7 +3,7 @@
 
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-distributed-cqrs</artifactId>
-  <version>1.6.1-SNAPSHOT</version>
+  <version>1.6.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,25 +16,25 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio-jdbc</artifactId>
-      <version>1.6.1-SNAPSHOT</version>
+      <version>1.6.0</version>
     </dependency>
 
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>1.6.1-SNAPSHOT</version>
+      <version>1.6.0</version>
     </dependency>
 
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-cluster</artifactId>
-      <version>1.6.1-SNAPSHOT</version>
+      <version>1.6.0</version>
     </dependency>
 
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-http</artifactId>
-      <version>1.6.1-SNAPSHOT</version>
+      <version>1.6.0</version>
     </dependency>
 
     <dependency>
