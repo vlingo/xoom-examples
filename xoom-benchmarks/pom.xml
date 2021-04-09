@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.vlingo</groupId>
-  <artifactId>vlingo-benchmarks</artifactId>
-  <version>1.6.0</version>
-  <name>vlingo-benchmarks</name>
+  <groupId>io.vlingo.xoom.examples</groupId>
+  <artifactId>xoom-benchmarks</artifactId>
+  <version>1.6.1-SNAPSHOT</version>
+  <name>xoom-benchmarks</name>
   <description>Benchmarks on platform components.</description>
-  <url>https://github.com/vlingo/vlingo-examples</url>
+  <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>
       <name>Mozilla Public License 2.0</name>
@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <jmh.version>1.21</jmh.version>
+    <jmh.version>1.29</jmh.version>
   </properties>
   <dependencies>
     <dependency>
@@ -36,9 +36,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-actors</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-actors</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
@@ -67,7 +67,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.2.4</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -76,6 +76,16 @@
             </goals>
             <configuration>
               <finalName>benchmarks</finalName>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>org.openjdk.jmh.Main</mainClass>
