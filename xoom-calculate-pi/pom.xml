@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.vlingo</groupId>
-  <artifactId>vlingo-calculate-pi</artifactId>
-  <version>1.6.0</version>
-  <name>vlingo-calculate-pi</name>
+  <groupId>io.vlingo.xoom.examples</groupId>
+  <artifactId>xoom-calculate-pi</artifactId>
+  <version>1.6.1-SNAPSHOT</version>
+  <name>xoom-calculate-pi</name>
   <description>Example of VLINGO/ACTORS calculating Pi.</description>
-  <url>https://github.com/vlingo/vlingo-examples</url>
+  <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>
       <name>Mozilla Public License 2.0</name>
@@ -30,9 +30,9 @@
       <version>1.0.13</version>
     </dependency>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-actors</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-actors</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
@@ -46,7 +46,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>io.vlingo.pi.calculator.Pi</mainClass>
+              <mainClass>io.vlingo.xoom.examples.pi.calculator.Pi</mainClass>
               <classpathPrefix>dependency-jars/</classpathPrefix>
               <useUniqueVersions>false</useUniqueVersions>
             </manifest>
@@ -96,7 +96,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>io.vlingo.pi.calculator.Pi</mainClass>
+          <mainClass>io.vlingo.xoom.examples.pi.calculator.Pi</mainClass>
         </configuration>
       </plugin>
       

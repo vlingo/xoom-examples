@@ -5,7 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.pi.calculator;
+package io.vlingo.xoom.examples.pi.calculator;
 
 public interface PartitionCalculationInterest {
   void informCalculation(final double result);

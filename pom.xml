@@ -77,7 +77,7 @@
         <module>xoom-actors-playground-kotlin</module>
         <module>xoom-auth-authservice</module>
         <module>xoom-benchmarks</module>
-        <module>vlingo-calculate-pi</module>
+        <module>xoom-calculate-pi</module>
         <module>vlingo-distributed-cqrs</module>
         <module>vlingo-ecommerce</module>
         <module>vlingo-eventjournal</module>

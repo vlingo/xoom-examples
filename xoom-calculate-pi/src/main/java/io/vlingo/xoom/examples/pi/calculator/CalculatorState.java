@@ -5,10 +5,10 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.pi.calculator;
+package io.vlingo.xoom.examples.pi.calculator;
 
-import io.vlingo.actors.CompletesEventually;
-import io.vlingo.actors.Stage;
+import io.vlingo.xoom.actors.CompletesEventually;
+import io.vlingo.xoom.actors.Stage;
 
 final class CalculatorState {
   CompletesEventually completes;

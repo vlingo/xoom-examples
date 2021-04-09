@@ -5,11 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.pi.calculator;
+package io.vlingo.xoom.examples.pi.calculator;
 
 import java.util.concurrent.CountDownLatch;
 
-import io.vlingo.actors.World;
+import io.vlingo.xoom.actors.World;
 
 public class Pi {
   public static void main(final String[] args) throws Exception {
