@@ -1,21 +1,21 @@
-# vlingo-auth-authservice Example
+# xoom-auth-authservice Example
 ## How-to Build
 ```
-cd $VLINGO_HOME/vlingo-examples
+cd $XOOM_HOME/xoom-examples
 mvn clean install
 ```
 
 or
 
 ```
-cd $VLINGO_HOME/vlingo-examples/vlingo-auth-authservice
+cd $XOOM_HOME/xoom-examples/xoom-auth-authservice
 mvn clean install
 ```
 
 ## How-to Start 
 ```
-cd $VLINGO_HOME/vlingo-examples/vlingo-auth-authservice
-java -jar target/vlingo-auth-authservice-[version]-jar-with-dependencies.jar
+cd $XOOM_HOME/xoom-examples/xoom-auth-authservice
+java -jar target/xoom-auth-authservice-[version]-jar-with-dependencies.jar
 ```
 
 ## How-to Interact
@@ -46,7 +46,7 @@ In order to load data:
 1. Start authservice as described above.
 2. [Download Apache JMeter](https://jmeter.apache.org) for your OS.
 3. Start Apache JMeter according to your OS.
-4. It's important to navigate to the JMeter script so that a present-working-directory is established as data is accessed relative to this direcctory.  Open `authDataBootstrap.jmx` in this directory vlingo-auth-authservice/jmeter/.
+4. It's important to navigate to the JMeter script so that a present-working-directory is established as data is accessed relative to this direcctory.  Open `authDataBootstrap.jmx` in this directory xoom-auth-authservice/jmeter/.
 5. Click the `start` icon (green triangle).
 
 Each of ten tenants data is loaded by way of 10 separate threads named `Load Tenant One`, `Load Tenant Two`, etc.  Spin down and click on each of the elements of the threads to see how this was setup.

@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.vlingo</groupId>
-  <artifactId>vlingo-auth-authservice</artifactId>
-  <version>1.6.0</version>
+  <groupId>io.vlingo.xoom.examples</groupId>
+  <artifactId>xoom-auth-authservice</artifactId>
+  <version>1.6.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>vlingo-auth-authservice</name>
-  <description>Example of vlingo/http authorization service.</description>
-  <url>https://github.com/vlingo/vlingo-examples</url>
+  <name>xoom-auth-authservice</name>
+  <description>Example of vlingo/xoom-http authorization service.</description>
+  <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>
       <name>Mozilla Public License 2.0</name>
@@ -33,7 +33,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>io.vlingo.authservice.infra.Bootstrap</mainClass>
+          <mainClass>io.vlingo.xoom.examples.authservice.infra.Bootstrap</mainClass>
         </configuration>
       </plugin>
       <plugin>
@@ -50,7 +50,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>io.vlingo.authservice.infra.Bootstrap</mainClass>
+              <mainClass>io.vlingo.xoom.examples.authservice.infra.Bootstrap</mainClass>
               <classpathPrefix>dependency-jars/</classpathPrefix>
             </manifest>
           </archive>
@@ -113,34 +113,34 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-auth</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-auth</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-common</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-common</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-actors</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-actors</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-http</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-http</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-symbio</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-symbio</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-lattice</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-lattice</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
