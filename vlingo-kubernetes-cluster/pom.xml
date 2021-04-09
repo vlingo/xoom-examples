@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.vlingo</groupId>
     <artifactId>vlingo-kubernetes-cluster</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.6.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -86,7 +86,7 @@
         <dependency>
             <groupId>io.vlingo</groupId>
             <artifactId>vlingo-cluster</artifactId>
-            <version>1.6.1-SNAPSHOT</version>
+            <version>1.6.0</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

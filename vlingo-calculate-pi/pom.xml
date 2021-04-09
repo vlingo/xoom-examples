@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-calculate-pi</artifactId>
-  <version>1.6.1-SNAPSHOT</version>
+  <version>1.6.0</version>
   <name>vlingo-calculate-pi</name>
   <description>Example of VLINGO/ACTORS calculating Pi.</description>
   <url>https://github.com/vlingo/vlingo-examples</url>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>1.6.1-SNAPSHOT</version>
+      <version>1.6.0</version>
     </dependency>
   </dependencies>
   <build>

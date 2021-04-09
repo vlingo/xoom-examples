@@ -2,12 +2,12 @@
   <parent>
     <groupId>io.examples</groupId>
     <artifactId>vlingo-xoom-kubernetes-microservice</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.6.0</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>order-service</artifactId>
-  <version>1.6.1-SNAPSHOT</version>
+  <version>1.6.0</version>
 
   <properties>
     <micronaut.version>1.2.10</micronaut.version>
@@ -54,13 +54,13 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-lattice</artifactId>
-      <version>1.6.1-SNAPSHOT</version>
+      <version>1.6.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-symbio</artifactId>
-      <version>1.6.1-SNAPSHOT</version>
+      <version>1.6.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
