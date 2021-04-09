@@ -1,10 +1,10 @@
-# vlingo-distributed-ping-pong
+# xoom-distributed-ping-pong
 
 A simple example to demo vlingo/lattice Grid features, running on three vlingo/cluster nodes.
 
 ## Building and Running In JVM Only
 
-Start a console/command window so you can build the `vlingo-distributed-ping-pong` and start it by executing the built `jar`.
+Start a console/command window so you can build the `xoom-distributed-ping-pong` and start it by executing the built `jar`.
 
 Note: The following version number may have changed since this README was written. The `jar` will be generated with the latest
 vlingo/PLATFORM version number.
@@ -12,16 +12,16 @@ vlingo/PLATFORM version number.
 ```
 $ mvn clean package
 ...
-console1$ java -jar target/vlingo-distributed-ping-pong-1.2.20-SNAPSHOT.jar node1
+console1$ java -jar target/xoom-distributed-ping-pong-1.6.1-SNAPSHOT.jar node1
 ```
 
 Following this, open two more console/command windows, `cd` to the project directory, and in each console/command window start
 a different node.
 
 ```
-console2$ java -jar target/vlingo-distributed-ping-pong-1.2.20-SNAPSHOT.jar node2
+console2$ java -jar target/xoom-distributed-ping-pong-1.6.1-SNAPSHOT.jar node2
 ...
-console3$ java -jar target/vlingo-distributed-ping-pong-1.2.20-SNAPSHOT.jar node3
+console3$ java -jar target/xoom-distributed-ping-pong-1.6.1-SNAPSHOT.jar node3
 ```
 
 Observe the ping-pong played across nodes. The game distribution will depend on the actor addresses generated for each
@@ -45,7 +45,7 @@ mvn exec:java -Dexec.args="node2"
 mvn exec:java -Dexec.args="node3"
 ```
 
-You may want to configure the ports for the communication channels between the nodes in the cluster in `src/main/resources/vlingo-cluster.properties`.
+You may want to configure the ports for the communication channels between the nodes in the cluster in `src/main/resources/xoom-cluster.properties`.
 
 A successful run should output the similar logs as the following:
 
@@ -59,9 +59,9 @@ Ponger::pong::node1::GridAddress[id=73717fcd-d6cc-4957-9e3d-a3200ea44db3, name=(
 ...
 ``` 
 
-- See project repository: https://github.com/vlingo/vlingo-examples
+- See project repository: https://github.com/vlingo/xoom-examples
 
-- See Grid documentation: https://docs.vlingo.io/vlingo-lattice/grid
+- See Grid documentation: https://docs.vlingo.io/xoom-lattice/grid
 
 
 ## Licensing

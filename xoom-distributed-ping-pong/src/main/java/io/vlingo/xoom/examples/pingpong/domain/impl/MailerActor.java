@@ -1,11 +1,11 @@
-package io.vlingo.pingpong.domain.impl;
+package io.vlingo.xoom.examples.pingpong.domain.impl;
 
-import io.vlingo.actors.Actor;
-import io.vlingo.actors.ActorProxyBase;
-import io.vlingo.pingpong.domain.Config;
-import io.vlingo.pingpong.domain.Mailer;
-import io.vlingo.pingpong.domain.Pinger;
-import io.vlingo.pingpong.domain.Ponger;
+import io.vlingo.xoom.actors.Actor;
+import io.vlingo.xoom.actors.ActorProxyBase;
+import io.vlingo.xoom.examples.pingpong.domain.Config;
+import io.vlingo.xoom.examples.pingpong.domain.Mailer;
+import io.vlingo.xoom.examples.pingpong.domain.Pinger;
+import io.vlingo.xoom.examples.pingpong.domain.Ponger;
 
 public class MailerActor extends Actor implements Mailer {
 	private final Pinger pinger;

@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.vlingo</groupId>
-  <artifactId>vlingo-distributed-ping-pong</artifactId>
-  <version>1.6.0</version>
+  <groupId>io.vlingo.xoom.examples</groupId>
+  <artifactId>xoom-distributed-ping-pong</artifactId>
+  <version>1.6.1-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,9 +13,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-lattice</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-lattice</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -34,7 +34,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>io.vlingo.pingpong.App</mainClass>
+              <mainClass>io.vlingo.xoom.examples.pingpong.App</mainClass>
               <classpathPrefix>dependency-jars/</classpathPrefix>
               <useUniqueVersions>false</useUniqueVersions>
             </manifest>
@@ -81,7 +81,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>io.vlingo.pingpong.App</mainClass>
+          <mainClass>io.vlingo.xoom.examples.pingpong.App</mainClass>
         </configuration>
       </plugin>
     </plugins>

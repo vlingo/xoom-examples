@@ -1,4 +1,4 @@
-package io.vlingo.pingpong.domain;
+package io.vlingo.xoom.examples.pingpong.domain;
 
 public final class Config {
 	public static String nodeName = "undefined";
