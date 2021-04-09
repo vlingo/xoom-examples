@@ -7,7 +7,7 @@
 
 package playground;
 
-import io.vlingo.actors.Actor;
+import io.vlingo.xoom.actors.Actor;
 
 public class PongerActor extends Actor implements Ponger {
   private final Ponger self;

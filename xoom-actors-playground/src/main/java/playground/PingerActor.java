@@ -7,8 +7,8 @@
 
 package playground;
 
-import io.vlingo.actors.Actor;
-import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.xoom.actors.Actor;
+import io.vlingo.xoom.actors.testkit.TestUntil;
 
 public class PingerActor extends Actor implements Pinger {
   private int count;
