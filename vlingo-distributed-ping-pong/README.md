@@ -68,7 +68,7 @@ Ponger::pong::node1::GridAddress[id=73717fcd-d6cc-4957-9e3d-a3200ea44db3, name=(
 
 License (See LICENSE file for full license)
 -------------------------------------------
-Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+Copyright © 2012-2021 VLINGO LABS. All rights reserved.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL
