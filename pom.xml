@@ -79,7 +79,7 @@
         <module>xoom-benchmarks</module>
         <module>xoom-calculate-pi</module>
         <module>xoom-distributed-cqrs</module>
-        <module>vlingo-ecommerce</module>
+        <module>xoom-ecommerce</module>
         <module>vlingo-eventjournal</module>
         <!--module>vlingo-hike-backend</module-->
         <module>xoom-distributed-ping-pong</module>
