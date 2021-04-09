@@ -7,7 +7,7 @@
 
 package playground;
 
-import io.vlingo.actors.Stoppable;
+import io.vlingo.xoom.actors.Stoppable;
 
 public interface Pinger extends Stoppable {
   void ping(final Ponger ponger);

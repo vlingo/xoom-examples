@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.vlingo</groupId>
-  <artifactId>vlingo-actors-playground</artifactId>
-  <version>1.6.0</version>
-  <name>vlingo-actors-playground</name>
-  <description>Example of vlingo/actors playing ping pong.</description>
-  <url>https://github.com/vlingo/vlingo-examples</url>
+  <groupId>io.vlingo.xoom</groupId>
+  <artifactId>xoom-actors-playground</artifactId>
+  <version>1.6.1-SNAPSHOT</version>
+  <name>xoom-actors-playground</name>
+  <description>Example of vlingo/xoom-actors playing ping pong.</description>
+  <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>
       <name>Mozilla Public License 2.0</name>
@@ -30,9 +30,9 @@
       <version>1.0.13</version>
     </dependency>
     <dependency>
-      <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-actors</artifactId>
-      <version>1.6.0</version>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-actors</artifactId>
+      <version>1.6.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>

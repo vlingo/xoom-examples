@@ -9,8 +9,8 @@ package playground;
 
 import org.junit.Test;
 
-import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.xoom.actors.World;
+import io.vlingo.xoom.actors.testkit.TestUntil;
 
 public class PlaygroundTest {
 

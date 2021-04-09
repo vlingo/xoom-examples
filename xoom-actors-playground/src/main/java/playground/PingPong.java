@@ -7,8 +7,8 @@
 
 package playground;
 
-import io.vlingo.actors.World;
-import io.vlingo.actors.testkit.TestUntil;
+import io.vlingo.xoom.actors.World;
+import io.vlingo.xoom.actors.testkit.TestUntil;
 
 public class PingPong {
   public static void main(final String[] args) throws Exception {
