@@ -82,7 +82,7 @@
         <module>vlingo-ecommerce</module>
         <module>vlingo-eventjournal</module>
         <!--module>vlingo-hike-backend</module-->
-        <module>vlingo-distributed-ping-pong</module>
+        <module>xoom-distributed-ping-pong</module>
         <module>vlingo-http-backservice</module>
         <module>vlingo-http-frontservice</module>
         <module>vlingo-iddd-agilepm</module>

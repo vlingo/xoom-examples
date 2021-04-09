@@ -1,13 +1,13 @@
-package io.vlingo.pingpong;
+package io.vlingo.xoom.examples.pingpong;
 
-import io.vlingo.actors.Grid;
-import io.vlingo.pingpong.domain.Config;
-import io.vlingo.pingpong.domain.Mailer;
-import io.vlingo.pingpong.domain.Pinger;
-import io.vlingo.pingpong.domain.Ponger;
-import io.vlingo.pingpong.domain.impl.MailerActor;
-import io.vlingo.pingpong.domain.impl.PingerActor;
-import io.vlingo.pingpong.domain.impl.PongerActor;
+import io.vlingo.xoom.actors.Grid;
+import io.vlingo.xoom.examples.pingpong.domain.Config;
+import io.vlingo.xoom.examples.pingpong.domain.Mailer;
+import io.vlingo.xoom.examples.pingpong.domain.Pinger;
+import io.vlingo.xoom.examples.pingpong.domain.Ponger;
+import io.vlingo.xoom.examples.pingpong.domain.impl.MailerActor;
+import io.vlingo.xoom.examples.pingpong.domain.impl.PingerActor;
+import io.vlingo.xoom.examples.pingpong.domain.impl.PongerActor;
 
 public class App {
 
