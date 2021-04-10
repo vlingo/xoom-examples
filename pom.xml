@@ -92,7 +92,7 @@
         <module>xoom-petclinic-2</module>
         <module>xoom-reactive-messaging-patterns</module>
         <module>xoom-simgui-mediator</module>
-        <module>vlingo-platform-patterns</module>
+        <module>xoom-platform-patterns</module>
         <module>vlingo-xoom-heroku-microservice</module>
         <module>vlingo-xoom-kubernetes-microservice</module>
       </modules>
