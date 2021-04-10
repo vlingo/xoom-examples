@@ -86,7 +86,7 @@
         <module>xoom-http-backservice</module>
         <module>xoom-http-frontservice</module>
         <module>xoom-iddd-agilepm</module>
-        <module>vlingo-iddd-collaboration</module>
+        <module>xoom-iddd-collaboration</module>
         <module>vlingo-kubernetes-cluster</module>
         <module>vlingo-petclinic</module>
         <module>vlingo-reactive-messaging-patterns</module>
