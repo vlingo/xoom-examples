@@ -1,0 +1,10 @@
+applications:
+- name: backservice
+  disk_quota: 1G
+  docker:
+    image: kaseoga/xoom-examples-backservice
+  instances: 1
+  memory: 256M
+  routes:
+  - route: backservice.apps.internal
+  stack: cflinuxfs2
