@@ -37,7 +37,7 @@
     </dependency>
   </dependencies>
   <build>
-    <testSourceDirectory>vlingo-iddd-agilepm/src/test/kotlin</testSourceDirectory>
+    <testSourceDirectory>xoom-iddd-agilepm/src/test/kotlin</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
