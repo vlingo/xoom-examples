@@ -13,7 +13,6 @@ import io.vlingo.xoom.symbio.store.dispatch.NoOpDispatcher;
 import io.vlingo.xoom.symbio.store.state.StateStore;
 import io.vlingo.xoom.symbio.store.state.inmemory.InMemoryStateStoreActor;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -67,7 +66,7 @@ public class ClientQueryTests {
         assertEquals("Malfoy", item.name.last);
     }
 
-    @Test @Disabled("due to unknown bug")
+    @Test
     public void clientsEmptyResult(){
         Collection<ClientData> animalTypes = queries.clients().await();
         assertEquals(0, animalTypes.size());

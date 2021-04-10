@@ -2,7 +2,6 @@ package io.vlingo.xoom.examples.petclinic;
 
 import io.restassured.common.mapper.TypeRef;
 import io.vlingo.xoom.examples.petclinic.infrastructure.SpecialtyTypeData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,14 +11,14 @@ import static org.hamcrest.Matchers.*;
 
 public class SpecialtyTypeResourceTests extends AbstractRestTest{
 
-    @Test @Disabled("due to unknown bug")
+    @Test
     public void testEmptyResponse(){
         given()
                 .when()
                 .get("/specialties")
                 .then()
                 .statusCode(200)
-                .body(is(equalTo("")));
+                .body(is(equalTo("[]")));
     }
 
     @Test
