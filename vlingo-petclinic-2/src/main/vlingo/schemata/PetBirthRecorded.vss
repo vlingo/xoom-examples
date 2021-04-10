@@ -1,5 +1,0 @@
-event PetBirthRecorded {
-  version semanticVersion
-  string id
-  vlingo:apps:io.vlingo.xoom.petclinic:Date:1.0.0 birth
-}

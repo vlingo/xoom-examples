@@ -1,5 +1,0 @@
-event VeterinarianContactInformationChanged {
-  version semanticVersion
-  string id
-  vlingo:apps:io.vlingo.xoom.petclinic:ContactInformation:1.0.0 contactInformation
-}
