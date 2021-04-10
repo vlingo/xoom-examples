@@ -85,7 +85,7 @@
         <module>xoom-distributed-ping-pong</module>
         <module>xoom-http-backservice</module>
         <module>xoom-http-frontservice</module>
-        <module>vlingo-iddd-agilepm</module>
+        <module>xoom-iddd-agilepm</module>
         <module>vlingo-iddd-collaboration</module>
         <module>vlingo-kubernetes-cluster</module>
         <module>vlingo-petclinic</module>
