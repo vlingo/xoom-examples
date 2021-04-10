@@ -90,7 +90,7 @@
         <module>xoom-kubernetes-cluster</module>
         <module>xoom-petclinic</module>
         <module>xoom-petclinic-2</module>
-        <module>vlingo-reactive-messaging-patterns</module>
+        <module>xoom-reactive-messaging-patterns</module>
         <module>vlingo-simgui-mediator</module>
         <module>vlingo-platform-patterns</module>
         <module>vlingo-xoom-heroku-microservice</module>
