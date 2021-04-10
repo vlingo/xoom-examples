@@ -1,6 +1,0 @@
-event ClientRegistered {
-  version semanticVersion
-  string id
-  vlingo:apps:io.vlingo.xoom.petclinic:FullName:1.0.0 name
-  vlingo:apps:io.vlingo.xoom.petclinic:ContactInformation:1.0.0 contactInformation
-}
