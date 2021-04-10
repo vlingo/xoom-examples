@@ -31,14 +31,14 @@ public class PetResourceTests extends AbstractRestTest{
             "  }\n" +
         "}";
 
-    @Test @Disabled("due to unknown bug")
+    @Test
     public void testEmptyResponse(){
         given()
                 .when()
                 .get("/pets")
                 .then()
                 .statusCode(200)
-                .body(is(equalTo("")));
+                .body(is(equalTo("[]")));
     }
 
     @Test

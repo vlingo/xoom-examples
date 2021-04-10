@@ -2,7 +2,6 @@ package io.vlingo.xoom.examples.petclinic;
 
 import io.restassured.common.mapper.TypeRef;
 import io.vlingo.xoom.examples.petclinic.infrastructure.VeterinarianData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -34,14 +33,14 @@ public class VeterinarianResourceTests extends AbstractRestTest{
             "  }\n" +
             "}";
 
-    @Test @Disabled("due to unknown bug")
+    @Test
     public void testEmptyResponse(){
         given()
                 .when()
                 .get("/veterinarians")
                 .then()
                 .statusCode(200)
-                .body(is(equalTo("")));
+                .body(is(equalTo("[]")));
     }
 
     @Test
