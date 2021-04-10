@@ -5,11 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.kubernetescluster;
+package io.vlingo.xoom.examples.kubernetescluster;
 
-import io.vlingo.actors.World;
-import io.vlingo.cluster.NodeBootstrap;
-import io.vlingo.cluster.model.Properties;
+import io.vlingo.xoom.actors.World;
+import io.vlingo.xoom.cluster.NodeBootstrap;
+import io.vlingo.xoom.cluster.model.Properties;
 
 public class Bootstrap {
 

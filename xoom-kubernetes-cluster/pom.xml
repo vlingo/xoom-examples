@@ -2,14 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.vlingo</groupId>
-    <artifactId>vlingo-kubernetes-cluster</artifactId>
-    <version>1.6.0</version>
+    <groupId>io.vlingo.xoom</groupId>
+    <artifactId>xoom-kubernetes-cluster</artifactId>
+    <version>1.6.1-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <exec.mainClass>io.vlingo.kubernetescluster.Bootstrap</exec.mainClass>
+        <exec.mainClass>io.vlingo.xoom.examples.kubernetescluster.Bootstrap</exec.mainClass>
     </properties>
     <repositories>
       <repository>
@@ -84,9 +84,9 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>io.vlingo</groupId>
-            <artifactId>vlingo-cluster</artifactId>
-            <version>1.6.0</version>
+            <groupId>io.vlingo.xoom</groupId>
+            <artifactId>xoom-cluster</artifactId>
+            <version>1.6.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
