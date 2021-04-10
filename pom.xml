@@ -80,7 +80,7 @@
         <module>xoom-calculate-pi</module>
         <module>xoom-distributed-cqrs</module>
         <module>xoom-ecommerce</module>
-        <module>vlingo-eventjournal</module>
+        <module>xoom-eventjournal</module>
         <!--module>vlingo-hike-backend</module-->
         <module>xoom-distributed-ping-pong</module>
         <module>vlingo-http-backservice</module>
