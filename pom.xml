@@ -87,7 +87,7 @@
         <module>xoom-http-frontservice</module>
         <module>xoom-iddd-agilepm</module>
         <module>xoom-iddd-collaboration</module>
-        <module>vlingo-kubernetes-cluster</module>
+        <module>xoom-kubernetes-cluster</module>
         <module>vlingo-petclinic</module>
         <module>vlingo-reactive-messaging-patterns</module>
         <module>vlingo-simgui-mediator</module>

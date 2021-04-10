@@ -5,9 +5,9 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.kubernetescluster;
+package io.vlingo.xoom.examples.kubernetescluster;
 
-import io.vlingo.cluster.model.application.ClusterApplication.ClusterApplicationInstantiator;
+import io.vlingo.xoom.cluster.model.application.ClusterApplication.ClusterApplicationInstantiator;
 
 public class KubernetesClusterInstantiator extends ClusterApplicationInstantiator<KubernetesClusterApplicationActor> {
 

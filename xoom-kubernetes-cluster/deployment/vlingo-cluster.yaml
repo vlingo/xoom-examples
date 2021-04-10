@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vlingo-cluster
+  name: xoom-cluster
   labels:
-    name: vlingo-cluster-0.1.0
-    app.kubernetes.io/name: vlingo-cluster
+    name: xoom-cluster-0.1.0
+    app.kubernetes.io/name: xoom-cluster
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: vlingo-cluster
+      app.kubernetes.io/name: xoom-cluster
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: vlingo-cluster
+        app.kubernetes.io/name: xoom-cluster
     spec:
       securityContext:
         {}
       containers:
       - name: first-node
-        image: dambrosio/vlingo-kubernetes-cluster:latest
+        image: dambrosio/xoom-kubernetes-cluster:latest
         env:
           - name: NODE_NAME
             value: "node1"
@@ -29,7 +29,7 @@ spec:
           - containerPort: 9080
             name: op
       - name: second-node
-        image: dambrosio/vlingo-kubernetes-cluster:latest
+        image: dambrosio/xoom-kubernetes-cluster:latest
         env:
           - name: NODE_NAME
             value: "node2"
@@ -39,7 +39,7 @@ spec:
           - containerPort: 9081
             name: op
       - name: third-node
-        image: dambrosio/vlingo-kubernetes-cluster:latest
+        image: dambrosio/xoom-kubernetes-cluster:latest
         env:
           - name: NODE_NAME
             value: "node3"
