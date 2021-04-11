@@ -1,0 +1,39 @@
+version: '3'
+services:
+  db:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - ./assets/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 18787:5432
+    environment:
+      POSTGRES_USER: "xoom"
+      POSTGRES_PASSWORD: "xoom123"
+
+  rabbit:
+    image: "rabbitmq:3-management"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "./assets/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+      - "./assets/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json"
+
+  schemata:
+    image: vlingo/xoom-schemata:latest
+    ports:
+      - 9019:9019
+    environment:
+      XOOM_SCHEMATA_PORT: 9019
+      XOOM_SCHEMATA_DB_DRIVER: "org.postgresql.Driver"
+      XOOM_SCHEMATA_DB_URL: "jdbc:postgresql://db/"
+      XOOM_SCHEMATA_DB_NAME: "xoom_schemata"
+      XOOM_SCHEMATA_DB_USER: "xoom"
+      XOOM_SCHEMATA_DB_PASS: "xoom123"
+      XOOM_SCHEMATA_DB_ORIGINATOR: "MAIN"
+    depends_on:
+      - db
+

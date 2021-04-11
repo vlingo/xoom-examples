@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.vlingo.xoom.examples</groupId>
+  <artifactId>xoom-e2e-sys-airline-ops</artifactId>
+  <version>1.6.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <properties>
+    <xoom.version>1.6.1-SNAPSHOT</xoom.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <schemata.url>http://localhost:9019</schemata.url>
+  </properties>
+  <modules>
+    <module>inventory</module>
+    <module>airport-terminal</module>
+    <module>air-traffic-control</module>
+    <module>fleetcrew</module>
+    <module>flight-planning</module>
+    <module>aircraft-monitoring</module>
+  </modules>
+</project>
