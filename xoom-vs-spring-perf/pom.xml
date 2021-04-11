@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.vlingo.xoom.examples</groupId>
+    <artifactId>xoom-vs-spring-perf</artifactId>
+    <version>1.6.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>xoom-vs-spring-perf</name>
+    <description>Hello world examples.</description>
+    <url>https://github.com/vlingo/xoom-examples</url>
+    <licenses>
+        <license>
+            <name>Mozilla Public License 2.0</name>
+            <url>https://mozilla.org/MPL/2.0/</url>
+        </license>
+    </licenses>
+    <modules>
+        <module>spring</module>
+        <module>xoom</module>
+    </modules>
+</project>

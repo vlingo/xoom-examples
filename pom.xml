@@ -93,6 +93,7 @@
         <module>xoom-reactive-messaging-patterns</module>
         <module>xoom-simgui-mediator</module>
         <module>xoom-platform-patterns</module>
+        <module>xoom-vs-spring-perf</module>
         <module>vlingo-xoom-heroku-microservice</module>
         <module>vlingo-xoom-kubernetes-microservice</module>
       </modules>
