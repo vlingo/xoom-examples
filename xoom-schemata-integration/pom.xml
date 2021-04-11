@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.vlingo</groupId>
-    <artifactId>vlingo-examples-schemata-integration</artifactId>
-    <version>1.6.0</version>
+    <groupId>io.vlingo.xoom.examples</groupId>
+    <artifactId>xoom-examples-schemata-integration</artifactId>
+    <version>1.6.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>vlingo-examples-schemata-integration</name>
+    <name>xoom-examples-schemata-integration</name>
     <description>Shows how to talk to vlingo/schemata as part of maven builds.</description>
-    <url>https://github.com/vlingo/vlingo-examples</url>
+    <url>https://github.com/vlingo/xoom-examples</url>
     <licenses>
         <license>
             <name>Mozilla Public License 2.0</name>
@@ -16,7 +16,7 @@
         </license>
     </licenses>
     <modules>
-        <module>vlingo-schemata-producer</module>
-        <module>vlingo-schemata-consumer</module>
+        <module>xoom-schemata-producer</module>
+        <module>xoom-schemata-consumer</module>
     </modules>
 </project>
