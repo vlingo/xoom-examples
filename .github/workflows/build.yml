@@ -17,8 +17,8 @@ jobs:
         ports:
           - "9019:9019"
         env:
-          VLINGO_SCHEMATA_PORT: 9019
-          VLINGO_ENV: dev
+          XOOM_SCHEMATA_PORT: 9019
+          XOOM_ENV: dev
 
     steps:
       - uses: actions/checkout@v2
