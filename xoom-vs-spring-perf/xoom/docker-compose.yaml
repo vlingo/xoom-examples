@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - xoom_symbio_jdbc_postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: xoomDBTest
+      POSTGRES_USER: xoomdb
+      POSTGRES_PASSWORD: test
+
+volumes:
+  xoom_symbio_jdbc_postgres:
