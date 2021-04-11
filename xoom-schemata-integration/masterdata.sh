@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Small utility script to add master data required for the example to a schemata instance
-# Requires curl and jq to be on the path, vlingo-schemata runnning on localhost and
-# VLINGO_SCHEMATA_PORT being set.
+# Requires curl and jq to be on the path, xoom-schemata runnning on localhost and
+# XOOM_SCHEMATA_PORT being set.
 
 set -e
 
@@ -11,12 +11,12 @@ fail () {
   exit 1
 }
 
-[ "$VLINGO_SCHEMATA_PORT" != "" ] || fail 'VLINGO_SCHEMATA_PORT not set'
+[ "$XOOM_SCHEMATA_PORT" != "" ] || fail 'XOOM_SCHEMATA_PORT not set'
 type curl >/dev/null 2>&1 || fail "'curl' is required but not installed."
 type jq >/dev/null 2>&1 || fail "'jq' is required but not installed."
 
 
-PORT=$VLINGO_SCHEMATA_PORT
+PORT=$XOOM_SCHEMATA_PORT
 
 echo Creating organization ...
 ORG=$(curl -s \

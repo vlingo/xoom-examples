@@ -105,7 +105,7 @@
         </property>
       </activation>
       <modules>
-        <module>vlingo-schemata-integration</module>
+        <module>xoom-schemata-integration</module>
       </modules>
     </profile>
   </profiles>
