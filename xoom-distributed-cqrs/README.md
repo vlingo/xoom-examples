@@ -27,7 +27,7 @@ Only node1 handles HTTP requests!
 
 Prerequisites: Docker Desktop (https://www.docker.com/products/docker-desktop). All k8s config files are located in `src/main/k8s` folder.
 
-- Build docker image: `docker build -t vlingo/example-cqrs:1.0 .`
+- Build docker image: `docker build -t vlingo/xoom-distributed-cqrs:1.0 .`
 - Kubernetes namespace: `kubectl [create | delete] namespace xoom-space`
 - PostgreSQL Service and Deployment: `kubectl [create | delete] -f postgresql.yml`
 - Application (3x nodes) Service and Deployment: `kubectl -f [create | delete] nodes.yml`
