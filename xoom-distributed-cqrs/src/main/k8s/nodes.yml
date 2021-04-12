@@ -40,14 +40,14 @@ spec:
   template:
     metadata:
       labels:
-        system: example-cqrs
+        system: xoom-distributed-cqrs
         tier: application
         appName: pod-node3
         type: worker
     spec:
       containers:
-        - name: example-cqrs-app
-          image: vlingo/example-cqrs:1.0
+        - name: xoom-distributed-cqrs-app
+          image: vlingo/xoom-distributed-cqrs:1.0
           ports:
             - name: operational
               containerPort: 17375
@@ -101,14 +101,14 @@ spec:
   template:
     metadata:
       labels:
-        system: example-cqrs
+        system: xoom-distributed-cqrs
         tier: application
         appName: pod-node2
         type: worker
     spec:
       containers:
-        - name: example-cqrs-app
-          image: vlingo/example-cqrs:1.0
+        - name: xoom-distributed-cqrs-app
+          image: vlingo/xoom-distributed-cqrs:1.0
           ports:
             - name: operational
               containerPort: 17373
@@ -167,14 +167,14 @@ spec:
   template:
     metadata:
       labels:
-        system: example-cqrs
+        system: xoom-distributed-cqrs
         tier: application
         appName: pod-node1
         type: http
     spec:
       containers:
-        - name: example-cqrs-app
-          image: vlingo/example-cqrs:1.0
+        - name: xoom-distributed-cqrs-app
+          image: vlingo/xoom-distributed-cqrs:1.0
           ports:
             - name: operational
               containerPort: 17371
