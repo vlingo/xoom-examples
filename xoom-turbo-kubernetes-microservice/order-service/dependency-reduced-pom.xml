@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>vlingo-xoom-kubernetes-microservice</artifactId>
+    <artifactId>xoom-turbo-kubernetes-microservice</artifactId>
     <groupId>io.examples</groupId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.6.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>order-service</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>1.6.0</version>
   <build>
     <pluginManagement>
       <plugins>
@@ -136,8 +136,12 @@
   </build>
   <repositories>
     <repository>
-      <id>jcenter.bintray.com</id>
-      <url>https://jcenter.bintray.com</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots />
+      <id>ossrh-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
   </repositories>
   <dependencies>
