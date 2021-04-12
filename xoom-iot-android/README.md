@@ -4,6 +4,8 @@ vlingo IoT Example
 This is a tracker application that allows users to see their way while hiking and let's other users to know when they
 are in danger with a single button.
 
+**Note that this example is outdated.** It wasn't migrated to the latest Xoom release, and it does not compile.
+
 How To Run It
 =============
 

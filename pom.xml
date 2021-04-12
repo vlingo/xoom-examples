@@ -81,7 +81,6 @@
         <module>xoom-distributed-cqrs</module>
         <module>xoom-ecommerce</module>
         <module>xoom-eventjournal</module>
-        <!--module>vlingo-hike-backend</module-->
         <module>xoom-distributed-ping-pong</module>
         <module>xoom-http-backservice</module>
         <module>xoom-http-frontservice</module>
