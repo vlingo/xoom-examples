@@ -75,7 +75,6 @@
       <modules>
         <module>xoom-actors-playground</module>
         <module>xoom-actors-playground-kotlin</module>
-        <module>xoom-auth-authservice</module>
         <module>xoom-benchmarks</module>
         <module>xoom-calculate-pi</module>
         <module>xoom-distributed-cqrs</module>
