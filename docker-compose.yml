@@ -1,12 +1,12 @@
 version: '3'
 services:
   front:
-    build: ./vlingo-http-frontservice
+    build: ./xoom-http-frontservice
     restart: always
     ports:
       - 8081:8081
     depends_on:
       - back
   back:
-    build: ./vlingo-http-backservice
+    build: ./xoom-http-backservice
     restart: always
