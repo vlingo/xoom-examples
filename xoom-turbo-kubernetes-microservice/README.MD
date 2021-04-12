@@ -2,6 +2,8 @@
 
 In this example application, you'll be introduced to how deploy `vlingo-xoom` + `micronaut` microservices on a `Kubernetes` cluster, exposing them through `Gloo's` API Gateway and using `Helm Chart` to install infrastructure resources.  
 
+**Note that this example is outdated.** It needs an upgrade to the latest version of XOOM/TURBO.
+
 ## Project Structure
 
 This project contains two microservices: Order and Stock. The following tree structures are from the project's `./src/main/java` directory of each microservice.

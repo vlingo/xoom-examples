@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.examples</groupId>
-  <artifactId>vlingo-xoom-heroku-microservice</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <artifactId>xoom-turbo-heroku-microservice</artifactId>
+  <version>1.6.0</version>
   <build>
     <pluginManagement>
       <plugins>
@@ -127,17 +127,12 @@
   </build>
   <repositories>
     <repository>
-      <snapshots>
+      <releases>
         <enabled>false</enabled>
-      </snapshots>
-      <id>jcenter</id>
-      <url>https://jcenter.bintray.com/</url>
-    </repository>
-    <repository>
-      <releases />
+      </releases>
       <snapshots />
-      <id>github</id>
-      <url>https://maven.pkg.github.com/vlingo/vlingo-platform</url>
+      <id>ossrh-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
   </repositories>
   <dependencies>

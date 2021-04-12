@@ -2,6 +2,8 @@
 
 In this example application, you'll be introduced to how implement a microservice with `vlingo-xoom-server` and `micronaut` deploying it on Heroku.
 
+**Note that this example is outdated.** It needs an upgrade to the latest version of XOOM/TURBO.
+
 ## Project Structure
 
 The following tree structure is from the project's `./src/main/java` directory. Here we can see the domain model and the endpoint definition. 
