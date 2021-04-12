@@ -92,7 +92,6 @@
         <module>xoom-simgui-mediator</module>
         <module>xoom-platform-patterns</module>
         <module>xoom-vs-spring-perf</module>
-        <module>xoom-turbo-heroku-microservice</module>
         <module>xoom-turbo-kubernetes-microservice</module>
       </modules>
     </profile>

@@ -1,5 +1,0 @@
-micronaut:
-  application:
-    name: heroku-microservice
-  server:
-    port: 8080
