@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.vlingo</groupId>
-  <artifactId>vlingo-hike-backend</artifactId>
+  <groupId>io.vlingo.xoom.examples</groupId>
+  <artifactId>xoom-hike-backend</artifactId>
   <version>1.6.0</version>
-  <name>vlingo-hike-backend</name>
+  <name>xoom-hike-backend</name>
   <description>IoT example.</description>
-  <url>https://github.com/vlingo/vlingo-examples</url>
+  <url>https://github.com/vlingo/xoom-examples</url>
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
