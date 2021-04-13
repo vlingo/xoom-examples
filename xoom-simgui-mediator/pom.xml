@@ -4,7 +4,7 @@
   <artifactId>xoom-simgui-mediator</artifactId>
   <version>1.6.1-SNAPSHOT</version>
   <name>xoom-simgui-mediator</name>
-  <description>Example of vlingo/actors in a simulated GUI.</description>
+  <description>Example of VLINGO XOOM Actors in a simulated GUI.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>

@@ -1,13 +1,13 @@
 # xoom-distributed-ping-pong
 
-A simple example to demo vlingo/lattice Grid features, running on three vlingo/cluster nodes.
+A simple example to demo VLINGO XOOM Lattice Grid features, running on three VLINGO XOOM Cluster nodes.
 
 ## Building and Running In JVM Only
 
 Start a console/command window so you can build the `xoom-distributed-ping-pong` and start it by executing the built `jar`.
 
 Note: The following version number may have changed since this README was written. The `jar` will be generated with the latest
-vlingo/PLATFORM version number.
+VLINGO XOOM Platform version number.
 
 ```
 $ mvn clean package

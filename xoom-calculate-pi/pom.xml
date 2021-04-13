@@ -4,7 +4,7 @@
   <artifactId>xoom-calculate-pi</artifactId>
   <version>1.6.1-SNAPSHOT</version>
   <name>xoom-calculate-pi</name>
-  <description>Example of VLINGO/ACTORS calculating Pi.</description>
+  <description>Example of VLINGO XOOM ACTORS calculating Pi.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>

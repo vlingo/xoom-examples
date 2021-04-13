@@ -1,6 +1,6 @@
 # xoom-platform-patterns 
 
-## Steps to run vlingo/http server using `Bootstrap`
+## Steps to run VLINGO XOOM Http server using `Bootstrap`
 
 ```
 cd xoom-platform-patterns
@@ -61,9 +61,9 @@ curl -l --include --request GET http://localhost:8081$LOCATION
 
 # Admin Demo - step 2
 
-vlingo implements DDD design pattern - the hexagonal architecture. See [domain-driven-design-and-hexagonal-architecture](https://www.slideshare.net/crishantha/domain-driven-design-and-hexagonal-architecture) look at slide 1 and slide 35.
+XOOM implements DDD design pattern - the hexagonal architecture. See [domain-driven-design-and-hexagonal-architecture](https://www.slideshare.net/crishantha/domain-driven-design-and-hexagonal-architecture) look at slide 1 and slide 35.
 
-The objective is to demonstrate vlingo's ability to add web-servers - simple **Actor** in the role as **Adapter**
+The objective is to demonstrate XOOM's ability to add web-servers - simple **Actor** in the role as **Adapter**
 
 * On port 9090 runs the administrator
 * The actual **Organizational** service runs on port 8081. See step 1.

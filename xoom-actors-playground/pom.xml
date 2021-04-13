@@ -4,7 +4,7 @@
   <artifactId>xoom-actors-playground</artifactId>
   <version>1.6.1-SNAPSHOT</version>
   <name>xoom-actors-playground</name>
-  <description>Example of vlingo/xoom-actors playing ping pong.</description>
+  <description>Example of VLINGO XOOM Actors playing ping pong.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>

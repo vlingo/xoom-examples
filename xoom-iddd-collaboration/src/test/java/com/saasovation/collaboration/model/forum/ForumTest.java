@@ -84,7 +84,7 @@ public class ForumTest extends EntityTest {
   public void testThatForumDescribed() {
     journalDispatcher.afterCompleting(2);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
-    final String description = "Let's discuss the vlingo/platform";
+    final String description = "Let's discuss the VLINGO XOOM Platform";
     forumPair._2.describeAs(description);
     final int count = journalDispatcher.confirmedCount();
     assertEquals(2, count);
@@ -121,7 +121,7 @@ public class ForumTest extends EntityTest {
   public void testThatForumTopicChanged() {
     journalDispatcher.afterCompleting(2);
     final Tuple2<ForumId,Forum> forumPair = Forum.startWith(world.stage(), Tenant.unique(), fixtures.forumDescriptionFixture());
-    final String topic = "Even More Than All Things vlingo/platform";
+    final String topic = "Even More Than All Things VLINGO XOOM Platform";
     forumPair._2.topicIs(topic);
     final int count = journalDispatcher.confirmedCount();
     assertEquals(2, count);

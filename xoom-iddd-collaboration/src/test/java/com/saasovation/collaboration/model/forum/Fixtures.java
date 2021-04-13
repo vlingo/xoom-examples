@@ -22,7 +22,7 @@ public class Fixtures {
   public Tuple2<PostId, Post> postPair;
 
   public ForumDescription forumDescriptionFixture() {
-    return new ForumDescription(Creator.unique(), Moderator.unique(), "All Things vlingo/platform", "Discuss the vlingo/platform");
+    return new ForumDescription(Creator.unique(), Moderator.unique(), "All Things VLINGO XOOM Platform", "Discuss the VLINGO XOOM Platform");
   }
 
   public Tuple2<DiscussionId, Discussion> discussionFixture(final World world) {

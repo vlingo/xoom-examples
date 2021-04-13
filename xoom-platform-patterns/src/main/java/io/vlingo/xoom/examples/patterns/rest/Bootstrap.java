@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Application to run vlingo with a web server
+ * Application to run VLINGO XOOM with a web server
  *
  * Pure demonstration of how to make a web server and getting it running inside 'world'
  */
@@ -37,9 +37,9 @@ class Bootstrap {
   }
   
   private Bootstrap() {
-    System.out.println("==============================");
-    System.out.println("Starting vlingo/http Server...");
-    System.out.println("==============================");
+    System.out.println("===================================");
+    System.out.println("Starting VLINGO XOOM Http Server...");
+    System.out.println("===================================");
 
     world = World.startWithDefaults("WebServerActorAwesomeDemo");
 
@@ -57,7 +57,7 @@ class Bootstrap {
         System.out.println("\n");
         System.out.println("==============================");
         System.out.println("Servers stopped by world ...");
-        System.out.println("vlingo world terminated ...");
+        System.out.println("XOOM world terminated ...");
         System.out.println("==============================");
       }
     });
@@ -65,7 +65,7 @@ class Bootstrap {
 
   /**
    * Factory for servers and cache of these servers
-   * for the demonstration of vlingo infrastructure - that web server is ONLY a an actor
+   * for the demonstration of XOOM infrastructure - that web server is ONLY a an actor
    *
    * The demo handles multiple web servers to show the Hexagonal Architecture vlingo provides.
    */

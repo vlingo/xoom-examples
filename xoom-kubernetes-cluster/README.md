@@ -1,10 +1,10 @@
 # xoom-kubernetes-cluster
 
-This is a basic example to demo how to run a `vlingo/cluster` on Kubernetes. 
+This is a basic example to demo how to run a VLINGO XOOM Cluster on Kubernetes. 
 
 ## Structure
 
-The codebase does not have neither an API nor businnes logic, but only required `vlingo/cluster` configuration code to run each node. Here's the structure:
+The codebase does not have neither an API nor businnes logic, but only required VLINGO XOOM Cluster` configuration code to run each node. Here's the structure:
 
     └── io
         └── vlingo
@@ -63,7 +63,7 @@ Every node will run within a Docker container. Therefore, the next step is to bu
 
 See more details about the image in the [Dockerfile](https://github.com/vlingo/xoom-examples/blob/master/xoom-kubernetes-cluster/Dockerfile).   
 
-Now, the published Docker image, which holds the vlingo/cluster node, can be referenced in the Kubernetes deployment rules. Through the Kubernetes workload objects, there are multiple ways to make it and, in the current project, the choice is [Deployment Controller](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) executing three containers, one for each node, inside the same POD. Thus, they can communicate each other at localhost using different ports. In `xoom-cluster.yaml`, under `deployment` folder, the container is declared matching the invidual node configuration in `xoom-cluster.properties`:
+Now, the published Docker image, which holds the VLINGO XOOM Cluster node, can be referenced in the Kubernetes deployment rules. Through the Kubernetes workload objects, there are multiple ways to make it and, in the current project, the choice is [Deployment Controller](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) executing three containers, one for each node, inside the same POD. Thus, they can communicate each other at localhost using different ports. In `xoom-cluster.yaml`, under `deployment` folder, the container is declared matching the invidual node configuration in `xoom-cluster.properties`:
 
 ```
     ...

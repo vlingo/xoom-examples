@@ -19,7 +19,7 @@ Content-Type: application/json
   "organizationId": "{{orgId}}",
   "unitId": "",
   "name": "examples",
-  "description": "Examples for vlingo/schemata"
+  "description": "Examples for VLINGO XOOM Schemata"
 }
 
 > {% client.global.set('unitId', response.body.unitId) %}
@@ -33,7 +33,7 @@ Content-Type: application/json
   "unitId": "{{unitId}}",
   "contextId": "",
   "namespace": "io.vlingo.examples.schemata",
-  "description": "Bounded context for vlingo/schemata examples"
+  "description": "Bounded context for VLINGO XOOM Schemata examples"
 }
 
 > {% client.global.set('contextId', response.body.contextId) %}

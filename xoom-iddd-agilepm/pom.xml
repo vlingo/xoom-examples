@@ -5,7 +5,7 @@
   <version>1.6.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>xoom-iddd-agilepm</name>
-  <description>Example of vlingo/platform IDDD SaaSOvation Agile Project Management Context.</description>
+  <description>Example of VLINGO XOOM Platform IDDD SaaSOvation Agile Project Management Context.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>
