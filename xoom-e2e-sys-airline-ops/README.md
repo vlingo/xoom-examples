@@ -2,13 +2,13 @@
 
 The "Aircraft-Airport-Ops System" example implements a set of Reactive Microservices that interact through a choregraphed Event-Driven Architecture.
 
-- All microservices designed with VLINGO/XOOM Starter
+- All microservices designed with VLINGO XOOM Designer
 - Six _Bounded Contexts_
 - Choreographed process flows
 - Domain Models Diagram
 - Big-Picture Event-Driven Model
 
-System collaboration is managed through type-safe, asynchronous, event-driven, and message-based communication provided by XOOM/TURBO, XOOM/LATTICE Exchange, and XOOM/SCHEMATA. Respectively, these platform components provide a REST request and messaging auto-dispatch to the domain model, message exchange mechanism, and a Schema Registry where the DDD _Published Language_ specifications are available.
+System collaboration is managed through type-safe, asynchronous, event-driven, and message-based communication provided by XOOM Turbo, XOOM Lattice Exchange, and XOOM Schemata. Respectively, these platform components provide a REST request and messaging auto-dispatch to the domain model, message exchange mechanism, and a Schema Registry where the DDD _Published Language_ specifications are available.
 
 ![Context Map of Ops System](https://github.com/vlingo/xoom-examples/blob/master/xoom-e2e-sys-airline-ops/docs/AirlineAirportOpsContextMap.png)
 
@@ -131,4 +131,4 @@ npm run dev
 
 ## More information
 
-This example demonstrates how XOOM/LATTICE Exchange and XOOM/SCHEMATA collaborates efficiently making easier to establish a domain model - message handling connection based on a type-safe _Published Language._ Find a comprehensive documentation on VLINGO XOOM components [here](http://docs.vlingo.io).
+This example demonstrates how XOOM Lattice Exchange and XOOM Schemata collaborates efficiently making easier to establish a domain model - message handling connection based on a type-safe _Published Language._ Find a comprehensive documentation on VLINGO XOOM components [here](http://docs.vlingo.io).
