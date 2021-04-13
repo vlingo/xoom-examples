@@ -5,7 +5,7 @@
   <version>1.6.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>xoom-http-frontservice</name>
-  <description>Example of vlingo/http public service.</description>
+  <description>Example of VLINGO XOOM Http public service.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>

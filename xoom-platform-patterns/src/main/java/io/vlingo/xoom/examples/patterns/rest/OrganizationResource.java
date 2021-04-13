@@ -25,7 +25,7 @@ import io.vlingo.xoom.http.Response;
 import io.vlingo.xoom.http.resource.Resource;
 
 /**
- * Example of vlingo/http Fluent API mappings.
+ * Example of VLINGO XOOM Http Fluent API mappings.
  */
 class OrganizationResource {
   private final World world;

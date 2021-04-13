@@ -1,7 +1,7 @@
 xoom-eventjournal example
 ===========================
 
-Usually event journals are used with vlingo/lattice, however, this is
+Usually event journals are used with VLINGO XOOM Lattice, however, this is
 an example on how to use it directly to share the basics.
 
 This requires a PostgreSQL database running in your machine, if you

@@ -4,7 +4,7 @@
   <artifactId>xoom-platform-patterns</artifactId>
   <version>1.6.1-SNAPSHOT</version>
   <name>xoom-platform-patterns</name>
-  <description>Example of common patterns when using the vlingo/platform.</description>
+  <description>Example of common patterns when using the VLINGO XOOM Platform.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>

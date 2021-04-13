@@ -29,7 +29,7 @@ echo Created organization ${ORG_ID}.
 
 echo Creating unit ...
 UNIT=$(curl -s \
-  -d '{ "organizationId": "'${ORG_ID}'", "unitId": "", "name": "examples", "description": "Examples for vlingo/schemata" }' \
+  -d '{ "organizationId": "'${ORG_ID}'", "unitId": "", "name": "examples", "description": "Examples for VLINGO XOOM Schemata" }' \
   -H 'Content-Type: application/json' \
   -X POST http://localhost:${PORT}/api/organizations/${ORG_ID}/units) \
   || fail
@@ -38,7 +38,7 @@ echo Created unit ${UNIT_ID}.
 
 echo Creating context ${ORG_ID}
 CONTEXT=$(curl -s \
-  -d '{ "organizationId": "'${ORG_ID}'", "unitId": "'${UNIT_ID}'", "contextId": "", "namespace": "io.vlingo.examples.schemata", "description": "Bounded context for vlingo/schemata examples" }' \
+  -d '{ "organizationId": "'${ORG_ID}'", "unitId": "'${UNIT_ID}'", "contextId": "", "namespace": "io.vlingo.examples.schemata", "description": "Bounded context for VLINGO XOOM Schemata examples" }' \
   -H 'Content-Type: application/json' \
   -X POST http://localhost:${PORT}/api/organizations/${ORG_ID}/units/${UNIT_ID}/contexts) \
   || fail

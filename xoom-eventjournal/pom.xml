@@ -4,7 +4,7 @@
   <artifactId>xoom-eventjournal</artifactId>
   <version>1.6.1-SNAPSHOT</version>
   <name>xoom-eventjournal</name>
-  <description>Example of vlingo/symbio-jdbc with an event journal.</description>
+  <description>Example of VLINGO XOOM Symbio JDBC with an event journal.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
   <licenses>
     <license>
