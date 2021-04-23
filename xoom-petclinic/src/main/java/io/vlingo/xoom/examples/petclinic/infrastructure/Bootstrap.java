@@ -11,7 +11,7 @@ import io.vlingo.xoom.lattice.model.stateful.StatefulTypeRegistry;
 import io.vlingo.xoom.examples.petclinic.infrastructure.resource.AnimalTypeResource;
 import io.vlingo.xoom.examples.petclinic.infrastructure.resource.PetResource;
 
-import io.vlingo.xoom.actors.GridAddressFactory;
+import io.vlingo.xoom.lattice.grid.GridAddressFactory;
 import io.vlingo.xoom.actors.Stage;
 import io.vlingo.xoom.actors.World;
 import io.vlingo.xoom.common.identity.IdentityGeneratorType;

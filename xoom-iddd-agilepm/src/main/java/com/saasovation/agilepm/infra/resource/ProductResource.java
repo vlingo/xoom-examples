@@ -5,7 +5,7 @@ import com.saasovation.agilepm.model.product.Product;
 import com.saasovation.agilepm.model.product.ProductId;
 import com.saasovation.agilepm.model.product.ProductOwner;
 import io.vlingo.xoom.actors.AddressFactory;
-import io.vlingo.xoom.actors.GridAddressFactory;
+import io.vlingo.xoom.lattice.grid.GridAddressFactory;
 import io.vlingo.xoom.actors.Stage;
 import io.vlingo.xoom.actors.World;
 import io.vlingo.xoom.common.Completes;

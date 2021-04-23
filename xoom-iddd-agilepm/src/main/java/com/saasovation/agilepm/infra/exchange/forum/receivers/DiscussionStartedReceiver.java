@@ -3,7 +3,7 @@ package com.saasovation.agilepm.infra.exchange.forum.receivers;
 import com.saasovation.agilepm.infra.exchange.forum.model.DiscussionStarted;
 import com.saasovation.agilepm.model.product.Product;
 import io.vlingo.xoom.actors.AddressFactory;
-import io.vlingo.xoom.actors.GridAddressFactory;
+import io.vlingo.xoom.lattice.grid.GridAddressFactory;
 import io.vlingo.xoom.actors.Stage;
 import io.vlingo.xoom.common.identity.IdentityGeneratorType;
 import io.vlingo.xoom.lattice.exchange.ExchangeReceiver;

@@ -1,7 +1,7 @@
 package io.vlingo.xoom.examples.cars.model;
 
 import io.vlingo.xoom.actors.Definition;
-import io.vlingo.xoom.actors.Grid;
+import io.vlingo.xoom.lattice.grid.Grid;
 import io.vlingo.xoom.common.Completes;
 import io.vlingo.xoom.common.identity.IdentityGeneratorType;
 

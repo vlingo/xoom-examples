@@ -11,11 +11,11 @@
     <logger name="io.vlingo.xoom.wire" level="error"/>
     <logger name="io.vlingo.xoom.lattice.grid" level="info"/>
     <!--logger name="io.vlingo.xoom" level="error"/-->
-    <!--logger name="io.vlingo.xoom.actors.GridMailbox" level="error"/-->
+    <!--logger name="io.vlingo.xoom.lattice.grid.GridMailbox" level="error"/-->
     <!--logger name="io.vlingo.xoom.lattice.grid.GridNode" level="error"/-->
     <!--logger name="io.vlingo.xoom.lattice.grid.application.GridApplicationMessageHandler" level="error"/-->
     <!--logger name="io.vlingo.xoom.lattice.grid.application.OutboundGridActorControl" level="error"/-->
-    <!--logger name="io.vlingo.xoom.actors.GridMailbox" level="error"/-->
+    <!--logger name="io.vlingo.xoom.lattice.grid.GridMailbox" level="error"/-->
 
     <root level="info">
         <appender-ref ref="STDOUT"/>

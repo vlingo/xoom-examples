@@ -7,7 +7,7 @@
 
 package com.vgoairlines.flightplanning.infrastructure;
 
-import io.vlingo.xoom.actors.Grid;
+import io.vlingo.xoom.lattice.grid.Grid;
 import io.vlingo.xoom.turbo.XoomInitializationAware;
 import io.vlingo.xoom.turbo.annotation.initializer.Xoom;
 
