@@ -1,6 +1,6 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.exchange;
 
-import io.vlingo.xoom.actors.Grid;
+import io.vlingo.xoom.lattice.grid.Grid;
 import io.vlingo.xoom.turbo.actors.Settings;
 import io.vlingo.xoom.lattice.exchange.Exchange;
 import io.vlingo.xoom.turbo.exchange.ExchangeSettings;

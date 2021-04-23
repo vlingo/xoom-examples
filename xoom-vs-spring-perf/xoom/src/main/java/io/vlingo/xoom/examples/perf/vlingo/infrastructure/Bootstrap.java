@@ -7,7 +7,7 @@
 
 package io.vlingo.xoom.examples.perf.vlingo.infrastructure;
 
-import io.vlingo.xoom.actors.GridAddressFactory;
+import io.vlingo.xoom.lattice.grid.GridAddressFactory;
 import io.vlingo.xoom.actors.Stage;
 import io.vlingo.xoom.actors.World;
 import io.vlingo.xoom.common.identity.IdentityGeneratorType;

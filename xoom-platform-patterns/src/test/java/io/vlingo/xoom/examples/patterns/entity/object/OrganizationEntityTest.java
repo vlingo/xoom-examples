@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import io.vlingo.xoom.actors.Address;
 import io.vlingo.xoom.actors.Configuration;
-import io.vlingo.xoom.actors.Grid;
+import io.vlingo.xoom.lattice.grid.Grid;
 import io.vlingo.xoom.examples.patterns.entity.ClusterProperties;
 import io.vlingo.xoom.examples.patterns.entity.MockDispatcher;
 import io.vlingo.xoom.examples.patterns.entity.Organization;

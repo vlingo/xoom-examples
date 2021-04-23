@@ -11,8 +11,8 @@
     <logger name="io.vlingo.xoom.wire" level="error"/>
     <logger name="io.vlingo.xoom.lattice.grid" level="info"/>
     <!--logger name="io.vlingo.xoom" level="error"/-->
-    <logger name="io.vlingo.xoom.actors.GridMailbox" level="debug"/>
-    <logger name="io.vlingo.xoom.actors.Grid" level="debug"/>
+    <logger name="io.vlingo.xoom.lattice.grid.GridMailbox" level="debug"/>
+    <logger name="io.vlingo.xoom.lattice.grid.Grid" level="debug"/>
     <logger name="io.vlingo.xoom.lattice.grid.GridNode" level="debug"/>
     <!--logger name="io.vlingo.xoom.lattice.grid.application.GridApplicationMessageHandler" level="error"/-->
     <logger name="io.vlingo.xoom.actors.InboundGridActorControl" level="debug"/>

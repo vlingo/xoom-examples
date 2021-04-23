@@ -1,6 +1,6 @@
 package io.vlingo.xoom.examples.pingpong;
 
-import io.vlingo.xoom.actors.Grid;
+import io.vlingo.xoom.lattice.grid.Grid;
 import io.vlingo.xoom.examples.pingpong.domain.Config;
 import io.vlingo.xoom.examples.pingpong.domain.Mailer;
 import io.vlingo.xoom.examples.pingpong.domain.Pinger;

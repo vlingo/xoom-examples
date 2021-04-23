@@ -1,6 +1,6 @@
 package io.vlingo.xoom.examples.cars.resource;
 
-import io.vlingo.xoom.actors.Grid;
+import io.vlingo.xoom.lattice.grid.Grid;
 import io.vlingo.xoom.examples.cars.model.Car;
 import io.vlingo.xoom.examples.cars.persistence.StorageProvider;
 import io.vlingo.xoom.examples.cars.query.CarQueries;

@@ -8,7 +8,7 @@
 package com.skyharbor.fleetcrew.infrastructure.exchange;
 
 import com.skyharbor.airtrafficcontrol.event.FlightLanded;
-import io.vlingo.xoom.actors.Grid;
+import io.vlingo.xoom.lattice.grid.Grid;
 import io.vlingo.xoom.lattice.exchange.ConnectionSettings;
 import io.vlingo.xoom.lattice.exchange.Covey;
 import io.vlingo.xoom.lattice.exchange.Exchange;

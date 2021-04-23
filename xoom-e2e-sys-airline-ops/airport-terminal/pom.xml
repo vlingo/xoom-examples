@@ -3,13 +3,13 @@
   <parent>
     <groupId>io.vlingo.xoom.examples</groupId>
     <artifactId>xoom-e2e-sys-airline-ops</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.7.1-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.vgoairlines</groupId>
   <artifactId>airport-terminal</artifactId>
-  <version>1.6.1-SNAPSHOT</version>
+  <version>1.7.1-SNAPSHOT</version>
   <properties>
     <jdk.version>1.8</jdk.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
