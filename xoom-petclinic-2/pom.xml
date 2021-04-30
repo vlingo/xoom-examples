@@ -13,7 +13,7 @@
     <exec.mainClass>io.vlingo.xoom.examples.petclinic.infrastructure.XoomInitializer</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.xoom.version>1.7.1-SNAPSHOT</vlingo.xoom.version>
+    <vlingo.xoom.version>1.7.6-SNAPSHOT</vlingo.xoom.version>
   </properties>
   <repositories>
     <repository>
