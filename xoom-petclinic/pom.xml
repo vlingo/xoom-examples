@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-petclinic</artifactId>
-  <version>1.7.7-SNAPSHOT</version>
+  <version>1.7.8-SNAPSHOT</version>
   <properties>
     <jdk.version>1.8</jdk.version>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
@@ -13,7 +13,7 @@
     <exec.mainClass>io.vlingo.xoom.examples.petclinic.infrastructure.Bootstrap</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <vlingo.xoom.version>1.7.7-SNAPSHOT</vlingo.xoom.version>
+    <vlingo.xoom.version>1.7.8-SNAPSHOT</vlingo.xoom.version>
   </properties>
   <repositories>
     <repository>
