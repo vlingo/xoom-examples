@@ -29,7 +29,7 @@ $ mvn clean package
 Finally, run each service through executable `jar` passing a port number:
 
 ```
-$ java -jar [service-folder-name]/target/[jar-name].jar [port-number]
+$ java -jar [service-folder-name]/target/[jar-name].jar -Dport=[port-number]
 ```
 
 ## Exchanging messages between _Bounded Contexts_
