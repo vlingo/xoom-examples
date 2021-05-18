@@ -7,6 +7,7 @@
 
 package com.vgoairlines.inventory.infrastructure;
 
+import io.vlingo.xoom.cluster.model.Properties;
 import io.vlingo.xoom.lattice.grid.Grid;
 import io.vlingo.xoom.turbo.XoomInitializationAware;
 import io.vlingo.xoom.turbo.annotation.initializer.Xoom;
@@ -18,4 +19,8 @@ public class Bootstrap implements XoomInitializationAware {
   public void onInit(final Grid grid) {
   }
 
+  @Override
+  public Properties clusterProperties() {
+    return Properties.instance();
+  }
 }
