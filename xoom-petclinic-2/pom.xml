@@ -72,7 +72,7 @@
               <srcDirectory>src/main/xoom/schemata</srcDirectory>
               <schemataService>
                 <url>http://localhost:9019</url>
-                <clientOrganization>vlingo</clientOrganization>
+                <clientOrganization>xoom</clientOrganization>
                 <clientUnit>apps</clientUnit>
                 <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
