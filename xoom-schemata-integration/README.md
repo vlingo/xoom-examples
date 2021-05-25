@@ -80,7 +80,7 @@ Now that there is master data in place, we can publish some schemas from
 simply run `mvn install` in the project root.
 The build output should contain something like:
 ```
-[INFO] --- xoom-build-plugins:0.9.3-RC4:push-schemata (default) @ xoom-schemata-producer ---
+[INFO] --- xoom-build-plugins:0.9.3-RC4:push-schema (default) @ xoom-schemata-producer ---
 [INFO] vlingo/maven: Pushing project schemata to xoom-schemata registry.
 [INFO] Pushing Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 to http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1.
 [INFO] Successfully pushed http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1
@@ -98,7 +98,7 @@ Next, hop over to `xoom-schemata-consumer` and open `SchemataUsageTest` in your 
 You'll notice that it does not compile, as the schema class is missing.
 Now run `mvn generate-sources` and verify that the code generated from schemata is pulled and written to `target/generated-sources/vlingo`:
 ```
-[INFO] --- xoom-build-plugins:1.0.0:pull-schemata (pullSchemata) @ xoom-schemata-consumer ---
+[INFO] --- xoom-build-plugins:1.0.0:pull-schema (pull) @ xoom-schemata-consumer ---
 [INFO] vlingo/maven: Pulling code generated from vlingo/schemata registry.
 [INFO] SchemataService{url=http://localhost:9019, clientOrganization='Vlingo', clientUnit='examples'}
 [INFO] Retrieving version data for Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 from http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1/status
@@ -129,7 +129,7 @@ http://localhost:9019/api/organizations/<orgId>/units/<unitId>/contexts/<context
 Now, publish one of the schemas and re-run the consumer build. You'll notice the warning was eliminated. Now deprecate the schema, and re-build again. You'll see a warning again. After setting the state to removed, your consumer build will fail, try that as well:
 
 ```
-[INFO] --- xoom-build-plugins:1.0.0:pull-schemata (pullSchemata) @ xoom-schemata-consumer ---
+[INFO] --- xoom-build-plugins:1.0.0:pull-schema (pull) @ xoom-schemata-consumer ---
 [INFO] vlingo/maven: Pulling code generated from vlingo/schemata registry.
 [INFO] SchemataService{url=http://localhost:9019, clientOrganization='Vlingo', clientUnit='examples'}
 [INFO] Retrieving version data for Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 from http://localhost:9019/versions/Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1/status
@@ -140,7 +140,7 @@ Now, publish one of the schemas and re-run the consumer build. You'll notice the
 [INFO] Total time:  0.773 s
 [INFO] Finished at: 2020-01-17T09:54:30+01:00
 [INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal io.vlingo.xoom:xoom-build-plugins:1.0.0:pull-schemata (pullSchemata) on project xoom-schemata-consumer: Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 has reached the end of its life cycle -> [Help 1]
+[ERROR] Failed to execute goal io.vlingo.xoom:xoom-build-plugins:1.0.0:pull-schema (pull) on project xoom-schemata-consumer: Vlingo:examples:io.vlingo.examples.schemata:SchemaDefined:0.0.1 has reached the end of its life cycle -> [Help 1]
 ```
 
 XOOM SCHEMATA also provides a safety net to prevent you from publishing incompatible versions by accident, so you won't break consumers of your published versions.
