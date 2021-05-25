@@ -65,8 +65,10 @@
         <version>${vlingo.xoom.version}</version>
         <executions>
           <execution>
+            <id>push</id>
+            <phase>install</phase>
             <goals>
-              <goal>push-schemata</goal>
+              <goal>push-schema</goal>
             </goals>
             <configuration>
               <srcDirectory>src/main/xoom/schemata</srcDirectory>

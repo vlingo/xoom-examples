@@ -25,10 +25,11 @@
         <version>${project.version}</version>
         <executions>
           <execution>
+            <id>push</id>
             <goals>
-              <goal>push-schemata</goal>
+              <goal>push-schema</goal>
             </goals>
-            <!-- by default it's run in the install phase, but in this case we also want schemata to be pushed for tests -->
+            <!-- we need the schema to be pushed for tests -->
             <phase>process-test-resources</phase>
             <configuration>
               <srcDirectory>${basedir}/src/main/vlingo/schemata</srcDirectory>
