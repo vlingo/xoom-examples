@@ -64,8 +64,10 @@
         <version>${xoom.version}</version>
         <executions>
           <execution>
+            <id>push</id>
+            <phase>install</phase>
             <goals>
-              <goal>push-schemata</goal>
+              <goal>push-schema</goal>
             </goals>
             <configuration>
               <srcDirectory>${basedir}/src/main/vlingo/schemata</srcDirectory>
@@ -99,9 +101,9 @@
             </configuration>
           </execution>
           <execution>
-            <id>pullSchemata</id>
+            <id>pull</id>
             <goals>
-              <goal>pull-schemata</goal>
+              <goal>pull-schema</goal>
             </goals>
             <configuration>
               <schemataService>
