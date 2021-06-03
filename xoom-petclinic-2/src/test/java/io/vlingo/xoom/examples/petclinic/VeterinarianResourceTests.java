@@ -25,7 +25,7 @@ public class VeterinarianResourceTests extends AbstractRestTest {
 
   @Test
   public void save() {
-    VeterinarianData data = given().when().body(vet1).post("/veterinarians/").then().statusCode(201).extract().body()
+    VeterinarianData data = given().when().body(vet1).post("/veterinarians").then().statusCode(201).extract().body()
         .as(VeterinarianData.class);
 
     assertThat(data, is(notNullValue()));
@@ -114,7 +114,7 @@ public class VeterinarianResourceTests extends AbstractRestTest {
     final VeterinarianData animalTypeData = saveExampleData();
     final String id = animalTypeData.id;
 
-    List<VeterinarianData> veterinarians = given().when().get("/veterinarians/").then().statusCode(200).extract().body()
+    List<VeterinarianData> veterinarians = given().when().get("/veterinarians").then().statusCode(200).extract().body()
         .as(new TypeRef<List<VeterinarianData>>() {
         });
 

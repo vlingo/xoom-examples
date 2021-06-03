@@ -89,7 +89,6 @@ public class AnimalTypeResourceTests extends AbstractRestTest {
   }
 
   @Test
-  @Disabled("blocking loop..")
   public void saveAndFetchAll() {
     final AnimalTypeData animalTypeData = saveExampleData();
     final String id = animalTypeData.id;

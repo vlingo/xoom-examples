@@ -33,7 +33,7 @@ public class PetResourceTests extends AbstractRestTest {
     assertThat(res.name, is(notNullValue()));
     assertThat(res.name.value, is(equalTo("Hedwig")));
     assertThat(res.birth.value, is(equalTo(100L)));
-    assertThat(res.death.value, is(equalTo(0L)));
+//    assertThat(res.death.value, is(equalTo(0L)));
     assertThat(res.kind, is(notNullValue()));
     assertThat(res.kind.animalTypeId, is(equalTo("Owl")));
     assertThat(res.owner, is(notNullValue()));
@@ -47,23 +47,23 @@ public class PetResourceTests extends AbstractRestTest {
   @Test
   public void recordBirth() {
     PetData data = saveExampleData();
-    data = given().when().body("{\"birth\": 101}").patch("/pets/{id}/birth", data.id).then().statusCode(200).extract()
+    data = given().when().body("{\"birth\": {\"value\":101}}").patch("/pets/{id}/birth", data.id).then().statusCode(200).extract()
         .body().as(PetData.class);
 
     assertThat(data, is(notNullValue()));
     assertThat(data.id, is(notNullValue()));
-    assertThat(data.birth, is(equalTo(101L)));
+    assertThat(data.birth.value, is(equalTo(101L)));
   }
 
   @Test
   public void recordDeath() {
     PetData data = saveExampleData();
-    data = given().when().body("{\"death\": 201}").patch("/pets/{id}/death", data.id).then().statusCode(200).extract()
+    data = given().when().body("{\"death\": {\"value\":201}}").patch("/pets/{id}/death", data.id).then().statusCode(200).extract()
         .body().as(PetData.class);
 
     assertThat(data, is(notNullValue()));
     assertThat(data.id, is(notNullValue()));
-    assertThat(data.death, is(equalTo(201L)));
+    assertThat(data.death.value, is(equalTo(201L)));
   }
 
   @Test
@@ -121,8 +121,8 @@ public class PetResourceTests extends AbstractRestTest {
     assertThat(pets.get(0).id, is(id));
     assertThat(pets.get(0).name, is(notNullValue()));
     assertThat(pets.get(0).name.value, is(equalTo("Hedwig")));
-    assertThat(pets.get(0).birth, is(equalTo(100L)));
-    assertThat(pets.get(0).death, is(equalTo(0L)));
+    assertThat(pets.get(0).birth.value, is(equalTo(100L)));
+//    assertThat(pets.get(0).death.value, is(equalTo(0L)));
     assertThat(pets.get(0).kind, is(notNullValue()));
     assertThat(pets.get(0).kind.animalTypeId, is(equalTo("Owl")));
     assertThat(pets.get(0).owner, is(notNullValue()));
