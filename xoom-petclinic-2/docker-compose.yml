@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.8.3-management
+    container_name: rabbitmq
+
+  db:
+    image: mysql:5.7
+    container_name: mysql
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
