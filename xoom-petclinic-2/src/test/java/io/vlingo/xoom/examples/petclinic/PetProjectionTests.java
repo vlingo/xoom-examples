@@ -105,8 +105,8 @@ public class PetProjectionTests {
     PetData pet = interestAccess.readFrom("item", "1");
     assertEquals("1", pet.id);
     assertEquals("Hedwig", pet.name.value);
-    assertEquals(100L, pet.birth);
-    assertEquals(0L, pet.death);
+    assertEquals(100L, pet.birth.value);
+    assertEquals(0L, pet.death.value);
     assertEquals("Owl", pet.kind.animalTypeId);
     assertEquals("Potter", pet.owner.clientId);
 
@@ -116,8 +116,8 @@ public class PetProjectionTests {
     pet = interestAccess.readFrom("item", "2");
     assertEquals("2", pet.id);
     assertEquals("Eurasian", pet.name.value);
-    assertEquals(101L, pet.birth);
-    assertEquals(0L, pet.death);
+    assertEquals(101L, pet.birth.value);
+    assertEquals(0L, pet.death.value);
     assertEquals("Owl", pet.kind.animalTypeId);
     assertEquals("Malfoy", pet.owner.clientId);
   }

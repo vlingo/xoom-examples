@@ -62,8 +62,8 @@ public class PetEntityTests {
 
     assertEquals("Bowtruckle", petState.name.value);
     assertEquals("Insect", petState.kind.animalTypeId);
-    assertEquals(201L, petState.birth);
-    assertEquals(0L, petState.death);
+    assertEquals(201L, petState.birth.value);
+    assertEquals(0L, petState.death.value);
     assertEquals("Newt", petState.owner.clientId);
   }
 
@@ -75,8 +75,8 @@ public class PetEntityTests {
 
     assertEquals("Hedwig", petState.name.value);
     assertEquals("Owl", petState.kind.animalTypeId);
-    assertEquals(100L, petState.birth);
-    assertEquals(0L, petState.death);
+    assertEquals(100L, petState.birth.value);
+    assertEquals(0L, petState.death.value);
     assertEquals("Potter", petState.owner.clientId);
 
     // this will block until the first event is persisted in the Journal
@@ -100,8 +100,8 @@ public class PetEntityTests {
 
     assertEquals("Mr. Owl", petState.name.value);
     assertEquals("Owl", petState.kind.animalTypeId);
-    assertEquals(100L, petState.birth);
-    assertEquals(0L, petState.death);
+    assertEquals(100L, petState.birth.value);
+    assertEquals(0L, petState.death.value);
     assertEquals("Potter", petState.owner.clientId);
 
     // this will block until the first event is persisted in the Journal
@@ -121,8 +121,8 @@ public class PetEntityTests {
 
     assertEquals("Hedwig", petState.name.value);
     assertEquals("Owl", petState.kind.animalTypeId);
-    assertEquals(100L, petState.birth);
-    assertEquals(0L, petState.death);
+    assertEquals(100L, petState.birth.value);
+    assertEquals(0L, petState.death.value);
     assertEquals("Black", petState.owner.clientId);
 
     // this will block until the first event is persisted in the Journal
@@ -142,8 +142,8 @@ public class PetEntityTests {
 
     assertEquals("Hedwig", petState.name.value);
     assertEquals("Stork", petState.kind.animalTypeId);
-    assertEquals(100L, petState.birth);
-    assertEquals(0L, petState.death);
+    assertEquals(100L, petState.birth.value);
+    assertEquals(0L, petState.death.value);
     assertEquals("Potter", petState.owner.clientId);
 
     // this will block until the first event is persisted in the Journal
@@ -163,8 +163,8 @@ public class PetEntityTests {
 
     assertEquals("Hedwig", petState.name.value);
     assertEquals("Owl", petState.kind.animalTypeId);
-    assertEquals(101L, petState.birth);
-    assertEquals(0L, petState.death);
+    assertEquals(101L, petState.birth.value);
+    assertEquals(0L, petState.death.value);
     assertEquals("Potter", petState.owner.clientId);
 
     // this will block until the first event is persisted in the Journal
@@ -184,8 +184,8 @@ public class PetEntityTests {
 
     assertEquals("Hedwig", petState.name.value);
     assertEquals("Owl", petState.kind.animalTypeId);
-    assertEquals(100L, petState.birth);
-    assertEquals(201L, petState.death);
+    assertEquals(100L, petState.birth.value);
+    assertEquals(201L, petState.death.value);
     assertEquals("Potter", petState.owner.clientId);
 
     // this will block until the first event is persisted in the Journal

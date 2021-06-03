@@ -50,8 +50,8 @@ public class PetQueryTests {
     assertEquals("Hedwig", item.name.value);
     assertEquals("Owl", item.kind.animalTypeId);
     assertEquals("Potter", item.owner.clientId);
-    assertEquals(101L, item.birth);
-    assertEquals(0L, item.death);
+    assertEquals(101L, item.birth.value);
+    assertEquals(0L, item.death.value);
 
     item = queries.petOf("2").await();
     assertEquals("2", item.id);
@@ -79,7 +79,7 @@ public class PetQueryTests {
     assertEquals("Hedwig", item.name.value);
     assertEquals("Owl", item.kind.animalTypeId);
     assertEquals("Potter", item.owner.clientId);
-    assertEquals(101L, item.birth);
-    assertEquals(0L, item.death);
+    assertEquals(101L, item.birth.value);
+    assertEquals(0L, item.death.value);
   }
 }

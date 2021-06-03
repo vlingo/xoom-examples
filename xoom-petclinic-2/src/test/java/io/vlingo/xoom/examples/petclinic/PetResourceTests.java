@@ -12,48 +12,28 @@ import static org.hamcrest.Matchers.*;
 
 public class PetResourceTests extends AbstractRestTest {
 
-  private final String HEDWIG =
-      "{\n" +
-          "  \"name\": {\n" +
-          "    \"value\": \"Hedwig\"\n" +
-          "  },\n" +
-          "  \"birth\": 100,\n" +
-          "  \"kind\": {\n" +
-          "    \"animalTypeId\": \"Owl\"\n" +
-          "  },\n" +
-          "  \"owner\": {\n" +
-          "    \"clientId\": \"Potter\"\n" +
-          "  }\n" +
-          "}";
+  private final String HEDWIG = "{\n" + "  \"name\": {\n" + "    \"value\": \"Hedwig\"\n" + "  },\n"
+      + "  \"birth\": {\"value\":100},\n" + "  \"death\": {\"value\":0},\n" + "  \"kind\": {\n"
+      + "    \"animalTypeId\": \"Owl\"\n" + "  },\n" + "  \"owner\": {\n" + "    \"clientId\": \"Potter\"\n" + "  }\n"
+      + "}";
 
   @Test
   public void testEmptyResponse() {
-    given()
-        .when()
-        .get("/pets")
-        .then()
-        .statusCode(200)
-        .body(is(equalTo("[]")));
+    given().when().get("/pets").then().statusCode(200).body(is(equalTo("[]")));
   }
 
   @Test
   public void save() {
     PetData res = given()
-        /*.when()*/
-        .body(HEDWIG)
-        .post("/pets")
-        .then()
-        .statusCode(201)
-        .extract()
-        .body()
-        .as(PetData.class);
+        /* .when() */
+        .body(HEDWIG).post("/pets").then().statusCode(201).extract().body().as(PetData.class);
 
     assertThat(res, is(notNullValue()));
     assertThat(res.id, is(notNullValue()));
     assertThat(res.name, is(notNullValue()));
     assertThat(res.name.value, is(equalTo("Hedwig")));
-    assertThat(res.birth, is(equalTo(100L)));
-    assertThat(res.death, is(equalTo(0L)));
+    assertThat(res.birth.value, is(equalTo(100L)));
+    assertThat(res.death.value, is(equalTo(0L)));
     assertThat(res.kind, is(notNullValue()));
     assertThat(res.kind.animalTypeId, is(equalTo("Owl")));
     assertThat(res.owner, is(notNullValue()));
@@ -61,29 +41,14 @@ public class PetResourceTests extends AbstractRestTest {
   }
 
   private PetData saveExampleData() {
-    return given()
-        .when()
-        .body(HEDWIG)
-        .post("/pets")
-        .then()
-        .statusCode(201)
-        .extract()
-        .body()
-        .as(PetData.class);
+    return given().when().body(HEDWIG).post("/pets").then().statusCode(201).extract().body().as(PetData.class);
   }
 
   @Test
   public void recordBirth() {
     PetData data = saveExampleData();
-    data = given()
-        .when()
-        .body("{\"birth\": 101}")
-        .patch("/pets/{id}/birth", data.id)
-        .then()
-        .statusCode(200)
-        .extract()
-        .body()
-        .as(PetData.class);
+    data = given().when().body("{\"birth\": 101}").patch("/pets/{id}/birth", data.id).then().statusCode(200).extract()
+        .body().as(PetData.class);
 
     assertThat(data, is(notNullValue()));
     assertThat(data.id, is(notNullValue()));
@@ -93,15 +58,8 @@ public class PetResourceTests extends AbstractRestTest {
   @Test
   public void recordDeath() {
     PetData data = saveExampleData();
-    data = given()
-        .when()
-        .body("{\"death\": 201}")
-        .patch("/pets/{id}/death", data.id)
-        .then()
-        .statusCode(200)
-        .extract()
-        .body()
-        .as(PetData.class);
+    data = given().when().body("{\"death\": 201}").patch("/pets/{id}/death", data.id).then().statusCode(200).extract()
+        .body().as(PetData.class);
 
     assertThat(data, is(notNullValue()));
     assertThat(data.id, is(notNullValue()));
@@ -111,15 +69,8 @@ public class PetResourceTests extends AbstractRestTest {
   @Test
   public void correctKind() {
     PetData data = saveExampleData();
-    data = given()
-        .when()
-        .body("{\"kind\":{\"animalTypeId\":\"Dog\"}}")
-        .patch("/pets/{id}/kind", data.id)
-        .then()
-        .statusCode(200)
-        .extract()
-        .body()
-        .as(PetData.class);
+    data = given().when().body("{\"kind\":{\"animalTypeId\":\"Dog\"}}").patch("/pets/{id}/kind", data.id).then()
+        .statusCode(200).extract().body().as(PetData.class);
 
     assertThat(data, is(notNullValue()));
     assertThat(data.id, is(notNullValue()));
@@ -129,15 +80,8 @@ public class PetResourceTests extends AbstractRestTest {
   @Test
   public void changeOwner() {
     PetData data = saveExampleData();
-    data = given()
-        .when()
-        .body("{\"owner\":{\"clientId\":\"Granger\"}}")
-        .patch("/pets/{id}/owner", data.id)
-        .then()
-        .statusCode(200)
-        .extract()
-        .body()
-        .as(PetData.class);
+    data = given().when().body("{\"owner\":{\"clientId\":\"Granger\"}}").patch("/pets/{id}/owner", data.id).then()
+        .statusCode(200).extract().body().as(PetData.class);
 
     assertThat(data, is(notNullValue()));
     assertThat(data.id, is(notNullValue()));
@@ -145,16 +89,11 @@ public class PetResourceTests extends AbstractRestTest {
   }
 
   @Test
+  @Disabled("not implemented")
   public void saveAndFetchById() {
     PetData res = saveExampleData();
     final String id = res.id;
-    res = given()
-        .when()
-        .get("/pets/{id}", id)
-        .then()
-        .statusCode(200)
-        .extract()
-        .body().as(PetData.class);
+    res = given().when().get("/pets/{id}", id).then().statusCode(200).extract().body().as(PetData.class);
 
     assertThat(res, is(notNullValue()));
     assertThat(res.id, is(equalTo(id)));
@@ -173,13 +112,8 @@ public class PetResourceTests extends AbstractRestTest {
     final PetData animalTypeData = saveExampleData();
     final String id = animalTypeData.id;
 
-    List<PetData> pets = given()
-        .when()
-        .get("/pets")
-        .then()
-        .statusCode(200)
-        .extract()
-        .body().as(new TypeRef<List<PetData>>() {
+    List<PetData> pets = given().when().get("/pets").then().statusCode(200).extract().body()
+        .as(new TypeRef<List<PetData>>() {
         });
 
     assertThat(pets, is(notNullValue()));
@@ -202,13 +136,8 @@ public class PetResourceTests extends AbstractRestTest {
     final String id = animalTypeData.id;
     final String ownerId = animalTypeData.owner.clientId;
 
-    List<PetData> pets = given()
-        .when()
-        .get("/pets/owners/{id}", ownerId)
-        .then()
-        .statusCode(200)
-        .extract()
-        .body().as(new TypeRef<List<PetData>>() {
+    List<PetData> pets = given().when().get("/pets/owners/{id}", ownerId).then().statusCode(200).extract().body()
+        .as(new TypeRef<List<PetData>>() {
         });
 
     assertThat(pets, is(notNullValue()));

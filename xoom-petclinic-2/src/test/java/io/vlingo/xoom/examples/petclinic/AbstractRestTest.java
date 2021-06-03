@@ -11,39 +11,46 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
+
+
 public abstract class AbstractRestTest {
 
-  protected int port;
-  private XoomInitializer xoom;
+    protected int port = 18080;
+    private XoomInitializer xoom;
 
-  @BeforeAll
-  public static void init() {
-    //port = (int)(Math.random() * 55535) + 10000;
-    RestAssured.defaultParser = Parser.JSON;
-  }
+    @BeforeAll
+    public static void init() {
+        //port = (int)(Math.random() * 55535) + 10000;
+        RestAssured.defaultParser = Parser.JSON;
+    }
 
-  @BeforeEach
-  public void setUp() throws Exception {
-    port = (int) (Math.random() * 55535) + 10000;
+    @BeforeEach
+    public void setUp() throws Exception {
+        port = (int) (Math.random() * 55535) + 10000;
 
-    XoomInitializer.main(new String[]{String.valueOf(port)});
-    xoom = XoomInitializer.instance();
-    Boolean startUpSuccess = xoom.server().startUp().await(100);
-    System.out.println("==== Test Server running on " + port);
-  }
+        XoomInitializer.main(new String[]{"-Dport=" + port});
+        xoom = XoomInitializer.instance();
+        Boolean startUpSuccess = xoom.server().startUp().await(100);
+        System.out.println("==== Test Server running on " + port);
+        assertThat(startUpSuccess, is(equalTo(true)));
+    }
 
-  @AfterEach
-  public void cleanUp() throws Exception {
-    System.out.println("==== Test Server shutting down ");
-    xoom.server().stop();
-  }
+    @AfterEach
+    public void cleanUp() throws Exception {
+        System.out.println("==== Test Server shutting down ");
+        xoom.server().stop();
+        //xoom.stopServer();
+    }
 
-  public RequestSpecification given() {
-    return io.restassured.RestAssured.given()
-        .filter(new RequestLoggingFilter())
-        .filter(new ResponseLoggingFilter())
-        .port(port)
-        .accept(ContentType.JSON)
-        .contentType(ContentType.JSON);
-  }
+    public RequestSpecification given() {
+        return io.restassured.RestAssured.given()
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
+                .port(port)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON);
+    }
 }
