@@ -87,7 +87,6 @@
         <module>xoom-iddd-collaboration</module>
         <module>xoom-kubernetes-cluster</module>
         <module>xoom-petclinic</module>
-        <module>xoom-petclinic-2</module>
         <module>xoom-reactive-messaging-patterns</module>
         <module>xoom-simgui-mediator</module>
         <module>xoom-platform-patterns</module>

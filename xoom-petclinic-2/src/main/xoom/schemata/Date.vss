@@ -1,4 +1,0 @@
-data Date {
-  version semanticVersion
-  long value
-}

@@ -1,5 +1,0 @@
-event AnimalTypeTreatmentOffered {
-  version semanticVersion
-  string id
-  string name
-}

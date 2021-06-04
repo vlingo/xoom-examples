@@ -1,5 +1,0 @@
-event VeterinarianSpecialtyChosen {
-  version semanticVersion
-  string id
-  xoom:apps:io.vlingo.xoom.examples.petclinic:Specialty:1.0.0 specialty
-}

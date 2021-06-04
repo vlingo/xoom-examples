@@ -1,5 +1,0 @@
-event AnimalTypeRenamed {
-  version semanticVersion
-  string id
-  string name
-}

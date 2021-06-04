@@ -1,5 +1,0 @@
-event SpecialtyTypeRenamed {
-  version semanticVersion
-  string id
-  string name
-}
