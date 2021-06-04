@@ -16,6 +16,7 @@ public final class PetRegistered extends IdentifiedDomainEvent {
   public final String id;
   public final Name name;
   public final Date birth;
+  public final Date death;
   public final Kind kind;
   public final Owner owner;
 
@@ -24,6 +25,7 @@ public final class PetRegistered extends IdentifiedDomainEvent {
     this.id = state.id;
     this.name = state.name;
     this.birth = state.birth;
+    this.death = state.death;
     this.kind = state.kind;
     this.owner = state.owner;
   }

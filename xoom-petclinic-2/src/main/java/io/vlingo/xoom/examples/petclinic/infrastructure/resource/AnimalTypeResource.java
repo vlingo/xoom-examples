@@ -25,7 +25,7 @@ public interface AnimalTypeResource {
   @ResponseAdapter(handler = AnimalTypeResourceHandlers.ADAPT_STATE)
   Completes<Response> rename(@Id final String id, @Body final AnimalTypeData data);
 
-  @Route(method = GET, handler = AnimalTypeResourceHandlers.ANIMAL_TYPES)
+  @Route(method = GET, path = "animalTypes", handler = AnimalTypeResourceHandlers.ANIMAL_TYPES)
   Completes<Response> animalTypes();
 
 }

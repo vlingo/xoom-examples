@@ -1,0 +1,40 @@
+version: '3.5'
+
+services:
+
+  rabbitmq:
+    environment:
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_VHOST=/
+    ports:
+      - 5762:5672
+      - 15672:15672
+    volumes:
+      - 'rabbitmq'
+
+  db:
+    volumes:
+      - 'mysql'
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: petclinic-query
+
+  postgres:
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgres'
+    environment:
+      POSTGRES_DB: petclinic-command
+      POSTGRES_USER: postgres
+      ALLOW_EMPTY_PASSWORD: "yes"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+
+volumes:
+    rabbitmq:
+      driver: local
+    mysql:
+      driver: local
+    postgres:
+      driver: local

@@ -25,7 +25,7 @@ public interface SpecialtyTypeResource {
   @ResponseAdapter(handler = SpecialtyTypeResourceHandlers.ADAPT_STATE)
   Completes<Response> rename(@Id final String id, @Body final SpecialtyTypeData data);
 
-  @Route(method = GET, handler = SpecialtyTypeResourceHandlers.SPECIALTY_TYPES)
+  @Route(method = GET, path = "specialties", handler = SpecialtyTypeResourceHandlers.SPECIALTY_TYPES)
   Completes<Response> specialtyTypes();
 
 }

@@ -1,9 +1,9 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.persistence;
 
 import io.vlingo.xoom.examples.petclinic.infrastructure.Events;
-import io.vlingo.xoom.examples.petclinic.infrastructure.SpecialtyTypeData;
-import io.vlingo.xoom.examples.petclinic.model.specialtytype.SpecialtyTypeOffered;
-import io.vlingo.xoom.examples.petclinic.model.specialtytype.SpecialtyTypeRenamed;
+import io.vlingo.xoom.examples.petclinic.infrastructure.*;
+import io.vlingo.xoom.examples.petclinic.model.specialtytype.*;
+
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;

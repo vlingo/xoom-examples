@@ -29,7 +29,7 @@ public interface ClientResource {
   @ResponseAdapter(handler = ClientResourceHandlers.ADAPT_STATE)
   Completes<Response> changeName(@Id final String id, @Body final ClientData data);
 
-  @Route(method = GET, handler = ClientResourceHandlers.CLIENTS)
+  @Route(method = GET, path = "clients", handler = ClientResourceHandlers.CLIENTS)
   Completes<Response> clients();
 
 }

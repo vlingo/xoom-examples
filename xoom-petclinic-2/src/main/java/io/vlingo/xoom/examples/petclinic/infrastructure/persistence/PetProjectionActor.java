@@ -46,9 +46,10 @@ public class PetProjectionActor extends StateStoreProjectionActor<PetData> {
           final PetRegistered typedEvent = typed(event);
           final NameData name = NameData.from(typedEvent.name.value);
           final DateData birth = DateData.from(typedEvent.birth.value);
+          final DateData death = DateData.from(typedEvent.death.value);
           final KindData kind = KindData.from(typedEvent.kind.animalTypeId);
           final OwnerData owner = OwnerData.from(typedEvent.owner.clientId);
-          merged = PetData.from(typedEvent.id, name, birth, null, kind, owner);
+          merged = PetData.from(typedEvent.id, name, birth, death, kind, owner);
           break;
         }
 

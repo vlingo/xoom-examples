@@ -1,9 +1,9 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.persistence;
 
+import io.vlingo.xoom.examples.petclinic.infrastructure.Events;
 import io.vlingo.xoom.examples.petclinic.infrastructure.*;
-import io.vlingo.xoom.examples.petclinic.model.client.ClientContactInformationChanged;
-import io.vlingo.xoom.examples.petclinic.model.client.ClientNameChanged;
-import io.vlingo.xoom.examples.petclinic.model.client.ClientRegistered;
+import io.vlingo.xoom.examples.petclinic.model.client.*;
+
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;

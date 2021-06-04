@@ -62,8 +62,7 @@ public final class PetEntity extends EventSourced implements Pet {
   }
 
   private void applyPetRegistered(final PetRegistered event) {
-    //TODO: Event is missing death; using null instead
-    state = state.register(event.name, event.birth, null, event.kind, event.owner);
+    state = state.register(event.name, event.birth, event.death, event.kind, event.owner);
   }
 
   private void applyPetNameChanged(final PetNameChanged event) {

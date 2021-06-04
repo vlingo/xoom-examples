@@ -41,7 +41,7 @@ public interface PetResource {
   @ResponseAdapter(handler = PetResourceHandlers.ADAPT_STATE)
   Completes<Response> changeOwner(@Id final String id, @Body final PetData data);
 
-  @Route(method = GET, handler = PetResourceHandlers.PETS)
+  @Route(method = GET, path = "pets", handler = PetResourceHandlers.PETS)
   Completes<Response> pets();
 
 }

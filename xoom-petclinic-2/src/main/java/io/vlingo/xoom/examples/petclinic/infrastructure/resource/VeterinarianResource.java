@@ -33,7 +33,7 @@ public interface VeterinarianResource {
   @ResponseAdapter(handler = VeterinarianResourceHandlers.ADAPT_STATE)
   Completes<Response> specializesIn(@Id final String id, @Body final VeterinarianData data);
 
-  @Route(method = GET, handler = VeterinarianResourceHandlers.VETERINARIANS)
+  @Route(method = GET, path = "veterinarians", handler = VeterinarianResourceHandlers.VETERINARIANS)
   Completes<Response> veterinarians();
 
 }
