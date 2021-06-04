@@ -1,0 +1,7 @@
+data PostalAddress {
+  version semanticVersion
+  string streetAddress
+  string city
+  string stateProvince
+  string postalCode
+}

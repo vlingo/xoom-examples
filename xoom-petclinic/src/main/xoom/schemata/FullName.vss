@@ -1,0 +1,5 @@
+data FullName {
+  version semanticVersion
+  string first
+  string last
+}

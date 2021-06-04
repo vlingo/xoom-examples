@@ -1,0 +1,4 @@
+data Telephone {
+  version semanticVersion
+  string number
+}
