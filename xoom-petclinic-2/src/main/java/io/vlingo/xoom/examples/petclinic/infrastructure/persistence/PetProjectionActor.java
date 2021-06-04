@@ -8,6 +8,7 @@ import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 /**
  * See
@@ -20,7 +21,7 @@ public class PetProjectionActor extends StateStoreProjectionActor<PetData> {
   private static final PetData Empty = PetData.empty();
 
   public PetProjectionActor() {
-    this(QueryModelStateStoreProvider.instance().store);
+    this(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   public PetProjectionActor(final StateStore stateStore) {
@@ -45,9 +46,10 @@ public class PetProjectionActor extends StateStoreProjectionActor<PetData> {
           final PetRegistered typedEvent = typed(event);
           final NameData name = NameData.from(typedEvent.name.value);
           final DateData birth = DateData.from(typedEvent.birth.value);
+          final DateData death = DateData.from(typedEvent.death.value);
           final KindData kind = KindData.from(typedEvent.kind.animalTypeId);
           final OwnerData owner = OwnerData.from(typedEvent.owner.clientId);
-          merged = PetData.from(typedEvent.id, name, birth, null, kind, owner);
+          merged = PetData.from(typedEvent.id, name, birth, death, kind, owner);
           break;
         }
 

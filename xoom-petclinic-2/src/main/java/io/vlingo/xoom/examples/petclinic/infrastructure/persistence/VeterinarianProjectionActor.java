@@ -8,6 +8,7 @@ import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 /**
  * See
@@ -20,7 +21,7 @@ public class VeterinarianProjectionActor extends StateStoreProjectionActor<Veter
   private static final VeterinarianData Empty = VeterinarianData.empty();
 
   public VeterinarianProjectionActor() {
-    this(QueryModelStateStoreProvider.instance().store);
+    this(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   public VeterinarianProjectionActor(final StateStore stateStore) {

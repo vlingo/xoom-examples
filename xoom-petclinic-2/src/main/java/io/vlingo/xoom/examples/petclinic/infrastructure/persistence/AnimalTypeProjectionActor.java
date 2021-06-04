@@ -1,13 +1,14 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.persistence;
 
-import io.vlingo.xoom.examples.petclinic.model.animaltype.*;
+import io.vlingo.xoom.examples.petclinic.infrastructure.AnimalTypeData;
 import io.vlingo.xoom.examples.petclinic.infrastructure.Events;
-import io.vlingo.xoom.examples.petclinic.infrastructure.*;
-
+import io.vlingo.xoom.examples.petclinic.model.animaltype.AnimalTypeRenamed;
+import io.vlingo.xoom.examples.petclinic.model.animaltype.AnimalTypeTreatmentOffered;
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 /**
  * See
@@ -20,7 +21,7 @@ public class AnimalTypeProjectionActor extends StateStoreProjectionActor<AnimalT
   private static final AnimalTypeData Empty = AnimalTypeData.empty();
 
   public AnimalTypeProjectionActor() {
-    this(QueryModelStateStoreProvider.instance().store);
+    this(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   public AnimalTypeProjectionActor(final StateStore stateStore) {
