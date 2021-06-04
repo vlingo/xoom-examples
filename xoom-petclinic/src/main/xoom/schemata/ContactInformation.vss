@@ -1,0 +1,5 @@
+data ContactInformation {
+  version semanticVersion
+  xoom:apps:io.vlingo.xoom.examples.petclinic:PostalAddress:1.0.0 postalAddress
+  xoom:apps:io.vlingo.xoom.examples.petclinic:Telephone:1.0.0 telephone
+}
