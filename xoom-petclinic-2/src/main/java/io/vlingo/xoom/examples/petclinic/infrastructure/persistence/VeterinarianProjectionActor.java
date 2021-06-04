@@ -1,13 +1,15 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.persistence;
 
-import io.vlingo.xoom.examples.petclinic.infrastructure.Events;
 import io.vlingo.xoom.examples.petclinic.infrastructure.*;
-import io.vlingo.xoom.examples.petclinic.model.veterinarian.*;
-
+import io.vlingo.xoom.examples.petclinic.model.veterinarian.VeterinarianContactInformationChanged;
+import io.vlingo.xoom.examples.petclinic.model.veterinarian.VeterinarianNameChanged;
+import io.vlingo.xoom.examples.petclinic.model.veterinarian.VeterinarianRegistered;
+import io.vlingo.xoom.examples.petclinic.model.veterinarian.VeterinarianSpecialtyChosen;
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 /**
  * See
@@ -20,7 +22,7 @@ public class VeterinarianProjectionActor extends StateStoreProjectionActor<Veter
   private static final VeterinarianData Empty = VeterinarianData.empty();
 
   public VeterinarianProjectionActor() {
-    this(QueryModelStateStoreProvider.instance().store);
+    this(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   public VeterinarianProjectionActor(final StateStore stateStore) {

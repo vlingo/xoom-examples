@@ -1,13 +1,14 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.persistence;
 
-import io.vlingo.xoom.examples.petclinic.infrastructure.Events;
 import io.vlingo.xoom.examples.petclinic.infrastructure.*;
-import io.vlingo.xoom.examples.petclinic.model.client.*;
-
+import io.vlingo.xoom.examples.petclinic.model.client.ClientContactInformationChanged;
+import io.vlingo.xoom.examples.petclinic.model.client.ClientNameChanged;
+import io.vlingo.xoom.examples.petclinic.model.client.ClientRegistered;
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 /**
  * See
@@ -20,7 +21,7 @@ public class ClientProjectionActor extends StateStoreProjectionActor<ClientData>
   private static final ClientData Empty = ClientData.empty();
 
   public ClientProjectionActor() {
-    this(QueryModelStateStoreProvider.instance().store);
+    this(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   public ClientProjectionActor(final StateStore stateStore) {
