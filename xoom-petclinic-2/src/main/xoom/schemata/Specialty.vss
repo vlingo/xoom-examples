@@ -1,4 +1,0 @@
-data Specialty {
-  version semanticVersion
-  string specialtyTypeId
-}

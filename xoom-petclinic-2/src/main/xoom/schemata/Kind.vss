@@ -1,4 +1,0 @@
-data Kind {
-  version semanticVersion
-  string animalTypeId
-}
