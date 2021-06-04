@@ -1,16 +1,14 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.persistence;
 
-import io.vlingo.xoom.examples.petclinic.infrastructure.ClientData;
-import io.vlingo.xoom.examples.petclinic.infrastructure.ContactInformationData;
 import io.vlingo.xoom.examples.petclinic.infrastructure.Events;
-import io.vlingo.xoom.examples.petclinic.infrastructure.FullnameData;
-import io.vlingo.xoom.examples.petclinic.model.client.ClientContactInformationChanged;
-import io.vlingo.xoom.examples.petclinic.model.client.ClientNameChanged;
-import io.vlingo.xoom.examples.petclinic.model.client.ClientRegistered;
+import io.vlingo.xoom.examples.petclinic.infrastructure.*;
+import io.vlingo.xoom.examples.petclinic.model.client.*;
+
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 /**
  * See
@@ -20,48 +18,62 @@ import io.vlingo.xoom.symbio.store.state.StateStore;
  */
 public class ClientProjectionActor extends StateStoreProjectionActor<ClientData> {
 
-  public ClientProjectionActor(StateStore stateStore) {
+  private static final ClientData Empty = ClientData.empty();
+
+  public ClientProjectionActor() {
+    this(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
+  }
+
+  public ClientProjectionActor(final StateStore stateStore) {
     super(stateStore);
   }
 
   @Override
   protected ClientData currentDataFor(final Projectable projectable) {
-    return ClientData.empty();
+    return Empty;
   }
 
   @Override
-  protected ClientData merge(ClientData previousData, int previousVersion, ClientData currentData, int currentVersion) {
+  protected ClientData merge(final ClientData previousData, final int previousVersion, final ClientData currentData, final int currentVersion) {
+
+    if (previousVersion == currentVersion) return currentData;
+
+    ClientData merged = previousData;
+
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
-        case ClientRegistered:
-          return merge(typed(event));
-        case ClientNameChanged:
-          return mergeNameChange(previousData, typed(event));
-        case ClientContactInformationChanged:
-          return mergeContactChange(previousData, typed(event));
+        case ClientRegistered: {
+          final ClientRegistered typedEvent = typed(event);
+          final FullNameData name = FullNameData.from(typedEvent.name.first, typedEvent.name.last);
+          final PostalAddressData postalAddress = PostalAddressData.from(typedEvent.contactInformation.postalAddress.streetAddress, typedEvent.contactInformation.postalAddress.city, typedEvent.contactInformation.postalAddress.stateProvince, typedEvent.contactInformation.postalAddress.postalCode);
+          final TelephoneData telephone = TelephoneData.from(typedEvent.contactInformation.telephone.number);
+          final ContactInformationData contactInformation = ContactInformationData.from(postalAddress, telephone);
+          merged = ClientData.from(typedEvent.id, name, contactInformation);
+          break;
+        }
+
+        case ClientContactInformationChanged: {
+          final ClientContactInformationChanged typedEvent = typed(event);
+          final PostalAddressData postalAddress = PostalAddressData.from(typedEvent.contactInformation.postalAddress.streetAddress, typedEvent.contactInformation.postalAddress.city, typedEvent.contactInformation.postalAddress.stateProvince, typedEvent.contactInformation.postalAddress.postalCode);
+          final TelephoneData telephone = TelephoneData.from(typedEvent.contactInformation.telephone.number);
+          final ContactInformationData contactInformation = ContactInformationData.from(postalAddress, telephone);
+          merged = ClientData.from(typedEvent.id, previousData.name, contactInformation);
+          break;
+        }
+
+        case ClientNameChanged: {
+          final ClientNameChanged typedEvent = typed(event);
+          final FullNameData name = FullNameData.from(typedEvent.name.first, typedEvent.name.last);
+          merged = ClientData.from(typedEvent.id, name, previousData.contactInformation);
+          break;
+        }
+
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
           break;
       }
     }
 
-    return previousData;
-  }
-
-  private ClientData merge(ClientRegistered registered){
-    final FullnameData name = FullnameData.of(registered.name.first, registered.name.last);
-    final ContactInformationData contact = ContactInformationData.of(registered.contact.postalAddress, registered.contact.telephone);
-    return ClientData.from(registered.id, name, contact);
-  }
-
-  private ClientData mergeNameChange(ClientData previous, ClientNameChanged nameChanged){
-    final FullnameData name = FullnameData.of(nameChanged.name.first, nameChanged.name.last);
-    return ClientData.from(previous.id, name, previous.contact);
-  }
-
-  private ClientData mergeContactChange(ClientData previous, ClientContactInformationChanged contactChanged){
-    final ContactInformationData contact
-            = ContactInformationData.of(contactChanged.contact.postalAddress, contactChanged.contact.telephone);
-    return ClientData.from(previous.id, previous.name, contact);
+    return merged;
   }
 }

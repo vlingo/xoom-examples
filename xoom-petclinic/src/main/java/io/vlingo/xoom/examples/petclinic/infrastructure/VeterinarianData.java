@@ -2,43 +2,38 @@ package io.vlingo.xoom.examples.petclinic.infrastructure;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import io.vlingo.xoom.examples.petclinic.model.veterinarian.VeterinarianState;
 
 public class VeterinarianData {
   public final String id;
-  public final FullnameData name;
-  public final ContactInformationData contact;
+  public final FullNameData name;
+  public final ContactInformationData contactInformation;
   public final SpecialtyData specialty;
 
-  public static VeterinarianData from(final VeterinarianState state) {
-    return new VeterinarianData(state);
+  public static VeterinarianData from(final VeterinarianState veterinarianState) {
+    final FullNameData name = veterinarianState.name != null ? FullNameData.from(veterinarianState.name) : null;
+    final ContactInformationData contactInformation = veterinarianState.contactInformation != null ? ContactInformationData.from(veterinarianState.contactInformation) : null;
+    final SpecialtyData specialty = veterinarianState.specialty != null ? SpecialtyData.from(veterinarianState.specialty) : null;
+    return from(veterinarianState.id, name, contactInformation, specialty);
+  }
+
+  public static VeterinarianData from(final String id, final FullNameData name, final ContactInformationData contactInformation, final SpecialtyData specialty) {
+    return new VeterinarianData(id, name, contactInformation, specialty);
   }
 
   public static List<VeterinarianData> from(final List<VeterinarianState> states) {
     return states.stream().map(VeterinarianData::from).collect(Collectors.toList());
   }
 
-  public static VeterinarianData from(final String id, final FullnameData name,
-                                      final ContactInformationData contact, final SpecialtyData specialty){
-    return new VeterinarianData(id, name, contact, specialty);
-  }
-
   public static VeterinarianData empty() {
-    return VeterinarianData.from("", null, null, null);
+    return from(VeterinarianState.identifiedBy(""));
   }
 
-  private VeterinarianData (final VeterinarianState state) {
-    this.id = state.id;
-    this.name = FullnameData.of(state.name.first, state.name.last);
-    this.contact = ContactInformationData.of(state.contact.postalAddress, state.contact.telephone);
-    this.specialty = SpecialtyData.of(state.specialty.specialtyTypeId);
-  }
-
-  private VeterinarianData(String id, FullnameData name, ContactInformationData contact, SpecialtyData specialty) {
+  private VeterinarianData (final String id, final FullNameData name, final ContactInformationData contactInformation, final SpecialtyData specialty) {
     this.id = id;
     this.name = name;
-    this.contact = contact;
+    this.contactInformation = contactInformation;
     this.specialty = specialty;
   }
+
 }

@@ -1,41 +1,39 @@
 package io.vlingo.xoom.examples.petclinic.model.veterinarian;
 
-import io.vlingo.xoom.examples.petclinic.model.ContactInformation;
-import io.vlingo.xoom.examples.petclinic.model.client.Specialty;
-import io.vlingo.xoom.examples.petclinic.model.Fullname;
+import io.vlingo.xoom.examples.petclinic.model.*;
 
 public final class VeterinarianState {
 
   public final String id;
-  public final Fullname name;
-  public final ContactInformation contact;
+  public final FullName name;
+  public final ContactInformation contactInformation;
   public final Specialty specialty;
 
   public static VeterinarianState identifiedBy(final String id) {
     return new VeterinarianState(id, null, null, null);
   }
 
-  public VeterinarianState (final String id, final Fullname name, final ContactInformation contact, final Specialty specialty) {
+  public VeterinarianState (final String id, final FullName name, final ContactInformation contactInformation, final Specialty specialty) {
     this.id = id;
     this.name = name;
-    this.contact = contact;
+    this.contactInformation = contactInformation;
     this.specialty = specialty;
   }
 
-  public VeterinarianState register(final Fullname name, final ContactInformation contact, final Specialty specialty) {
-    return new VeterinarianState(this.id, name, contact, specialty);
+  public VeterinarianState register(final FullName name, final ContactInformation contactInformation, final Specialty specialty) {
+    return new VeterinarianState(this.id, name, contactInformation, specialty);
   }
 
-  public VeterinarianState changeName(final Fullname name) {
-    return new VeterinarianState(this.id, name, this.contact, this.specialty);
+  public VeterinarianState changeContactInformation(final ContactInformation contactInformation) {
+    return new VeterinarianState(this.id, this.name, contactInformation, this.specialty);
   }
 
-  public VeterinarianState changeContactInformation(final ContactInformation contact) {
-    return new VeterinarianState(this.id, this.name, contact, this.specialty);
+  public VeterinarianState changeName(final FullName name) {
+    return new VeterinarianState(this.id, name, this.contactInformation, this.specialty);
   }
 
   public VeterinarianState specializesIn(final Specialty specialty) {
-    return new VeterinarianState(this.id, this.name, this.contact, specialty);
+    return new VeterinarianState(this.id, this.name, this.contactInformation, specialty);
   }
 
 }

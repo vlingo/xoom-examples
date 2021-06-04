@@ -12,13 +12,13 @@ import io.vlingo.xoom.lattice.model.IdentifiedDomainEvent;
  */
 public final class SpecialtyTypeRenamed extends IdentifiedDomainEvent {
 
-  private final String id;
+  public final String id;
   public final String name;
 
-  public SpecialtyTypeRenamed(final String id, final String name) {
-    super(SemanticVersion.from("0.0.1").toValue());
-    this.name = name;
-    this.id = id;
+  public SpecialtyTypeRenamed(final SpecialtyTypeState state) {
+    super(SemanticVersion.from("1.0.0").toValue());
+    this.id = state.id;
+    this.name = state.name;
   }
 
   @Override

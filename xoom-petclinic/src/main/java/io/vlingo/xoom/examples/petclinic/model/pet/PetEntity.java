@@ -1,8 +1,6 @@
 package io.vlingo.xoom.examples.petclinic.model.pet;
 
-import io.vlingo.xoom.examples.petclinic.model.client.Kind;
-import io.vlingo.xoom.examples.petclinic.model.client.Name;
-import io.vlingo.xoom.examples.petclinic.model.client.Owner;
+import io.vlingo.xoom.examples.petclinic.model.*;
 import io.vlingo.xoom.common.Completes;
 
 import io.vlingo.xoom.lattice.model.sourcing.EventSourced;
@@ -27,52 +25,64 @@ public final class PetEntity extends EventSourced implements Pet {
     EventSourced.registerConsumer(PetEntity.class, PetOwnerChanged.class, PetEntity::applyPetOwnerChanged);
   }
 
-  public Completes<PetState> register(final Name name, final long birth, final Kind kind, final Owner owner) {
-    return apply(new PetRegistered(state.id, name, birth, kind, owner), () -> state);
+  @Override
+  public Completes<PetState> register(final Name name, final Date birth, final Date death, final Kind kind, final Owner owner) {
+    final PetState stateArg = state.register(name, birth, death, kind, owner);
+    return apply(new PetRegistered(stateArg), () -> state);
   }
 
+  @Override
   public Completes<PetState> changeName(final Name name) {
-    return apply(new PetNameChanged(state.id, name), () -> state);
+    final PetState stateArg = state.changeName(name);
+    return apply(new PetNameChanged(stateArg), () -> state);
   }
 
-  public Completes<PetState> recordBirth(final long birth) {
-    return apply(new PetBirthRecorded(state.id, birth), () -> state);
+  @Override
+  public Completes<PetState> recordBirth(final Date birth) {
+    final PetState stateArg = state.recordBirth(birth);
+    return apply(new PetBirthRecorded(stateArg), () -> state);
   }
 
-  public Completes<PetState> recordDeath(final long death) {
-    return apply(new PetDeathRecorded(state.id, death), () -> state);
+  @Override
+  public Completes<PetState> recordDeath(final Date death) {
+    final PetState stateArg = state.recordDeath(death);
+    return apply(new PetDeathRecorded(stateArg), () -> state);
   }
 
+  @Override
   public Completes<PetState> correctKind(final Kind kind) {
-    return apply(new PetKindCorrected(state.id, kind), () -> state);
+    final PetState stateArg = state.correctKind(kind);
+    return apply(new PetKindCorrected(stateArg), () -> state);
   }
 
+  @Override
   public Completes<PetState> changeOwner(final Owner owner) {
-    return apply(new PetOwnerChanged(state.id, owner), () -> state);
+    final PetState stateArg = state.changeOwner(owner);
+    return apply(new PetOwnerChanged(stateArg), () -> state);
   }
 
   private void applyPetRegistered(final PetRegistered event) {
-    this.state = state.register(event.name, event.birth, event.kind, event.owner);
+    state = state.register(event.name, event.birth, event.death, event.kind, event.owner);
   }
 
   private void applyPetNameChanged(final PetNameChanged event) {
-    this.state = state.changeName(event.name);
+    state = state.changeName(event.name);
   }
 
   private void applyPetBirthRecorded(final PetBirthRecorded event) {
-    this.state = state.recordBirth(event.birth);
+    state = state.recordBirth(event.birth);
   }
 
   private void applyPetDeathRecorded(final PetDeathRecorded event) {
-    this.state = state.recordDeath(event.death);
+    state = state.recordDeath(event.death);
   }
 
   private void applyPetKindCorrected(final PetKindCorrected event) {
-    this.state = state.correctKind(event.kind);
+    state = state.correctKind(event.kind);
   }
 
   private void applyPetOwnerChanged(final PetOwnerChanged event) {
-    this.state = state.changeOwner(event.owner);
+    state = state.changeOwner(event.owner);
   }
 
   /*

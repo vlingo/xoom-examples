@@ -1,5 +1,6 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.persistence;
 
+import io.vlingo.xoom.examples.petclinic.infrastructure.Events;
 import io.vlingo.xoom.examples.petclinic.infrastructure.*;
 import io.vlingo.xoom.examples.petclinic.model.pet.*;
 
@@ -7,6 +8,7 @@ import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 /**
  * See
@@ -16,67 +18,82 @@ import io.vlingo.xoom.symbio.store.state.StateStore;
  */
 public class PetProjectionActor extends StateStoreProjectionActor<PetData> {
 
-  public PetProjectionActor(final StateStore store) {
-    super(store);
+  private static final PetData Empty = PetData.empty();
+
+  public PetProjectionActor() {
+    this(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
+  }
+
+  public PetProjectionActor(final StateStore stateStore) {
+    super(stateStore);
   }
 
   @Override
   protected PetData currentDataFor(final Projectable projectable) {
-    return PetData.empty();
+    return Empty;
   }
 
   @Override
-  protected PetData merge(PetData previousData, int previousVersion, PetData currentData, int currentVersion) {
+  protected PetData merge(final PetData previousData, final int previousVersion, final PetData currentData, final int currentVersion) {
+
+    if (previousVersion == currentVersion) return currentData;
+
+    PetData merged = previousData;
+
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
-        case PetKindCorrected:
-          return mergeKindCorrect(previousData, typed(event));
-        case PetNameChanged:
-          return mergeNameChange(previousData, typed(event));
-        case PetRegistered:
-          return merge(typed(event));
-        case PetDeathRecorded:
-          return mergeDeathRecord(previousData, typed(event));
-        case PetOwnerChanged:
-          return mergeOwnerChange(previousData, typed(event));
-        case PetBirthRecorded:
-          return mergeBirthRecorded(previousData, typed(event));
+        case PetRegistered: {
+          final PetRegistered typedEvent = typed(event);
+          final NameData name = NameData.from(typedEvent.name.value);
+          final DateData birth = DateData.from(typedEvent.birth.value);
+          final DateData death = DateData.from(typedEvent.death.value);
+          final KindData kind = KindData.from(typedEvent.kind.animalTypeId);
+          final OwnerData owner = OwnerData.from(typedEvent.owner.clientId);
+          merged = PetData.from(typedEvent.id, name, birth, death, kind, owner);
+          break;
+        }
+
+        case PetNameChanged: {
+          final PetNameChanged typedEvent = typed(event);
+          final NameData name = NameData.from(typedEvent.name.value);
+          merged = PetData.from(typedEvent.id, name, previousData.birth, previousData.death, previousData.kind, previousData.owner);
+          break;
+        }
+
+        case PetBirthRecorded: {
+          final PetBirthRecorded typedEvent = typed(event);
+          final DateData birth = DateData.from(typedEvent.birth.value);
+          merged = PetData.from(typedEvent.id, previousData.name, birth, previousData.death, previousData.kind, previousData.owner);
+          break;
+        }
+
+        case PetDeathRecorded: {
+          final PetDeathRecorded typedEvent = typed(event);
+          final DateData death = DateData.from(typedEvent.death.value);
+          merged = PetData.from(typedEvent.id, previousData.name, previousData.birth, death, previousData.kind, previousData.owner);
+          break;
+        }
+
+        case PetKindCorrected: {
+          final PetKindCorrected typedEvent = typed(event);
+          final KindData kind = KindData.from(typedEvent.kind.animalTypeId);
+          merged = PetData.from(typedEvent.id, previousData.name, previousData.birth, previousData.death, kind, previousData.owner);
+          break;
+        }
+
+        case PetOwnerChanged: {
+          final PetOwnerChanged typedEvent = typed(event);
+          final OwnerData owner = OwnerData.from(typedEvent.owner.clientId);
+          merged = PetData.from(typedEvent.id, previousData.name, previousData.birth, previousData.death, previousData.kind, owner);
+          break;
+        }
+
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
           break;
       }
     }
 
-    return previousData;
-  }
-
-  private PetData merge(PetRegistered registered){
-    final NameData name = NameData.of(registered.name.value);
-    final KindData kind = KindData.of(registered.kind.animalTypeId);
-    final OwnerData owner = OwnerData.of(registered.owner.clientId);
-    return PetData.from(registered.id, name, registered.birth, 0L, kind, owner, null);
-  }
-
-  private PetData mergeKindCorrect(PetData previous, PetKindCorrected kindCorrected){
-    final KindData kind = KindData.of(kindCorrected.kind.animalTypeId);
-    return PetData.from(previous.id, previous.name, previous.birth, previous.death, kind, previous.owner, previous.visit);
-  }
-
-  private PetData mergeNameChange(PetData previous, PetNameChanged nameChanged){
-    final NameData name = NameData.of(nameChanged.name.value);
-    return PetData.from(previous.id, name, previous.birth, previous.death, previous.kind, previous.owner, previous.visit);
-  }
-
-  private PetData mergeBirthRecorded(PetData previous, PetBirthRecorded birthRecorded){
-    return PetData.from(previous.id, previous.name, birthRecorded.birth, previous.death, previous.kind, previous.owner, previous.visit);
-  }
-
-  private PetData mergeDeathRecord(PetData previous, PetDeathRecorded deathRecorded){
-    return PetData.from(previous.id, previous.name, previous.birth, deathRecorded.death, previous.kind, previous.owner, previous.visit);
-  }
-
-  private PetData mergeOwnerChange(PetData previous, PetOwnerChanged ownerChanged){
-    final OwnerData owner = OwnerData.of(ownerChanged.owner.clientId);
-    return PetData.from(previous.id, previous.name, previous.birth, previous.death, previous.kind, owner, previous.visit);
+    return merged;
   }
 }

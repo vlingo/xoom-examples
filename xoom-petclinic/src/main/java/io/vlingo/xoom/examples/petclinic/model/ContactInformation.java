@@ -1,11 +1,11 @@
 package io.vlingo.xoom.examples.petclinic.model;
 
-public class ContactInformation {
+public final class ContactInformation {
 
   public final PostalAddress postalAddress;
   public final Telephone telephone;
 
-  public static ContactInformation of(final PostalAddress postalAddress, final Telephone telephone) {
+  public static ContactInformation from(final PostalAddress postalAddress, final Telephone telephone) {
     return new ContactInformation(postalAddress, telephone);
   }
 

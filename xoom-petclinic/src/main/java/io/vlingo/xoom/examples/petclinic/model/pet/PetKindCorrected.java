@@ -3,7 +3,7 @@ package io.vlingo.xoom.examples.petclinic.model.pet;
 import io.vlingo.xoom.common.version.SemanticVersion;
 import io.vlingo.xoom.lattice.model.IdentifiedDomainEvent;
 
-import io.vlingo.xoom.examples.petclinic.model.client.Kind;
+import io.vlingo.xoom.examples.petclinic.model.*;
 
 /**
  * See
@@ -13,13 +13,13 @@ import io.vlingo.xoom.examples.petclinic.model.client.Kind;
  */
 public final class PetKindCorrected extends IdentifiedDomainEvent {
 
-  private final String id;
+  public final String id;
   public final Kind kind;
 
-  public PetKindCorrected(final String id, final Kind kind) {
-    super(SemanticVersion.from("0.0.1").toValue());
-    this.kind = kind;
-    this.id = id;
+  public PetKindCorrected(final PetState state) {
+    super(SemanticVersion.from("1.0.0").toValue());
+    this.id = state.id;
+    this.kind = state.kind;
   }
 
   @Override

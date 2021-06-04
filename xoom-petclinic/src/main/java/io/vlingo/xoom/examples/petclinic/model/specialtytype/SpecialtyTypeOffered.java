@@ -15,10 +15,10 @@ public final class SpecialtyTypeOffered extends IdentifiedDomainEvent {
   public final String id;
   public final String name;
 
-  public SpecialtyTypeOffered(final String id, final String name) {
-    super(SemanticVersion.from("0.0.1").toValue());
-    this.id = id;
-    this.name = name;
+  public SpecialtyTypeOffered(final SpecialtyTypeState state) {
+    super(SemanticVersion.from("1.0.0").toValue());
+    this.id = state.id;
+    this.name = state.name;
   }
 
   @Override

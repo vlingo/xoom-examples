@@ -20,20 +20,24 @@ public final class SpecialtyTypeEntity extends EventSourced implements Specialty
     EventSourced.registerConsumer(SpecialtyTypeEntity.class, SpecialtyTypeRenamed.class, SpecialtyTypeEntity::applySpecialtyTypeRenamed);
   }
 
+  @Override
   public Completes<SpecialtyTypeState> offer(final String name) {
-    return apply(new SpecialtyTypeOffered(state.id, name), () -> state);
+    final SpecialtyTypeState stateArg = state.offer(name);
+    return apply(new SpecialtyTypeOffered(stateArg), () -> state);
   }
 
+  @Override
   public Completes<SpecialtyTypeState> rename(final String name) {
-    return apply(new SpecialtyTypeRenamed(state.id, name), () -> state);
+    final SpecialtyTypeState stateArg = state.rename(name);
+    return apply(new SpecialtyTypeRenamed(stateArg), () -> state);
   }
 
   private void applySpecialtyTypeOffered(final SpecialtyTypeOffered event) {
-    this.state = state.offer(event.name);
+    state = state.offer(event.name);
   }
 
   private void applySpecialtyTypeRenamed(final SpecialtyTypeRenamed event) {
-    this.state = state.rename(event.name);
+    state = state.rename(event.name);
   }
 
   /*

@@ -20,20 +20,24 @@ public final class AnimalTypeEntity extends EventSourced implements AnimalType {
     EventSourced.registerConsumer(AnimalTypeEntity.class, AnimalTypeRenamed.class, AnimalTypeEntity::applyAnimalTypeRenamed);
   }
 
+  @Override
   public Completes<AnimalTypeState> offerTreatmentFor(final String name) {
-    return apply(new AnimalTypeTreatmentOffered(state.id, name), () -> state);
+    final AnimalTypeState stateArg = state.offerTreatmentFor(name);
+    return apply(new AnimalTypeTreatmentOffered(stateArg), () -> state);
   }
 
+  @Override
   public Completes<AnimalTypeState> rename(final String name) {
-    return apply(new AnimalTypeRenamed(state.id, name), () -> state);
+    final AnimalTypeState stateArg = state.rename(name);
+    return apply(new AnimalTypeRenamed(stateArg), () -> state);
   }
 
   private void applyAnimalTypeTreatmentOffered(final AnimalTypeTreatmentOffered event) {
-    this.state = state.offerTreatmentFor(event.name);
+    state = state.offerTreatmentFor(event.name);
   }
 
   private void applyAnimalTypeRenamed(final AnimalTypeRenamed event) {
-    this.state = state.rename(event.name);
+    state = state.rename(event.name);
   }
 
   /*

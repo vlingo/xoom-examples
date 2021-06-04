@@ -8,5 +8,4 @@ import io.vlingo.xoom.examples.petclinic.infrastructure.PetData;
 public interface PetQueries {
   Completes<PetData> petOf(String id);
   Completes<Collection<PetData>> pets();
-  Completes<Collection<PetData>> petsForOwner(String ownerId);
 }

@@ -3,9 +3,7 @@ package io.vlingo.xoom.examples.petclinic.model.pet;
 import io.vlingo.xoom.common.version.SemanticVersion;
 import io.vlingo.xoom.lattice.model.IdentifiedDomainEvent;
 
-import io.vlingo.xoom.examples.petclinic.model.client.Kind;
-import io.vlingo.xoom.examples.petclinic.model.client.Name;
-import io.vlingo.xoom.examples.petclinic.model.client.Owner;
+import io.vlingo.xoom.examples.petclinic.model.*;
 
 /**
  * See
@@ -17,17 +15,19 @@ public final class PetRegistered extends IdentifiedDomainEvent {
 
   public final String id;
   public final Name name;
-  public final long birth;
+  public final Date birth;
+  public final Date death;
   public final Kind kind;
   public final Owner owner;
 
-  public PetRegistered(final String id, final Name name, long birth, Kind kind, Owner owner) {
-    super(SemanticVersion.from("0.0.1").toValue());
-    this.id = id;
-    this.name = name;
-    this.birth = birth;
-    this.kind = kind;
-    this.owner = owner;
+  public PetRegistered(final PetState state) {
+    super(SemanticVersion.from("1.0.0").toValue());
+    this.id = state.id;
+    this.name = state.name;
+    this.birth = state.birth;
+    this.death = state.death;
+    this.kind = state.kind;
+    this.owner = state.owner;
   }
 
   @Override

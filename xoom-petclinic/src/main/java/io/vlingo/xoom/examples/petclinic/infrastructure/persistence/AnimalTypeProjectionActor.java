@@ -8,6 +8,7 @@ import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 /**
  * See
@@ -17,36 +18,48 @@ import io.vlingo.xoom.symbio.store.state.StateStore;
  */
 public class AnimalTypeProjectionActor extends StateStoreProjectionActor<AnimalTypeData> {
 
+  private static final AnimalTypeData Empty = AnimalTypeData.empty();
+
+  public AnimalTypeProjectionActor() {
+    this(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
+  }
+
   public AnimalTypeProjectionActor(final StateStore stateStore) {
     super(stateStore);
   }
 
   @Override
   protected AnimalTypeData currentDataFor(final Projectable projectable) {
-    return AnimalTypeData.empty();
+    return Empty;
   }
 
   @Override
-  protected AnimalTypeData merge(AnimalTypeData previousData, int previousVersion, AnimalTypeData currentData, int currentVersion) {
+  protected AnimalTypeData merge(final AnimalTypeData previousData, final int previousVersion, final AnimalTypeData currentData, final int currentVersion) {
+
+    if (previousVersion == currentVersion) return currentData;
+
+    AnimalTypeData merged = previousData;
+
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
-        case AnimalTypeRenamed:
-          return mergeRename(previousData, typed(event));
-        case AnimalTypeTreatmentOffered:
-          return merge(typed(event));
+        case AnimalTypeTreatmentOffered: {
+          final AnimalTypeTreatmentOffered typedEvent = typed(event);
+          merged = AnimalTypeData.from(typedEvent.id, typedEvent.name);
+          break;
+        }
+
+        case AnimalTypeRenamed: {
+          final AnimalTypeRenamed typedEvent = typed(event);
+          merged = AnimalTypeData.from(typedEvent.id, typedEvent.name);
+          break;
+        }
+
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
+          break;
       }
     }
 
-    return previousData;
-  }
-
-  private AnimalTypeData merge(AnimalTypeTreatmentOffered offered){
-    return AnimalTypeData.from(offered.id, offered.name);
-  }
-
-  private AnimalTypeData mergeRename(AnimalTypeData previous, AnimalTypeRenamed renamed){
-    return AnimalTypeData.from(previous.id, renamed.name);
+    return merged;
   }
 }

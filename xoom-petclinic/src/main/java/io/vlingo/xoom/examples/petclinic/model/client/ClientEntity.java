@@ -1,7 +1,6 @@
 package io.vlingo.xoom.examples.petclinic.model.client;
 
-import io.vlingo.xoom.examples.petclinic.model.ContactInformation;
-import io.vlingo.xoom.examples.petclinic.model.Fullname;
+import io.vlingo.xoom.examples.petclinic.model.*;
 import io.vlingo.xoom.common.Completes;
 
 import io.vlingo.xoom.lattice.model.sourcing.EventSourced;
@@ -23,28 +22,34 @@ public final class ClientEntity extends EventSourced implements Client {
     EventSourced.registerConsumer(ClientEntity.class, ClientContactInformationChanged.class, ClientEntity::applyClientContactInformationChanged);
   }
 
-  public Completes<ClientState> register(final Fullname name, final ContactInformation contact) {
-    return apply(new ClientRegistered(state.id, name, contact), () -> state);
+  @Override
+  public Completes<ClientState> register(final FullName name, final ContactInformation contactInformation) {
+    final ClientState stateArg = state.register(name, contactInformation);
+    return apply(new ClientRegistered(stateArg), () -> state);
   }
 
-  public Completes<ClientState> changeName(final Fullname name) {
-    return apply(new ClientNameChanged(state.id, name), () -> state);
+  @Override
+  public Completes<ClientState> changeContactInformation(final ContactInformation contactInformation) {
+    final ClientState stateArg = state.changeContactInformation(contactInformation);
+    return apply(new ClientContactInformationChanged(stateArg), () -> state);
   }
 
-  public Completes<ClientState> changeContactInformation(final ContactInformation contact) {
-    return apply(new ClientContactInformationChanged(state.id, contact), () -> state);
+  @Override
+  public Completes<ClientState> changeName(final FullName name) {
+    final ClientState stateArg = state.changeName(name);
+    return apply(new ClientNameChanged(stateArg), () -> state);
   }
 
   private void applyClientRegistered(final ClientRegistered event) {
-    this.state = state.register(event.name, event.contact);
-  }
-
-  private void applyClientNameChanged(final ClientNameChanged event) {
-    this.state = state.changeName(event.name);
+    state = state.register(event.name, event.contactInformation);
   }
 
   private void applyClientContactInformationChanged(final ClientContactInformationChanged event) {
-    this.state = state.changeContactInformation(event.contact);
+    state = state.changeContactInformation(event.contactInformation);
+  }
+
+  private void applyClientNameChanged(final ClientNameChanged event) {
+    state = state.changeName(event.name);
   }
 
   /*

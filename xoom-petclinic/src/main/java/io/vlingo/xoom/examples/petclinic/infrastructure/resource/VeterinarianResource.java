@@ -1,120 +1,39 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.resource;
 
-import io.vlingo.xoom.actors.Definition;
-import io.vlingo.xoom.actors.Stage;
-import io.vlingo.xoom.http.resource.Resource;
-import io.vlingo.xoom.http.resource.DynamicResourceHandler;
-import static io.vlingo.xoom.http.resource.ResourceBuilder.resource;
-
-import io.vlingo.xoom.examples.petclinic.infrastructure.VeterinarianData;
-import io.vlingo.xoom.examples.petclinic.model.ContactInformation;
-import io.vlingo.xoom.examples.petclinic.model.client.Specialty;
-import io.vlingo.xoom.examples.petclinic.infrastructure.persistence.VeterinarianQueries;
-import io.vlingo.xoom.examples.petclinic.model.veterinarian.VeterinarianEntity;
-import io.vlingo.xoom.examples.petclinic.model.veterinarian.Veterinarian;
-import io.vlingo.xoom.examples.petclinic.model.Fullname;
-import io.vlingo.xoom.examples.petclinic.infrastructure.persistence.QueryModelStateStoreProvider;
-
-import io.vlingo.xoom.http.Response;
 import io.vlingo.xoom.common.Completes;
-import static io.vlingo.xoom.common.serialization.JsonSerialization.serialized;
-import static io.vlingo.xoom.http.Response.Status.*;
-import static io.vlingo.xoom.http.ResponseHeader.*;
+import io.vlingo.xoom.turbo.annotation.autodispatch.*;
+import io.vlingo.xoom.http.Response;
 
-/**
- * See <a href="https://docs.vlingo.io/xoom-turbo/xoom-annotations#resourcehandlers">@ResourceHandlers</a>
- */
-public class VeterinarianResource extends DynamicResourceHandler {
-  private final VeterinarianQueries $queries;
+import io.vlingo.xoom.examples.petclinic.model.veterinarian.VeterinarianEntity;
+import io.vlingo.xoom.examples.petclinic.infrastructure.persistence.VeterinarianQueriesActor;
+import io.vlingo.xoom.examples.petclinic.infrastructure.persistence.VeterinarianQueries;
+import io.vlingo.xoom.examples.petclinic.model.veterinarian.Veterinarian;
+import io.vlingo.xoom.examples.petclinic.infrastructure.VeterinarianData;
 
-  public VeterinarianResource(final Stage stage, final VeterinarianQueries veterinarianQueries) {
-      super(stage);
-      this.$queries = veterinarianQueries;
-  }
+import static io.vlingo.xoom.http.Method.*;
 
-  public Completes<Response> changeName(final String id, final VeterinarianData data) {
-    final Fullname name = Fullname.of(data.name.first, data.name.last);
-    return resolve(id)
-            .andThenTo(veterinarian -> veterinarian.changeName(name))
-            .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(VeterinarianData.from(state)))))
-            .otherwise(noGreeting -> Response.of(NotFound, location(id)))
-            .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
-  }
+@AutoDispatch(path="/", handlers=VeterinarianResourceHandlers.class)
+@Queries(protocol = VeterinarianQueries.class, actor = VeterinarianQueriesActor.class)
+@Model(protocol = Veterinarian.class, actor = VeterinarianEntity.class, data = VeterinarianData.class)
+public interface VeterinarianResource {
 
-  public Completes<Response> changeContactInformation(final String id, final VeterinarianData data) {
-    final ContactInformation contact = ContactInformation.of(data.contact.postalAddress, data.contact.telephone);
-    return resolve(id)
-            .andThenTo(veterinarian -> veterinarian.changeContactInformation(contact))
-            .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(VeterinarianData.from(state)))))
-            .otherwise(noGreeting -> Response.of(NotFound, location(id)))
-            .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
-  }
+  @Route(method = POST, path = "veterinarians", handler = VeterinarianResourceHandlers.REGISTER)
+  @ResponseAdapter(handler = VeterinarianResourceHandlers.ADAPT_STATE)
+  Completes<Response> register(@Body final VeterinarianData data);
 
-  public Completes<Response> specializesIn(final String id, final VeterinarianData data) {
-    final Specialty specialty = Specialty.of(data.specialty.specialtyTypeId);
-    return resolve(id)
-            .andThenTo(veterinarian -> veterinarian.specializesIn(specialty))
-            .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(VeterinarianData.from(state)))))
-            .otherwise(noGreeting -> Response.of(NotFound, location(id)))
-            .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
-  }
+  @Route(method = PATCH, path = "veterinarians/{id}/contact", handler = VeterinarianResourceHandlers.CHANGE_CONTACT_INFORMATION)
+  @ResponseAdapter(handler = VeterinarianResourceHandlers.ADAPT_STATE)
+  Completes<Response> changeContactInformation(@Id final String id, @Body final VeterinarianData data);
 
-  public Completes<Response> register(final VeterinarianData data) {
-    final Fullname name = Fullname.of(data.name.first, data.name.last);
-    final ContactInformation contact = ContactInformation.of(data.contact.postalAddress, data.contact.telephone);
-    final Specialty specialty = Specialty.of(data.specialty.specialtyTypeId);
-    return Veterinarian.register(stage(), name, contact, specialty)
-      .andThenTo(state -> Completes.withSuccess(Response.of(Created, headers(of(Location, location(state.id))), serialized(VeterinarianData.from(state))))
-      .otherwise(arg -> Response.of(NotFound))
-      .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
-  }
+  @Route(method = PATCH, path = "veterinarians/{id}/name", handler = VeterinarianResourceHandlers.CHANGE_NAME)
+  @ResponseAdapter(handler = VeterinarianResourceHandlers.ADAPT_STATE)
+  Completes<Response> changeName(@Id final String id, @Body final VeterinarianData data);
 
-  public Completes<Response> veterinarians() {
-    return $queries.veterinarians()
-            .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound))
-            .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
-  }
+  @Route(method = PATCH, path = "veterinarians/{id}/specialty", handler = VeterinarianResourceHandlers.SPECIALIZES_IN)
+  @ResponseAdapter(handler = VeterinarianResourceHandlers.ADAPT_STATE)
+  Completes<Response> specializesIn(@Id final String id, @Body final VeterinarianData data);
 
-  public Completes<Response> veterinarian(String id) {
-    return $queries.veterinarianOf(id)
-            .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
-            .otherwise(arg -> Response.of(NotFound))
-            .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
-  }
-
-  @Override
-  public Resource<?> routes() {
-     return resource("VeterinarianResource",
-        io.vlingo.xoom.http.resource.ResourceBuilder.patch("/veterinarians/{id}/name")
-            .param(String.class)
-            .body(VeterinarianData.class)
-            .handle(this::changeName),
-        io.vlingo.xoom.http.resource.ResourceBuilder.patch("/veterinarians/{id}/contact")
-            .param(String.class)
-            .body(VeterinarianData.class)
-            .handle(this::changeContactInformation),
-        io.vlingo.xoom.http.resource.ResourceBuilder.patch("/veterinarians/{id}/specialty")
-            .param(String.class)
-            .body(VeterinarianData.class)
-            .handle(this::specializesIn),
-        io.vlingo.xoom.http.resource.ResourceBuilder.post("/veterinarians")
-            .body(VeterinarianData.class)
-            .handle(this::register),
-        io.vlingo.xoom.http.resource.ResourceBuilder.get("/veterinarians")
-            .handle(this::veterinarians),
-        io.vlingo.xoom.http.resource.ResourceBuilder.get("/veterinarians/{id}")
-            .param(String.class)
-            .handle(this::veterinarian)
-     );
-  }
-
-  private String location(final String id) {
-    return "/veterinarians/" + id;
-  }
-
-  private Completes<Veterinarian> resolve(final String id) {
-    return stage().actorOf(Veterinarian.class, stage().addressFactory().from(id), Definition.has(VeterinarianEntity.class, Definition.parameters(id)));
-  }
+  @Route(method = GET, path = "veterinarians", handler = VeterinarianResourceHandlers.VETERINARIANS)
+  Completes<Response> veterinarians();
 
 }

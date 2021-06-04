@@ -6,34 +6,31 @@ import io.vlingo.xoom.examples.petclinic.model.client.ClientState;
 
 public class ClientData {
   public final String id;
-  public final FullnameData name;
-  public final ContactInformationData contact;
+  public final FullNameData name;
+  public final ContactInformationData contactInformation;
 
-  public static ClientData from(final ClientState state) {
-    return new ClientData(state);
+  public static ClientData from(final ClientState clientState) {
+    final FullNameData name = clientState.name != null ? FullNameData.from(clientState.name) : null;
+    final ContactInformationData contactInformation = clientState.contactInformation != null ? ContactInformationData.from(clientState.contactInformation) : null;
+    return from(clientState.id, name, contactInformation);
+  }
+
+  public static ClientData from(final String id, final FullNameData name, final ContactInformationData contactInformation) {
+    return new ClientData(id, name, contactInformation);
   }
 
   public static List<ClientData> from(final List<ClientState> states) {
     return states.stream().map(ClientData::from).collect(Collectors.toList());
   }
 
-  public static ClientData from(String id, FullnameData name, ContactInformationData contact){
-    return new ClientData(id, name, contact);
-  }
-
   public static ClientData empty() {
-    return ClientData.from("", null, null);
+    return from(ClientState.identifiedBy(""));
   }
 
-  private ClientData (final ClientState state) {
-    this.id = state.id;
-    this.name = FullnameData.of(state.name.first, state.name.last);
-    this.contact = ContactInformationData.of(state.contact.postalAddress, state.contact.telephone);
-  }
-
-  private ClientData(String id, FullnameData name, ContactInformationData contact) {
+  private ClientData (final String id, final FullNameData name, final ContactInformationData contactInformation) {
     this.id = id;
     this.name = name;
-    this.contact = contact;
+    this.contactInformation = contactInformation;
   }
+
 }

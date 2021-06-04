@@ -1,5 +1,6 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure.persistence;
 
+import io.vlingo.xoom.examples.petclinic.infrastructure.Events;
 import io.vlingo.xoom.examples.petclinic.infrastructure.*;
 import io.vlingo.xoom.examples.petclinic.model.veterinarian.*;
 
@@ -7,6 +8,7 @@ import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 /**
  * See
@@ -16,61 +18,70 @@ import io.vlingo.xoom.symbio.store.state.StateStore;
  */
 public class VeterinarianProjectionActor extends StateStoreProjectionActor<VeterinarianData> {
 
-  public VeterinarianProjectionActor(StateStore stateStore) {
+  private static final VeterinarianData Empty = VeterinarianData.empty();
+
+  public VeterinarianProjectionActor() {
+    this(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
+  }
+
+  public VeterinarianProjectionActor(final StateStore stateStore) {
     super(stateStore);
   }
 
   @Override
   protected VeterinarianData currentDataFor(final Projectable projectable) {
-    return VeterinarianData.empty();
+    return Empty;
   }
 
   @Override
-  protected VeterinarianData merge(VeterinarianData previousData, int previousVersion, VeterinarianData currentData, int currentVersion) {
+  protected VeterinarianData merge(final VeterinarianData previousData, final int previousVersion, final VeterinarianData currentData, final int currentVersion) {
+
+    if (previousVersion == currentVersion) return currentData;
+
+    VeterinarianData merged = previousData;
+
     for (final Source<?> event : sources()) {
       switch (Events.valueOf(event.typeName())) {
-        case VeterinarianContactInformationChanged:
-          return mergeContactChange(previousData, typed(event));
-        case VeterinarianSpecialtyChosen:
-          return mergeSpecializeIn(previousData, typed(event));
-        case VeterinarianRegistered:
-          return merge(typed(event));
-        case VeterinarianNameChanged:
-          return mergeNameChange(previousData, typed(event));
+        case VeterinarianRegistered: {
+          final VeterinarianRegistered typedEvent = typed(event);
+          final FullNameData name = FullNameData.from(typedEvent.name.first, typedEvent.name.last);
+          final PostalAddressData postalAddress = PostalAddressData.from(typedEvent.contactInformation.postalAddress.streetAddress, typedEvent.contactInformation.postalAddress.city, typedEvent.contactInformation.postalAddress.stateProvince, typedEvent.contactInformation.postalAddress.postalCode);
+          final TelephoneData telephone = TelephoneData.from(typedEvent.contactInformation.telephone.number);
+          final ContactInformationData contactInformation = ContactInformationData.from(postalAddress, telephone);
+          final SpecialtyData specialty = SpecialtyData.from(typedEvent.specialty.specialtyTypeId);
+          merged = VeterinarianData.from(typedEvent.id, name, contactInformation, specialty);
+          break;
+        }
+
+        case VeterinarianContactInformationChanged: {
+          final VeterinarianContactInformationChanged typedEvent = typed(event);
+          final PostalAddressData postalAddress = PostalAddressData.from(typedEvent.contactInformation.postalAddress.streetAddress, typedEvent.contactInformation.postalAddress.city, typedEvent.contactInformation.postalAddress.stateProvince, typedEvent.contactInformation.postalAddress.postalCode);
+          final TelephoneData telephone = TelephoneData.from(typedEvent.contactInformation.telephone.number);
+          final ContactInformationData contactInformation = ContactInformationData.from(postalAddress, telephone);
+          merged = VeterinarianData.from(typedEvent.id, previousData.name, contactInformation, previousData.specialty);
+          break;
+        }
+
+        case VeterinarianNameChanged: {
+          final VeterinarianNameChanged typedEvent = typed(event);
+          final FullNameData name = FullNameData.from(typedEvent.name.first, typedEvent.name.last);
+          merged = VeterinarianData.from(typedEvent.id, name, previousData.contactInformation, previousData.specialty);
+          break;
+        }
+
+        case VeterinarianSpecialtyChosen: {
+          final VeterinarianSpecialtyChosen typedEvent = typed(event);
+          final SpecialtyData specialty = SpecialtyData.from(typedEvent.specialty.specialtyTypeId);
+          merged = VeterinarianData.from(typedEvent.id, previousData.name, previousData.contactInformation, specialty);
+          break;
+        }
+
         default:
           logger().warn("Event of type " + event.typeName() + " was not matched.");
           break;
       }
     }
 
-    return previousData;
-  }
-
-  private VeterinarianData merge(final VeterinarianRegistered registered){
-    final FullnameData fullname = FullnameData.of(registered.name.first, registered.name.last);
-    final ContactInformationData contactInformation = ContactInformationData.of(
-            registered.contact.postalAddress, registered.contact.telephone
-    );
-    final SpecialtyData specialty = SpecialtyData.of(registered.specialty.specialtyTypeId);
-    return VeterinarianData.from(registered.id, fullname, contactInformation, specialty);
-  }
-
-  private VeterinarianData mergeContactChange(final VeterinarianData previous,
-                                 final VeterinarianContactInformationChanged contactChanged){
-    final ContactInformationData contact
-            = ContactInformationData.of(contactChanged.contact.postalAddress, contactChanged.contact.telephone);
-    return VeterinarianData.from(previous.id, previous.name, contact, previous.specialty);
-  }
-
-  private VeterinarianData mergeNameChange(final VeterinarianData previous,
-                                 final VeterinarianNameChanged nameChanged){
-    final FullnameData name = FullnameData.of(nameChanged.name.first, nameChanged.name.last);
-    return VeterinarianData.from(previous.id, name, previous.contact, previous.specialty);
-  }
-
-  private VeterinarianData mergeSpecializeIn(final VeterinarianData previous,
-                                             final VeterinarianSpecialtyChosen specialtyChosen){
-    final SpecialtyData specialty = SpecialtyData.of(specialtyChosen.specialty.specialtyTypeId);
-    return VeterinarianData.from(previous.id, previous.name, previous.contact, specialty);
+    return merged;
   }
 }

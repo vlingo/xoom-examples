@@ -28,8 +28,4 @@ public class PetQueriesActor extends StateStoreQueryActor implements PetQueries 
     return streamAllOf(PetData.class, new ArrayList<>());
   }
 
-  @Override
-  public Completes<Collection<PetData>> petsForOwner(String ownerId) {
-    throw new RuntimeException("not implemented yet"); // TODO: implement
-  }
 }

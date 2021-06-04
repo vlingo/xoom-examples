@@ -8,29 +8,25 @@ public class SpecialtyTypeData {
   public final String id;
   public final String name;
 
-  public static SpecialtyTypeData from(final SpecialtyTypeState state) {
-    return new SpecialtyTypeData(state);
+  public static SpecialtyTypeData from(final SpecialtyTypeState specialtyTypeState) {
+    return from(specialtyTypeState.id, specialtyTypeState.name);
+  }
+
+  public static SpecialtyTypeData from(final String id, final String name) {
+    return new SpecialtyTypeData(id, name);
   }
 
   public static List<SpecialtyTypeData> from(final List<SpecialtyTypeState> states) {
     return states.stream().map(SpecialtyTypeData::from).collect(Collectors.toList());
   }
 
-  public static SpecialtyTypeData from(String id, String name){
-    return new SpecialtyTypeData(id, name);
-  }
-
   public static SpecialtyTypeData empty() {
-    return new SpecialtyTypeData(SpecialtyTypeState.identifiedBy(""));
+    return from(SpecialtyTypeState.identifiedBy(""));
   }
 
-  private SpecialtyTypeData (final SpecialtyTypeState state) {
-    this.id = state.id;
-    this.name = state.name;
-  }
-
-  private SpecialtyTypeData(String id, String name) {
+  private SpecialtyTypeData (final String id, final String name) {
     this.id = id;
     this.name = name;
   }
+
 }
