@@ -1,6 +1,6 @@
 event ClientRegistered {
   version semanticVersion
   string id
-  xoom:apps:io.vlingo.xoom.examples.petclinic:FullName:1.0.0 name
-  xoom:apps:io.vlingo.xoom.examples.petclinic:ContactInformation:1.0.0 contactInformation
+  data.FullName:1.0.0 name
+  data.ContactInformation:1.0.0 contactInformation
 }

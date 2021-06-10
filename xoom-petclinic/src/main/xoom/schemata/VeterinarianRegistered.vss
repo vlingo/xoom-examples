@@ -1,7 +1,7 @@
 event VeterinarianRegistered {
   version semanticVersion
   string id
-  xoom:apps:io.vlingo.xoom.examples.petclinic:FullName:1.0.0 name
-  xoom:apps:io.vlingo.xoom.examples.petclinic:ContactInformation:1.0.0 contactInformation
-  xoom:apps:io.vlingo.xoom.examples.petclinic:Specialty:1.0.0 specialty
+  data.FullName:1.0.0 name
+  data.ContactInformation:1.0.0 contactInformation
+  data.Specialty:1.0.0 specialty
 }

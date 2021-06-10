@@ -1,5 +1,5 @@
 event PetKindCorrected {
   version semanticVersion
   string id
-  xoom:apps:io.vlingo.xoom.examples.petclinic:Kind:1.0.0 kind
+  data.Kind:1.0.0 kind
 }
