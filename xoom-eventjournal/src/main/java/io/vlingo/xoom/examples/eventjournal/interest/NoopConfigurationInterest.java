@@ -16,7 +16,7 @@ public class NoopConfigurationInterest implements Configuration.ConfigurationInt
     }
 
     @Override
-    public void createDatabase(Connection connection, String databaseName) throws Exception {
+    public void createDatabase(Connection connection, String databaseName, final String username) throws Exception {
 
     }
 
