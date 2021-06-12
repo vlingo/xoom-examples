@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-calculate-pi</artifactId>
-  <version>1.7.8-SNAPSHOT</version>
+  <version>1.8.1-SNAPSHOT</version>
   <name>xoom-calculate-pi</name>
   <description>Example of VLINGO XOOM ACTORS calculating Pi.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-actors</artifactId>
-      <version>1.7.8-SNAPSHOT</version>
+      <version>1.8.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
