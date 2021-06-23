@@ -38,6 +38,7 @@
                 <clientOrganization>Vlingo</clientOrganization>
                 <clientUnit>examples</clientUnit>
                 <hierarchicalCascade>true</hierarchicalCascade>
+                <skipPrompt>true</skipPrompt>
               </schemataService>
               <schemata>
                 <schema>
