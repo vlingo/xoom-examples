@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-simgui-mediator</artifactId>
-  <version>1.8.2-SNAPSHOT</version>
+  <version>1.8.3-SNAPSHOT</version>
   <name>xoom-simgui-mediator</name>
   <description>Example of VLINGO XOOM Actors in a simulated GUI.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-actors</artifactId>
-      <version>1.8.2-SNAPSHOT</version>
+      <version>1.8.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
