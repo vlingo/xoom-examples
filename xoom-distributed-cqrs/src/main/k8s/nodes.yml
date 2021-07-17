@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: app3host # acts as DNS!
-  namespace: xoom-space
+  namespace: xoom
 spec:
   type: NodePort # switch to ClusterIP afterwards
   selector:
@@ -29,7 +29,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deployment-node3
-  namespace: xoom-space
+  namespace: xoom
   labels:
     appName: deployment-node3
 spec:
@@ -64,7 +64,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: app2host # acts as DNS!
-  namespace: xoom-space
+  namespace: xoom
 spec:
   type: NodePort # switch to ClusterIP afterwards
   selector:
@@ -90,7 +90,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deployment-node2
-  namespace: xoom-space
+  namespace: xoom
   labels:
     appName: deployment-node2
 spec:
@@ -125,7 +125,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: app1host # acts as DNS!
-  namespace: xoom-space
+  namespace: xoom
 spec:
   type: NodePort # switch to ClusterIP afterwards
   selector:
@@ -156,7 +156,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deployment-node1
-  namespace: xoom-space
+  namespace: xoom
   labels:
     appName: deployment-node1
 spec:
