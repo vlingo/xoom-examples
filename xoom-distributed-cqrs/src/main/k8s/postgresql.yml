@@ -43,6 +43,6 @@ spec:
             - name: POSTGRES_USER
               value: xoom_test
             - name: POSTGRES_PASSWORD
-              value: xoom123
+              value: xoom123%
       volumes:
       - name: postgresql-volume
