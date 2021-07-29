@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-http-backservice</artifactId>
-  <version>1.8.3-SNAPSHOT</version>
+  <version>1.8.4-SNAPSHOT</version>
   <name>xoom-http-backservice</name>
   <description>Example of VLINGO XOOM Http non-public service.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
@@ -97,22 +97,22 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-common</artifactId>
-      <version>1.8.3-SNAPSHOT</version>
+      <version>1.8.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-actors</artifactId>
-      <version>1.8.3-SNAPSHOT</version>
+      <version>1.8.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-http</artifactId>
-      <version>1.8.3-SNAPSHOT</version>
+      <version>1.8.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-auth</artifactId>
-      <version>1.8.3-SNAPSHOT</version>
+      <version>1.8.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
