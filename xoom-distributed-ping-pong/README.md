@@ -12,16 +12,16 @@ VLINGO XOOM Platform version number.
 ```
 $ mvn clean package
 ...
-console1$ java -jar target/xoom-distributed-ping-pong-1.8.4-SNAPSHOT.jar node1
+console1$ java -jar target/xoom-distributed-ping-pong-1.8.5-SNAPSHOT.jar node1
 ```
 
 Following this, open two more console/command windows, `cd` to the project directory, and in each console/command window start
 a different node.
 
 ```
-console2$ java -jar target/xoom-distributed-ping-pong-1.8.4-SNAPSHOT.jar node2
+console2$ java -jar target/xoom-distributed-ping-pong-1.8.5-SNAPSHOT.jar node2
 ...
-console3$ java -jar target/xoom-distributed-ping-pong-1.8.4-SNAPSHOT.jar node3
+console3$ java -jar target/xoom-distributed-ping-pong-1.8.5-SNAPSHOT.jar node3
 ```
 
 Observe the ping-pong played across nodes. The game distribution will depend on the actor addresses generated for each
