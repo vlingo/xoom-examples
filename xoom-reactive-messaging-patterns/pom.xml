@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-reactive-messaging-patterns</artifactId>
-  <version>1.8.5-SNAPSHOT</version>
+  <version>1.8.6-SNAPSHOT</version>
   <name>xoom-reactive-messaging-patterns</name>
   <description>Examples using xoom-actors from Vaughn Vernon's book "Reactive Messaging Patterns with the Actor Model"</description>
   <url>https://github.com/vlingo/xoom-examples</url>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-actors</artifactId>
-      <version>1.8.5-SNAPSHOT</version>
+      <version>1.8.6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.google.collections</groupId>

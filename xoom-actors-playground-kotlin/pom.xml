@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-actors-playground-kotlin</artifactId>
-  <version>1.8.5-SNAPSHOT</version>
+  <version>1.8.6-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>xoom-actors-playground-kotlin</name>
   <properties>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-actors</artifactId>
-      <version>1.8.5-SNAPSHOT</version>
+      <version>1.8.6-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
