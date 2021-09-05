@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-eventjournal</artifactId>
-  <version>1.8.6-SNAPSHOT</version>
+  <version>1.8.7-SNAPSHOT</version>
   <name>xoom-eventjournal</name>
   <description>Example of VLINGO XOOM Symbio JDBC with an event journal.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
@@ -39,12 +39,12 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-actors</artifactId>
-      <version>1.8.6-SNAPSHOT</version>
+      <version>1.8.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-symbio-jdbc</artifactId>
-      <version>1.8.6-SNAPSHOT</version>
+      <version>1.8.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.flywaydb</groupId>
