@@ -12,7 +12,7 @@ public class PongerActor extends Actor implements Ponger {
 
   public PongerActor(final Mailer mailer) {
     this.self = selfAs(Ponger.class);
-    this.mailer = ActorProxyBase.thunk(stage(), mailer); // for 'distributed' actor and mailbox setup
+    this.mailer = mailer;
   }
 
   @Override

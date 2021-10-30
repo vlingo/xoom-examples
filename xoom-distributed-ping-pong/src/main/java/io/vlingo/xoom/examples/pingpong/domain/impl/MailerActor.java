@@ -11,7 +11,7 @@ public class MailerActor extends Actor implements Mailer {
 	private final Pinger pinger;
 
 	public MailerActor(Pinger pinger) {
-		this.pinger = ActorProxyBase.thunk(stage(), pinger); // for 'distributed' actor and mailbox setup
+		this.pinger = pinger;
 	}
 
 	@Override
