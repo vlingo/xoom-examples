@@ -103,6 +103,7 @@
       </activation>
       <modules>
         <module>xoom-schemata-integration</module>
+        <module>xoom-e2e-sys-airline-ops</module>
       </modules>
     </profile>
   </profiles>
