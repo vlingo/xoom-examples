@@ -75,6 +75,7 @@
                 <url>${schemata.url}</url>
                 <clientOrganization>VgoAirlines</clientOrganization>
                 <clientUnit>Inventory</clientUnit>
+                <skipPrompt>true</skipPrompt>
                 <hierarchicalCascade>true</hierarchicalCascade>
               </schemataService>
               <schemata>
