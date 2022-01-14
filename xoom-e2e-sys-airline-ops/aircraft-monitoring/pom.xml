@@ -65,7 +65,7 @@
         <executions>
           <execution>
             <id>push</id>
-            <phase>install</phase>
+            <phase>package</phase>
             <goals>
               <goal>push-schema</goal>
             </goals>
