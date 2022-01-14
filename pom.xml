@@ -79,7 +79,6 @@
         <module>xoom-calculate-pi</module>
         <module>xoom-distributed-cqrs</module>
         <module>xoom-distributed-spaces</module>
-        <module>xoom-e2e-sys-airline-ops</module>
         <module>xoom-ecommerce</module>
         <module>xoom-eventjournal</module>
         <module>xoom-distributed-ping-pong</module>
@@ -104,6 +103,7 @@
       </activation>
       <modules>
         <module>xoom-schemata-integration</module>
+        <module>xoom-e2e-sys-airline-ops</module>
       </modules>
     </profile>
   </profiles>
