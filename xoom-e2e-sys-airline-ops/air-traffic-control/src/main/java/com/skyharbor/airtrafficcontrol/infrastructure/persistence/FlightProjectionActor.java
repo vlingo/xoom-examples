@@ -13,11 +13,12 @@ import com.skyharbor.airtrafficcontrol.model.flight.FlightState;
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 public class FlightProjectionActor extends StateStoreProjectionActor<FlightData> {
 
   public FlightProjectionActor() {
-    super(QueryModelStateStoreProvider.instance().store);
+    super(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   @Override

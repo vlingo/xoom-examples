@@ -13,12 +13,13 @@ import com.skyharbor.fleetcrew.model.aircraft.AircraftState;
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 public class AircraftProjectionActor extends StateStoreProjectionActor<AircraftData> {
   private static final AircraftData Empty = AircraftData.empty();
 
   public AircraftProjectionActor() {
-    super(QueryModelStateStoreProvider.instance().store);
+    super(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   @Override

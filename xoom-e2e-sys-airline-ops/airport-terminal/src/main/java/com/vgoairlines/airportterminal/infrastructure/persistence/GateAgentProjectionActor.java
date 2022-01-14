@@ -12,12 +12,13 @@ import com.vgoairlines.airportterminal.infrastructure.GateAgentData;
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 public class GateAgentProjectionActor extends StateStoreProjectionActor<GateAgentData> {
   private static final GateAgentData Empty = GateAgentData.empty();
 
   public GateAgentProjectionActor() {
-    super(QueryModelStateStoreProvider.instance().store);
+    super(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   @Override

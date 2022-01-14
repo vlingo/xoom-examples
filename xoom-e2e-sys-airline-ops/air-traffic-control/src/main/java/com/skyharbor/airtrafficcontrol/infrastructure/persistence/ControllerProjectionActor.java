@@ -12,12 +12,13 @@ import com.skyharbor.airtrafficcontrol.infrastructure.Events;
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 public class ControllerProjectionActor extends StateStoreProjectionActor<ControllerData> {
   private static final ControllerData Empty = ControllerData.empty();
 
   public ControllerProjectionActor() {
-    super(QueryModelStateStoreProvider.instance().store);
+    super(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   @Override

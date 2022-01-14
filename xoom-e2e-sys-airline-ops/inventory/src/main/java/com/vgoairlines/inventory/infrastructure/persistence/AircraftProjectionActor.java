@@ -13,11 +13,12 @@ import com.vgoairlines.inventory.model.aircraft.AircraftState;
 import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
+import io.vlingo.xoom.turbo.ComponentRegistry;
 
 public class AircraftProjectionActor extends StateStoreProjectionActor<AircraftData> {
 
   public AircraftProjectionActor() {
-    super(QueryModelStateStoreProvider.instance().store);
+    super(ComponentRegistry.withType(QueryModelStateStoreProvider.class).store);
   }
 
   @Override
