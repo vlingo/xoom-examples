@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-ecommerce</artifactId>
-  <version>1.9.1-SNAPSHOT</version>
+  <version>1.9.2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>xoom-ecommerce</name>
   <description>E-commerce demo.</description>
@@ -35,25 +35,25 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-lattice</artifactId>
-      <version>1.9.1-SNAPSHOT</version>
+      <version>1.9.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-symbio</artifactId>
-      <version>1.9.1-SNAPSHOT</version>
+      <version>1.9.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-http</artifactId>
-      <version>1.9.1-SNAPSHOT</version>
+      <version>1.9.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-actors</artifactId>
-      <version>1.9.1-SNAPSHOT</version>
+      <version>1.9.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
