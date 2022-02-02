@@ -27,7 +27,7 @@
     "@rollup/plugin-url": "^5.0.0",
     "body-parser": "^1.19.0",
     "http-proxy-middleware": "^1.0.6",
-    "postcss": "^8.2.5",
+    "postcss": "^8.2.13",
     "rollup": "^2.3.4",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
