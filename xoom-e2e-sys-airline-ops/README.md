@@ -18,15 +18,29 @@ The [Context Map](https://github.com/vlingo/xoom-examples/blob/master/xoom-e2e-s
 
 ![Big-Picture Event Storming Summary](https://github.com/vlingo/xoom-examples/blob/master/xoom-e2e-sys-airline-ops/docs/AirlineAirportOpsBigPicture.png)
 
+## Setup
+
+Before start the Aircraft Ops services, the following infrastructure resources need to be up and running: 
+
+- Postgres DB
+- Rabbit MQ
+- Schemata Service
+
+It is highly recommended that these resources be configured and run through the [Docker Compose file](https://github.com/vlingo/xoom-examples/blob/dbcfd3fc395a92fc8413879defe85fd14f3e065e/xoom-e2e-sys-airline-ops/docker-compose.yml) present in this folder. Ensure that *18787*, *5672* and *9019* ports are not in use then run the containerized resources: 
+
+```
+$ docker-compose up -d
+```
+
 ## Services
 
-There are few steps to run the "Aircraft-Airport-Ops" services in this example. In the root folder, execute `docker-compose up -d` so that all infrastructure resources (Postgres DB, Schemata and RabbitMQ) will be installed and initialized. Then, run the following maven build goal:
+To start each "Aircraft-Airport-Ops" services, first we need to package it executing the following Maven goal:
 
 ```
 $ mvn clean package
 ```
 
-Finally, run each service through executable `jar` passing a port number:
+Run each service through executable `jar` passing a port number:
 
 ```
 $ java -jar [service-folder-name]/target/[jar-name].jar -Dport=[port-number]
