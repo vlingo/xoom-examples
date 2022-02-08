@@ -5,6 +5,6 @@
 ```
 docker-compose up -d //only if not already started
 mvn clean package        
-java -jar target/xoom-iddd-collaboration-1.9.1-SNAPSHOT-jar-with-dependencies.jar
+java -jar target/xoom-iddd-collaboration-1.9.2-SNAPSHOT-jar-with-dependencies.jar
 ```
 
