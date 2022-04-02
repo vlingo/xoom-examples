@@ -15,6 +15,8 @@ public class App {
     Config.nodeName = parseNameFromArguments(args);
     final Grid grid = Grid.start("world-of-ping-pong", Config.nodeName);
 
+    Thread.sleep(3000L);
+
     if ("node1".equals(Config.nodeName)) {
       spinUpActors(grid);
     }
