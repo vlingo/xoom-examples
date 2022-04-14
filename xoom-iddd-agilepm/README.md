@@ -5,7 +5,7 @@
 ```
 docker-compose up -d
 mvn clean package        
-java -jar target/xoom-iddd-agilepm-1.9.2-SNAPSHOT-jar-with-dependencies.jar
+java -jar target/xoom-iddd-agilepm-1.9.3-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 Don't forget to also start `xoom-iddd-collaboration` server

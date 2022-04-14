@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.vlingo.xoom.examples</groupId>
     <artifactId>xoom-kubernetes-cluster</artifactId>
-    <version>1.9.2-SNAPSHOT</version>
+    <version>1.9.3-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -86,7 +86,7 @@
         <dependency>
             <groupId>io.vlingo.xoom</groupId>
             <artifactId>xoom-cluster</artifactId>
-            <version>1.9.2-SNAPSHOT</version>
+            <version>1.9.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

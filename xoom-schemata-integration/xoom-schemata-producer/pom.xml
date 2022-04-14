@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-schemata-producer</artifactId>
-  <version>1.9.2-SNAPSHOT</version>
+  <version>1.9.3-SNAPSHOT</version>
   <name>xoom-schemata-producer</name>
   <description>Example of a project pushing schemas to  VLINGO XOOM Schemata.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
