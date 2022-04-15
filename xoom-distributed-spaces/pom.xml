@@ -3,7 +3,7 @@
 
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-distributed-spaces</artifactId>
-  <version>1.9.3-SNAPSHOT</version>
+  <version>1.9.4-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,13 +16,13 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-lattice</artifactId>
-      <version>1.9.3-SNAPSHOT</version>
+      <version>1.9.4-SNAPSHOT</version>
     </dependency>
 
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-turbo</artifactId>
-      <version>1.9.3-SNAPSHOT</version>
+      <version>1.9.4-SNAPSHOT</version>
     </dependency>
 
     <dependency>
