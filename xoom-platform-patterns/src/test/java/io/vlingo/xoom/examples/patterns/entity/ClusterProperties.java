@@ -42,6 +42,9 @@ public class ClusterProperties {
   private static java.util.Properties allOf(final java.util.Properties properties) {
     oneOnly(properties);
 
+    properties.setProperty("node.node1.seed", "true");
+    properties.setProperty("cluster.nodes.quorum", "2");
+
     properties.setProperty("node.node2.id", "2");
     properties.setProperty("node.node2.name", "node2");
     properties.setProperty("node.node2.host", "localhost");
@@ -76,9 +79,9 @@ public class ClusterProperties {
     properties.setProperty("cluster.quorum.timeout", "60000");
 
     if (totalNodes == 1) {
-      properties.setProperty("cluster.seedNodes", "node1");
+      properties.setProperty("cluster.nodes", "node1");
     } else if (totalNodes == 3) {
-      properties.setProperty("cluster.seedNodes", "node1,node2,node3");
+      properties.setProperty("cluster.nodes", "node1,node2,node3");
     } else {
       throw new IllegalArgumentException("The totalNodes must be 1 or 3.");
     }
