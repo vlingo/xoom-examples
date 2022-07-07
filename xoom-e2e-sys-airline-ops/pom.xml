@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-e2e-sys-airline-ops</artifactId>
-  <version>1.9.4-SNAPSHOT</version>
+  <version>1.10.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
-    <xoom.version>1.9.4-SNAPSHOT</xoom.version>
+    <xoom.version>1.10.2-SNAPSHOT</xoom.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <schemata.url>http://localhost:9019</schemata.url>
