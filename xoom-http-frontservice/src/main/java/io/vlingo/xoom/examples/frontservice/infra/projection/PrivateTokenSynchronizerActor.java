@@ -56,10 +56,7 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
     final User.UserState state = projectable.object();
     final String correlationId = state.id + IdentitiesSeparator + projectable.projectionId();
 
-    if (client == null && client() == null) {
-      logger().warn("PrivateTokenSynchronizerActor: Currently no connection to backservice.");
-      return;
-    }
+    if ((client = availableClient()) == null) return;
 
     logger().debug("REQUESTING TOKEN: " + correlationId);
 
@@ -72,7 +69,8 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
               .and(host(BACKSERVICE_HOST))
               .and(RequestHeader.of(RequestHeader.XCorrelationID, correlationId)))
           .andThenConsume(response -> {
-        	 tokenRequestClient.close();
+             tokenRequestClient.close();
+
              switch (response.status) {
              case Ok:
                logger().debug("STARTING PROCESSING FOR TOKEN: " + correlationId);
@@ -82,6 +80,16 @@ public class PrivateTokenSynchronizerActor extends Actor implements Projection {
                break;
              }
            });
+  }
+
+  private Client availableClient() {
+    if (client == null) {
+      client = client();
+      if (client == null) {
+        logger().warn("PrivateTokenSynchronizerActor: Currently no connection to backservice.");
+      }
+    }
+    return client;
   }
 
   private Client client() {
