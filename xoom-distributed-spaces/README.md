@@ -6,11 +6,11 @@ Each change on distributed spaces will be replicated across all nodes.
 
 Build example: `mvn clean package`
 
-Run node1: `java -jar target/xoom-distributed-spaces.jar -Dnode=node1 -Dport=18081`
+Run node1: `java -jar target/xoom-distributed-spaces.jar -Dnode=1:node1:true:localhost:17371:17372 -Dport=18081`
 
-Run node2: `java -jar target/xoom-distributed-spaces.jar -Dnode=node2 -Dport=18082`
+Run node2: `java -jar target/xoom-distributed-spaces.jar -Dnode=2:node2:false:localhost:17373:17374 -Dport=18082`
 
-Run node3: `java -jar target/xoom-distributed-spaces.jar -Dnode=node3 -Dport=18083`
+Run node3: `java -jar target/xoom-distributed-spaces.jar -Dnode=3:node3:false:localhost:17375:17376 -Dport=18083`
 
 Create a new spaces entry on node1:
 ```
