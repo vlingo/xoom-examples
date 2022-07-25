@@ -1,125 +1,3 @@
-# Service for node3
-apiVersion: v1
-kind: Service
-metadata:
-  name: app3host # acts as DNS!
-  namespace: xoom
-spec:
-  type: NodePort # switch to ClusterIP afterwards
-  selector:
-    tier: application
-    appName: pod-node3
-  ports:
-    - name: operational
-      protocol: TCP
-      port: 17375
-      targetPort: 17375
-    - name: application
-      protocol: TCP
-      port: 17376
-      targetPort: 17376
-    - name: debug # to be removed
-      protocol: TCP
-      targetPort: 5070
-      port: 5073
-      nodePort: 30573 # debugging port for IDE
----
-# Deployment for node3
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: deployment-node3
-  namespace: xoom
-  labels:
-    appName: deployment-node3
-spec:
-  selector:
-    matchLabels:
-      tier: application
-      appName: pod-node3
-  template:
-    metadata:
-      labels:
-        system: xoom-distributed-cqrs
-        tier: application
-        appName: pod-node3
-        type: worker
-    spec:
-      containers:
-        - name: xoom-distributed-cqrs-app
-          image: vlingo/xoom-distributed-cqrs:1.0
-          ports:
-            - name: operational
-              containerPort: 17375
-            - name: application
-              containerPort: 17376
-            - name: debug # to be removed
-              containerPort: 5070
-          env:
-            - name: APP_ARGS
-              value: node3
----
-# Service for node2
-apiVersion: v1
-kind: Service
-metadata:
-  name: app2host # acts as DNS!
-  namespace: xoom
-spec:
-  type: NodePort # switch to ClusterIP afterwards
-  selector:
-    tier: application
-    appName: pod-node2
-  ports:
-    - name: operational
-      protocol: TCP
-      port: 17373
-      targetPort: 17373
-    - name: application
-      protocol: TCP
-      port: 17374
-      targetPort: 17374
-    - name: debug # to be removed
-      protocol: TCP
-      targetPort: 5070
-      port: 5072
-      nodePort: 30572 # debugging port for IDE
----
-# Deployment for node2
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: deployment-node2
-  namespace: xoom
-  labels:
-    appName: deployment-node2
-spec:
-  selector:
-    matchLabels:
-      tier: application
-      appName: pod-node2
-  template:
-    metadata:
-      labels:
-        system: xoom-distributed-cqrs
-        tier: application
-        appName: pod-node2
-        type: worker
-    spec:
-      containers:
-        - name: xoom-distributed-cqrs-app
-          image: vlingo/xoom-distributed-cqrs:1.0
-          ports:
-            - name: operational
-              containerPort: 17373
-            - name: application
-              containerPort: 17374
-            - name: debug # to be removed
-              containerPort: 5070
-          env:
-            - name: APP_ARGS
-              value: node2
----
 # Service for node1
 apiVersion: v1
 kind: Service
@@ -186,4 +64,126 @@ spec:
               containerPort: 5070
           env:
             - name: APP_ARGS
-              value: node1
+              value: '1:node1:true:app1host:17371:17372'
+---
+# Service for node2
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2host # acts as DNS!
+  namespace: xoom
+spec:
+  type: NodePort # switch to ClusterIP afterwards
+  selector:
+    tier: application
+    appName: pod-node2
+  ports:
+    - name: operational
+      protocol: TCP
+      port: 17373
+      targetPort: 17373
+    - name: application
+      protocol: TCP
+      port: 17374
+      targetPort: 17374
+    - name: debug # to be removed
+      protocol: TCP
+      targetPort: 5070
+      port: 5072
+      nodePort: 30572 # debugging port for IDE
+---
+# Deployment for node2
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-node2
+  namespace: xoom
+  labels:
+    appName: deployment-node2
+spec:
+  selector:
+    matchLabels:
+      tier: application
+      appName: pod-node2
+  template:
+    metadata:
+      labels:
+        system: xoom-distributed-cqrs
+        tier: application
+        appName: pod-node2
+        type: worker
+    spec:
+      containers:
+        - name: xoom-distributed-cqrs-app
+          image: vlingo/xoom-distributed-cqrs:1.0
+          ports:
+            - name: operational
+              containerPort: 17373
+            - name: application
+              containerPort: 17374
+            - name: debug # to be removed
+              containerPort: 5070
+          env:
+            - name: APP_ARGS
+              value: '2:node2:false:app2host:17373:17374'
+---
+# Service for node3
+apiVersion: v1
+kind: Service
+metadata:
+  name: app3host # acts as DNS!
+  namespace: xoom
+spec:
+  type: NodePort # switch to ClusterIP afterwards
+  selector:
+    tier: application
+    appName: pod-node3
+  ports:
+    - name: operational
+      protocol: TCP
+      port: 17375
+      targetPort: 17375
+    - name: application
+      protocol: TCP
+      port: 17376
+      targetPort: 17376
+    - name: debug # to be removed
+      protocol: TCP
+      targetPort: 5070
+      port: 5073
+      nodePort: 30573 # debugging port for IDE
+---
+# Deployment for node3
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-node3
+  namespace: xoom
+  labels:
+    appName: deployment-node3
+spec:
+  selector:
+    matchLabels:
+      tier: application
+      appName: pod-node3
+  template:
+    metadata:
+      labels:
+        system: xoom-distributed-cqrs
+        tier: application
+        appName: pod-node3
+        type: worker
+    spec:
+      containers:
+        - name: xoom-distributed-cqrs-app
+          image: vlingo/xoom-distributed-cqrs:1.0
+          ports:
+            - name: operational
+              containerPort: 17375
+            - name: application
+              containerPort: 17376
+            - name: debug # to be removed
+              containerPort: 5070
+          env:
+            - name: APP_ARGS
+              value: '3:node3:false:app3host:17375:17376'
