@@ -38,18 +38,14 @@ Prerequisites: Docker Desktop (https://www.docker.com/products/docker-desktop). 
 
 Car command:
 ```
-curl --request POST 'http://localhost:30080/api/cars' \
-  --header 'Content-Type: application/json' \  
-  --data-raw '{
-    "type":"Audi",  
-    "model":"A4",
-    "registrationNumber":"AB-01-ABC"
-  }'
+curl --header 'Content-Type: application/json' \
+  --data-raw '{"type":"Audi", "model":"A4", "registrationNumber":"AB-01-ABC"}' \
+  -i -X POST 'http://localhost:18080/api/cars'
 ```
 
 Cars query:
 ```
-curl --request GET 'http://localhost:30080/api/cars'
+curl -i -X GET 'http://localhost:30080/api/cars'
 ```
 
 ---
