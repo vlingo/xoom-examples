@@ -13,7 +13,7 @@ public class App {
 
   public static void main(final String[] args) throws Exception {
     Config.nodeName = parseNameFromArguments(args);
-    final Grid grid = Grid.start("world-of-ping-pong", Config.nodeName);
+    final Grid grid = Grid.start("world-of-ping-pong", Config.nodesConfig.get(Config.nodeName));
 
     if ("node1".equals(Config.nodeName)) {
       spinUpActors(grid);

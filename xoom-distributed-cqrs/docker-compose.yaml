@@ -3,8 +3,6 @@ version: '3.1'
 services:
   postgres:
     image: postgres:latest
-    volumes:
-       - xoom_cars_postgres
     restart: always
     ports:
       - '5432:5432'
@@ -12,6 +10,3 @@ services:
       POSTGRES_DB: xoomdb
       POSTGRES_USER: xoom_test
       POSTGRES_PASSWORD: xoom123%
-
-volumes:
-  xoom_cars_postgres:

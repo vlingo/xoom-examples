@@ -1,5 +1,6 @@
 package io.vlingo.xoom.examples.cars;
 
+import io.vlingo.xoom.cluster.model.NodeProperties;
 import io.vlingo.xoom.lattice.grid.Grid;
 import io.vlingo.xoom.http.resource.Configuration;
 import io.vlingo.xoom.http.resource.Resources;
@@ -29,14 +30,14 @@ public class Bootstrap {
         System.out.println("Starting: xoom-distributed-cqrs");
         System.out.println("=========================");
 
-        String nodeName = parseNameFromArguments(args);
-
-        final Server server;
-        Grid grid = Grid.start("xoom-distributed-cqrs", nodeName);
+        String nodePropertiesText = parseNameFromArguments(args);
+        Grid grid = Grid.start("xoom-distributed-cqrs", nodePropertiesText);
+        NodeProperties nodeProperties = NodeProperties.from(nodePropertiesText);
 
         StorageProvider.using(grid.world(), CarConfig.load());
 
-        if ("node1".equals(nodeName)) {
+        final Server server;
+        if ("node1".equals(nodeProperties.getName())) {
             CarResource carResource = new CarResource(grid);
             Resources allResources = Resources.are(carResource.routes());
 

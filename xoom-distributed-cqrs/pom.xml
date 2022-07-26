@@ -40,13 +40,13 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.3</version>
+      <version>42.3.6</version>
     </dependency>
 
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.2.0</version>
+      <version>1.2.11</version>
     </dependency>
   </dependencies>
 
