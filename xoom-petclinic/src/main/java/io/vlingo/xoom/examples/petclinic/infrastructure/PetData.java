@@ -2,6 +2,9 @@ package io.vlingo.xoom.examples.petclinic.infrastructure;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vlingo.xoom.examples.petclinic.model.pet.PetState;
 
 public class PetData {
@@ -21,7 +24,13 @@ public class PetData {
     return from(petState.id, name, birth, death, kind, owner);
   }
 
-  public static PetData from(final String id, final NameData name, final DateData birth, final DateData death, final KindData kind, final OwnerData owner) {
+  @JsonCreator
+  public static PetData from(@JsonProperty("id") final String id,
+                             @JsonProperty("name") final NameData name,
+                             @JsonProperty("birth") final DateData birth,
+                             @JsonProperty("death") final DateData death,
+                             @JsonProperty("kind") final KindData kind,
+                             @JsonProperty("owner") final OwnerData owner) {
     return new PetData(id, name, birth, death, kind, owner);
   }
 

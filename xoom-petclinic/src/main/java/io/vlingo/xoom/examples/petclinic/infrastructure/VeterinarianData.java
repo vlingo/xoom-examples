@@ -2,6 +2,9 @@ package io.vlingo.xoom.examples.petclinic.infrastructure;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vlingo.xoom.examples.petclinic.model.veterinarian.VeterinarianState;
 
 public class VeterinarianData {
@@ -17,7 +20,11 @@ public class VeterinarianData {
     return from(veterinarianState.id, name, contactInformation, specialty);
   }
 
-  public static VeterinarianData from(final String id, final FullNameData name, final ContactInformationData contactInformation, final SpecialtyData specialty) {
+  @JsonCreator
+  public static VeterinarianData from(@JsonProperty("id") final String id,
+                                      @JsonProperty("name") final FullNameData name,
+                                      @JsonProperty("contactInformation") final ContactInformationData contactInformation,
+                                      @JsonProperty("specialty") final SpecialtyData specialty) {
     return new VeterinarianData(id, name, contactInformation, specialty);
   }
 

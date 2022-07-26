@@ -1,5 +1,7 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vlingo.xoom.examples.petclinic.model.Date;
 
 public class DateData {
@@ -10,7 +12,8 @@ public class DateData {
     return from(date.value);
   }
 
-  public static DateData from(final long value) {
+  @JsonCreator
+  public static DateData from(@JsonProperty("value") final long value) {
     return new DateData(value);
   }
 

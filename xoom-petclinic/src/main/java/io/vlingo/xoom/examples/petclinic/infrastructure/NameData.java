@@ -1,5 +1,7 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vlingo.xoom.examples.petclinic.model.Name;
 
 public class NameData {
@@ -10,7 +12,8 @@ public class NameData {
     return from(name.value);
   }
 
-  public static NameData from(final String value) {
+  @JsonCreator
+  public static NameData from(@JsonProperty("value") final String value) {
     return new NameData(value);
   }
 

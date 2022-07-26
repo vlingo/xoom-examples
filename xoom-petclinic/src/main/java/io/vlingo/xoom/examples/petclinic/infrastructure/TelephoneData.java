@@ -1,5 +1,7 @@
 package io.vlingo.xoom.examples.petclinic.infrastructure;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vlingo.xoom.examples.petclinic.model.Telephone;
 
 public class TelephoneData {
@@ -10,7 +12,8 @@ public class TelephoneData {
     return from(telephone.number);
   }
 
-  public static TelephoneData from(final String number) {
+  @JsonCreator
+  public static TelephoneData from(@JsonProperty("number") final String number) {
     return new TelephoneData(number);
   }
 
