@@ -7,6 +7,7 @@
 
 package io.vlingo.xoom.examples.patterns.entity.sourced;
 
+import io.vlingo.xoom.cluster.StaticClusterConfiguration;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -66,7 +67,8 @@ public class OrganizationEntityTest {
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
-    grid = Grid.start("sourced-entity-test", Configuration.define(), ClusterProperties.oneNode(), "node1");
+    StaticClusterConfiguration staticConfiguration = StaticClusterConfiguration.oneNode();
+    grid = Grid.start("sourced-entity-test", Configuration.define(), staticConfiguration.properties, staticConfiguration.propertiesOf(0));
     grid.quorumAchieved();
     journal = grid.actorFor(Journal.class, InMemoryJournalActor.class, Arrays.asList(new MockDispatcher()));
     registry = new SourcedTypeRegistry(grid.world());

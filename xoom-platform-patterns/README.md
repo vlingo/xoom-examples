@@ -15,13 +15,13 @@ There is no live behind this rest service. The service communicate strings. So i
 
 The demo shows;
 
-* How to make a HTTP Server
+* How to make an HTTP Server
 * How to make a stop via shutdown hook
 * How to add web resource to the server with routes()
 * How to log outside an Actor
 * How to return response via class Completes
 * How to open a new web server
-* Hoe to close an existing web server
+* How to close an existing web server
 
 ## Client requests with curl - step 1
 

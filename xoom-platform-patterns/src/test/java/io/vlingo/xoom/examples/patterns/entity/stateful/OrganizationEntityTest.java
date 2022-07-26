@@ -9,6 +9,7 @@ package io.vlingo.xoom.examples.patterns.entity.stateful;
 
 import java.util.Arrays;
 
+import io.vlingo.xoom.cluster.StaticClusterConfiguration;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -66,7 +67,8 @@ public class OrganizationEntityTest {
   @Before
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void setUp() throws Exception {
-    grid = Grid.start("stateful-entity-test", Configuration.define(), ClusterProperties.oneNode(), "node1");
+    final StaticClusterConfiguration staticConfiguration = StaticClusterConfiguration.oneNode();
+    grid = Grid.start("stateful-entity-test", Configuration.define(), staticConfiguration.properties, staticConfiguration.propertiesOf(0));
     grid.quorumAchieved();
     stateStore = grid.actorFor(StateStore.class, InMemoryStateStoreActor.class, Arrays.asList(new MockDispatcher()));
     registry = new StatefulTypeRegistry(grid.world());
