@@ -3,7 +3,7 @@
   <parent>
     <groupId>io.vlingo.xoom.examples</groupId>
     <artifactId>xoom-e2e-sys-airline-ops</artifactId>
-    <version>1.10.2-SNAPSHOT</version>
+    <version>1.11.1-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>

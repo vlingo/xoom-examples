@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-actors-playground</artifactId>
-  <version>1.10.2-SNAPSHOT</version>
+  <version>1.11.1-SNAPSHOT</version>
   <name>xoom-actors-playground</name>
   <description>Example of VLINGO XOOM Actors playing ping pong.</description>
   <url>https://github.com/vlingo/xoom-examples</url>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-actors</artifactId>
-      <version>1.10.2-SNAPSHOT</version>
+      <version>1.11.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>

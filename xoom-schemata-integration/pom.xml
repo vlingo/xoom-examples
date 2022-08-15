@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.vlingo.xoom.examples</groupId>
     <artifactId>xoom-examples-schemata-integration</artifactId>
-    <version>1.10.2-SNAPSHOT</version>
+    <version>1.11.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>xoom-examples-schemata-integration</name>
     <description>Shows how to talk to VLINGO XOOM Schemata as part of maven builds.</description>

@@ -4,7 +4,7 @@
     "artifactId": "petclinic",
     "artifactVersion": "1.0.0",
     "packageName": "io.vlingo.xoom.examples.petclinic",
-    "xoomVersion": "1.10.2-SNAPSHOT"
+    "xoomVersion": "1.11.1-SNAPSHOT"
   },
   "model": {
     "persistenceSettings": {
