@@ -36,16 +36,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Notify slack
+      - name: Notify discord
         if: always() && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) && github.repository_owner == 'vlingo'
-        uses: rtCamp/action-slack-notify@v2
+        uses: 'Ilshidur/action-discord@0.3.2'
         env:
-          SLACK_COLOR: "${{ job.status == 'success' && 'good' || 'danger' }}"
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_CHANNEL: ci-cd
-          SLACK_USERNAME: Bob the Builder
-          SLACK_ICON: 'https://vlingo.io/wp-content/uploads/cropped-vlingo-favicon-180x180.png'
-          SLACK_FOOTER: '${{ github.repository }}'
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: Bob the Builder
+          DISCORD_EMBEDS: '[{"title":"Build ${{ job.status }}", "description":"[${{ github.repository }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})","author": {  "icon_url": "https://avatars.githubusercontent.com/${{ github.actor }}", "name": "${{ github.actor }}", "url": "${{ github.server_url }}/${{ github.actor }}"},"color":"${{ job.status == ''success'' && ''65280'' || ''16711680'' }}"}]'
 
       - name: Cleanup
         run: rm -rf ~/.m2/repository/io/vlingo
