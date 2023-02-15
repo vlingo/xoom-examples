@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo.xoom.examples</groupId>
   <artifactId>xoom-perf</artifactId>
-  <version>1.11.1-SNAPSHOT</version>
+  <version>1.11.2-SNAPSHOT</version>
 
   <properties>
     <jdk.version>1.8</jdk.version>
@@ -14,7 +14,7 @@
     <exec.mainClass>io.vlingo.xoom.examples.perf.vlingo.infrastructure.Bootstrap</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-    <xoom.version>1.11.1-SNAPSHOT</xoom.version>
+    <xoom.version>1.11.2-SNAPSHOT</xoom.version>
   </properties>
 
   <dependencies>
